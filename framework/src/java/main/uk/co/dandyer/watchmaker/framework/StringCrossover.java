@@ -18,6 +18,7 @@ package uk.co.dandyer.watchmaker.framework;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
+import uk.co.dandyer.maths.random.RandomSequence;
 
 /**
  * Variable-point (fixed or random) cross-over for String candidates.
@@ -25,11 +26,34 @@ import java.util.ArrayList;
  */
 public class StringCrossover extends AbstractCrossover<String>
 {
-    @SuppressWarnings("unchecked")
-    protected <S extends String> List<S> reproduce(S parent1,
-                                                   S parent2,
-                                                   int numberOfCrossoverPoints,
-                                                   Random rng)
+    /**
+     * Default is single-point cross-over.
+     */
+    public StringCrossover()
+    {
+        this(1);
+    }
+
+    /**
+     * Cross-over with a fixed number of cross-over points.
+     */
+    public StringCrossover(int crossoverPoints)
+    {
+        super(crossoverPoints);
+    }
+
+    /**
+     * Cross-over with a variable number of cross-over points.
+     */
+    public StringCrossover(RandomSequence<Integer> crossoverPointsVariable)
+    {
+        super(crossoverPointsVariable);
+    }
+
+    protected List<String> reproduce(String parent1,
+                                     String parent2,
+                                     int numberOfCrossoverPoints,
+                                     Random rng)
     {
         if (parent1.length() != parent2.length())
         {
@@ -51,7 +75,6 @@ public class StringCrossover extends AbstractCrossover<String>
         List<String> result = new ArrayList<String>(2);
         result.add(offspring1.toString());
         result.add(offspring2.toString());
-        // Since there are no sub-classes of String, this is a perfectly safe cast.
-        return (List<S>) result;
+        return result;
     }
 }

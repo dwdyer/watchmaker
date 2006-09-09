@@ -19,14 +19,41 @@ import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 import java.lang.reflect.Array;
+import uk.co.dandyer.maths.random.RandomSequence;
 
 /**
  * Variable-point (fixed or random) cross-over for arrays of reference types.
  * @author Daniel Dyer
  */
-@SuppressWarnings("unchecked")
 public class ArrayCrossover extends AbstractCrossover<Object[]>
 {
+    /**
+     * Default is single-point cross-over.
+     */
+    public ArrayCrossover()
+    {
+        this(1);
+    }
+
+
+    /**
+     * Cross-over with a fixed number of cross-over points.
+     */
+    public ArrayCrossover(int crossoverPoints)
+    {
+        super(crossoverPoints);
+    }
+
+
+    /**
+     * Cross-over with a variable number of cross-over points.
+     */
+    public ArrayCrossover(RandomSequence<Integer> crossoverPointsVariable)
+    {
+        super(crossoverPointsVariable);
+    }
+
+
     protected List<Object[]> reproduce(Object[] parent1,
                                        Object[] parent2,
                                        int numberOfCrossoverPoints,
@@ -36,6 +63,7 @@ public class ArrayCrossover extends AbstractCrossover<Object[]>
         {
             throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
         }
+        // Create the most specific-type arrays possible.
         Object[] offspring1 = (Object[]) Array.newInstance(parent1.getClass().getComponentType(), parent1.length);
         System.arraycopy(parent1, 0, offspring1, 0, parent1.length);
         Object[] offspring2 = (Object[]) Array.newInstance(parent2.getClass().getComponentType(), parent2.length);

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Collection;
 import uk.co.dandyer.maths.random.RandomSequence;
 import uk.co.dandyer.maths.random.Constant;
 
@@ -30,15 +31,6 @@ import uk.co.dandyer.maths.random.Constant;
 public abstract class AbstractCrossover<T> implements EvolutionaryProcess<T>
 {
     private final RandomSequence<Integer> crossoverPointsVariable;
-
-    /**
-     * Default is single-point cross-over.
-     */
-    protected AbstractCrossover()
-    {
-        this(1);
-    }
-
 
     /**
      * @param crossoverPoints The constant number of cross-over points
@@ -64,6 +56,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryProcess<T>
      * with this class (T).  Ensures that the returned list is of the appropriate
      * type even when dealing with sub-classes of T.
      */
+    @SuppressWarnings("unchecked")
     public <S extends T> List<S> apply(List<S> population, Random rng)
     {
         List<S> result = new ArrayList<S>(population.size());
@@ -73,13 +66,22 @@ public abstract class AbstractCrossover<T> implements EvolutionaryProcess<T>
             S parent1 = iterator.next();
             S parent2 = iterator.next();
             int crossoverPoints = crossoverPointsVariable.nextValue();
-            result.addAll(reproduce(parent1, parent2, crossoverPoints, rng));
+            result.addAll((Collection<? extends S>) reproduce(parent1, parent2, crossoverPoints, rng));
         }
         return result;
     }
 
-    protected abstract <S extends T> List<S> reproduce(S parent1,
-                                                       S parent2,
-                                                       int numberOfCrossoverPoints,
-                                                       Random rng);
+    /**
+     * Implementing classes should return the list elements of the most specific
+     * type possible (derived from the actual types of the arguments).  In other
+     * words, if <code>parent1</code> and <code>parent2</code> are instances of
+     * a sub-class of T, then the elements returned returned in the list must
+     * also be instances of the same sub-class.  This is to ensure that the
+     * cross-over implementation can correctly deal with populations of
+     * sub-classes of T.
+     */
+    protected abstract List<? extends T> reproduce(T parent1,
+                                                   T parent2,
+                                                   int numberOfCrossoverPoints,
+                                                   Random rng);
 }

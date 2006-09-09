@@ -18,6 +18,7 @@ package uk.co.dandyer.watchmaker.framework;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import uk.co.dandyer.maths.random.RandomSequence;
 
 /**
  * Variable-point (fixed or random) cross-over for arbitrary lists.
@@ -25,11 +26,37 @@ import java.util.Random;
  */
 public class ListCrossover extends AbstractCrossover<List<?>>
 {
-    @SuppressWarnings("unchecked")
-    protected <S extends List<?>> List<S> reproduce(S parent1,
-                                                    S parent2,
-                                                    int numberOfCrossoverPoints,
-                                                    Random rng)
+    /**
+     * Default is single-point cross-over.
+     */
+    public ListCrossover()
+    {
+        this(1);
+    }
+
+
+    /**
+     * Cross-over with a fixed number of cross-over points.
+     */
+    public ListCrossover(int crossoverPoints)
+    {
+        super(crossoverPoints);
+    }
+
+
+    /**
+     * Cross-over with a variable number of cross-over points.
+     */
+    public ListCrossover(RandomSequence<Integer> crossoverPointsVariable)
+    {
+        super(crossoverPointsVariable);
+    }
+
+
+    protected List<List<?>> reproduce(List<?> parent1,
+                                      List<?> parent2,
+                                      int numberOfCrossoverPoints,
+                                      Random rng)
     {
         if (parent1.size() != parent2.size())
         {
@@ -48,9 +75,9 @@ public class ListCrossover extends AbstractCrossover<List<?>>
                 offspring2.set(j, temp);
             }
         }
-        List<S> result = new ArrayList<S>(2);
-        result.add((S) offspring1);
-        result.add((S) offspring2);
+        List<List<?>> result = new ArrayList<List<?>>(2);
+        result.add(offspring1);
+        result.add(offspring2);
         return result;
     }
 }
