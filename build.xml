@@ -1,0 +1,232 @@
+<!-- =========================================================================
+  Copyright 2006 Daniel W. Dyer
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may notP use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+========================================================================== -->
+<project name="watchmaker" default="dist" basedir=".">
+  <description>Ant build file for the Watchmaker framework.</description>
+
+  
+<!-- ==================================================================
+     GLOBAL BUILD PROPERTIES
+=================================================================== -->
+  
+  <property name="src.dir" value="src"/>
+  <property name="java.dir" value="${src.dir}/java" />
+  <property name="build.dir" value="build"/>
+  <property name="classes.dir" value="${build.dir}/classes" />
+
+  <property name="lib.dir" location="./lib"/>
+  <property name="lib.compiletime" location="${lib.dir}/compiletime"/>
+  <property name="lib.runtime" location="${lib.dir}/runtime"/>
+
+  <!-- Target directory for the distribution artifacts. -->
+  <property name="dist.dir" location="./dist"/>
+
+  <property name="docs.dir" location="./docs"/>
+  <property name="api.dir" location="${docs.dir}/api" />
+  <property name="test-results.dir" location="${docs.dir}/test-results" />
+
+  <!-- Classpath for compilation and tests. -->
+  <path id="base.path">
+    <fileset dir="${lib.dir}">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
+
+
+<!-- ==================================================================
+     MACROS
+=================================================================== -->
+
+  <!-- This macro deletes all build artifacts from a module. -->
+  <macrodef name="clean.module">
+    <attribute name="module.name"/>
+    <sequential>
+      <delete dir="./@{module.name}/${build.dir}"/>
+    </sequential>
+  </macrodef>
+
+  <!-- This macro compiles one source group (i.e. the main source tree
+       or the unit test source tree) of a given module. -->
+  <macrodef name="compile.src.group">
+    <attribute name="module.name"/>
+    <attribute name="src.group"/>
+    <element name="groupclasspath" optional="true"/>
+    <sequential>
+      <mkdir dir="./@{module.name}/${classes.dir}/@{src.group}" />
+      <javac destdir="./@{module.name}/${classes.dir}/@{src.group}"
+             debug="on"
+             deprecation="on"
+             optimize="on"
+             source="1.5"
+             target="1.5"
+             srcdir="./@{module.name}/${java.dir}/@{src.group}">
+        <classpath>
+          <groupclasspath/>
+          <path refid="base.path"/>
+        </classpath>
+        <compilerarg value="-Xlint:unchecked" />
+        <exclude name="**/package-info.java" />
+      </javac>
+    </sequential>
+  </macrodef>
+
+  <!-- This macro compiles all source (including unit tests) for a
+       single module.  -->
+  <macrodef name="compile.module">
+    <attribute name="module.name"/>
+    <element name="moduleclasspath" optional="true"/>
+    <sequential>
+      <compile.src.group module.name="@{module.name}" src.group="main">
+        <groupclasspath>
+          <moduleclasspath />
+        </groupclasspath>
+      </compile.src.group>
+      <compile.src.group module.name="@{module.name}" src.group="test">
+        <groupclasspath>
+          <!-- Add the main classes to the classpath for unit test compilation. -->
+          <path location="./@{module.name}/${classes.dir}/main" />
+          <moduleclasspath />
+        </groupclasspath>
+      </compile.src.group>
+    </sequential>
+  </macrodef>
+
+  <!-- This macro builds a JAR file for a module, containing all of
+       the classes in the main source group for the module
+       (i.e. unit test classes are excluded).  The JAR file name is
+       derived from the module name. -->
+  <macrodef name="jar.module">
+    <attribute name="module.name"/>
+    <element name="additionalcontents" optional="true"/>
+    <sequential>
+      <jar destfile="./@{module.name}/${build.dir}/@{module.name}.jar">
+        <fileset dir="./@{module.name}/${classes.dir}/main"/>
+        <additionalcontents/>
+      </jar>
+    </sequential>
+  </macrodef>
+
+
+<!-- ==================================================================
+     TARGETS FOR BUILDING THE SOFTWARE
+=================================================================== -->
+
+  <!-- Builds everything from scratch. -->
+  <target name="all" depends="clean, test" description="Builds everything, excluding docs, from scratch."/>
+  
+  
+  <!-- Deletes all directories and files created by the build process. -->
+  <target name="clean" description="Remove all files created by the build process." >
+    <delete dir="${docs.dir}" />
+    <delete dir="${dist.dir}" />
+    <clean.module module.name="examples" />
+    <clean.module module.name="framework" />
+    <clean.module module.name="maths" />
+  </target>    
+  
+
+  <!-- Builds the maths module. -->
+  <target name="maths" description="Build the maths module.">
+    <compile.module module.name="maths" />
+    <jar.module module.name="maths" />
+  </target>
+
+
+  <!-- Builds the framework JAR, which depends on the maths module. -->
+  <target name="framework" depends="maths" description="Build the framework module.">
+    <compile.module module.name="framework">
+      <moduleclasspath>
+        <path location="./maths/${build.dir}/maths.jar" />
+      </moduleclasspath>
+    </compile.module>
+    <jar.module module.name="framework">
+      <additionalcontents>
+        <manifest>
+          <attribute name="Class-Path" value="maths.jar"/>
+        </manifest>
+      </additionalcontents>
+    </jar.module>
+  </target>
+
+
+  <!-- Builds the examples JAR, which depends on the framework module. -->
+  <target name="examples" depends="framework" description="Build the examples.">
+    <compile.module module.name="examples">
+      <moduleclasspath>
+        <path location="./framework/${build.dir}/framework.jar" />
+      </moduleclasspath>
+    </compile.module>
+    <jar.module module.name="examples">
+      <additionalcontents>
+        <manifest>
+          <attribute name="Class-Path" value="framework.jar"/>
+        </manifest>
+      </additionalcontents>
+    </jar.module>
+  </target>
+
+
+  <!-- Copy all necessary files to distribution directory. -->
+  <target name="dist" depends="maths, framework, examples" description="Generate the project distribution." >
+    <mkdir dir="${dist.dir}" />
+    <!-- Copy all application JARs and 3rd party libraries. -->
+    <copy todir="${dist.dir}" flatten="true">
+      <fileset dir="." includes="**/${build.dir}/*.jar" />
+      <fileset dir="." includes="${lib.runtime}/*.jar" />
+    </copy>
+  </target>
+
+
+<!-- ==================================================================
+     TARGETS FOR GENERATING TEST REPORTS & DOCUMENTATION
+=================================================================== -->
+
+  <!-- Runs unit tests for all modules. -->
+  <target name="test" depends="dist" description="Run the unit test suite.">
+    <mkdir dir="${test-results.dir}" />
+    <path id="test.path">
+      <dirset dir=".">
+        <include name="**/${classes.dir}/test" />
+      </dirset>
+      <fileset dir="${dist.dir}" includes="*.jar"/>
+      <path refid="base.path" />
+    </path>
+    <taskdef resource="testngtasks" classpathref="test.path"/>
+    <testng classpathref="test.path"
+            outputdir="${test-results.dir}"
+            haltonfailure="true">
+      <xmlfileset dir="." includes="testng.xml"/>
+    </testng>
+  </target>
+
+
+  <!-- Generates API documentation for all modules. -->
+  <target name="docs" description="Generates Javadoc API documentation for all modules.">
+    <mkdir dir="${api.dir}"/>
+    <javadoc destdir="${api.dir}"
+             windowtitle="Watchmaker Framework API">
+      <fileset dir="./maths/${java.dir}/main" defaultexcludes="yes">
+        <include name="uk/co/dandyer/**"/>
+      </fileset>
+      <fileset dir="./framework/${java.dir}/main" defaultexcludes="yes">
+        <include name="uk/co/dandyer/**"/>
+      </fileset>
+      <fileset dir="./examples/${java.dir}/main" defaultexcludes="yes">
+        <include name="uk/co/dandyer/**"/>
+      </fileset>
+    </javadoc>
+  </target>
+
+</project>
