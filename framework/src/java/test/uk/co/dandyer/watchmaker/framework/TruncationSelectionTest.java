@@ -15,9 +15,10 @@
 // ============================================================================
 package uk.co.dandyer.watchmaker.framework;
 
-import org.testng.annotations.Test;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.testng.annotations.Test;
 
 /**
  * Unit test for truncation selection strategy.  Ensures the
@@ -39,6 +40,7 @@ public class TruncationSelectionTest
         population.add(john);
         population.add(gary);
         population.add(mary);
+        Collections.sort(population, new CandidateFitnessComparator());
         List<String> selection = selector.select(population, 2, null);
         assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
         assert selection.contains(steve.getFirst()) : "Best candidate not selected.";

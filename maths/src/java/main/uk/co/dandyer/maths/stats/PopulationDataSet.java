@@ -13,22 +13,36 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.maths.random;
+package uk.co.dandyer.maths.stats;
 
 /**
- * Exception thrown by {@link uk.co.dandyer.maths.random.SeedGenerator} implementations when
- * they are unable to generate a new seed for an RNG.
+ * Utility class for calculating statistical measures for data
+ * sets that represent a finite population.
  * @author Daniel Dyer
  */
-public class SeedException extends Exception
+public final class PopulationDataSet extends AbstractDataSet
 {
-    public SeedException(String message)
+    public PopulationDataSet()
     {
-        super(message);
+        super();
     }
 
-    public SeedException(String message, Throwable cause)
+
+    public PopulationDataSet(double[] dataSet)
     {
-        super(message, cause);
+        super(dataSet);
+    }
+
+
+    public double getVariance()
+    {
+        double mean = getArithmeticMean();
+        double squaredDiffs = 0;
+        for (int i = 0; i < getSize(); i++)
+        {
+            double diff = mean - getValue(i);
+            squaredDiffs += (diff * diff);
+        }
+        return squaredDiffs / getSize();
     }
 }

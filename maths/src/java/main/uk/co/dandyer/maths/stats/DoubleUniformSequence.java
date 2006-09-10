@@ -13,22 +13,32 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.maths.random;
+package uk.co.dandyer.maths.stats;
+
+import java.util.Random;
+import uk.co.dandyer.maths.NumberSequence;
 
 /**
- * Exception thrown by {@link uk.co.dandyer.maths.random.SeedGenerator} implementations when
- * they are unable to generate a new seed for an RNG.
+ * Random sequence with values drawn from a uniform distribution.
  * @author Daniel Dyer
  */
-public class SeedException extends Exception
+public class DoubleUniformSequence implements NumberSequence<Double>
 {
-    public SeedException(String message)
+    private final Random generator;
+    private final double range;
+    private final double minimumValue;
+
+    public DoubleUniformSequence(Random generator,
+                                 double minimumValue,
+                                 double maximumValue)
     {
-        super(message);
+        this.generator = generator;
+        this.minimumValue = minimumValue;
+        this.range = maximumValue - minimumValue + 1;
     }
 
-    public SeedException(String message, Throwable cause)
+    public Double nextValue()
     {
-        super(message, cause);
+        return generator.nextDouble() * range + minimumValue;
     }
 }

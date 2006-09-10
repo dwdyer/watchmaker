@@ -29,8 +29,6 @@ import java.util.Random;
  */
 public class TruncationSelection implements SelectionStrategy
 {
-    private static final Comparator<Pair<?, Double>> FITNESS_COMPARATOR = new CandidateFitnessComparator();
-
     private final double selectionRatio;
 
     /**
@@ -52,10 +50,6 @@ public class TruncationSelection implements SelectionStrategy
                               int selectionSize,
                               Random rng)
     {
-        // Don't modify passed-in list, create a temporary one.
-        List<Pair<T, Double>> tempList = new ArrayList<Pair<T, Double>>(population);
-        // Sort and truncate.
-        Collections.sort(tempList, FITNESS_COMPARATOR);
         List<T> selection = new ArrayList<T>(selectionSize);
 
         int eligibleCount = (int) Math.round(selectionRatio * population.size());
@@ -66,7 +60,7 @@ public class TruncationSelection implements SelectionStrategy
             int count = Math.min(eligibleCount, selectionSize - selection.size());
             for (int i = 0; i < count; i++)
             {
-                selection.add(tempList.get(i).getFirst());
+                selection.add(population.get(i).getFirst());
             }
         } while (selection.size() < selectionSize);
         return selection;

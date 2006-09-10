@@ -13,25 +13,24 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.watchmaker.framework;
+package uk.co.dandyer.watchmaker.framework.operators;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.ArrayList;
-import java.lang.reflect.Array;
-import uk.co.dandyer.maths.random.RandomSequence;
+import uk.co.dandyer.maths.NumberSequence;
 
 /**
  * Cross-over with a configurable number of points (fixed or random) for
- * arrays of reference types.
+ * arrays of primitive floats.
  * @author Daniel Dyer
  */
-public class ObjectArrayCrossover extends AbstractCrossover<Object[]>
+public class FloatArrayCrossover extends AbstractCrossover<float[]>
 {
     /**
      * Default is single-point cross-over.
      */
-    public ObjectArrayCrossover()
+    public FloatArrayCrossover()
     {
         this(1);
     }
@@ -40,7 +39,7 @@ public class ObjectArrayCrossover extends AbstractCrossover<Object[]>
     /**
      * Cross-over with a fixed number of cross-over points.
      */
-    public ObjectArrayCrossover(int crossoverPoints)
+    public FloatArrayCrossover(int crossoverPoints)
     {
         super(crossoverPoints);
     }
@@ -49,28 +48,27 @@ public class ObjectArrayCrossover extends AbstractCrossover<Object[]>
     /**
      * Cross-over with a variable number of cross-over points.
      */
-    public ObjectArrayCrossover(RandomSequence<Integer> crossoverPointsVariable)
+    public FloatArrayCrossover(NumberSequence<Integer> crossoverPointsVariable)
     {
         super(crossoverPointsVariable);
     }
 
 
-    protected List<Object[]> reproduce(Object[] parent1,
-                                       Object[] parent2,
-                                       int numberOfCrossoverPoints,
-                                       Random rng)
+    protected List<float[]> reproduce(float[] parent1,
+                                      float[] parent2,
+                                      int numberOfCrossoverPoints,
+                                      Random rng)
     {
         if (parent1.length != parent2.length)
         {
             throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
         }
-        // Create the most specific-type arrays possible.
-        Object[] offspring1 = (Object[]) Array.newInstance(parent1.getClass().getComponentType(), parent1.length);
+        float[] offspring1 = new float[parent1.length];
         System.arraycopy(parent1, 0, offspring1, 0, parent1.length);
-        Object[] offspring2 = (Object[]) Array.newInstance(parent2.getClass().getComponentType(), parent2.length);
+        float[] offspring2 = new float[parent2.length];
         System.arraycopy(parent2, 0, offspring2, 0, parent2.length);
         // Apply as many cross-overs as required.
-        Object[] temp = new Object[parent1.length];
+        float[] temp = new float[parent1.length];
         for (int i = 0; i < numberOfCrossoverPoints; i++)
         {
             int crossoverIndex = rng.nextInt(parent1.length);
@@ -78,7 +76,7 @@ public class ObjectArrayCrossover extends AbstractCrossover<Object[]>
             System.arraycopy(offspring2, 0, offspring1, 0, crossoverIndex);
             System.arraycopy(temp, 0, offspring2, 0, crossoverIndex);
         }
-        List<Object[]> result = new ArrayList<Object[]>(2);
+        List<float[]> result = new ArrayList<float[]>(2);
         result.add(offspring1);
         result.add(offspring2);
         return result;

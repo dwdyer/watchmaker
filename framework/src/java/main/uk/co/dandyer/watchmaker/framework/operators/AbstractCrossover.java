@@ -13,24 +13,25 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.watchmaker.framework;
+package uk.co.dandyer.watchmaker.framework.operators;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Collection;
-import uk.co.dandyer.maths.random.RandomSequence;
-import uk.co.dandyer.maths.random.Constant;
+import uk.co.dandyer.maths.ConstantSequence;
+import uk.co.dandyer.maths.NumberSequence;
+import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
 
 /**
  * Generic base class for cross-over implementations.  Supports all
  * cross-over processes that operate on a pair of parent candidates.
  * @author Daniel Dyer
  */
-public abstract class AbstractCrossover<T> implements EvolutionaryProcess<T>
+public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
 {
-    private final RandomSequence<Integer> crossoverPointsVariable;
+    private final NumberSequence<Integer> crossoverPointsVariable;
 
     /**
      * @param crossoverPoints The constant number of cross-over points
@@ -38,7 +39,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryProcess<T>
      */
     protected AbstractCrossover(int crossoverPoints)
     {
-        this(new Constant<Integer>(crossoverPoints));
+        this(new ConstantSequence<Integer>(crossoverPoints));
     }
 
 
@@ -46,7 +47,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryProcess<T>
      * @param crossoverPointsVariable A random variable that provides a number
      * of cross-over points for each cross-over operation.
      */
-    protected AbstractCrossover(RandomSequence<Integer> crossoverPointsVariable)
+    protected AbstractCrossover(NumberSequence<Integer> crossoverPointsVariable)
     {
         this.crossoverPointsVariable = crossoverPointsVariable;
     }

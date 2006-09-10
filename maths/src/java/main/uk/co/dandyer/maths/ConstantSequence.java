@@ -13,22 +13,24 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.maths.random;
+package uk.co.dandyer.maths;
 
 /**
- * Exception thrown by {@link uk.co.dandyer.maths.random.SeedGenerator} implementations when
- * they are unable to generate a new seed for an RNG.
+ * Convenience implementation of {@link uk.co.dandyer.maths.NumberSequence} that always
+ * returns the same value.
  * @author Daniel Dyer
  */
-public class SeedException extends Exception
+public class ConstantSequence<T extends Number> implements NumberSequence<T>
 {
-    public SeedException(String message)
+    private final T constant;
+
+    public ConstantSequence(T constant)
     {
-        super(message);
+        this.constant = constant;
     }
 
-    public SeedException(String message, Throwable cause)
+    public T nextValue()
     {
-        super(message, cause);
+        return constant;
     }
 }

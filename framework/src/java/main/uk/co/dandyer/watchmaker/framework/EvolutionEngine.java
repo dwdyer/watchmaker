@@ -15,12 +15,13 @@
 // ============================================================================
 package uk.co.dandyer.watchmaker.framework;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
-import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.Comparator;
+import uk.co.dandyer.maths.stats.PopulationDataSet;
 
 /**
  * Generic evolutionary algorithm engine.
@@ -29,16 +30,18 @@ import java.util.Collections;
  */
 public class EvolutionEngine<T>
 {
-    private final Set<EvolutionObserver> observers = new HashSet<EvolutionObserver>();
+    private static final Comparator<Pair<?, Double>> FITNESS_COMPARATOR = new CandidateFitnessComparator();
+
+    private final List<EvolutionObserver<? super T>> observers = new LinkedList<EvolutionObserver<? super T>>();
     private final Random rng;
     private final CandidateFactory<? extends T> candidateFactory;
-    private final List<EvolutionaryProcess<? super T>> evolutionPipeline;
+    private final List<EvolutionaryOperator<? super T>> evolutionPipeline;
     private final FitnessEvaluator<? super T> fitnessEvaluator;
     private final SelectionStrategy selectionStrategy;
 
 
     public EvolutionEngine(CandidateFactory<? extends T> candidateFactory,
-                           List<EvolutionaryProcess<? super T>> evolutionPipeline,
+                           List<EvolutionaryOperator<? super T>> evolutionPipeline,
                            FitnessEvaluator<? super T> fitnessEvaluator,
                            SelectionStrategy selectionStrategy,
                            Random rng)
@@ -67,12 +70,7 @@ public class EvolutionEngine<T>
         for (int i = 1; i < generationCount; i++)
         {
             // Calculate the fitness scores for each member of the population.
-            List<Pair<T, Double>> evaluatedPopulation = new ArrayList<Pair<T, Double>>(population.size());
-            for (T candidate : population)
-            {
-                evaluatedPopulation.add(new Pair<T, Double>(candidate,
-                                                            fitnessEvaluator.getFitness(candidate)));
-            }
+            List<Pair<T, Double>> evaluatedPopulation = evaluatePopulation(population);
             // Then select candidates that will be operated on to create the next generation.
             population = selectionStrategy.select(evaluatedPopulation, populationSize, rng);
             // Shuffle the collection before applying each operation so that the
@@ -80,36 +78,84 @@ public class EvolutionEngine<T>
             // strategy.
             Collections.shuffle(population, rng);
             // Then apply each evolutionary transformation to the selection in turn.
-            for (EvolutionaryProcess<? super T> transform : evolutionPipeline)
+            for (EvolutionaryOperator<? super T> transform : evolutionPipeline)
             {
                 population = transform.apply(population, rng);
             }
             assert population.size() == populationSize : "Population size is not consistent.";
         }
 
-        // Return the best candidate from the final generation.
-        T fittest = null;
-        double bestFitness = 0;
-        for (T candidate : population)
-        {
-            double fitness = fitnessEvaluator.getFitness(candidate);
-            if (fitness > bestFitness)
-            {
-                fittest = candidate;
-                bestFitness = fitness;
-            }
-        }
-        return fittest;
+        // Return the fittest candidate from the final generation.
+        List<Pair<T, Double>> evaluatedPopulation = evaluatePopulation(population);
+        return evaluatedPopulation.get(0).getFirst();
     }
 
 
-    public void addEvolutionObserver(EvolutionObserver observer)
+    /**
+     * Takes a population, assigns a fitness score to each member and returns
+     * the members with their scores attached, sorted in descending order.
+     */
+    private List<Pair<T, Double>> evaluatePopulation(List<T> population)
+    {
+        List<Pair<T, Double>> evaluatedPopulation = new ArrayList<Pair<T, Double>>(population.size());
+        for (T candidate : population)
+        {
+            evaluatedPopulation.add(new Pair<T, Double>(candidate,
+                                                        fitnessEvaluator.getFitness(candidate)));
+        }
+        // Sort candidates in descending order according to fitness.
+        Collections.sort(evaluatedPopulation, FITNESS_COMPARATOR);
+        // Notify observers of the state of the population.
+        if (!observers.isEmpty()) // No point calculating stats for nobody.
+        {
+            notifyObservers(getPopulationData(evaluatedPopulation));
+        }
+        return evaluatedPopulation;
+    }
+
+
+    /**
+     * Gets data about the current population, including the fittest candidate
+     * and statistics about the population as a whole.
+     * @param evaluatedPopulation Population of candidate solutions with their
+     * associated fitness scores.
+     */
+    private PopulationData<T> getPopulationData(List<Pair<T, Double>> evaluatedPopulation)
+    {
+        double[] fitnesses = new double[evaluatedPopulation.size()];
+        int index = -1;
+        for (Pair<T, Double> candidate : evaluatedPopulation)
+        {
+            fitnesses[++index] = candidate.getSecond();
+        }
+        PopulationDataSet stats = new PopulationDataSet(fitnesses);
+        return new PopulationData<T>(evaluatedPopulation.get(0).getFirst(),
+                                     evaluatedPopulation.get(0).getSecond(),
+                                     stats.getArithmeticMean(),
+                                     stats.getStandardDeviation(),
+                                     stats.getSize());
+    }
+
+
+    /**
+     * Send the population data to all registered observers.
+     */
+    private void notifyObservers(PopulationData<T> data)
+    {
+        for (EvolutionObserver<? super T> observer : observers)
+        {
+            observer.populationUpdate(data);
+        }
+    }
+
+
+    public void addEvolutionObserver(EvolutionObserver<? super T> observer)
     {
         observers.add(observer);
     }
 
 
-    public void removeEvolutionObserver(EvolutionObserver observer)
+    public void removeEvolutionObserver(EvolutionObserver<? super T> observer)
     {
         observers.remove(observer);
     }

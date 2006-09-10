@@ -13,71 +13,69 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.watchmaker.framework;
+package uk.co.dandyer.watchmaker.framework.operators;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import uk.co.dandyer.maths.random.RandomSequence;
+import uk.co.dandyer.maths.NumberSequence;
 
 /**
- * Variable-point (fixed or random) cross-over for arbitrary lists.
+ * Variable-point (fixed or random) cross-over for String candidates.
  * @author Daniel Dyer
  */
-public class ListCrossover extends AbstractCrossover<List<?>>
+public class StringCrossover extends AbstractCrossover<String>
 {
     /**
      * Default is single-point cross-over.
      */
-    public ListCrossover()
+    public StringCrossover()
     {
         this(1);
     }
 
-
     /**
      * Cross-over with a fixed number of cross-over points.
      */
-    public ListCrossover(int crossoverPoints)
+    public StringCrossover(int crossoverPoints)
     {
         super(crossoverPoints);
     }
 
-
     /**
      * Cross-over with a variable number of cross-over points.
      */
-    public ListCrossover(RandomSequence<Integer> crossoverPointsVariable)
+    public StringCrossover(NumberSequence<Integer> crossoverPointsVariable)
     {
         super(crossoverPointsVariable);
     }
 
 
-    protected List<List<?>> reproduce(List<?> parent1,
-                                      List<?> parent2,
-                                      int numberOfCrossoverPoints,
-                                      Random rng)
+    protected List<String> reproduce(String parent1,
+                                     String parent2,
+                                     int numberOfCrossoverPoints,
+                                     Random rng)
     {
-        if (parent1.size() != parent2.size())
+        if (parent1.length() != parent2.length())
         {
             throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
         }
-        List<Object> offspring1 = new ArrayList<Object>(parent1); // Use a random-access list for performance.
-        List<Object> offspring2 = new ArrayList<Object>(parent2);
+        StringBuilder offspring1 = new StringBuilder(parent1);
+        StringBuilder offspring2 = new StringBuilder(parent2);
         // Apply as many cross-overs as required.
         for (int i = 0; i < numberOfCrossoverPoints; i++)
         {
-            int crossoverIndex = rng.nextInt(parent1.size());
+            int crossoverIndex = rng.nextInt(parent1.length());
             for (int j = 0; j < crossoverIndex; j++)
             {
-                Object temp = offspring1.get(j);
-                offspring1.set(j, offspring2.get(j));
-                offspring2.set(j, temp);
+                char temp = offspring1.charAt(j);
+                offspring1.setCharAt(j, offspring2.charAt(j));
+                offspring2.setCharAt(j, temp);
             }
         }
-        List<List<?>> result = new ArrayList<List<?>>(2);
-        result.add(offspring1);
-        result.add(offspring2);
+        List<String> result = new ArrayList<String>(2);
+        result.add(offspring1.toString());
+        result.add(offspring2.toString());
         return result;
     }
 }

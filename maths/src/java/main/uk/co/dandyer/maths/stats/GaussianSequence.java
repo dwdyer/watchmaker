@@ -13,22 +13,34 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.maths.random;
+package uk.co.dandyer.maths.stats;
+
+import java.util.Random;
+import uk.co.dandyer.maths.NumberSequence;
 
 /**
- * Exception thrown by {@link uk.co.dandyer.maths.random.SeedGenerator} implementations when
- * they are unable to generate a new seed for an RNG.
+ * Random sequence with values drawn from a continuous normal distribution.
  * @author Daniel Dyer
  */
-public class SeedException extends Exception
+public class GaussianSequence implements NumberSequence<Double>
 {
-    public SeedException(String message)
+    private final Random generator;
+    private final double mean;
+    private final double standardDeviation;
+
+
+    public GaussianSequence(double mean,
+                            double standardDeviation,
+                            Random generator)
     {
-        super(message);
+        this.generator = generator;
+        this.mean = mean;
+        this.standardDeviation = standardDeviation;
     }
 
-    public SeedException(String message, Throwable cause)
+
+    public Double nextValue()
     {
-        super(message, cause);
+        return generator.nextGaussian() * standardDeviation + mean;
     }
 }

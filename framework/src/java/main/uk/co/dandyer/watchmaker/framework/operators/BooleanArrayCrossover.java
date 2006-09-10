@@ -13,69 +13,72 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.watchmaker.framework;
+package uk.co.dandyer.watchmaker.framework.operators;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.ArrayList;
-import uk.co.dandyer.maths.random.RandomSequence;
+import uk.co.dandyer.maths.NumberSequence;
 
 /**
- * Variable-point (fixed or random) cross-over for String candidates.
+ * Cross-over with a configurable number of points (fixed or random) for
+ * arrays of primitive booleans.
  * @author Daniel Dyer
  */
-public class StringCrossover extends AbstractCrossover<String>
+public class BooleanArrayCrossover extends AbstractCrossover<boolean[]>
 {
     /**
      * Default is single-point cross-over.
      */
-    public StringCrossover()
+    public BooleanArrayCrossover()
     {
         this(1);
     }
 
+
     /**
      * Cross-over with a fixed number of cross-over points.
      */
-    public StringCrossover(int crossoverPoints)
+    public BooleanArrayCrossover(int crossoverPoints)
     {
         super(crossoverPoints);
     }
 
+
     /**
      * Cross-over with a variable number of cross-over points.
      */
-    public StringCrossover(RandomSequence<Integer> crossoverPointsVariable)
+    public BooleanArrayCrossover(NumberSequence<Integer> crossoverPointsVariable)
     {
         super(crossoverPointsVariable);
     }
 
-    
-    protected List<String> reproduce(String parent1,
-                                     String parent2,
-                                     int numberOfCrossoverPoints,
-                                     Random rng)
+
+    protected List<boolean[]> reproduce(boolean[] parent1,
+                                        boolean[] parent2,
+                                        int numberOfCrossoverPoints,
+                                        Random rng)
     {
-        if (parent1.length() != parent2.length())
+        if (parent1.length != parent2.length)
         {
             throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
         }
-        StringBuilder offspring1 = new StringBuilder(parent1);
-        StringBuilder offspring2 = new StringBuilder(parent2);
+        boolean[] offspring1 = new boolean[parent1.length];
+        System.arraycopy(parent1, 0, offspring1, 0, parent1.length);
+        boolean[] offspring2 = new boolean[parent2.length];
+        System.arraycopy(parent2, 0, offspring2, 0, parent2.length);
         // Apply as many cross-overs as required.
+        boolean[] temp = new boolean[parent1.length];
         for (int i = 0; i < numberOfCrossoverPoints; i++)
         {
-            int crossoverIndex = rng.nextInt(parent1.length());
-            for (int j = 0; j < crossoverIndex; j++)
-            {
-                char temp = offspring1.charAt(j);
-                offspring1.setCharAt(j, offspring2.charAt(j));
-                offspring2.setCharAt(j, temp);
-            }
+            int crossoverIndex = rng.nextInt(parent1.length);
+            System.arraycopy(offspring1, 0, temp, 0, crossoverIndex);
+            System.arraycopy(offspring2, 0, offspring1, 0, crossoverIndex);
+            System.arraycopy(temp, 0, offspring2, 0, crossoverIndex);
         }
-        List<String> result = new ArrayList<String>(2);
-        result.add(offspring1.toString());
-        result.add(offspring2.toString());
+        List<boolean[]> result = new ArrayList<boolean[]>(2);
+        result.add(offspring1);
+        result.add(offspring2);
         return result;
     }
 }

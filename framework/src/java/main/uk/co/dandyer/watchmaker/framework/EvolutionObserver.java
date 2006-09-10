@@ -16,8 +16,20 @@
 package uk.co.dandyer.watchmaker.framework;
 
 /**
+ * Call-back interface so that programs can monitor the state of a
+ * long-running evolutionary algorithm.
+ * @param <T> The type of entity that exists in the evolving population
+ * that is being observed.  This type can be bound to a super-type of the
+ * actual population type so as to allow a non-specific observer that can
+ * be re-used for different population types.
  * @author Daniel Dyer
  */
-public interface EvolutionObserver
+public interface EvolutionObserver<T>
 {
+    /**
+     * Invoked when the state of the population has changed (typically
+     * at the end of a generation).
+     * @param data
+     */
+    void populationUpdate(PopulationData<? extends T> data);
 }

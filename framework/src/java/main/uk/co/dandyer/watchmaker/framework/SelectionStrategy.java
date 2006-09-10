@@ -25,9 +25,9 @@ public interface SelectionStrategy
 {
     /**
      * Select the specified number of candidates from the population.
-     * Implementations should make no assumptions about the ordering of the
-     * population.  If a specific ordering is required the array must be
-     * sorted accordingly.
+     * Implementations can assume that the population is sorted in descending
+     * order according to fitness (so the fittest individual is the first item
+     * in the list).
      * It is an error to call this method with an empty or null population.
      */
     <T> List<T> select(List<Pair<T, Double>> population,

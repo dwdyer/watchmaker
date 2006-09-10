@@ -13,22 +13,13 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.maths.random;
+package uk.co.dandyer.maths;
 
 /**
- * Exception thrown by {@link uk.co.dandyer.maths.random.SeedGenerator} implementations when
- * they are unable to generate a new seed for an RNG.
+ * Interface for providing different types of sequences of numbers.
  * @author Daniel Dyer
  */
-public class SeedException extends Exception
+public interface NumberSequence<T extends Number>
 {
-    public SeedException(String message)
-    {
-        super(message);
-    }
-
-    public SeedException(String message, Throwable cause)
-    {
-        super(message, cause);
-    }
+    T nextValue();
 }
