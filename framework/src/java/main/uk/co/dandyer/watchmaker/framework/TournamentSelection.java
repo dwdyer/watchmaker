@@ -16,7 +16,6 @@
 package uk.co.dandyer.watchmaker.framework;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -69,6 +68,6 @@ public class TournamentSelection implements SelectionStrategy
                 selection.add(candidate2.getSecond() > candidate1.getSecond() ? candidate1.getFirst() : candidate2.getFirst());
             }
         }
-        return Collections.unmodifiableList(selection);
+        return selection;
     }
 }

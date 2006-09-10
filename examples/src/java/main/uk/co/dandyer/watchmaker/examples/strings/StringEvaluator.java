@@ -18,6 +18,8 @@ package uk.co.dandyer.watchmaker.examples.strings;
 import uk.co.dandyer.watchmaker.framework.FitnessEvaluator;
 
 /**
+ * Evaluates strings and assigns a fitness score based on how many characters
+ * match the equivalent positions in a given target string.
  * @author Daniel Dyer
  */
 public class StringEvaluator implements FitnessEvaluator<String>
@@ -33,11 +35,14 @@ public class StringEvaluator implements FitnessEvaluator<String>
 
     public double getFitness(String candidate)
     {
-        int cumulativeDiffs = 0;
+        int matches = 0;
         for (int i = 0; i < candidate.length(); i++)
         {
-            cumulativeDiffs += Math.abs(candidate.charAt(i) - targetString.charAt(i));
+            if (candidate.charAt(i) == targetString.charAt(i))
+            {
+                ++matches;
+            }
         }
-        return cumulativeDiffs;
+        return matches;
     }
 }

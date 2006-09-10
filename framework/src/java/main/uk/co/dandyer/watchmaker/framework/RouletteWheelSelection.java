@@ -17,7 +17,6 @@ package uk.co.dandyer.watchmaker.framework;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -69,6 +68,6 @@ public class RouletteWheelSelection implements SelectionStrategy
             }
             selection.add(population.get(index).getFirst());
         }
-        return Collections.unmodifiableList(selection);
+        return selection;
     }
 }

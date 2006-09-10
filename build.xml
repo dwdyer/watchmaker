@@ -166,12 +166,13 @@
     <compile.module module.name="examples">
       <moduleclasspath>
         <path location="./framework/${build.dir}/framework.jar" />
+        <path location="./maths/${build.dir}/maths.jar" />
       </moduleclasspath>
     </compile.module>
     <jar.module module.name="examples">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="framework.jar"/>
+          <attribute name="Class-Path" value="framework.jar maths.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>

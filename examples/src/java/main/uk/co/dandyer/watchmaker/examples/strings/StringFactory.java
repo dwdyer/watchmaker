@@ -15,20 +15,22 @@
 // ============================================================================
 package uk.co.dandyer.watchmaker.examples.strings;
 
-import uk.co.dandyer.watchmaker.framework.AbstractCandidateFactory;
 import java.util.Random;
+import uk.co.dandyer.watchmaker.framework.AbstractCandidateFactory;
 
 /**
+ * Generates random strings of a fixed length from a given alphabet.
  * @author Daniel Dyer
  */
 public class StringFactory extends AbstractCandidateFactory<String>
 {
-    private static final int ALPHABET_SIZE = 26;
-
+    private final char[] alphabet;
     private final int stringLength;
 
-    public StringFactory(int stringLength)
+    public StringFactory(char[] alphabet,
+                         int stringLength)
     {
+        this.alphabet = alphabet.clone();
         this.stringLength = stringLength;
     }
 
@@ -38,7 +40,7 @@ public class StringFactory extends AbstractCandidateFactory<String>
         char[] chars = new char[stringLength];
         for (int i = 0; i < stringLength; i++)
         {
-            chars[i] = (char) (rng.nextInt(ALPHABET_SIZE) + 'a');
+            chars[i] = alphabet[rng.nextInt(alphabet.length)];
         }
         return new String(chars);
     }
