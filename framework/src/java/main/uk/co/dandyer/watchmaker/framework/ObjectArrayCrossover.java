@@ -22,15 +22,16 @@ import java.lang.reflect.Array;
 import uk.co.dandyer.maths.random.RandomSequence;
 
 /**
- * Variable-point (fixed or random) cross-over for arrays of reference types.
+ * Cross-over with a configurable number of points (fixed or random) for
+ * arrays of reference types.
  * @author Daniel Dyer
  */
-public class ArrayCrossover extends AbstractCrossover<Object[]>
+public class ObjectArrayCrossover extends AbstractCrossover<Object[]>
 {
     /**
      * Default is single-point cross-over.
      */
-    public ArrayCrossover()
+    public ObjectArrayCrossover()
     {
         this(1);
     }
@@ -39,7 +40,7 @@ public class ArrayCrossover extends AbstractCrossover<Object[]>
     /**
      * Cross-over with a fixed number of cross-over points.
      */
-    public ArrayCrossover(int crossoverPoints)
+    public ObjectArrayCrossover(int crossoverPoints)
     {
         super(crossoverPoints);
     }
@@ -48,7 +49,7 @@ public class ArrayCrossover extends AbstractCrossover<Object[]>
     /**
      * Cross-over with a variable number of cross-over points.
      */
-    public ArrayCrossover(RandomSequence<Integer> crossoverPointsVariable)
+    public ObjectArrayCrossover(RandomSequence<Integer> crossoverPointsVariable)
     {
         super(crossoverPointsVariable);
     }

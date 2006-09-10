@@ -50,6 +50,7 @@ public class StringCrossover extends AbstractCrossover<String>
         super(crossoverPointsVariable);
     }
 
+    
     protected List<String> reproduce(String parent1,
                                      String parent2,
                                      int numberOfCrossoverPoints,
