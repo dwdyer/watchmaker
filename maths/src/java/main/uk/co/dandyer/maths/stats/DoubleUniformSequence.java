@@ -24,21 +24,21 @@ import uk.co.dandyer.maths.NumberSequence;
  */
 public class DoubleUniformSequence implements NumberSequence<Double>
 {
-    private final Random generator;
+    private final Random rng;
     private final double range;
     private final double minimumValue;
 
-    public DoubleUniformSequence(Random generator,
-                                 double minimumValue,
-                                 double maximumValue)
+    public DoubleUniformSequence(double minimumValue,
+                                 double maximumValue,
+                                 Random rng)
     {
-        this.generator = generator;
+        this.rng = rng;
         this.minimumValue = minimumValue;
         this.range = maximumValue - minimumValue + 1;
     }
 
     public Double nextValue()
     {
-        return generator.nextDouble() * range + minimumValue;
+        return rng.nextDouble() * range + minimumValue;
     }
 }

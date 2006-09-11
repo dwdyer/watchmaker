@@ -22,4 +22,13 @@ package uk.co.dandyer.watchmaker.framework;
 public interface FitnessEvaluator<T>
 {
     double getFitness(T candidate);
+
+    /**
+     * Returns true if a high fitness score means a fitter candidate
+     * or false if a low fitness score means a fitter candidate.  An
+     * example of a situation in which a low fitness score is good
+     * is when the fitness corresponds to a cost and the algorithm
+     * is attempting to minimise that cost.
+     */
+    boolean isHighFitnessBetter();
 }

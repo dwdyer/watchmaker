@@ -13,42 +13,32 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.watchmaker.examples.strings;
+package uk.co.dandyer.watchmaker.examples.travellingsalesman;
 
-import uk.co.dandyer.watchmaker.framework.FitnessEvaluator;
+import uk.co.dandyer.watchmaker.framework.AbstractCandidateFactory;
+import java.util.List;
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
- * Evaluates strings and assigns a fitness score based on how many characters
- * match the equivalent positions in a given target string.
+ * A route is a list of cities (each city is represented as a String containing
+ * its name) in the order that they must be visited.
  * @author Daniel Dyer
  */
-public class StringEvaluator implements FitnessEvaluator<String>
+public class RouteFactory extends AbstractCandidateFactory<List<String>>
 {
-    private final String targetString;
+    private final List<String> cities;
 
-
-    public StringEvaluator(String targetString)
+    public RouteFactory(List<String> cities)
     {
-        this.targetString = targetString;
+        this.cities = cities;
     }
 
-
-    public double getFitness(String candidate)
+    protected List<String> generateRandomCandidate(Random rng)
     {
-        int matches = 0;
-        for (int i = 0; i < candidate.length(); i++)
-        {
-            if (candidate.charAt(i) == targetString.charAt(i))
-            {
-                ++matches;
-            }
-        }
-        return matches;
-    }
-
-
-    public boolean isHighFitnessBetter()
-    {
-        return true;
+        List<String> candidate = new ArrayList<String>(cities);
+        Collections.shuffle(candidate, rng);
+        return candidate;
     }
 }

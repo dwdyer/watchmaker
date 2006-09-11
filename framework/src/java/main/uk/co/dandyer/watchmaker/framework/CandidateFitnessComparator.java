@@ -23,9 +23,40 @@ import java.util.Comparator;
  */
 public class CandidateFitnessComparator implements Comparator<Pair<?, Double>>
 {
+    private final boolean descending;
+
+    /**
+     * Creates a comparator that sorts the candidates in descending order
+     * of fitness.  Equivalent to <code>new CandidateFitnessComparator(true)</code>.
+     */
+    public CandidateFitnessComparator()
+    {
+        this(true);
+    }
+
+    
+    /**
+     * Creates a comparator that sorts the candidates in either ascending or descending
+     * order of fitness depending on the argument (false for ascending, true for
+     * descending).  Ascending order is used for evolutionary algorithms that attempt
+     * to minimise fitness scores and descending is used for algorithms that attempt
+     * to maximise fitness scores.
+     */
+    public CandidateFitnessComparator(boolean descending)
+    {
+        this.descending = descending;
+    }
+
+
     public int compare(Pair<?, Double> item1, Pair<?, Double> item2)
     {
-        // Descending order.
-        return item2.getSecond().compareTo(item1.getSecond());
+        if (descending)
+        {
+            return item2.getSecond().compareTo(item1.getSecond());
+        }
+        else
+        {
+            return item1.getSecond().compareTo(item2.getSecond());
+        }
     }
 }

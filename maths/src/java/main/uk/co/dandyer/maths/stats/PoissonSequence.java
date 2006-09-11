@@ -13,42 +13,40 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.watchmaker.examples.strings;
+package uk.co.dandyer.maths.stats;
 
-import uk.co.dandyer.watchmaker.framework.FitnessEvaluator;
+import uk.co.dandyer.maths.NumberSequence;
+import java.util.Random;
 
 /**
- * Evaluates strings and assigns a fitness score based on how many characters
- * match the equivalent positions in a given target string.
+ * Random sequence with values drawn from a Poisson distribution.
  * @author Daniel Dyer
  */
-public class StringEvaluator implements FitnessEvaluator<String>
+public class PoissonSequence implements NumberSequence<Integer>
 {
-    private final String targetString;
+    private final Random rng;
+    private final double mean;
 
-
-    public StringEvaluator(String targetString)
+    public PoissonSequence(double mean,
+                           Random rng)
     {
-        this.targetString = targetString;
+        this.mean = mean;
+        this.rng = rng;
     }
 
-
-    public double getFitness(String candidate)
+    public Integer nextValue()
     {
-        int matches = 0;
-        for (int i = 0; i < candidate.length(); i++)
+        int x = 0;
+        double t = 0.0;
+        while (true)
         {
-            if (candidate.charAt(i) == targetString.charAt(i))
+            t -= Math.log(rng.nextDouble()) / mean;
+            if (t > 1.0)
             {
-                ++matches;
+                break;
             }
+            x += 1;
         }
-        return matches;
-    }
-
-
-    public boolean isHighFitnessBetter()
-    {
-        return true;
+        return x;
     }
 }

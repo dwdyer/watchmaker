@@ -24,16 +24,16 @@ import uk.co.dandyer.maths.NumberSequence;
  */
 public class GaussianSequence implements NumberSequence<Double>
 {
-    private final Random generator;
+    private final Random rng;
     private final double mean;
     private final double standardDeviation;
 
 
     public GaussianSequence(double mean,
                             double standardDeviation,
-                            Random generator)
+                            Random rng)
     {
-        this.generator = generator;
+        this.rng = rng;
         this.mean = mean;
         this.standardDeviation = standardDeviation;
     }
@@ -41,6 +41,6 @@ public class GaussianSequence implements NumberSequence<Double>
 
     public Double nextValue()
     {
-        return generator.nextGaussian() * standardDeviation + mean;
+        return rng.nextGaussian() * standardDeviation + mean;
     }
 }

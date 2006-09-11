@@ -30,15 +30,13 @@ import uk.co.dandyer.maths.stats.PopulationDataSet;
  */
 public class EvolutionEngine<T>
 {
-    private static final Comparator<Pair<?, Double>> FITNESS_COMPARATOR = new CandidateFitnessComparator();
-
     private final List<EvolutionObserver<? super T>> observers = new LinkedList<EvolutionObserver<? super T>>();
     private final Random rng;
     private final CandidateFactory<? extends T> candidateFactory;
     private final List<EvolutionaryOperator<? super T>> evolutionPipeline;
     private final FitnessEvaluator<? super T> fitnessEvaluator;
     private final SelectionStrategy selectionStrategy;
-
+    private final Comparator<Pair<?, Double>> fitnessComparator;
 
     public EvolutionEngine(CandidateFactory<? extends T> candidateFactory,
                            List<EvolutionaryOperator<? super T>> evolutionPipeline,
@@ -50,6 +48,7 @@ public class EvolutionEngine<T>
         this.evolutionPipeline = evolutionPipeline;
         this.fitnessEvaluator = fitnessEvaluator;
         this.selectionStrategy = selectionStrategy;
+        this.fitnessComparator = new CandidateFitnessComparator(fitnessEvaluator.isHighFitnessBetter());
         this.rng = rng;
     }
 
@@ -136,7 +135,7 @@ public class EvolutionEngine<T>
                                                         fitnessEvaluator.getFitness(candidate)));
         }
         // Sort candidates in descending order according to fitness.
-        Collections.sort(evaluatedPopulation, FITNESS_COMPARATOR);
+        Collections.sort(evaluatedPopulation, fitnessComparator);
         // Notify observers of the state of the population.
         if (!observers.isEmpty()) // No point calculating stats for nobody.
         {

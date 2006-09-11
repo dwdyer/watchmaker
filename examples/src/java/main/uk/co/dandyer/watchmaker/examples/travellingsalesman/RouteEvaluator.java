@@ -13,42 +13,38 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.watchmaker.examples.strings;
+package uk.co.dandyer.watchmaker.examples.travellingsalesman;
 
 import uk.co.dandyer.watchmaker.framework.FitnessEvaluator;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Evaluates strings and assigns a fitness score based on how many characters
- * match the equivalent positions in a given target string.
+ * The fitness score of a route is the total distance (in km).
  * @author Daniel Dyer
  */
-public class StringEvaluator implements FitnessEvaluator<String>
+public class RouteEvaluator implements FitnessEvaluator<List<String>>
 {
-    private final String targetString;
+    private final Map<String, Map<String, Integer>> distances;
 
-
-    public StringEvaluator(String targetString)
+    public RouteEvaluator(Map<String, Map<String, Integer>> distances)
     {
-        this.targetString = targetString;
+        this.distances = distances;
     }
 
-
-    public double getFitness(String candidate)
+    public double getFitness(List<String> candidate)
     {
-        int matches = 0;
-        for (int i = 0; i < candidate.length(); i++)
+        int totalDistance = 0;
+        for (int i = 0; i < candidate.size(); i++)
         {
-            if (candidate.charAt(i) == targetString.charAt(i))
-            {
-                ++matches;
-            }
+            int nextIndex = i < candidate.size() - 1 ? i + 1 : 0;
+            totalDistance += distances.get(candidate.get(i)).get(candidate.get(nextIndex));
         }
-        return matches;
+        return totalDistance;
     }
-
 
     public boolean isHighFitnessBetter()
     {
-        return true;
+        return false;
     }
 }
