@@ -312,8 +312,8 @@ public class TravellingSalesmanExample
                                                                                  new TruncationSelection(0.5),
                                                                                  rng);
         engine.addEvolutionObserver(new EvolutionLogger());
-        engine.evolve(200, // 100 individuals in the population.
-                      100); // 200 generations.
+        engine.evolve(500, // 500 individuals in the population.
+                      100); // 100 generations.
     }
 
 

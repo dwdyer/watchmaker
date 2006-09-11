@@ -36,7 +36,8 @@ import java.util.Random;
  * will always seed from an array of bytes.  I don't pretend to know the
  * meanings of the magic numbers or how it works, it just does.</p>
  *
- * @author Daniel Dyer
+ * @author Daniel Dyer (ported from the original C version written by
+ * Makoto Matsumoto and Takuji Nishimura)
  */
 public class MersenneTwisterRNG extends Random implements RepeatableRNG
 {
