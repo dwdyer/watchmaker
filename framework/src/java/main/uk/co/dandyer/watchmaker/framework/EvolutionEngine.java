@@ -204,7 +204,7 @@ public class EvolutionEngine<T>
 
     /**
      * Adds a listener to receive status updates on the evolution progress.
-     * @see #removeEvolutionObserver(EvolutionObserver<? super T>)
+     * @see #removeEvolutionObserver(EvolutionObserver)
      */
     public void addEvolutionObserver(EvolutionObserver<? super T> observer)
     {
@@ -214,7 +214,7 @@ public class EvolutionEngine<T>
 
     /**
      * Removes an evolution progress listener.
-     * @see #addEvolutionObserver(EvolutionObserver<? super T>)
+     * @see #addEvolutionObserver(EvolutionObserver)
      */
     public void removeEvolutionObserver(EvolutionObserver<? super T> observer)
     {

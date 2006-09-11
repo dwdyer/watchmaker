@@ -217,6 +217,8 @@
   <target name="docs" description="Generates Javadoc API documentation for all modules.">
     <mkdir dir="${api.dir}"/>
     <javadoc destdir="${api.dir}"
+             doctitle="The Watchmaker Framework for Evolutionary Algorithms"
+             header="Watchmaker Framework API"
              windowtitle="Watchmaker Framework API">
       <fileset dir="./maths/${java.dir}/main" defaultexcludes="yes">
         <include name="uk/co/dandyer/**"/>
@@ -227,6 +229,10 @@
       <fileset dir="./examples/${java.dir}/main" defaultexcludes="yes">
         <include name="uk/co/dandyer/**"/>
       </fileset>
+      <group title="Evolution Framework" packages="uk.co.dandyer.watchmaker.framework:uk.co.dandyer.watchmaker.framework.*"/>
+      <group title="Maths Library" packages="uk.co.dandyer.maths:uk.co.dandyer.maths.*"/>
+      <group title="Example Applications" packages="uk.co.dandyer.watchmaker.examples.*"/>
+      <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
     </javadoc>
   </target>
 

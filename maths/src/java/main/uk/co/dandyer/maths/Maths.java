@@ -3,7 +3,7 @@ package uk.co.dandyer.maths;
 import java.math.BigInteger;
 
 /**
- * Maths operations not provided by java.lang.Math.
+ * Maths operations not provided by {@link java.lang.Math}.
  * @author Daniel Dyer
  */
 public final class Maths
