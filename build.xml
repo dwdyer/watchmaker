@@ -77,7 +77,6 @@
           <path refid="base.path"/>
         </classpath>
         <compilerarg value="-Xlint:unchecked" />
-        <exclude name="**/package-info.java" />
       </javac>
     </sequential>
   </macrodef>

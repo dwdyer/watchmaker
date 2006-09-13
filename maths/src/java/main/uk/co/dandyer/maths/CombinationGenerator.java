@@ -109,7 +109,7 @@ public class CombinationGenerator<T>
      * Mathematics and Its Applications, 2nd edition (NY: McGraw-Hill, 1991), p. 286.
      */
     @SuppressWarnings("unchecked")
-    public T[] nextCombination()
+    public T[] next()
     {
         if (remainingCombinations < totalCombinations)
         {

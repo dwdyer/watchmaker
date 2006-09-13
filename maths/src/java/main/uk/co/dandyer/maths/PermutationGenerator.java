@@ -93,7 +93,7 @@ public class PermutationGenerator<T>
      * Generate the next permutation.  The algorithm is from Kenneth H. Rosen, Discrete
      * Mathematics and Its Applications, 2nd edition (NY: McGraw-Hill, 1991), p. 284)
      */
-    public T[] getNext()
+    public T[] next()
     {
         if (remainingPermutations < totalPermutations)
         {
