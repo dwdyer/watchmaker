@@ -13,27 +13,30 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.watchmaker.framework;
+package uk.co.dandyer.watchmaker.framework.selection;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import org.testng.annotations.Test;
+import uk.co.dandyer.watchmaker.framework.CandidateFitnessComparator;
+import uk.co.dandyer.watchmaker.framework.Pair;
+import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 
 /**
- * Unit test for tournament selection strategy.  We cannot easily test
+ * Unit test for roulette selection strategy.  We cannot easily test
  * that the correct candidates are returned because of the random aspect
  * of the selection, but we can at least make sure the right number of
  * candidates are selected.
  * @author Daniel Dyer
  */
-public class TournamentSelectionTest
+public class RouletteWheelSelectionTest
 {
     @Test
     public void testSelection()
     {
-        SelectionStrategy selector = new TournamentSelection(0.7d);
+        SelectionStrategy selector = new RouletteWheelSelection();
         List<Pair<String, Double>> population = new ArrayList<Pair<String, Double>>(4);
         Pair<String, Double> steve = new Pair<String, Double>("Steve", 10.0);
         Pair<String, Double> john = new Pair<String, Double>("John", 8.4);

@@ -13,13 +13,15 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.watchmaker.framework;
+package uk.co.dandyer.watchmaker.framework.selection;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.testng.annotations.Test;
 import uk.co.dandyer.maths.random.MersenneTwisterRNG;
+import uk.co.dandyer.watchmaker.framework.Pair;
+import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 
 /**
  * @author Daniel Dyer

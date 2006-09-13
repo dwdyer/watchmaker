@@ -206,7 +206,8 @@
     <taskdef resource="testngtasks" classpathref="test.path"/>
     <testng classpathref="test.path"
             outputdir="${test-results.dir}"
-            haltonfailure="true">
+            haltonfailure="true"
+            reporter="uk.co.dandyer.reportng.HTMLReporter">
       <xmlfileset dir="." includes="testng.xml"/>
     </testng>
   </target>

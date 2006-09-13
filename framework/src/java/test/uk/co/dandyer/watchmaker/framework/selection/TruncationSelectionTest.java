@@ -13,27 +13,27 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package uk.co.dandyer.watchmaker.framework;
+package uk.co.dandyer.watchmaker.framework.selection;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
+import uk.co.dandyer.watchmaker.framework.CandidateFitnessComparator;
+import uk.co.dandyer.watchmaker.framework.Pair;
+import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 
 /**
- * Unit test for roulette selection strategy.  We cannot easily test
- * that the correct candidates are returned because of the random aspect
- * of the selection, but we can at least make sure the right number of
- * candidates are selected.
+ * Unit test for truncation selection strategy.  Ensures the
+ * correct candidates are selected.
  * @author Daniel Dyer
  */
-public class RouletteWheelSelectionTest
+public class TruncationSelectionTest
 {
     @Test
     public void testSelection()
     {
-        SelectionStrategy selector = new RouletteWheelSelection();
+        SelectionStrategy selector = new TruncationSelection(0.5d);
         List<Pair<String, Double>> population = new ArrayList<Pair<String, Double>>(4);
         Pair<String, Double> steve = new Pair<String, Double>("Steve", 10.0);
         Pair<String, Double> john = new Pair<String, Double>("John", 8.4);
@@ -44,7 +44,9 @@ public class RouletteWheelSelectionTest
         population.add(gary);
         population.add(mary);
         Collections.sort(population, new CandidateFitnessComparator());
-        List<String> selection = selector.select(population, 2, new Random());
+        List<String> selection = selector.select(population, 2, null);
         assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
+        assert selection.contains(steve.getFirst()) : "Best candidate not selected.";
+        assert selection.contains(mary.getFirst()) : "Second best candidate not selected.";
     }
 }

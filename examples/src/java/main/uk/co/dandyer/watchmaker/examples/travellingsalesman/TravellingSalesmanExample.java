@@ -27,7 +27,7 @@ import uk.co.dandyer.watchmaker.framework.EvolutionEngine;
 import uk.co.dandyer.watchmaker.framework.EvolutionObserver;
 import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
 import uk.co.dandyer.watchmaker.framework.PopulationData;
-import uk.co.dandyer.watchmaker.framework.TruncationSelection;
+import uk.co.dandyer.watchmaker.framework.selection.TruncationSelection;
 import uk.co.dandyer.watchmaker.framework.operators.ListOrderMutation;
 
 /**

@@ -19,7 +19,7 @@ import uk.co.dandyer.watchmaker.framework.EvolutionObserver;
 import uk.co.dandyer.watchmaker.framework.PopulationData;
 import uk.co.dandyer.watchmaker.framework.EvolutionEngine;
 import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
-import uk.co.dandyer.watchmaker.framework.RouletteWheelSelection;
+import uk.co.dandyer.watchmaker.framework.selection.RouletteWheelSelection;
 import uk.co.dandyer.watchmaker.framework.operators.StringMutation;
 import uk.co.dandyer.watchmaker.framework.operators.StringCrossover;
 import uk.co.dandyer.maths.random.MersenneTwisterRNG;
