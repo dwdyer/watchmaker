@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Iterator;
 import uk.co.dandyer.maths.stats.PopulationDataSet;
 
 /**
@@ -38,6 +39,8 @@ public class EvolutionEngine<T>
     private final SelectionStrategy selectionStrategy;
     private final Comparator<Pair<?, Double>> fitnessComparator;
 
+    private double eliteRatio = 0.0d;
+
     public EvolutionEngine(CandidateFactory<? extends T> candidateFactory,
                            List<EvolutionaryOperator<? super T>> evolutionPipeline,
                            FitnessEvaluator<? super T> fitnessEvaluator,
@@ -54,11 +57,50 @@ public class EvolutionEngine<T>
 
 
     /**
+     * <p>Returns the ratio of the elite to the total population.  This parameter is used
+     * to implement elitism in selection.  In elitism, a propotion of the population with
+     * the best fitness scores are preserved unchanged in the subsequent generation.
+     * Candidate solutions that are preserved unchanged through elitism remain eligible
+     * for selection for breeding the remainder of the next generation.</p>
+     *
+     * <p>The size of the elite sub-set depends on the elite ratio, which has a value greater
+     * than or equal to zero (no elitism) and less than 1 (no evolution).  The default value
+     * is zero.</p>
+     */
+    public double getEliteRatio()
+    {
+        return eliteRatio;
+    }
+
+
+    /**
+     * <p>Configures the ratio of the elite to the total population.  This parameter is used
+     * to implement elitism in selection.  In elitism, a propotion of the population with
+     * the best fitness scores are preserved unchanged in the subsequent generation.
+     * Candidate solutions that are preserved unchanged through elitism remain eligible
+     * for selection for breeding the remainder of the next generation.</p>
+     *
+     * <p>The size of the elite sub-set depends on the elite ratio, which has a value greater
+     * than or equal to zero (no elitism) and less than 1 (no evolution).  The default value
+     * is zero.</p>
+     */
+    public void setEliteRatio(double eliteRatio)
+    {
+        if (eliteRatio < 0 || eliteRatio >= 1)
+        {
+            throw new IllegalArgumentException("Elite ratio must be non-negative and less than 1.");
+        }
+        this.eliteRatio = eliteRatio;
+    }
+
+
+    /**
      * @param populationSize The number of candidate solutions present in the population
      * at any point in time.
      * @param generationCount The number of iterations to perform (including the
-     * creation and evaluation of the initial population).
-     * @return The best solution found by evolutionary process.
+     * creation and evaluation of the initial population, which counts as the first
+     * generation).
+     * @return The best solution found by the evolutionary process.
      * @see #evolve(int, double, long)
      */
     public T evolve(int populationSize,
@@ -151,8 +193,21 @@ public class EvolutionEngine<T>
      */
     private List<T> createNextGeneration(List<Pair<T, Double>> evaluatedPopulation)
     {
-        // Then select candidates that will be operated on to create the next generation.
-        List<T> population = selectionStrategy.select(evaluatedPopulation, evaluatedPopulation.size(), rng);
+        List<T> population = new ArrayList<T>(evaluatedPopulation.size());
+
+        // First perform any elitist selection.
+        int eliteCount = (int) Math.round(evaluatedPopulation.size() * eliteRatio);
+        List<T> elite = new ArrayList<T>(eliteCount);
+        Iterator<Pair<T, Double>> iterator = evaluatedPopulation.iterator();
+        while (population.size() < eliteCount)
+        {
+            elite.add(iterator.next().getFirst());
+        }
+        // Then select candidates that will be operated on to create the evolved
+        // portion of the next generation.
+        population.addAll(selectionStrategy.select(evaluatedPopulation,
+                                                   evaluatedPopulation.size() - eliteCount,
+                                                   rng));
         // Shuffle the collection before applying each operation so that the
         // evolution is not influenced by any ordering artifacts of the selection
         // strategy.
@@ -162,6 +217,8 @@ public class EvolutionEngine<T>
         {
             population = transform.apply(population, rng);
         }
+        // When the evolution is finished, add the elite to the population.
+        population.addAll(elite);
         assert population.size() == evaluatedPopulation.size() : "Population size is not consistent.";
         return population;
     }
