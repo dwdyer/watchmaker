@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 import uk.co.dandyer.watchmaker.framework.Pair;
 
 /**
@@ -37,25 +36,24 @@ import uk.co.dandyer.watchmaker.framework.Pair;
  *
  * @author Daniel Dyer
  */
-public class RouletteWheelSelection implements SelectionStrategy
+public class RouletteWheelSelection extends FitnessProportionateSelection
 {
-    public <T> List<T> select(List<Pair<T, Double>> population,
-                              int selectionSize,
-                              Random rng)
+    protected <T> List<T> fpSelect(List<Pair<T, Double>> normalisedPopulation,
+                                   int selectionSize,
+                                   Random rng)
     {
-        assert !population.isEmpty() : "Cannot select from an empty population.";
-
-        // Record the cumulative fitness scores.  It doesn't matter that the population is not
-        // sorted.  We will use these cumulative scores to work out an index into the population.
-        // The cumulative array itself is implicitly sorted since each element must be greater than
-        // the previous one.  The numerical difference between an element and the previous one is
-        // directly proportional to the probability of the corresponding candidate in the population
+        // Record the cumulative fitness scores.  It doesn't matter whether the
+        // population is sorted or not.  We will use these cumulative scores to work out
+        // an index into the population.  The cumulative array itself is implicitly
+        // sorted since each element must be greater than the previous one.  The
+        // numerical difference between an element and the previous one is directly
+        // proportional to the probability of the corresponding candidate in the population
         // being selected.
-        double[] cumulativeFitnesses = new double[population.size()];
-        cumulativeFitnesses[0] = population.get(0).getSecond();
-        for (int i = 1; i < population.size(); i++)
+        double[] cumulativeFitnesses = new double[normalisedPopulation.size()];
+        cumulativeFitnesses[0] = normalisedPopulation.get(0).getSecond();
+        for (int i = 1; i < normalisedPopulation.size(); i++)
         {
-            cumulativeFitnesses[i] = cumulativeFitnesses[i - 1] + population.get(i).getSecond();
+            cumulativeFitnesses[i] = cumulativeFitnesses[i - 1] + normalisedPopulation.get(i).getSecond();
         }
 
         List<T> selection = new ArrayList<T>(selectionSize);
@@ -68,7 +66,7 @@ public class RouletteWheelSelection implements SelectionStrategy
                 // Convert negative insertion point to array index.
                 index = Math.abs(index + 1);
             }
-            selection.add(population.get(index).getFirst());
+            selection.add(normalisedPopulation.get(index).getFirst());
         }
         return selection;
     }

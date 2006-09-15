@@ -51,7 +51,7 @@ public class EvolutionEngine<T>
         this.evolutionPipeline = evolutionPipeline;
         this.fitnessEvaluator = fitnessEvaluator;
         this.selectionStrategy = selectionStrategy;
-        this.fitnessComparator = new CandidateFitnessComparator(fitnessEvaluator.isHighFitnessBetter());
+        this.fitnessComparator = new CandidateFitnessComparator(fitnessEvaluator.isFitnessNormalised());
         this.rng = rng;
     }
 

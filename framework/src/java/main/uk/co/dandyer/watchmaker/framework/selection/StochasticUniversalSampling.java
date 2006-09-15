@@ -18,26 +18,23 @@ package uk.co.dandyer.watchmaker.framework.selection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 import uk.co.dandyer.watchmaker.framework.Pair;
 
 /**
- * An alternative to {@link uk.co.dandyer.watchmaker.framework.selection.RouletteWheelSelection} as a fitness-proportionate selection
- * strategy.  Ensures that the frequency of selection for each candidate is consistent
- * with its expected frequency of selection.
+ * An alternative to {@link uk.co.dandyer.watchmaker.framework.selection.RouletteWheelSelection}
+ * as a fitness-proportionate selection strategy.  Ensures that the frequency of selection for
+ * each candidate is consistent with its expected frequency of selection.
  * @author Daniel Dyer
  */
-public class StochasticUniversalSampling implements SelectionStrategy
+public class StochasticUniversalSampling extends FitnessProportionateSelection
 {
-    public <T> List<T> select(List<Pair<T, Double>> population,
-                              int selectionSize,
-                              Random rng)
+    protected <T> List<T> fpSelect(List<Pair<T, Double>> normalisedPopulation,
+                                   int selectionSize,
+                                   Random rng)
     {
-        assert !population.isEmpty() : "Cannot select from an empty population.";
-
         // Calculate the sum of all fitness values.
         double aggregateFitness = 0;
-        for (Pair<T, Double> candidate : population)
+        for (Pair<T, Double> candidate : normalisedPopulation)
         {
             aggregateFitness += candidate.getSecond();
         }
@@ -47,7 +44,7 @@ public class StochasticUniversalSampling implements SelectionStrategy
         double startOffset = rng.nextDouble();
         double cumulativeExpectation = 0;
         int index = 0;
-        for (Pair<T, Double> candidate : population)
+        for (Pair<T, Double> candidate : normalisedPopulation)
         {
             // Calculate the number of times this candidate is expected to
             // be selected on average and add it to the cumulative total
@@ -63,7 +60,6 @@ public class StochasticUniversalSampling implements SelectionStrategy
                 index++;
             }
         }
-        assert selection.size() == selectionSize : "Wrong number of candidates selected.";
         return selection;
     }
 }

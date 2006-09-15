@@ -43,7 +43,7 @@ public class RouteEvaluator implements FitnessEvaluator<List<String>>
         return totalDistance;
     }
 
-    public boolean isHighFitnessBetter()
+    public boolean isFitnessNormalised()
     {
         return false;
     }

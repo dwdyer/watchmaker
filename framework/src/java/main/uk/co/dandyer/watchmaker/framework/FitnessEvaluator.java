@@ -21,14 +21,28 @@ package uk.co.dandyer.watchmaker.framework;
  */
 public interface FitnessEvaluator<T>
 {
+    /**
+     * Calculates a fitness score for the given candidate.  Whether
+     * a higher score indicates a fitter candidate or not depends on
+     * whether the fitness scores are normalised (@see #isFitnessNormalised).
+     * @param candidate
+     */
     double getFitness(T candidate);
 
     /**
-     * Returns true if a high fitness score means a fitter candidate
-     * or false if a low fitness score means a fitter candidate.  An
-     * example of a situation in which a low fitness score is good
+     * <p>Specifies whether this evaluator generates normalised
+     * (descending) fitness scores or not.</p>
+     * <p>Normalised fitness scores are those in which the fittest
+     * individual in a population has the highest fitness value.  In this
+     * case the algorithm is attempting to maximise fitness scores.
+     * In contrast, de-normalised fitness evaluation results in fitter
+     * individuals being assigned lower scores than weaker individuals.
+     * In this case the algorithm is attempting to minimise fitness scores.</p>
+     * <p>An example of a situation in which a low fitness score is good
      * is when the fitness corresponds to a cost and the algorithm
-     * is attempting to minimise that cost.
+     * is attempting to minimise that cost.</p>
+     * @return True if a high fitness score means a fitter candidate
+     * or false if a low fitness score means a fitter candidate.
      */
-    boolean isHighFitnessBetter();
+    boolean isFitnessNormalised();
 }
