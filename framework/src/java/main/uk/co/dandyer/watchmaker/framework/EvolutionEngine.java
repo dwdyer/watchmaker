@@ -195,7 +195,7 @@ public class EvolutionEngine<T>
         int eliteCount = (int) Math.round(evaluatedPopulation.size() * eliteRatio);
         List<T> elite = new ArrayList<T>(eliteCount);
         Iterator<Pair<T, Double>> iterator = evaluatedPopulation.iterator();
-        while (population.size() < eliteCount)
+        while (elite.size() < eliteCount)
         {
             elite.add(iterator.next().getFirst());
         }

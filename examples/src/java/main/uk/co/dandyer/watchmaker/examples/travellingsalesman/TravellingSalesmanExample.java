@@ -27,8 +27,8 @@ import uk.co.dandyer.watchmaker.framework.EvolutionEngine;
 import uk.co.dandyer.watchmaker.framework.EvolutionObserver;
 import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
 import uk.co.dandyer.watchmaker.framework.PopulationData;
-import uk.co.dandyer.watchmaker.framework.selection.TruncationSelection;
 import uk.co.dandyer.watchmaker.framework.operators.ListOrderMutation;
+import uk.co.dandyer.watchmaker.framework.selection.RankSelection;
 
 /**
  * @author Daniel Dyer
@@ -305,15 +305,17 @@ public class TravellingSalesmanExample
     {
         Random rng = new MersenneTwisterRNG();
         List<EvolutionaryOperator<? super List<String>>> pipeline = new ArrayList<EvolutionaryOperator<? super List<String>>>(2);
-        pipeline.add(new ListOrderMutation(new PoissonSequence(1, rng)));
+        pipeline.add(new ListOrderMutation(new PoissonSequence(1.5, rng),
+                                           new PoissonSequence(1.5, rng)));
         EvolutionEngine<List<String>> engine = new EvolutionEngine<List<String>>(new RouteFactory(new LinkedList<String>(DISTANCES.keySet())),
                                                                                  pipeline,
                                                                                  new RouteEvaluator(DISTANCES),
-                                                                                 new TruncationSelection(0.5),
+                                                                                 new RankSelection(),
                                                                                  rng);
+        engine.setEliteRatio(0.01d); // Preserve the top 1% of each generation.
         engine.addEvolutionObserver(new EvolutionLogger());
-        engine.evolve(500, // 500 individuals in the population.
-                      100); // 100 generations.
+        engine.evolve(300, // 300 individuals in the population.
+                      100); // 50 generations.
     }
 
 

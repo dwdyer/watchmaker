@@ -45,7 +45,7 @@ public class PoissonSequence implements NumberSequence<Integer>
             {
                 break;
             }
-            x += 1;
+            ++x;
         }
         return x;
     }

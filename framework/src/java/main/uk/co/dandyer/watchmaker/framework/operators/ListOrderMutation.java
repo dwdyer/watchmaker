@@ -16,9 +16,9 @@
 package uk.co.dandyer.watchmaker.framework.operators;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.Collections;
 import uk.co.dandyer.maths.ConstantSequence;
 import uk.co.dandyer.maths.NumberSequence;
 import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
@@ -36,32 +36,43 @@ import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
 public class ListOrderMutation implements EvolutionaryOperator<List<?>>
 {
     private final NumberSequence<Integer> mutationCountVariable;
+    private final NumberSequence<Integer> mutationAmountVariable;
 
     /**
      * Default is one mutation per candidate.
      */
     public ListOrderMutation()
     {
-        this(1);
+        this(1, 1);
     }
 
     /**
      * @param mutationCount The constant number of mutations
      * to apply to each individual in the population.
+     * @param mutationAmount The constant number of positions by
+     * which a list element will be displaced as a result of mutation.
      */
-    public ListOrderMutation(int mutationCount)
+    public ListOrderMutation(int mutationCount, int mutationAmount)
     {
-        this(new ConstantSequence<Integer>(mutationCount));
+        this.mutationCountVariable =  new ConstantSequence<Integer>(mutationCount);
+        this.mutationAmountVariable = new ConstantSequence<Integer>(mutationAmount);
     }
 
 
     /**
-     * @param mutationCountVariable A random variable that provides a number
+     * Typically the mutation count will be from a Poisson distribution.
+     * The mutation amount can be from any discrete probability distribution
+     * and can include negative values.
+     * @param mutationCount A random variable that provides a number
      * of mutations that will be applied to each individual.
+     * @param mutationCount A random variable that provides a number
+     * of positions by which to displace an element when mutating.
      */
-    public ListOrderMutation(NumberSequence<Integer> mutationCountVariable)
+    public ListOrderMutation(NumberSequence<Integer> mutationCount,
+                             NumberSequence<Integer> mutationAmount)
     {
-        this.mutationCountVariable = mutationCountVariable;
+        this.mutationCountVariable = mutationCount;
+        this.mutationAmountVariable = mutationAmount;
     }
 
 
@@ -75,11 +86,16 @@ public class ListOrderMutation implements EvolutionaryOperator<List<?>>
             int mutationCount = Math.abs(mutationCountVariable.nextValue());
             for (int i = 0; i < mutationCount; i++)
             {
-                // Swap a random element with the element after it in the list.
-                int index = rng.nextInt(newCandidate.size());
-                Collections.swap(newCandidate,
-                                 index,
-                                 index < newCandidate.size() - 1 ? index + 1 : 0);
+                int fromIndex = rng.nextInt(newCandidate.size());
+                int mutationAmount = mutationAmountVariable.nextValue();
+                int toIndex = (fromIndex + mutationAmount) % newCandidate.size();
+                if (toIndex < 0)
+                {
+                    toIndex += newCandidate.size();
+                }
+                // Swap the randomly selected element with the one that is the
+                // specified displacement distance away.
+                Collections.swap(newCandidate, fromIndex, toIndex);
             }
             result.add((S) newCandidate);
         }
