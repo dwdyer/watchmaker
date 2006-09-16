@@ -58,7 +58,7 @@ public class EvolutionEngine<T>
 
     /**
      * <p>Returns the ratio of the elite to the total population.  This parameter is used
-     * to implement elitism in selection.  In elitism, a propotion of the population with
+     * to implement elitism in selection.  In elitism, a proportion of the population with
      * the best fitness scores are preserved unchanged in the subsequent generation.
      * Candidate solutions that are preserved unchanged through elitism remain eligible
      * for selection for breeding the remainder of the next generation.</p>
@@ -115,9 +115,7 @@ public class EvolutionEngine<T>
         // This loop starts counting at 1, because the initial population counts as generation zero.
         for (int i = 1; i < generationCount; i++)
         {
-            // Create the next generation.
             population = createNextGeneration(evaluatedPopulation);
-            // Then calculate the fitness scores for each member of the population.
             evaluatedPopulation = evaluatePopulation(population);
         }
         // Return the fittest candidate from the final generation.
@@ -146,11 +144,9 @@ public class EvolutionEngine<T>
         // Don't use the list returned by the factory, because the type might be too specific.
         // Instead copy the contents into a list of the desired type.
         List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize, rng));
-
-        // Calculate the fitness scores for each member of the population.
         List<Pair<T, Double>> evaluatedPopulation = evaluatePopulation(population);
 
-        // Then keep evolving until we match the target fitness or run out of time.
+        // Keep evolving until we match the target fitness or run out of time.
         double bestFitness = evaluatedPopulation.get(0).getSecond();
         while (bestFitness < targetFitness && System.currentTimeMillis() < endTime)
         {

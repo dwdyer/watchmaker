@@ -28,8 +28,8 @@ import java.util.Iterator;
  * determine the probability of selection for a given individual (i.e. the actual
  * numerical fitness values are ignored and only the ordering of the sorted
  * population is considered).</p>
- * <p>Rank selection is implemented in terms of a mapping function (@see
- * #mapRankToScore()) and delegation to a fitness-proportionate selector.  The
+ * <p>Rank selection is implemented in terms of a mapping function ({@link
+ * #mapRankToScore()}) and delegation to a fitness-proportionate selector.  The
  * mapping function converts ranks into relative fitness scores that are used to
  * drive the delegate selector.</p>
  * @author Daniel Dyer
@@ -48,6 +48,7 @@ public class RankSelection implements SelectionStrategy
         this(new StochasticUniversalSampling());
     }
 
+    
     /**
      * Creates a rank-based selector with a linear mapping function and
      * configurable delegate for performing the proportionate selection.
@@ -79,14 +80,16 @@ public class RankSelection implements SelectionStrategy
     /**
      * <p>Maps a population index to a relative pseudo-fitness score that can be used for
      * fitness-proportionate selection.  The general contract for the mapping function
-     * <code>f</code> is <code>f(rank) <= f(rank + 1)</code> for all legal values of
-     * <code>rank</code>.</p>
+     * <code>f</code> is: <code>f(rank) >= f(rank + 1)</code> for all legal values of
+     * <code>rank</code>, assuming normalised scores.</p>
      * <p>The default mapping function is a simple linear transformation, but this
      * can be over-ridden in sub-classes.  Alternative implementations can be linear or
      * non-linear and either normalised or de-normalised.  However, for performance reasons
      * it is preferable to return normalised scores.</p>
-     * @param rank A zero-based index into the population (0 <= rank < populationSize).
+     * @param rank A zero-based index into the population
+     * <code>(0 <= rank < populationSize)</code>.
      * @param populationSize The number of individuals in the population.
+     * @return <code>populationSize - rank</code>
      */
     protected double mapRankToScore(int rank, int populationSize)
     {

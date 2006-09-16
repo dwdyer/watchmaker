@@ -39,13 +39,13 @@ public class RouletteWheelSelectionTest
         SelectionStrategy selector = new RouletteWheelSelection();
         List<Pair<String, Double>> population = new ArrayList<Pair<String, Double>>(4);
         Pair<String, Double> steve = new Pair<String, Double>("Steve", 10.0);
+        Pair<String, Double> mary = new Pair<String, Double>("Mary", 9.1);
         Pair<String, Double> john = new Pair<String, Double>("John", 8.4);
         Pair<String, Double> gary = new Pair<String, Double>("Gary", 6.2);
-        Pair<String, Double> mary = new Pair<String, Double>("Mary", 9.1);
         population.add(steve);
+        population.add(mary);
         population.add(john);
         population.add(gary);
-        population.add(mary);
         Collections.sort(population, new CandidateFitnessComparator());
         List<String> selection = selector.select(population, 2, new Random());
         assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";

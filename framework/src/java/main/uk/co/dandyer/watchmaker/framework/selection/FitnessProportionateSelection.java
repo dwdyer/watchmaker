@@ -75,32 +75,18 @@ public abstract class FitnessProportionateSelection implements SelectionStrategy
     private <T> List<Pair<T, Double>> normaliseFitnesses(List<Pair<T, Double>> population)
     {
         List<Pair<T, Double>> normalisedPopulation = new ArrayList<Pair<T, Double>>(population.size());
-        double totalFitnesses = 0;
+        double totalInverseFitnesses = 0d;
         for (Pair<T, Double> candidate : population)
         {
-            totalFitnesses += candidate.getSecond();
+            totalInverseFitnesses += 1d / candidate.getSecond();
         }
         for (Pair<T, Double> candidate : population)
         {
-            double normalisedFitness = normaliseFitness(candidate.getSecond(),
-                                                        totalFitnesses,
-                                                        population.size());
+            double inverseFitness = 1d / candidate.getSecond();
+            double normalisedFitness = inverseFitness / totalInverseFitnesses;
             normalisedPopulation.add(new Pair<T, Double>(candidate.getFirst(),
                                                          normalisedFitness));
         }
         return normalisedPopulation;
-    }
-
-
-    /**
-     * Convert the fitness score for a candidate that is ranked using a
-     * lower-fitness-is-better approach into a score on a
-     * higher-fitness-is-better scale.
-     */
-    private double normaliseFitness(double fitness,
-                                    double totalFitnesses,
-                                    int populationSize)
-    {
-        return (1 - (fitness / totalFitnesses)) / (populationSize - 1);
     }
 }
