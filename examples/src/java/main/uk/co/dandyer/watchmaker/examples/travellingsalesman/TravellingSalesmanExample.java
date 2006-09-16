@@ -28,7 +28,7 @@ import uk.co.dandyer.watchmaker.framework.EvolutionObserver;
 import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
 import uk.co.dandyer.watchmaker.framework.PopulationData;
 import uk.co.dandyer.watchmaker.framework.operators.ListOrderMutation;
-import uk.co.dandyer.watchmaker.framework.selection.RankSelection;
+import uk.co.dandyer.watchmaker.framework.selection.TruncationSelection;
 
 /**
  * @author Daniel Dyer
@@ -165,7 +165,7 @@ public class TravellingSalesmanExample
         lisbon.put("Berlin", 2310);
         lisbon.put("Brussels", 1713);
         lisbon.put("Copenhagen", 2477);
-        lisbon.put("Dublin", 1642);
+        lisbon.put("Dublin", 1652);
         lisbon.put("Helsinki", 3362);
         lisbon.put("London", 1585);
         lisbon.put("Luxembourg", 1716);
@@ -310,7 +310,7 @@ public class TravellingSalesmanExample
         EvolutionEngine<List<String>> engine = new EvolutionEngine<List<String>>(new RouteFactory(new LinkedList<String>(DISTANCES.keySet())),
                                                                                  pipeline,
                                                                                  new RouteEvaluator(DISTANCES),
-                                                                                 new RankSelection(),
+                                                                                 new TruncationSelection(0.5),
                                                                                  rng);
         engine.setEliteRatio(0.01d); // Preserve the top 1% of each generation.
         engine.addEvolutionObserver(new EvolutionLogger());
