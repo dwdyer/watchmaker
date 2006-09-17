@@ -34,6 +34,8 @@ import uk.co.dandyer.watchmaker.framework.operators.ListOrderMutation;
 import uk.co.dandyer.watchmaker.framework.selection.TruncationSelection;
 
 /**
+ * Sample application - an evolutionary solution to the well-known Travelling
+ * Salesman problem.
  * @author Daniel Dyer
  */
 public class TravellingSalesmanExample
@@ -318,8 +320,7 @@ public class TravellingSalesmanExample
         engine.setEliteRatio(0.01d); // Preserve the top 1% of each generation.
         engine.addEvolutionObserver(new EvolutionLogger());
         engine.evolve(300, // 300 individuals in the population.
-                      100); // 50 generations.
-
+                      100); // 100 generations.
     }
 
 
@@ -372,13 +373,10 @@ public class TravellingSalesmanExample
 
     private static class EvolutionLogger implements EvolutionObserver<List<String>>
     {
-        private int generationCount = 0;
-
         public void populationUpdate(PopulationData<? extends List<String>> data)
         {
-            System.out.println("Generation " + generationCount + ": " + data.getBestCandidateFitness() + "km");
+            System.out.println("Generation " + data.getGenerationNumber() + ": " + data.getBestCandidateFitness() + "km");
             System.out.println("  " + stringListToString(data.getBestCandidate()));
-            generationCount++;
         }
     }
 }

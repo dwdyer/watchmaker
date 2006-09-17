@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * Strategy interface for "natural" selection.
  * @author Daniel Dyer
  */
 public interface SelectionStrategy

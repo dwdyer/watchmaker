@@ -38,6 +38,9 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
     private double eliteRatio = 0.0d;
 
+    private long startTime;
+    private int currentGenerationIndex;
+
 
     protected AbstractEvolutionEngine(CandidateFactory<? extends T> candidateFactory,
                                       List<EvolutionaryOperator<? super T>> evolutionPipeline,
@@ -82,6 +85,9 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                     Collection<T> seedCandidates,
                     int generationCount)
     {
+        currentGenerationIndex = 0;
+        startTime = System.currentTimeMillis();
+
         // Don't use the list returned by the factory, because the type might be too specific.
         // Instead copy the contents into a list of the desired type.
         List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize, rng));
@@ -93,6 +99,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         // This loop starts counting at 1, because the initial population counts as generation zero.
         for (int i = 1; i < generationCount; i++)
         {
+            ++currentGenerationIndex;
             population = createNextGeneration(evaluatedPopulation);
             evaluatedPopulation = evaluatePopulation(population);
             // Notify observers of the state of the population.
@@ -120,7 +127,9 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                     double targetFitness,
                     long timeout)
     {
-        long endTime = System.currentTimeMillis() + timeout;
+        currentGenerationIndex = 0;
+        startTime = System.currentTimeMillis();
+        long endTime = startTime + timeout;
         // Don't use the list returned by the factory, because the type might be too specific.
         // Instead copy the contents into a list of the desired type.
         List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize, rng));
@@ -132,6 +141,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         double bestFitness = evaluatedPopulation.get(0).getFitness();
         while (bestFitness < targetFitness && System.currentTimeMillis() < endTime)
         {
+            ++currentGenerationIndex;
             population = createNextGeneration(evaluatedPopulation);
             evaluatedPopulation = evaluatePopulation(population);
             bestFitness = evaluatedPopulation.get(0).getFitness();
@@ -230,6 +240,8 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                                      evaluatedPopulation.get(0).getFitness(),
                                      stats.getArithmeticMean(),
                                      stats.getStandardDeviation(),
-                                     stats.getSize());
+                                     stats.getSize(),
+                                     currentGenerationIndex,
+                                     System.currentTimeMillis() - startTime);
     }
 }

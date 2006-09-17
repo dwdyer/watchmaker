@@ -29,42 +29,75 @@ public final class PopulationData<T>
     private final double meanFitness;
     private final double fitnessStandardDeviation;
     private final int populationSize;
+    private final int generationNumber;
+    private final long elapsedTime;
 
     public PopulationData(T bestCandidate,
                           double bestCandidateFitness,
                           double meanFitness,
                           double fitnessStandardDeviation,
-                          int populationSize)
+                          int populationSize,
+                          int generationCount,
+                          long elapsedTime)
     {
         this.bestCandidate = bestCandidate;
         this.bestCandidateFitness = bestCandidateFitness;
         this.meanFitness = meanFitness;
         this.fitnessStandardDeviation = fitnessStandardDeviation;
         this.populationSize = populationSize;
+        this.generationNumber = generationCount;
+        this.elapsedTime = elapsedTime;
     }
+
 
     public T getBestCandidate()
     {
         return bestCandidate;
     }
 
+
     public double getBestCandidateFitness()
     {
         return bestCandidateFitness;
     }
+
 
     public double getMeanFitness()
     {
         return meanFitness;
     }
 
+
     public double getFitnessStandardDeviation()
     {
         return fitnessStandardDeviation;
     }
 
+
+    /**
+     * Returns the number of individuals in the current population.
+     */
     public int getPopulationSize()
     {
         return populationSize;
+    }
+
+
+    /**
+     * Returns the number of this generation (zero-based).
+     */
+    public int getGenerationNumber()
+    {
+        return generationNumber;
+    }
+
+
+    /**
+     * Returns the amount of time (in milliseconds) since the
+     * beginning of the algorithm execution.
+     */
+    public long getElapsedTime()
+    {
+        return elapsedTime;
     }
 }

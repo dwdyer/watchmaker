@@ -68,12 +68,9 @@ public class StringsExample
 
     private static class EvolutionLogger implements EvolutionObserver<String>
     {
-        private int generationCount = 0;
-
         public void populationUpdate(PopulationData<? extends String> data)
         {
-            System.out.println("Generation " + generationCount + ": " + data.getBestCandidate());
-            generationCount++;
+            System.out.println("Generation " + data.getGenerationNumber() + ": " + data.getBestCandidate());
         }
     }
 }

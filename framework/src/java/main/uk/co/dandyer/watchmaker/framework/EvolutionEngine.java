@@ -18,6 +18,7 @@ package uk.co.dandyer.watchmaker.framework;
 import java.util.Collection;
 
 /**
+ * Operations for classes that provide an evolution implementation.
  * @author Daniel Dyer
  */
 public interface EvolutionEngine<T>
