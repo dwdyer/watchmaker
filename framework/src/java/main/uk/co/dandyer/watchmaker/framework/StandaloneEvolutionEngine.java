@@ -29,7 +29,6 @@ import java.util.Random;
 public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
     private final FitnessEvaluator<? super T> fitnessEvaluator;
-    private final Comparator<EvaluatedCandidate<?>> fitnessComparator;
 
     public StandaloneEvolutionEngine(CandidateFactory<? extends T> candidateFactory,
                                      List<EvolutionaryOperator<? super T>> evolutionPipeline,
@@ -39,7 +38,6 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     {
         super(candidateFactory, evolutionPipeline, selectionStrategy, rng);
         this.fitnessEvaluator = fitnessEvaluator;
-        this.fitnessComparator = new CandidateFitnessComparator(fitnessEvaluator.isFitnessNormalised());
     }
 
     /**
@@ -57,7 +55,14 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                                               fitnessEvaluator.getFitness(candidate)));
         }
         // Sort candidates in descending order according to fitness.
-        Collections.sort(evaluatedPopulation, fitnessComparator);
+        if (fitnessEvaluator.isFitnessNormalised()) // Descending values for normalised fitness.
+        {
+            Collections.sort(evaluatedPopulation, Collections.reverseOrder());
+        }
+        else // Ascending values for de-normalised fitness.
+        {
+            Collections.sort(evaluatedPopulation);
+        }
         return evaluatedPopulation;
     }
 }

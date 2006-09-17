@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.testng.annotations.Test;
-import uk.co.dandyer.watchmaker.framework.CandidateFitnessComparator;
 import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
 import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 
@@ -43,7 +42,7 @@ public class TruncationSelectionTest
         population.add(john);
         population.add(gary);
         population.add(mary);
-        Collections.sort(population, new CandidateFitnessComparator());
+        Collections.sort(population, Collections.reverseOrder());
         List<String> selection = selector.select(population, 2, null);
         assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
         assert selection.contains(steve.getCandidate()) : "Best candidate not selected.";

@@ -21,7 +21,7 @@ package uk.co.dandyer.watchmaker.framework;
  * @author Daniel Dyer.
  * @param <T> The candidate type.
  */
-public final class EvaluatedCandidate<T>
+public final class EvaluatedCandidate<T> implements Comparable<EvaluatedCandidate<T>>
 {
     private final T candidate;
     private final double fitness;
@@ -41,8 +41,17 @@ public final class EvaluatedCandidate<T>
     {
         return fitness;
     }
-    
 
+
+    public int compareTo(EvaluatedCandidate<T> evaluatedCandidate)
+    {
+        return Double.compare(fitness, evaluatedCandidate.getFitness());
+    }
+
+
+    /**
+     * Over-ridden to be consistent with {@link #compareTo(EvaluatedCandidate)}
+     */
     @Override
     public boolean equals(Object o)
     {
@@ -55,20 +64,17 @@ public final class EvaluatedCandidate<T>
             return false;
         }
         final EvaluatedCandidate<?> that = (EvaluatedCandidate<?>) o;
-        if (Double.compare(that.fitness, fitness) != 0)
-        {
-            return false;
-        }
-        return candidate.equals(that.candidate);
+        return Double.compare(that.getFitness(), fitness) == 0;
     }
 
 
+    /**
+     * Over-ridden to be consistent with {@link #equals(Object)}
+     */
     @Override
     public int hashCode()
     {
-        int result = candidate.hashCode();
-        long temp = fitness != +0.0d ? Double.doubleToLongBits(fitness) : 0L;
-        result = 29 * result + (int) (temp ^ (temp >>> 32));
-        return result;
+        final long temp = fitness != +0.0d ? Double.doubleToLongBits(fitness) : 0L;
+        return (int) (temp ^ (temp >>> 32));
     }
 }

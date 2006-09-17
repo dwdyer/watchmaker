@@ -1,12 +1,12 @@
 package uk.co.dandyer.watchmaker.framework.selection;
 
-import org.testng.annotations.Test;
-import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
-import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
-import uk.co.dandyer.maths.random.MersenneTwisterRNG;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import org.testng.annotations.Test;
+import uk.co.dandyer.maths.random.MersenneTwisterRNG;
+import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
+import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 
 /**
  * Unit test for rank-proportionate selection.
