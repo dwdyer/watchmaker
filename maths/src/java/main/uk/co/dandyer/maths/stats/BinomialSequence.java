@@ -19,7 +19,7 @@ import java.util.Random;
 import uk.co.dandyer.maths.NumberSequence;
 
 /**
- * Random sequence with values drawn from a binomial distribution.
+ * Discrete random sequence that follows a binomial distribution.
  * @author Daniel Dyer
  */
 public class BinomialSequence implements NumberSequence<Integer>

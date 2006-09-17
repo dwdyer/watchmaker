@@ -16,7 +16,7 @@
 package uk.co.dandyer.watchmaker.framework.selection;
 
 import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
-import uk.co.dandyer.watchmaker.framework.Pair;
+import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
@@ -61,17 +61,17 @@ public class RankSelection implements SelectionStrategy
     }
 
 
-    public <T> List<T> select(List<Pair<T, Double>> population,
+    public <T> List<T> select(List<EvaluatedCandidate<T>> population,
                               int selectionSize,
                               Random rng)
     {
-        List<Pair<T, Double>> rankedPopulation = new ArrayList<Pair<T, Double>>(population.size());
-        Iterator<Pair<T, Double>> iterator = population.iterator();
+        List<EvaluatedCandidate<T>> rankedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());
+        Iterator<EvaluatedCandidate<T>> iterator = population.iterator();
         int index = -1;
         while (iterator.hasNext())
         {
-            T candidate = iterator.next().getFirst();
-            rankedPopulation.add(new Pair<T, Double>(candidate, mapRankToScore(++index, population.size())));
+            T candidate = iterator.next().getCandidate();
+            rankedPopulation.add(new EvaluatedCandidate<T>(candidate, mapRankToScore(++index, population.size())));
         }
         return delegate.select(rankedPopulation, selectionSize, rng);
     }

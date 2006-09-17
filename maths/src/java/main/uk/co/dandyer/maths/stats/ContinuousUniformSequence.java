@@ -19,18 +19,18 @@ import java.util.Random;
 import uk.co.dandyer.maths.NumberSequence;
 
 /**
- * Random sequence with values drawn from a uniform distribution.
+ * Continuous, uniformly distributed random sequence.
  * @author Daniel Dyer
  */
-public class DoubleUniformSequence implements NumberSequence<Double>
+public class ContinuousUniformSequence implements NumberSequence<Double>
 {
     private final Random rng;
     private final double range;
     private final double minimumValue;
 
-    public DoubleUniformSequence(double minimumValue,
-                                 double maximumValue,
-                                 Random rng)
+    public ContinuousUniformSequence(double minimumValue,
+                                     double maximumValue,
+                                     Random rng)
     {
         this.rng = rng;
         this.minimumValue = minimumValue;

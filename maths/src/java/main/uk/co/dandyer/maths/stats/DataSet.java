@@ -16,6 +16,7 @@
 package uk.co.dandyer.maths.stats;
 
 /**
+ * Operations for calculating statistical measures for a set of values.
  * @author Daniel Dyer
  */
 public interface DataSet

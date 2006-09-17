@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import uk.co.dandyer.watchmaker.framework.Pair;
+import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
 
 /**
  * <p>Implements selection of <i>n</i> candidates from a population by selecting
@@ -38,7 +38,7 @@ import uk.co.dandyer.watchmaker.framework.Pair;
  */
 public class RouletteWheelSelection extends FitnessProportionateSelection
 {
-    protected <T> List<T> fpSelect(List<Pair<T, Double>> normalisedPopulation,
+    protected <T> List<T> fpSelect(List<EvaluatedCandidate<T>> normalisedPopulation,
                                    int selectionSize,
                                    Random rng)
     {
@@ -50,10 +50,10 @@ public class RouletteWheelSelection extends FitnessProportionateSelection
         // proportional to the probability of the corresponding candidate in the population
         // being selected.
         double[] cumulativeFitnesses = new double[normalisedPopulation.size()];
-        cumulativeFitnesses[0] = normalisedPopulation.get(0).getSecond();
+        cumulativeFitnesses[0] = normalisedPopulation.get(0).getFitness();
         for (int i = 1; i < normalisedPopulation.size(); i++)
         {
-            cumulativeFitnesses[i] = cumulativeFitnesses[i - 1] + normalisedPopulation.get(i).getSecond();
+            cumulativeFitnesses[i] = cumulativeFitnesses[i - 1] + normalisedPopulation.get(i).getFitness();
         }
 
         List<T> selection = new ArrayList<T>(selectionSize);
@@ -66,7 +66,7 @@ public class RouletteWheelSelection extends FitnessProportionateSelection
                 // Convert negative insertion point to array index.
                 index = Math.abs(index + 1);
             }
-            selection.add(normalisedPopulation.get(index).getFirst());
+            selection.add(normalisedPopulation.get(index).getCandidate());
         }
         return selection;
     }

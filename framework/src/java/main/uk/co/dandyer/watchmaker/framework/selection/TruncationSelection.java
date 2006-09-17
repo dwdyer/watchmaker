@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
-import uk.co.dandyer.watchmaker.framework.Pair;
+import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
 
 /**
  * Implements selection of <i>n</i> candidates from a population by simply
@@ -46,7 +46,7 @@ public class TruncationSelection implements SelectionStrategy
      * fewer selected candidates than required, then these candidates are
      * selected multiple times to make up the shortfall.
      */
-    public <T> List<T> select(List<Pair<T, Double>> population,
+    public <T> List<T> select(List<EvaluatedCandidate<T>> population,
                               int selectionSize,
                               Random rng)
     {
@@ -60,7 +60,7 @@ public class TruncationSelection implements SelectionStrategy
             int count = Math.min(eligibleCount, selectionSize - selection.size());
             for (int i = 0; i < count; i++)
             {
-                selection.add(population.get(i).getFirst());
+                selection.add(population.get(i).getCandidate());
             }
         } while (selection.size() < selectionSize);
         return selection;

@@ -18,7 +18,7 @@ package uk.co.dandyer.watchmaker.framework.selection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import uk.co.dandyer.watchmaker.framework.Pair;
+import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
 
 /**
  * An alternative to {@link uk.co.dandyer.watchmaker.framework.selection.RouletteWheelSelection}
@@ -28,15 +28,15 @@ import uk.co.dandyer.watchmaker.framework.Pair;
  */
 public class StochasticUniversalSampling extends FitnessProportionateSelection
 {
-    protected <T> List<T> fpSelect(List<Pair<T, Double>> normalisedPopulation,
+    protected <T> List<T> fpSelect(List<EvaluatedCandidate<T>> normalisedPopulation,
                                    int selectionSize,
                                    Random rng)
     {
         // Calculate the sum of all fitness values.
         double aggregateFitness = 0;
-        for (Pair<T, Double> candidate : normalisedPopulation)
+        for (EvaluatedCandidate<T> candidate : normalisedPopulation)
         {
-            aggregateFitness += candidate.getSecond();
+            aggregateFitness += candidate.getFitness();
         }
 
         List<T> selection = new ArrayList<T>(selectionSize);
@@ -44,19 +44,19 @@ public class StochasticUniversalSampling extends FitnessProportionateSelection
         double startOffset = rng.nextDouble();
         double cumulativeExpectation = 0;
         int index = 0;
-        for (Pair<T, Double> candidate : normalisedPopulation)
+        for (EvaluatedCandidate<T> candidate : normalisedPopulation)
         {
             // Calculate the number of times this candidate is expected to
             // be selected on average and add it to the cumulative total
             // of expected frequencies.
-            cumulativeExpectation += candidate.getSecond() / aggregateFitness * selectionSize;
+            cumulativeExpectation += candidate.getFitness() / aggregateFitness * selectionSize;
 
             // If f is the expected frequency, the candidate will be selected at
             // least as often as floor(f) and at most as often as ceil(f). The
             // actual count depends on the random starting offset.
             while (cumulativeExpectation > startOffset + index)
             {
-                selection.add(candidate.getFirst());
+                selection.add(candidate.getCandidate());
                 index++;
             }
         }

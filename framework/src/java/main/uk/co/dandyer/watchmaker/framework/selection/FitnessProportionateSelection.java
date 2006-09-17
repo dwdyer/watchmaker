@@ -15,7 +15,7 @@
 // ============================================================================
 package uk.co.dandyer.watchmaker.framework.selection;
 
-import uk.co.dandyer.watchmaker.framework.Pair;
+import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
 import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 import java.util.List;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public abstract class FitnessProportionateSelection implements SelectionStrategy
      * candidates) and then delegates to
      * {@link #fpSelect(java.util.List, int, java.util.Random)}.
      */
-    public final <T> List<T> select(List<Pair<T, Double>> population,
+    public final <T> List<T> select(List<EvaluatedCandidate<T>> population,
                                     int selectionSize,
                                     Random rng)
     {
@@ -45,8 +45,8 @@ public abstract class FitnessProportionateSelection implements SelectionStrategy
         // fitnesses.  Since the population is sorted by fitness this is just a
         // matter of comparing the first and last scores to see whether the list
         // is in ascending or descending order.
-        boolean normalised = population.get(0).getSecond() >= population.get(population.size() - 1).getSecond();
-        List<Pair<T, Double>> normalisedPopulation = normalised ? population : normaliseFitnesses(population);
+        boolean normalised = population.get(0).getFitness() >= population.get(population.size() - 1).getFitness();
+        List<EvaluatedCandidate<T>> normalisedPopulation = normalised ? population : normaliseFitnesses(population);
         return fpSelect(normalisedPopulation, selectionSize, rng);
     }
 
@@ -55,7 +55,7 @@ public abstract class FitnessProportionateSelection implements SelectionStrategy
      * Performs fitness-proportionate Selection on a population with normalised fitness
      * scores.
      */
-    protected abstract <T> List<T> fpSelect(List<Pair<T, Double>> normalisedPopulation,
+    protected abstract <T> List<T> fpSelect(List<EvaluatedCandidate<T>> normalisedPopulation,
                                             int selectionSize,
                                             Random rng);
 
@@ -72,20 +72,20 @@ public abstract class FitnessProportionateSelection implements SelectionStrategy
      * first individual in the list both has the lowest fitness score and is
      * the fittest individual.
      */
-    private <T> List<Pair<T, Double>> normaliseFitnesses(List<Pair<T, Double>> population)
+    private <T> List<EvaluatedCandidate<T>> normaliseFitnesses(List<EvaluatedCandidate<T>> population)
     {
-        List<Pair<T, Double>> normalisedPopulation = new ArrayList<Pair<T, Double>>(population.size());
+        List<EvaluatedCandidate<T>> normalisedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());
         double totalInverseFitnesses = 0d;
-        for (Pair<T, Double> candidate : population)
+        for (EvaluatedCandidate<T> candidate : population)
         {
-            totalInverseFitnesses += 1d / candidate.getSecond();
+            totalInverseFitnesses += 1d / candidate.getFitness();
         }
-        for (Pair<T, Double> candidate : population)
+        for (EvaluatedCandidate<T> candidate : population)
         {
-            double inverseFitness = 1d / candidate.getSecond();
+            double inverseFitness = 1d / candidate.getFitness();
             double normalisedFitness = inverseFitness / totalInverseFitnesses;
-            normalisedPopulation.add(new Pair<T, Double>(candidate.getFirst(),
-                                                         normalisedFitness));
+            normalisedPopulation.add(new EvaluatedCandidate<T>(candidate.getCandidate(),
+                                                               normalisedFitness));
         }
         return normalisedPopulation;
     }

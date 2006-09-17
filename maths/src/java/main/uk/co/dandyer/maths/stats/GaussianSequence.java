@@ -19,7 +19,7 @@ import java.util.Random;
 import uk.co.dandyer.maths.NumberSequence;
 
 /**
- * Random sequence with values drawn from a continuous normal distribution.
+ * Normally distributed random sequence.
  * @author Daniel Dyer
  */
 public class GaussianSequence implements NumberSequence<Double>

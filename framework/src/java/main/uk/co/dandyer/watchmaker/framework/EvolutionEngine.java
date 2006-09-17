@@ -37,7 +37,7 @@ public class EvolutionEngine<T>
     private final List<EvolutionaryOperator<? super T>> evolutionPipeline;
     private final FitnessEvaluator<? super T> fitnessEvaluator;
     private final SelectionStrategy selectionStrategy;
-    private final Comparator<Pair<?, Double>> fitnessComparator;
+    private final Comparator<EvaluatedCandidate<?>> fitnessComparator;
 
     private double eliteRatio = 0.0d;
 
@@ -110,7 +110,7 @@ public class EvolutionEngine<T>
         // Instead copy the contents into a list of the desired type.
         List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize, rng));
         // Calculate the fitness scores for each member of the population.
-        List<Pair<T, Double>> evaluatedPopulation = evaluatePopulation(population);
+        List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
 
         // This loop starts counting at 1, because the initial population counts as generation zero.
         for (int i = 1; i < generationCount; i++)
@@ -119,7 +119,7 @@ public class EvolutionEngine<T>
             evaluatedPopulation = evaluatePopulation(population);
         }
         // Return the fittest candidate from the final generation.
-        return evaluatedPopulation.get(0).getFirst();
+        return evaluatedPopulation.get(0).getCandidate();
     }
 
 
@@ -144,19 +144,19 @@ public class EvolutionEngine<T>
         // Don't use the list returned by the factory, because the type might be too specific.
         // Instead copy the contents into a list of the desired type.
         List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize, rng));
-        List<Pair<T, Double>> evaluatedPopulation = evaluatePopulation(population);
+        List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
 
         // Keep evolving until we match the target fitness or run out of time.
-        double bestFitness = evaluatedPopulation.get(0).getSecond();
+        double bestFitness = evaluatedPopulation.get(0).getFitness();
         while (bestFitness < targetFitness && System.currentTimeMillis() < endTime)
         {
             population = createNextGeneration(evaluatedPopulation);
             evaluatedPopulation = evaluatePopulation(population);
-            bestFitness = evaluatedPopulation.get(0).getSecond();
+            bestFitness = evaluatedPopulation.get(0).getFitness();
         }
 
         // Return the fittest candidate from the final generation.
-        return evaluatedPopulation.get(0).getFirst();
+        return evaluatedPopulation.get(0).getCandidate();
     }
 
 
@@ -164,13 +164,13 @@ public class EvolutionEngine<T>
      * Takes a population, assigns a fitness score to each member and returns
      * the members with their scores attached, sorted in descending order.
      */
-    private List<Pair<T, Double>> evaluatePopulation(List<T> population)
+    private List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population)
     {
-        List<Pair<T, Double>> evaluatedPopulation = new ArrayList<Pair<T, Double>>(population.size());
+        List<EvaluatedCandidate<T>> evaluatedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());
         for (T candidate : population)
         {
-            evaluatedPopulation.add(new Pair<T, Double>(candidate,
-                                                        fitnessEvaluator.getFitness(candidate)));
+            evaluatedPopulation.add(new EvaluatedCandidate<T>(candidate,
+                                                              fitnessEvaluator.getFitness(candidate)));
         }
         // Sort candidates in descending order according to fitness.
         Collections.sort(evaluatedPopulation, fitnessComparator);
@@ -187,17 +187,17 @@ public class EvolutionEngine<T>
      * Evolve the specified evaluated population (the current generation).
      * and return the resultant population (the next generation).
      */
-    private List<T> createNextGeneration(List<Pair<T, Double>> evaluatedPopulation)
+    private List<T> createNextGeneration(List<EvaluatedCandidate<T>> evaluatedPopulation)
     {
         List<T> population = new ArrayList<T>(evaluatedPopulation.size());
 
         // First perform any elitist selection.
         int eliteCount = (int) Math.round(evaluatedPopulation.size() * eliteRatio);
         List<T> elite = new ArrayList<T>(eliteCount);
-        Iterator<Pair<T, Double>> iterator = evaluatedPopulation.iterator();
+        Iterator<EvaluatedCandidate<T>> iterator = evaluatedPopulation.iterator();
         while (elite.size() < eliteCount)
         {
-            elite.add(iterator.next().getFirst());
+            elite.add(iterator.next().getCandidate());
         }
         // Then select candidates that will be operated on to create the evolved
         // portion of the next generation.
@@ -226,17 +226,17 @@ public class EvolutionEngine<T>
      * @param evaluatedPopulation Population of candidate solutions with their
      * associated fitness scores.
      */
-    private PopulationData<T> getPopulationData(List<Pair<T, Double>> evaluatedPopulation)
+    private PopulationData<T> getPopulationData(List<EvaluatedCandidate<T>> evaluatedPopulation)
     {
         double[] fitnesses = new double[evaluatedPopulation.size()];
         int index = -1;
-        for (Pair<T, Double> candidate : evaluatedPopulation)
+        for (EvaluatedCandidate<T> candidate : evaluatedPopulation)
         {
-            fitnesses[++index] = candidate.getSecond();
+            fitnesses[++index] = candidate.getFitness();
         }
         PopulationDataSet stats = new PopulationDataSet(fitnesses);
-        return new PopulationData<T>(evaluatedPopulation.get(0).getFirst(),
-                                     evaluatedPopulation.get(0).getSecond(),
+        return new PopulationData<T>(evaluatedPopulation.get(0).getCandidate(),
+                                     evaluatedPopulation.get(0).getFitness(),
                                      stats.getArithmeticMean(),
                                      stats.getStandardDeviation(),
                                      stats.getSize());

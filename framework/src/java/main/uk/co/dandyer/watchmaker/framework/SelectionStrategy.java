@@ -30,7 +30,7 @@ public interface SelectionStrategy
      * in the list).
      * It is an error to call this method with an empty or null population.
      */
-    <T> List<T> select(List<Pair<T, Double>> population,
+    <T> List<T> select(List<EvaluatedCandidate<T>> population,
                        int selectionSize,
                        Random rng);
 }

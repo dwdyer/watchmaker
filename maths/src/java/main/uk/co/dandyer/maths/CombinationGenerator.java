@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Combination generator for generating all permutations for all sets up to
+ * Combination generator for generating all combinations for all sets up to
  * 20 elements in size.  The reason for the size restriction is in order to
  * provide the best possible performance for small sets by avoiding the need
  * to perform the internal arithmetic using {@link java.math.BigInteger} (which
@@ -203,6 +203,11 @@ public class CombinationGenerator<T>
 
 
 
+    /**
+     * Generate the indices into the elements array for the next combination. The
+     * algorithm is from Kenneth H. Rosen, Discrete Mathematics and Its Applications,
+     * 2nd edition (NY: McGraw-Hill, 1991), p. 286.
+     */
     private void generateNextCombinationIndices()
     {
         if (remainingCombinations < totalCombinations)

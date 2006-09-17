@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Random;
 import org.testng.annotations.Test;
 import uk.co.dandyer.watchmaker.framework.CandidateFitnessComparator;
-import uk.co.dandyer.watchmaker.framework.Pair;
+import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
 import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 
 /**
@@ -37,11 +37,11 @@ public class RouletteWheelSelectionTest
     public void testSelection()
     {
         SelectionStrategy selector = new RouletteWheelSelection();
-        List<Pair<String, Double>> population = new ArrayList<Pair<String, Double>>(4);
-        Pair<String, Double> steve = new Pair<String, Double>("Steve", 10.0);
-        Pair<String, Double> mary = new Pair<String, Double>("Mary", 9.1);
-        Pair<String, Double> john = new Pair<String, Double>("John", 8.4);
-        Pair<String, Double> gary = new Pair<String, Double>("Gary", 6.2);
+        List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
+        EvaluatedCandidate<String> steve = new EvaluatedCandidate<String>("Steve", 10.0);
+        EvaluatedCandidate<String> mary = new EvaluatedCandidate<String>("Mary", 9.1);
+        EvaluatedCandidate<String> john = new EvaluatedCandidate<String>("John", 8.4);
+        EvaluatedCandidate<String> gary = new EvaluatedCandidate<String>("Gary", 6.2);
         population.add(steve);
         population.add(mary);
         population.add(john);

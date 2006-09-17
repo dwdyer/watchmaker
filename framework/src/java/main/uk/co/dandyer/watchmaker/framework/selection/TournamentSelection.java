@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
-import uk.co.dandyer.watchmaker.framework.Pair;
+import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
 
 /**
  * @author Daniel Dyer
@@ -46,7 +46,7 @@ public class TournamentSelection implements SelectionStrategy
     }
 
 
-    public <T> List<T> select(List<Pair<T, Double>> population,
+    public <T> List<T> select(List<EvaluatedCandidate<T>> population,
                               int selectionSize,
                               Random rng)
     {
@@ -54,20 +54,20 @@ public class TournamentSelection implements SelectionStrategy
         for (int i = 0; i < selectionSize; i++)
         {
             // Pick two candidates at random.
-            Pair<T, Double> candidate1 = population.get(rng.nextInt(population.size()));
-            Pair<T, Double> candidate2 = population.get(rng.nextInt(population.size()));
+            EvaluatedCandidate<T> candidate1 = population.get(rng.nextInt(population.size()));
+            EvaluatedCandidate<T> candidate2 = population.get(rng.nextInt(population.size()));
 
             // Use a random value to decide wether to select the fitter individual or the weaker one.
             double value = rng.nextDouble();
             if (value < selectionProbability)
             {
                 // Select the fitter candidate.
-                selection.add(candidate2.getSecond() > candidate1.getSecond() ? candidate2.getFirst() : candidate1.getFirst());
+                selection.add(candidate2.getFitness() > candidate1.getFitness() ? candidate2.getCandidate() : candidate1.getCandidate());
             }
             else
             {
                 // Select the less fit candidate.
-                selection.add(candidate2.getSecond() > candidate1.getSecond() ? candidate1.getFirst() : candidate2.getFirst());
+                selection.add(candidate2.getFitness() > candidate1.getFitness() ? candidate1.getCandidate() : candidate2.getCandidate());
             }
         }
         return selection;

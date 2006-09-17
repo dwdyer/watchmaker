@@ -19,7 +19,7 @@ import uk.co.dandyer.maths.NumberSequence;
 import java.util.Random;
 
 /**
- * Random sequence with values drawn from a Poisson distribution.
+ * Discrete random sequence that follows a Poisson distribution.
  * @author Daniel Dyer
  */
 public class PoissonSequence implements NumberSequence<Integer>

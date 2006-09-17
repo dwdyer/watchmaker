@@ -21,7 +21,7 @@ import java.util.Comparator;
  * A comparator for ranking arbitrary canidate types by fitness.
  * @author Daniel Dyer
  */
-public class CandidateFitnessComparator implements Comparator<Pair<?, Double>>
+public class CandidateFitnessComparator implements Comparator<EvaluatedCandidate<?>>
 {
     private final boolean descending;
 
@@ -48,15 +48,15 @@ public class CandidateFitnessComparator implements Comparator<Pair<?, Double>>
     }
 
 
-    public int compare(Pair<?, Double> item1, Pair<?, Double> item2)
+    public int compare(EvaluatedCandidate<?> item1, EvaluatedCandidate<?> item2)
     {
         if (descending)
         {
-            return item2.getSecond().compareTo(item1.getSecond());
+            return Double.compare(item2.getFitness(), item1.getFitness());
         }
         else
         {
-            return item1.getSecond().compareTo(item2.getSecond());
+            return Double.compare(item1.getFitness(), item2.getFitness());
         }
     }
 }
