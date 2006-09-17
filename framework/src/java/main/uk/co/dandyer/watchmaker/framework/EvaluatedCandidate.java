@@ -16,7 +16,7 @@
 package uk.co.dandyer.watchmaker.framework;
 
 /**
- * Wrapper class for associating a candidate solution with its
+ * Immutable wrapper class for associating a candidate solution with its
  * fitness score.
  * @author Daniel Dyer.
  * @param <T> The candidate type.

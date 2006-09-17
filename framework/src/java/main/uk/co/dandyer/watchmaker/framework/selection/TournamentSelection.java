@@ -18,8 +18,8 @@ package uk.co.dandyer.watchmaker.framework.selection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
+import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 
 /**
  * @author Daniel Dyer

@@ -15,11 +15,11 @@
 // ============================================================================
 package uk.co.dandyer.watchmaker.framework.selection;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
 import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Base-class for selection strategies that use absolute fitness values to

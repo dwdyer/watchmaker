@@ -27,9 +27,25 @@ import java.util.Random;
 public interface EvolutionaryOperator<T>
 {
     /**
+     * <p>Apply the operation to each entry in the list of selected
+     * candidates.  It is important to note that this method operates on
+     * the list of candidates returned by the selection strategy and not
+     * on the current population.  Each entry in the list (not each
+     * individual - the list may contain the same individual more than
+     * once) must be operated on exactly once.</p>
+     *
+     * <p>Implementing classes should not assume any particular ordering
+     * (or lack of ordering) for the selection.  If ordering or
+     * shuffling is required, it should be performed by the implementing
+     * class.  The implementation should not re-order the list provided
+     * but instead should make a copy of the list and re-order that.
+     * The ordering of the selection should be totally irrelevant for
+     * operators, such as mutation, that process each candidate in isolation.
+     * It should only be an issue for operators, such as cross-over, that
+     * deal with multiple candidates in a single operation.</p>
      * @param <S> A more spefic type restriction than the one specified
      * for this class.  Allows the operation to be applied to sub-classes
      * of T and still return a list of the appropriate type.
      */
-    <S extends T> List<S> apply(List<S> population, Random rng);
+    <S extends T> List<S> apply(List<S> selectedCandidates, Random rng);
 }

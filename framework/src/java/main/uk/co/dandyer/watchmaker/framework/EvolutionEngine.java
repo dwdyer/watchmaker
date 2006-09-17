@@ -15,47 +15,13 @@
 // ============================================================================
 package uk.co.dandyer.watchmaker.framework;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.Iterator;
-import uk.co.dandyer.maths.stats.PopulationDataSet;
+import java.util.Collection;
 
 /**
- * Generic evolutionary algorithm engine.
  * @author Daniel Dyer
- * @param <T> The type of entity that is to be evolved.
  */
-public class EvolutionEngine<T>
+public interface EvolutionEngine<T>
 {
-    private final List<EvolutionObserver<? super T>> observers = new LinkedList<EvolutionObserver<? super T>>();
-    private final Random rng;
-    private final CandidateFactory<? extends T> candidateFactory;
-    private final List<EvolutionaryOperator<? super T>> evolutionPipeline;
-    private final FitnessEvaluator<? super T> fitnessEvaluator;
-    private final SelectionStrategy selectionStrategy;
-    private final Comparator<EvaluatedCandidate<?>> fitnessComparator;
-
-    private double eliteRatio = 0.0d;
-
-    public EvolutionEngine(CandidateFactory<? extends T> candidateFactory,
-                           List<EvolutionaryOperator<? super T>> evolutionPipeline,
-                           FitnessEvaluator<? super T> fitnessEvaluator,
-                           SelectionStrategy selectionStrategy,
-                           Random rng)
-    {
-        this.candidateFactory = candidateFactory;
-        this.evolutionPipeline = evolutionPipeline;
-        this.fitnessEvaluator = fitnessEvaluator;
-        this.selectionStrategy = selectionStrategy;
-        this.fitnessComparator = new CandidateFitnessComparator(fitnessEvaluator.isFitnessNormalised());
-        this.rng = rng;
-    }
-
-
     /**
      * <p>Returns the ratio of the elite to the total population.  This parameter is used
      * to implement elitism in selection.  In elitism, a proportion of the population with
@@ -67,10 +33,7 @@ public class EvolutionEngine<T>
      * than or equal to zero (no elitism) and less than 1 (no evolution).  The default value
      * is zero.</p>
      */
-    public double getEliteRatio()
-    {
-        return eliteRatio;
-    }
+    double getEliteRatio();
 
 
     /**
@@ -84,14 +47,7 @@ public class EvolutionEngine<T>
      * than or equal to zero (no elitism) and less than 1 (no evolution).  The default value
      * is zero.</p>
      */
-    public void setEliteRatio(double eliteRatio)
-    {
-        if (eliteRatio < 0 || eliteRatio >= 1)
-        {
-            throw new IllegalArgumentException("Elite ratio must be non-negative and less than 1.");
-        }
-        this.eliteRatio = eliteRatio;
-    }
+    void setEliteRatio(double eliteRatio);
 
 
     /**
@@ -103,24 +59,25 @@ public class EvolutionEngine<T>
      * @return The best solution found by the evolutionary process.
      * @see #evolve(int, double, long)
      */
-    public T evolve(int populationSize,
-                    int generationCount)
-    {
-        // Don't use the list returned by the factory, because the type might be too specific.
-        // Instead copy the contents into a list of the desired type.
-        List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize, rng));
-        // Calculate the fitness scores for each member of the population.
-        List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
+    T evolve(int populationSize,
+             int generationCount);
 
-        // This loop starts counting at 1, because the initial population counts as generation zero.
-        for (int i = 1; i < generationCount; i++)
-        {
-            population = createNextGeneration(evaluatedPopulation);
-            evaluatedPopulation = evaluatePopulation(population);
-        }
-        // Return the fittest candidate from the final generation.
-        return evaluatedPopulation.get(0).getCandidate();
-    }
+
+    /**
+     * @param populationSize The number of candidate solutions present in the population
+     * at any point in time.
+     * @param seedCandidates A set of candidates to seed the population with.  The size of
+     * this collection must be no greater than the specified population size.
+     * @param generationCount The number of iterations to perform (including the
+     * creation and evaluation of the initial population, which counts as the first
+     * generation).
+     * @return The best solution found by the evolutionary process.
+     * @see #evolve(int, int)
+     * @see #evolve(int, java.util.Collection, double, long)
+     */
+    T evolve(int populationSize,
+             Collection<T> seedCandidates,
+             int generationCount);
 
 
     /**
@@ -134,143 +91,45 @@ public class EvolutionEngine<T>
      * execution times out.
      * @param timeout How long (in milliseconds) the evolution is allowed to run for
      * without finding a matching candidate.
-     * @see #evolve(int, int) 
+     * @see #evolve(int, int)
+     * @see #evolve(int, java.util.Collection, double, long)
      */
-    public T evolve(int populationSize,
-                    double targetFitness,
-                    long timeout)
-    {
-        long endTime = System.currentTimeMillis() + timeout;
-        // Don't use the list returned by the factory, because the type might be too specific.
-        // Instead copy the contents into a list of the desired type.
-        List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize, rng));
-        List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
-
-        // Keep evolving until we match the target fitness or run out of time.
-        double bestFitness = evaluatedPopulation.get(0).getFitness();
-        while (bestFitness < targetFitness && System.currentTimeMillis() < endTime)
-        {
-            population = createNextGeneration(evaluatedPopulation);
-            evaluatedPopulation = evaluatePopulation(population);
-            bestFitness = evaluatedPopulation.get(0).getFitness();
-        }
-
-        // Return the fittest candidate from the final generation.
-        return evaluatedPopulation.get(0).getCandidate();
-    }
+    T evolve(int populationSize,
+             double targetFitness,
+             long timeout);
 
 
     /**
-     * Takes a population, assigns a fitness score to each member and returns
-     * the members with their scores attached, sorted in descending order.
+     * Runs the evolution until a target fitness score has been achieved by at least
+     * one candidate solution.  To prevent this method from executing indefinitely,
+     * a timeout is also specified.
+     * @param populationSize The number of candidate solutions present in the population
+     * at any point in time.
+     * @param seedCandidates A set of candidates to seed the population with.  The size of
+     * this collection must be no greater than the specified population size.
+     * @param targetFitness The minimum satisfactory fitness score.  The evolution will
+     * continue until a candidate is found with an equal or higher score, or the
+     * execution times out.
+     * @param timeout How long (in milliseconds) the evolution is allowed to run for
+     * without finding a matching candidate.
+     * @see #evolve(int, int)
      */
-    private List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population)
-    {
-        List<EvaluatedCandidate<T>> evaluatedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());
-        for (T candidate : population)
-        {
-            evaluatedPopulation.add(new EvaluatedCandidate<T>(candidate,
-                                                              fitnessEvaluator.getFitness(candidate)));
-        }
-        // Sort candidates in descending order according to fitness.
-        Collections.sort(evaluatedPopulation, fitnessComparator);
-        // Notify observers of the state of the population.
-        if (!observers.isEmpty()) // No point calculating stats for nobody.
-        {
-            notifyObservers(getPopulationData(evaluatedPopulation));
-        }
-        return evaluatedPopulation;
-    }
-
-
-    /**
-     * Evolve the specified evaluated population (the current generation).
-     * and return the resultant population (the next generation).
-     */
-    private List<T> createNextGeneration(List<EvaluatedCandidate<T>> evaluatedPopulation)
-    {
-        List<T> population = new ArrayList<T>(evaluatedPopulation.size());
-
-        // First perform any elitist selection.
-        int eliteCount = (int) Math.round(evaluatedPopulation.size() * eliteRatio);
-        List<T> elite = new ArrayList<T>(eliteCount);
-        Iterator<EvaluatedCandidate<T>> iterator = evaluatedPopulation.iterator();
-        while (elite.size() < eliteCount)
-        {
-            elite.add(iterator.next().getCandidate());
-        }
-        // Then select candidates that will be operated on to create the evolved
-        // portion of the next generation.
-        population.addAll(selectionStrategy.select(evaluatedPopulation,
-                                                   evaluatedPopulation.size() - eliteCount,
-                                                   rng));
-        // Shuffle the collection before applying each operation so that the
-        // evolution is not influenced by any ordering artifacts of the selection
-        // strategy.
-        Collections.shuffle(population, rng);
-        // Then apply each evolutionary transformation to the selection in turn.
-        for (EvolutionaryOperator<? super T> transform : evolutionPipeline)
-        {
-            population = transform.apply(population, rng);
-        }
-        // When the evolution is finished, add the elite to the population.
-        population.addAll(elite);
-        assert population.size() == evaluatedPopulation.size() : "Population size is not consistent.";
-        return population;
-    }
-
-
-    /**
-     * Gets data about the current population, including the fittest candidate
-     * and statistics about the population as a whole.
-     * @param evaluatedPopulation Population of candidate solutions with their
-     * associated fitness scores.
-     */
-    private PopulationData<T> getPopulationData(List<EvaluatedCandidate<T>> evaluatedPopulation)
-    {
-        double[] fitnesses = new double[evaluatedPopulation.size()];
-        int index = -1;
-        for (EvaluatedCandidate<T> candidate : evaluatedPopulation)
-        {
-            fitnesses[++index] = candidate.getFitness();
-        }
-        PopulationDataSet stats = new PopulationDataSet(fitnesses);
-        return new PopulationData<T>(evaluatedPopulation.get(0).getCandidate(),
-                                     evaluatedPopulation.get(0).getFitness(),
-                                     stats.getArithmeticMean(),
-                                     stats.getStandardDeviation(),
-                                     stats.getSize());
-    }
-
-
-    /**
-     * Send the population data to all registered observers.
-     */
-    private void notifyObservers(PopulationData<T> data)
-    {
-        for (EvolutionObserver<? super T> observer : observers)
-        {
-            observer.populationUpdate(data);
-        }
-    }
+    T evolve(int populationSize,
+             Collection<T> seedCandidates,
+             double targetFitness,
+             long timeout);
 
 
     /**
      * Adds a listener to receive status updates on the evolution progress.
-     * @see #removeEvolutionObserver(EvolutionObserver)
+     * @see #removeEvolutionObserver(uk.co.dandyer.watchmaker.framework.EvolutionObserver)
      */
-    public void addEvolutionObserver(EvolutionObserver<? super T> observer)
-    {
-        observers.add(observer);
-    }
+    void addEvolutionObserver(EvolutionObserver<? super T> observer);
 
 
     /**
      * Removes an evolution progress listener.
-     * @see #addEvolutionObserver(EvolutionObserver)
+     * @see #addEvolutionObserver(uk.co.dandyer.watchmaker.framework.EvolutionObserver)
      */
-    public void removeEvolutionObserver(EvolutionObserver<? super T> observer)
-    {
-        observers.remove(observer);
-    }
+    void removeEvolutionObserver(EvolutionObserver<? super T> observer);
 }

@@ -1,9 +1,9 @@
 package uk.co.dandyer.watchmaker.framework.operators;
 
-import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.ArrayList;
+import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
 
 /**
  * Mutation of individual characters in a string according to some

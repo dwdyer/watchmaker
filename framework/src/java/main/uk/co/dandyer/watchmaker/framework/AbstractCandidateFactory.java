@@ -16,6 +16,7 @@
 package uk.co.dandyer.watchmaker.framework;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -37,7 +38,7 @@ public abstract class AbstractCandidateFactory<T> implements CandidateFactory<T>
     /**
      * Randomly, create an initial population of candidates.  If some
      * control is required over the composition of the initial population,
-     * consider the overloaded {@link #generateInitialPopulation(int,List,Random)}
+     * consider the overloaded {@link #generateInitialPopulation(int,Collection,Random)}
      * method.
      * @param populationSize The number of candidates to randomly create.
      * @param rng The random number generator to use when creating the random
@@ -62,7 +63,7 @@ public abstract class AbstractCandidateFactory<T> implements CandidateFactory<T>
      * the {@link #generateRandomCandidate(Random)} method.
      */
     public List<T> generateInitialPopulation(int populationSize,
-                                             List<T> seedCandidates,
+                                             Collection<T> seedCandidates,
                                              Random rng)
     {
         if (seedCandidates.size() > populationSize)

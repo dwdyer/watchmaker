@@ -15,12 +15,12 @@
 // ============================================================================
 package uk.co.dandyer.watchmaker.framework.selection;
 
-import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
-import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
-import java.util.List;
-import java.util.Random;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import uk.co.dandyer.watchmaker.framework.EvaluatedCandidate;
+import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
 
 /**
  * <p>A selection strategy that is similar to fitness-proportionate selection

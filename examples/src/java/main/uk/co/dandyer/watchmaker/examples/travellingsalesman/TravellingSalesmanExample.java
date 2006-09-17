@@ -24,11 +24,12 @@ import java.util.Random;
 import uk.co.dandyer.maths.random.MersenneTwisterRNG;
 import uk.co.dandyer.maths.stats.PoissonSequence;
 import uk.co.dandyer.maths.PermutationGenerator;
-import uk.co.dandyer.watchmaker.framework.EvolutionEngine;
+import uk.co.dandyer.watchmaker.framework.StandaloneEvolutionEngine;
 import uk.co.dandyer.watchmaker.framework.EvolutionObserver;
 import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
 import uk.co.dandyer.watchmaker.framework.PopulationData;
 import uk.co.dandyer.watchmaker.framework.FitnessEvaluator;
+import uk.co.dandyer.watchmaker.framework.EvolutionEngine;
 import uk.co.dandyer.watchmaker.framework.operators.ListOrderMutation;
 import uk.co.dandyer.watchmaker.framework.selection.TruncationSelection;
 
@@ -309,11 +310,11 @@ public class TravellingSalesmanExample
         List<EvolutionaryOperator<? super List<String>>> pipeline = new ArrayList<EvolutionaryOperator<? super List<String>>>(2);
         pipeline.add(new ListOrderMutation(new PoissonSequence(1.5, rng),
                                            new PoissonSequence(1.5, rng)));
-        EvolutionEngine<List<String>> engine = new EvolutionEngine<List<String>>(new RouteFactory(new LinkedList<String>(DISTANCES.keySet())),
-                                                                                 pipeline,
-                                                                                 new RouteEvaluator(DISTANCES),
-                                                                                 new TruncationSelection(0.5),
-                                                                                 rng);
+        EvolutionEngine<List<String>> engine = new StandaloneEvolutionEngine<List<String>>(new RouteFactory(new LinkedList<String>(DISTANCES.keySet())),
+                                                                                           pipeline,
+                                                                                           new RouteEvaluator(DISTANCES),
+                                                                                           new TruncationSelection(0.5),
+                                                                                           rng);
         engine.setEliteRatio(0.01d); // Preserve the top 1% of each generation.
         engine.addEvolutionObserver(new EvolutionLogger());
         engine.evolve(300, // 300 individuals in the population.

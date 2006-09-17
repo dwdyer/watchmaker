@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Collections;
 import uk.co.dandyer.maths.ConstantSequence;
 import uk.co.dandyer.maths.NumberSequence;
 import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
@@ -58,10 +59,16 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
      * type even when dealing with sub-classes of T.
      */
     @SuppressWarnings("unchecked")
-    public <S extends T> List<S> apply(List<S> population, Random rng)
+    public <S extends T> List<S> apply(List<S> selectedCandidates, Random rng)
     {
-        List<S> result = new ArrayList<S>(population.size());
-        Iterator<S> iterator = population.iterator();
+        // Shuffle the collection before applying each operation so that the
+        // evolution is not influenced by any ordering artifacts from previous
+        // operations.
+        List<S> selectionClone = new ArrayList<S>(selectedCandidates);
+        Collections.shuffle(selectionClone, rng);
+
+        List<S> result = new ArrayList<S>(selectedCandidates.size());
+        Iterator<S> iterator = selectionClone.iterator();
         while (iterator.hasNext())
         {
             S parent1 = iterator.next();
