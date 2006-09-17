@@ -29,7 +29,7 @@ import uk.co.dandyer.watchmaker.framework.SelectionStrategy;
  * numerical fitness values are ignored and only the ordering of the sorted
  * population is considered).</p>
  * <p>Rank selection is implemented in terms of a mapping function ({@link
- * #mapRankToScore()}) and delegation to a fitness-proportionate selector.  The
+ * #mapRankToScore(int, int)}) and delegation to a fitness-proportionate selector.  The
  * mapping function converts ranks into relative fitness scores that are used to
  * drive the delegate selector.</p>
  * @author Daniel Dyer

@@ -65,7 +65,7 @@ public class ListOrderMutation implements EvolutionaryOperator<List<?>>
      * and can include negative values.
      * @param mutationCount A random variable that provides a number
      * of mutations that will be applied to each individual.
-     * @param mutationCount A random variable that provides a number
+     * @param mutationAmount A random variable that provides a number
      * of positions by which to displace an element when mutating.
      */
     public ListOrderMutation(NumberSequence<Integer> mutationCount,
