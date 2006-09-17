@@ -23,10 +23,12 @@ import java.util.Map;
 import java.util.Random;
 import uk.co.dandyer.maths.random.MersenneTwisterRNG;
 import uk.co.dandyer.maths.stats.PoissonSequence;
+import uk.co.dandyer.maths.PermutationGenerator;
 import uk.co.dandyer.watchmaker.framework.EvolutionEngine;
 import uk.co.dandyer.watchmaker.framework.EvolutionObserver;
 import uk.co.dandyer.watchmaker.framework.EvolutionaryOperator;
 import uk.co.dandyer.watchmaker.framework.PopulationData;
+import uk.co.dandyer.watchmaker.framework.FitnessEvaluator;
 import uk.co.dandyer.watchmaker.framework.operators.ListOrderMutation;
 import uk.co.dandyer.watchmaker.framework.selection.TruncationSelection;
 
@@ -316,19 +318,42 @@ public class TravellingSalesmanExample
         engine.addEvolutionObserver(new EvolutionLogger());
         engine.evolve(300, // 300 individuals in the population.
                       100); // 50 generations.
+
     }
 
 
-    private static class EvolutionLogger implements EvolutionObserver<List<String>>
+    /**
+     * This is just here for the curious.  It would take about 3 weeks to brute-force
+     * the 15-city travelling salesman problem on a home computer using this implementation.
+     * However, this is a very naive implementation that could be improved upon (one way
+     * to reduce the search space would be to pick a fixed starting city).
+     */
+    private static void bruteForce()
     {
-        private int generationCount = 0;
-
-        public void populationUpdate(PopulationData<? extends List<String>> data)
+        String[] cities = DISTANCES.keySet().toArray(new String[DISTANCES.size()]);
+        FitnessEvaluator<List<String>> evaluator = new RouteEvaluator(DISTANCES);
+        PermutationGenerator<String> generator = new PermutationGenerator<String>(cities);
+        long totalPermutations = generator.getTotalPermutations();
+        long count = 0;
+        List<String> shortestRoute = null;
+        double shortestDistance = Double.POSITIVE_INFINITY;
+        List<String> currentRoute = new ArrayList<String>(cities.length);
+        while (generator.hasMore())
         {
-            System.out.println("Generation " + generationCount + ": " + data.getBestCandidateFitness() + "km");
-            System.out.println("  " + stringListToString(data.getBestCandidate()));
-            generationCount++;
+            List<String> route = generator.nextPermutationAsList(currentRoute);
+            double distance = evaluator.getFitness(route);
+            if (distance < shortestDistance)
+            {
+                shortestDistance = distance;
+                shortestRoute = new ArrayList<String>(route);
+            }
+            ++count;
+            if (count % 1000000 == 0)
+            {
+                System.out.println(((double) count) / totalPermutations * 100 + "% done");
+            }
         }
+        System.out.println("Brute force shortest route: " + stringListToString(shortestRoute));
     }
 
 
@@ -343,4 +368,16 @@ public class TravellingSalesmanExample
         return buffer.toString();
     }
 
+
+    private static class EvolutionLogger implements EvolutionObserver<List<String>>
+    {
+        private int generationCount = 0;
+
+        public void populationUpdate(PopulationData<? extends List<String>> data)
+        {
+            System.out.println("Generation " + generationCount + ": " + data.getBestCandidateFitness() + "km");
+            System.out.println("  " + stringListToString(data.getBestCandidate()));
+            generationCount++;
+        }
+    }
 }

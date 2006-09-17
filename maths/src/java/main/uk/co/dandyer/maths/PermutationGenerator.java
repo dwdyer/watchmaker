@@ -16,6 +16,8 @@
 package uk.co.dandyer.maths;
 
 import java.lang.reflect.Array;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Permutation generator for generating all permutations for all sets up to
@@ -23,10 +25,10 @@ import java.lang.reflect.Array;
  * the number of permutations of a set of size n is n!.  For a set of 21
  * items, the number of permutations is bigger than can be stored in Java's
  * 64-bit long integer data type.  Therefore it seems unlikely that you
- * could ever process all of the permutations in a reasonable time frame.
- * For this reason the implementation is optimised for sets of size 20 or
- * less (this affords better performance by allowing primitive numeric
- * types to be used for calculations rather than
+ * could ever generate, let alone process, all of the permutations in a
+ * reasonable time frame.  For this reason the implementation is optimised for
+ * sets of size 20 or less (this affords better performance by allowing primitive
+ * numeric types to be used for calculations rather than
  * {@link java.math.BigInteger}.
  * @author Daniel Dyer (modified from the original version written by Michael
  * Gilleland of Merriam Park Software -
@@ -90,10 +92,109 @@ public class PermutationGenerator<T>
 
 
     /**
-     * Generate the next permutation.  The algorithm is from Kenneth H. Rosen, Discrete
-     * Mathematics and Its Applications, 2nd edition (NY: McGraw-Hill, 1991), p. 284)
+     * Generate the next permutation and return an array containing
+     * the elements in the appropriate order.
+     * @see #nextPermutationAsArray(Object[])
+     * @see #nextPermutationAsList()
      */
-    public T[] next()
+    @SuppressWarnings("unchecked")
+    public T[] nextPermutationAsArray()
+    {
+        generateNextPermutationIndices();
+        // Generate actual permutation.
+        T[] permutation = (T[]) Array.newInstance(elements.getClass().getComponentType(),
+                                                  permutationIndices.length);
+        for (int i = 0; i < permutationIndices.length; i++)
+        {
+            permutation[i] = elements[permutationIndices[i]];
+        }
+        return permutation;
+    }
+
+
+    /**
+     * Generate the next permutation and return an array containing
+     * the elements in the appropriate order.  This overloaded method
+     * allows the caller to provide an array that will be used and returned.
+     * The purpose of this is to improve performance when iterating over
+     * permutations.  If the {@link #nextPermutationAsArray()} method is
+     * used it will create a new array every time.  When iterating over
+     * permutations this will result in lots of short-lived objects that
+     * have to be garbage collected.  This method allows a single array
+     * instance to be reused in such circumstances.
+     * @param destination Provides an array to use to create the
+     * permutation.  The specified array must be the same length as a
+     * permutation.  This is the array that will be returned, once
+     * it has been filled with the elements in the appropriate order.
+     */
+    public T[] nextPermutationAsArray(T[] destination)
+    {
+        if (destination.length != elements.length)
+        {
+            throw new IllegalArgumentException("Destination array must be the same length as permutations.");
+        }
+        generateNextPermutationIndices();
+        // Generate actual permutation.
+        for (int i = 0; i < permutationIndices.length; i++)
+        {
+            destination[i] = elements[permutationIndices[i]];
+        }
+        return destination;
+    }
+
+
+    /**
+     * Generate the next permutation and return a list containing
+     * the elements in the appropriate order.
+     * @see #nextPermutationAsList(java.util.List)
+     * @see #nextPermutationAsArray()
+     */
+    public List<T> nextPermutationAsList()
+    {
+        generateNextPermutationIndices();
+        // Generate actual permutation.
+        List<T> permutation = new ArrayList<T>(elements.length);
+        for (int i : permutationIndices)
+        {
+            permutation.add(elements[i]);
+        }
+        return permutation;
+    }
+
+
+    /**
+     * Generate the next permutation and return a list containing
+     * the elements in the appropriate order.  This overloaded method
+     * allows the caller to provide a list that will be used and returned.
+     * The purpose of this is to improve performance when iterating over
+     * permutations.  If the {@link #nextPermutationAsList()} method is
+     * used it will create a new list every time.  When iterating over
+     * permutations this will result in lots of short-lived objects that
+     * have to be garbage collected.  This method allows a single list
+     * instance to be reused in such circumstances.
+     * @param destination Provides a list to use to create the
+     * permutation.  This is the list that will be returned, once
+     * it has been filled with the elements in the appropriate order.
+     */
+    public List<T> nextPermutationAsList(List<T> destination)
+    {
+        generateNextPermutationIndices();
+        // Generate actual permutation.
+        destination.clear();
+        for (int i : permutationIndices)
+        {
+            destination.add(elements[i]);
+        }
+        return destination;
+    }
+
+
+    /**
+     * Generate the indices into the elements array for the next permutation.  The
+     * algorithm is from Kenneth H. Rosen, Discrete Mathematics and its Applications,
+     * 2nd edition (NY: McGraw-Hill, 1991), p. 284)
+     */
+    private void generateNextPermutationIndices()
     {
         if (remainingPermutations < totalPermutations)
         {
@@ -131,14 +232,5 @@ public class PermutationGenerator<T>
             }
         }
         --remainingPermutations;
-
-        // Generate actual permutation.
-        T[] permutation = (T[]) Array.newInstance(elements.getClass().getComponentType(),
-                                                  permutationIndices.length);
-        for (int i = 0; i < permutationIndices.length; i++)
-        {
-            permutation[i] = elements[permutationIndices[i]];
-        }
-        return permutation;
     }
 }

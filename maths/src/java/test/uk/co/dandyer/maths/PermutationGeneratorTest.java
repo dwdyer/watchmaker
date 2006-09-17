@@ -30,14 +30,14 @@ public class PermutationGeneratorTest
         assert generator.getTotalPermutations() == 6 : "Possible permutations should be 6.";
         assert generator.getRemainingPermutations() == 6: "Remaining combinations should be 6.";
 
-        String[] permutation1 = generator.next();
+        String[] permutation1 = generator.nextPermutationAsArray();
         assert permutation1.length == 3 : "Permutation length should be 3.";
         assert generator.getRemainingPermutations() == 5: "Remaining combinations should be 5.";
         assert !permutation1[0].equals(permutation1[1]) : "Permutation elements should be different.";
         assert !permutation1[0].equals(permutation1[2]) : "Permutation elements should be different.";
         assert !permutation1[1].equals(permutation1[2]) : "Permutation elements should be different.";
 
-        String[] permutation2 = generator.next();
+        String[] permutation2 = generator.nextPermutationAsArray();
         assert permutation2.length == 3 : "Permutation length should be 3.";
         assert generator.getRemainingPermutations() == 4: "Remaining combinations should be 4.";
         // Make sure this combination is different from the previous one.

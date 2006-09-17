@@ -30,19 +30,19 @@ public class CombinationGeneratorTest
         assert generator.getTotalCombinations() == 3 : "Possible combinations should be 3.";
         assert generator.getRemainingCombinations() == 3: "Remaining combinations should be 3.";
 
-        String[] combination1 = generator.next();
+        String[] combination1 = generator.nextCombinationAsArray();
         assert combination1.length == 2 : "Combination length should be 2.";
         assert generator.getRemainingCombinations() == 2: "Remaining combinations should be 2.";
         assert !combination1[0].equals(combination1[1]) : "Combination elements should be different.";
 
-        String[] combination2 = generator.next();
+        String[] combination2 = generator.nextCombinationAsArray();
         assert combination2.length == 2 : "Combination length should be 2.";
         assert generator.getRemainingCombinations() == 1: "Remaining combinations should be 1.";
         // Make sure this combination is different from the previous one.
         assert !combination2[0].equals(combination2[1]) : "Combination elements should be different.";
         assert !(combination1[0] + combination1[1]).equals(combination2[0] + combination2[1]) : "Combination should be different from previous one.";
 
-        String[] combination3 = generator.next();
+        String[] combination3 = generator.nextCombinationAsArray();
         assert combination3.length == 2 : "Combination length should be 2.";
         assert generator.getRemainingCombinations() == 0: "Remaining combinations should be 0.";
         // Make sure this combination is different from the others generated.
