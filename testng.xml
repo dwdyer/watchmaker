@@ -4,19 +4,19 @@
 
   <test name="Evolution Framework" >
     <packages>
-      <package name="uk.co.dandyer.watchmaker.framework.*" />
+      <package name="org.uncommons.watchmaker.framework.*" />
     </packages>
   </test>
 
   <test name="Maths Module" >
     <packages>
-      <package name="uk.co.dandyer.maths.*" />
+      <package name="org.uncommons.maths.*" />
     </packages>
   </test>
 
   <test name="Examples" >
     <packages>
-      <package name="uk.co.dandyer.watchmaker.examples.*" />
+      <package name="org.uncommons.watchmaker.examples.*" />
     </packages>
   </test>
 
