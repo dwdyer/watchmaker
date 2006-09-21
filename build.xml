@@ -207,7 +207,7 @@
     <testng classpathref="test.path"
             outputdir="${test-results.dir}"
             haltonfailure="true"
-            reporter="uk.co.dandyer.reportng.HTMLReporter">
+            reporter="org.uncommons.reportng.HTMLReporter">
       <xmlfileset dir="." includes="testng.xml"/>
     </testng>
   </target>
