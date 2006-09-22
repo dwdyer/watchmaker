@@ -23,6 +23,7 @@ import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
+import org.uncommons.watchmaker.framework.factories.StringFactory;
 import org.uncommons.watchmaker.framework.operators.StringCrossover;
 import org.uncommons.watchmaker.framework.operators.StringMutation;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;

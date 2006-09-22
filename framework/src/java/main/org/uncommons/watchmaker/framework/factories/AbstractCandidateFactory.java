@@ -13,13 +13,14 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.framework;
+package org.uncommons.watchmaker.framework.factories;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.watchmaker.framework.CandidateFactory;
 
 /**
  * @author Daniel Dyer

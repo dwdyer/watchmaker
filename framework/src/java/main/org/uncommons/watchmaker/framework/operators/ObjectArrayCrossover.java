@@ -26,7 +26,7 @@ import org.uncommons.maths.NumberSequence;
  * arrays of reference types.
  * @author Daniel Dyer
  */
-public class ObjectArrayCrossover extends AbstractCrossover<Object[]>
+public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
 {
     /**
      * Default is single-point cross-over.
@@ -55,19 +55,19 @@ public class ObjectArrayCrossover extends AbstractCrossover<Object[]>
     }
 
 
-    protected List<Object[]> reproduce(Object[] parent1,
-                                       Object[] parent2,
-                                       int numberOfCrossoverPoints,
-                                       Random rng)
+    protected List<T[]> reproduce(T[] parent1,
+                                  T[] parent2,
+                                  int numberOfCrossoverPoints,
+                                  Random rng)
     {
         if (parent1.length != parent2.length)
         {
             throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
         }
         // Create the most specific-type arrays possible.
-        Object[] offspring1 = (Object[]) Array.newInstance(parent1.getClass().getComponentType(), parent1.length);
+        T[] offspring1 = (T[]) Array.newInstance(parent1.getClass().getComponentType(), parent1.length);
         System.arraycopy(parent1, 0, offspring1, 0, parent1.length);
-        Object[] offspring2 = (Object[]) Array.newInstance(parent2.getClass().getComponentType(), parent2.length);
+        T[] offspring2 = (T[]) Array.newInstance(parent2.getClass().getComponentType(), parent2.length);
         System.arraycopy(parent2, 0, offspring2, 0, parent2.length);
         // Apply as many cross-overs as required.
         Object[] temp = new Object[parent1.length];
@@ -78,7 +78,7 @@ public class ObjectArrayCrossover extends AbstractCrossover<Object[]>
             System.arraycopy(offspring2, 0, offspring1, 0, crossoverIndex);
             System.arraycopy(temp, 0, offspring2, 0, crossoverIndex);
         }
-        List<Object[]> result = new ArrayList<Object[]>(2);
+        List<T[]> result = new ArrayList<T[]>(2);
         result.add(offspring1);
         result.add(offspring2);
         return result;

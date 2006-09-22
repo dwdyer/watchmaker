@@ -230,8 +230,8 @@
         <include name="org/uncommons/**"/>
       </fileset>
       <group title="Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
-      <group title="Maths Library" packages="org.uncommons.maths:org.uncommons.maths.*"/>
-      <group title="Example Applications" packages="org.uncommons.watchmaker.examples.*"/>
+      <group title="Example Evolutionary Algorithms" packages="org.uncommons.watchmaker.examples.*"/>
+      <group title="Uncommons Maths" packages="org.uncommons.maths:org.uncommons.maths.*"/>
       <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
     </javadoc>
   </target>

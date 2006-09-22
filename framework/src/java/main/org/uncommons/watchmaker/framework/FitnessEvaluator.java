@@ -24,7 +24,7 @@ public interface FitnessEvaluator<T>
     /**
      * Calculates a fitness score for the given candidate.  Whether
      * a higher score indicates a fitter candidate or not depends on
-     * whether the fitness scores are normalised (@see #isFitnessNormalised).
+     * whether the fitness scores are normalised (see {@link #isFitnessNormalised}).
      * @param candidate
      */
     double getFitness(T candidate);

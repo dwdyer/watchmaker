@@ -21,7 +21,7 @@ import java.util.Random;
 
 /**
  * Creates new populations of candidates.  For most implementations it
- * will be easiest just to extend {@link AbstractCandidateFactory} and
+ * will be easiest just to extend {@link org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory} and
  * implement the method to generate a single random candidate. 
  * @author Daniel Dyer
  */

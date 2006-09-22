@@ -34,6 +34,7 @@ public class StringCrossover extends AbstractCrossover<String>
         this(1);
     }
 
+    
     /**
      * Cross-over with a fixed number of cross-over points.
      */
@@ -41,6 +42,7 @@ public class StringCrossover extends AbstractCrossover<String>
     {
         super(crossoverPoints);
     }
+
 
     /**
      * Cross-over with a variable number of cross-over points.

@@ -13,32 +13,33 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.examples.travellingsalesman;
+package org.uncommons.watchmaker.framework.factories;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.watchmaker.framework.AbstractCandidateFactory;
 
 /**
- * A route is a list of cities (each city is represented as a String containing
- * its name) in the order that they must be visited.
+ * Generates random candidates from a set of elements.  Each candidate is a random
+ * permutation of the full set of elements.
  * @author Daniel Dyer
+ * @param <T> The element type of the arrays created.
  */
-public class RouteFactory extends AbstractCandidateFactory<List<String>>
+public class ObjectArrayPermutationFactory<T>  extends AbstractCandidateFactory<T[]>
 {
-    private final List<String> cities;
+    private final T[] elements;
 
-    public RouteFactory(List<String> cities)
+    public ObjectArrayPermutationFactory(T[] elements)
     {
-        this.cities = cities;
+        this.elements = elements;
     }
 
-    protected List<String> generateRandomCandidate(Random rng)
+    protected T[] generateRandomCandidate(Random rng)
     {
-        List<String> candidate = new ArrayList<String>(cities);
-        Collections.shuffle(candidate, rng);
-        return candidate;
+        T[] candidate = elements.clone();
+        List<T> list = Arrays.asList(candidate);
+        Collections.shuffle(list, rng);
+        return list.toArray(candidate);
     }
 }

@@ -24,12 +24,14 @@ import java.util.Random;
 import org.uncommons.maths.PermutationGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.stats.PoissonSequence;
+import org.uncommons.watchmaker.framework.CandidateFactory;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
+import org.uncommons.watchmaker.framework.factories.ListPermutationFactory;
 import org.uncommons.watchmaker.framework.operators.ListOrderMutation;
 import org.uncommons.watchmaker.framework.selection.TruncationSelection;
 
@@ -312,7 +314,8 @@ public class TravellingSalesmanExample
         List<EvolutionaryOperator<? super List<String>>> pipeline = new ArrayList<EvolutionaryOperator<? super List<String>>>(2);
         pipeline.add(new ListOrderMutation(new PoissonSequence(1.5, rng),
                                            new PoissonSequence(1.5, rng)));
-        EvolutionEngine<List<String>> engine = new StandaloneEvolutionEngine<List<String>>(new RouteFactory(new LinkedList<String>(DISTANCES.keySet())),
+        CandidateFactory<List<String>> candidateFactory = new ListPermutationFactory<String>(new LinkedList<String>(DISTANCES.keySet()));
+        EvolutionEngine<List<String>> engine = new StandaloneEvolutionEngine<List<String>>(candidateFactory,
                                                                                            pipeline,
                                                                                            new RouteEvaluator(DISTANCES),
                                                                                            new TruncationSelection(0.5),

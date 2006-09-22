@@ -20,7 +20,11 @@ import java.util.Map;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
- * The fitness score of a route is the total distance (in km).
+ * Fitness evalator that measures the total distance of a route in the travelling salesman
+ * problem.  The fitness score of a route is the total distance (in km).  A route
+ * is represented as a list of cities in the order that they will be visited.
+ * The last leg of the journey is from the last city in the list back to the
+ * first.
  * @author Daniel Dyer
  */
 public class RouteEvaluator implements FitnessEvaluator<List<String>>
