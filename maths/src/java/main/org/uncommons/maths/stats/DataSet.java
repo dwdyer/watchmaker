@@ -42,7 +42,7 @@ public interface DataSet
 
     /**
      * The geometric mean of an n-element set is the nth-root of
-     * the sum of all the elements.
+     * the product of all the elements.
      * @see #getArithmeticMean()
      */
     double getGeometricMean();
