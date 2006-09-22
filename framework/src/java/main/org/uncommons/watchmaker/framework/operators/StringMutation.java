@@ -32,10 +32,10 @@ public class StringMutation implements EvolutionaryOperator<String>
 
 
     @SuppressWarnings("unchecked")
-    public <S extends String> List<S> apply(List<S> population, Random rng)
+    public <S extends String> List<S> apply(List<S> selectedCandidates, Random rng)
     {
-        List<S> mutatedPopulation = new ArrayList<S>(population.size());
-        for (String s : population)
+        List<S> mutatedPopulation = new ArrayList<S>(selectedCandidates.size());
+        for (String s : selectedCandidates)
         {
             mutatedPopulation.add((S) mutateString(s, rng));
         }
@@ -45,7 +45,7 @@ public class StringMutation implements EvolutionaryOperator<String>
 
     private String mutateString(String s, Random rng)
     {
-        StringBuffer buffer = new StringBuffer(s);
+        StringBuilder buffer = new StringBuilder(s);
         for (int i = 0; i < buffer.length(); i++)
         {
             if (rng.nextDouble() <= mutationProbability)

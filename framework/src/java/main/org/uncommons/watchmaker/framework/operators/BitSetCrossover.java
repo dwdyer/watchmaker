@@ -62,9 +62,8 @@ public class BitSetCrossover extends AbstractCrossover<BitSet>
         {
             throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
         }
-        BitSet offspring1 = new BitSet(parent1.length());
-        offspring1.or(parent1);
-        BitSet offspring2 = new BitSet(parent2.length());
+        BitSet offspring1 = (BitSet) parent1.clone();
+        BitSet offspring2 = (BitSet) parent2.clone();
         offspring2.or(parent2);
         // Apply as many cross-overs as required.
         for (int i = 0; i < numberOfCrossoverPoints; i++)

@@ -34,7 +34,7 @@
   <property name="dist.dir" location="./dist"/>
 
   <property name="docs.dir" location="./docs"/>
-  <property name="api.dir" location="./www/api" />
+  <property name="api.dir" location="${docs.dir}/api" />
   <property name="test-results.dir" location="${docs.dir}/test-results" />
 
   <!-- Classpath for compilation and tests. -->
