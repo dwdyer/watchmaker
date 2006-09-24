@@ -33,6 +33,10 @@ public class StringEvaluator implements FitnessEvaluator<String>
     }
 
 
+    /**
+     * Assigns one "fitness point" for every character in the candidate
+     * string that matches the corresponding position in the target string.
+     */
     public double getFitness(String candidate)
     {
         int matches = 0;
