@@ -44,6 +44,8 @@
     </fileset>
   </path>
 
+  <property name="version" value="0.1"/>
+
 
 <!-- ==================================================================
      MACROS
@@ -180,14 +182,19 @@
 
   <!-- Copy all necessary files to distribution directory. -->
   <target name="dist" depends="maths, framework, examples" description="Generate the project distribution." >
-    <mkdir dir="${dist.dir}" />
+    <mkdir dir="${dist.dir}/watchmaker-framework-${version}" />
     <!-- Copy all application JARs and 3rd party libraries. -->
-    <copy todir="${dist.dir}" flatten="true">
+    <copy todir="${dist.dir}/watchmaker-framework-${version}" flatten="true">
       <fileset dir="." includes="**/${build.dir}/*.jar" />
       <fileset dir="." includes="${lib.runtime}/*.jar" />
     </copy>
+    <tar destfile="${dist.dir}/watchmaker-framework-${version}.tgz"
+         compression="gzip">
+      <tarfileset dir="${dist.dir}">
+        <include name="**/*" />
+      </tarfileset>
+    </tar>
   </target>
-
 
 <!-- ==================================================================
      TARGETS FOR GENERATING TEST REPORTS & DOCUMENTATION
@@ -200,7 +207,7 @@
       <dirset dir=".">
         <include name="**/${classes.dir}/test" />
       </dirset>
-      <fileset dir="${dist.dir}" includes="*.jar"/>
+      <fileset dir="${dist.dir}/watchmaker-framework-${version}" includes="*.jar"/>
       <path refid="base.path" />
     </path>
     <taskdef resource="testngtasks" classpathref="test.path"/>

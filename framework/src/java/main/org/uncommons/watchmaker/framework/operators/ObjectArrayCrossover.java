@@ -55,6 +55,7 @@ public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
     }
 
 
+    @SuppressWarnings("unchecked")
     protected List<T[]> reproduce(T[] parent1,
                                   T[] parent2,
                                   int numberOfCrossoverPoints,
