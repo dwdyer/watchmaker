@@ -35,13 +35,14 @@ import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
  */
 public class StringsExample
 {
-    private static final char[] ALPHABET = new char[26];
+    private static final char[] ALPHABET = new char[27];
     static
     {
-        for (int i = 0; i < ALPHABET.length; i++)
+        for (char c = 'A'; c <= 'Z'; c++)
         {
-            ALPHABET[i] = (char) (i + 'a');
+            ALPHABET[c - 'A'] = c;
         }
+        ALPHABET[26] = ' ';
     }
 
     private StringsExample()
@@ -51,7 +52,7 @@ public class StringsExample
 
     public static void main(String args[])
     {
-        String target = args[0].toLowerCase();
+        String target = args.length == 0 ? "HELLO WORLD" : convertArgs(args);
         List<EvolutionaryOperator<? super String>> pipeline = new ArrayList<EvolutionaryOperator<? super String>>(2);
         pipeline.add(new StringMutation(ALPHABET, 0.02d));
         pipeline.add(new StringCrossover());
@@ -61,9 +62,24 @@ public class StringsExample
                                                                                new RouletteWheelSelection(),
                                                                                new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
+        engine.setEliteRatio(0.05);
         String result = engine.evolve(100, // 100 individuals in the population.
                                       target.length(), // Perfect fitness score.
                                       120000); // Two minute timeout.
+    }
+
+    private static String convertArgs(String[] args)
+    {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < args.length; i++)
+        {
+            result.append(args[i]);
+            if (i < args.length - 1)
+            {
+                result.append(' ');
+            }
+        }
+        return result.toString().toUpperCase();
     }
 
 

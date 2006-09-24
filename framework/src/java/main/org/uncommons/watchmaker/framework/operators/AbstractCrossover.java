@@ -72,9 +72,18 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
         while (iterator.hasNext())
         {
             S parent1 = iterator.next();
-            S parent2 = iterator.next();
-            int crossoverPoints = crossoverPointsVariable.nextValue();
-            result.addAll((Collection<? extends S>) reproduce(parent1, parent2, crossoverPoints, rng));
+            if (!iterator.hasNext())
+            {
+                // If we have an odd number of selected candidates, we can't pair up
+                // the last one so just leave it unmodified.
+                result.add(parent1);
+            }
+            else
+            {
+                S parent2 = iterator.next();
+                int crossoverPoints = crossoverPointsVariable.nextValue();
+                result.addAll((Collection<? extends S>) reproduce(parent1, parent2, crossoverPoints, rng));
+            }
         }
         return result;
     }
