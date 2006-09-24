@@ -61,9 +61,9 @@ public class StringsExample
                                                                                new RouletteWheelSelection(),
                                                                                new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
-        engine.evolve(100, // 100 individuals in the population.
-                      target.length(), // Perfect fitness score.
-                      120000); // Two minute timeout.
+        String result = engine.evolve(100, // 100 individuals in the population.
+                                      target.length(), // Perfect fitness score.
+                                      120000); // Two minute timeout.
     }
 
 
