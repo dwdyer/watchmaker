@@ -322,8 +322,11 @@ public class TravellingSalesmanExample
                                                                                            rng);
         engine.setEliteRatio(0.01d); // Preserve the top 1% of each generation.
         engine.addEvolutionObserver(new EvolutionLogger());
+        long startTime = System.currentTimeMillis();
         engine.evolve(300, // 300 individuals in the population.
                       100); // 100 generations.
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        System.out.println("Elapsed time: " + elapsedTime + "ms.");
     }
 
 

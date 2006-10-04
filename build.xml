@@ -110,9 +110,10 @@
        derived from the module name. -->
   <macrodef name="jar.module">
     <attribute name="module.name"/>
+    <attribute name="jar.name" default="@{module.name}.jar"/>
     <element name="additionalcontents" optional="true"/>
     <sequential>
-      <jar destfile="./@{module.name}/${build.dir}/@{module.name}.jar">
+      <jar destfile="./@{module.name}/${build.dir}/@{jar.name}">
         <fileset dir="./@{module.name}/${classes.dir}/main"/>
         <additionalcontents/>
       </jar>
@@ -141,7 +142,7 @@
   <!-- Builds the maths module. -->
   <target name="maths" description="Build the maths module.">
     <compile.module module.name="maths" />
-    <jar.module module.name="maths" />
+    <jar.module module.name="maths" jar.name="uncommons-maths.jar"/>
   </target>
 
 
@@ -149,13 +150,13 @@
   <target name="framework" depends="maths" description="Build the framework module.">
     <compile.module module.name="framework">
       <moduleclasspath>
-        <path location="./maths/${build.dir}/maths.jar" />
+        <path location="./maths/${build.dir}/uncommons-maths.jar" />
       </moduleclasspath>
     </compile.module>
-    <jar.module module.name="framework">
+    <jar.module module.name="framework" jar.name="watchmaker-framework.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="maths.jar"/>
+          <attribute name="Class-Path" value="uncommons-maths.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -166,14 +167,14 @@
   <target name="examples" depends="framework" description="Build the examples.">
     <compile.module module.name="examples">
       <moduleclasspath>
-        <path location="./framework/${build.dir}/framework.jar" />
-        <path location="./maths/${build.dir}/maths.jar" />
+        <path location="./framework/${build.dir}/watchmaker-framework.jar" />
+        <path location="./maths/${build.dir}/uncommons-maths.jar" />
       </moduleclasspath>
     </compile.module>
-    <jar.module module.name="examples">
+    <jar.module module.name="examples" jar.name="watchmaker-examples.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="framework.jar maths.jar"/>
+          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-maths.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>

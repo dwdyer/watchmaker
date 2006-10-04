@@ -17,6 +17,8 @@ package org.uncommons.watchmaker.framework;
 
 /**
  * Calculates the fitness score of a given candidate of the appropriate type.
+ * Fitness evaluations may be executed concurrently and therefore any access
+ * to mutable shared state should be properly synchronised.
  * @author Daniel Dyer
  */
 public interface FitnessEvaluator<T>

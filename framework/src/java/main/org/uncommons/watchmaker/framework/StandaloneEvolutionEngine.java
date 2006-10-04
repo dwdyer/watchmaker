@@ -19,14 +19,34 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Generic evolutionary algorithm engine for evolution that runs on a single host.
+ * Generic evolutionary algorithm engine for evolution that runs
+ * on a single host.  Includes support for parallel fitness evaluations
+ * on multi-processor and multi-core machines.
  * @author Daniel Dyer
  * @param <T> The type of entity that is to be evolved.
  */
 public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
+    private final int threadCount = Runtime.getRuntime().availableProcessors();
+
+    /**
+     * This thread pool performs concurrent fitness evaluations (on hosts that
+     * have more than one processor).
+     */
+    private final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(threadCount,
+                                                                         threadCount,
+                                                                         60,
+                                                                         TimeUnit.SECONDS,
+                                                                         new LinkedBlockingQueue<Runnable>(),
+                                                                         new DaemonThreadFactory());
+
     private final FitnessEvaluator<? super T> fitnessEvaluator;
 
     public StandaloneEvolutionEngine(CandidateFactory<? extends T> candidateFactory,
@@ -37,7 +57,10 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     {
         super(candidateFactory, evolutionPipeline, selectionStrategy, rng);
         this.fitnessEvaluator = fitnessEvaluator;
+        int threadCount = threadPool.prestartAllCoreThreads();
+        System.out.println("Standalone evolution engine initialised with " + threadCount + " threads.");
     }
+
 
     /**
      * Takes a population, assigns a fitness score to each member and returns
@@ -47,12 +70,31 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      */
     protected List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population)
     {
-        List<EvaluatedCandidate<T>> evaluatedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());
-        for (T candidate : population)
+        List<EvaluatedCandidate<T>> evaluatedPopulation
+                = Collections.synchronizedList(new ArrayList<EvaluatedCandidate<T>>(population.size()));
+
+        // Divide the required number of fitness evaluations equally among the
+        // available processors and coordinate the threads so that we do not
+        // proceed until all threads have finished processing.
+        try
         {
-            evaluatedPopulation.add(new EvaluatedCandidate<T>(candidate,
-                                                              fitnessEvaluator.getFitness(candidate)));
+            CountDownLatch latch = new CountDownLatch(threadCount);
+            int subListSize = population.size() / threadCount;
+            for (int i = 0; i < threadCount; i++)
+            {
+                int fromIndex = i * subListSize;
+                int toIndex = i < threadCount -1 ? fromIndex + subListSize : population.size();
+                List<T> subList = population.subList(fromIndex, toIndex);
+                threadPool.execute(new FitnessEvalutationTask(subList, evaluatedPopulation, latch));
+            }
+            latch.await();
         }
+        catch (InterruptedException ex)
+        {
+            throw new IllegalStateException(ex);
+        }
+        assert evaluatedPopulation.size() == population.size() : "Wrong number of evaluated candidates.";
+
         // Sort candidates in descending order according to fitness.
         if (fitnessEvaluator.isFitnessNormalised()) // Descending values for normalised fitness.
         {
@@ -63,5 +105,52 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
             Collections.sort(evaluatedPopulation);
         }
         return evaluatedPopulation;
+    }
+
+
+    /**
+     * Thread factory that creates daemon threads for use by the thread pool.
+     */
+    private static final class DaemonThreadFactory implements ThreadFactory
+    {
+        private static int threadCount = 0;
+
+        public Thread newThread(Runnable runnable)
+        {
+            Thread thread = new Thread(runnable, "EvolutionEngine-" + threadCount++);
+            thread.setDaemon(true);
+            return thread;
+        }
+    }
+
+
+    /**
+     * Runnable task for performing parallel fitness evaluations.
+     */
+    private final class FitnessEvalutationTask implements Runnable
+    {
+        private final List<T> candidates;
+        private final List<EvaluatedCandidate<T>> evaluatedPopulation;
+        private final CountDownLatch latch;
+
+        public FitnessEvalutationTask(List<T> candidates,
+                                      List<EvaluatedCandidate<T>> evaluatedPopulation,
+                                      CountDownLatch latch)
+        {
+            this.candidates = candidates;
+            this.evaluatedPopulation = evaluatedPopulation;
+            this.latch = latch;
+        }
+
+
+        public void run()
+        {
+            for (T candidate : candidates)
+            {
+                evaluatedPopulation.add(new EvaluatedCandidate<T>(candidate,
+                                                                  fitnessEvaluator.getFitness(candidate)));
+            }
+            latch.countDown();
+        }
     }
 }
