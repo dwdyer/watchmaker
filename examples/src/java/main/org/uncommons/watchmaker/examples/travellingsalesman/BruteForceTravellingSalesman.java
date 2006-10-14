@@ -51,11 +51,12 @@ public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
                 shortestRoute = new ArrayList<String>(route);
             }
             ++count;
-            if (count % 1000000 == 0)
+            if (count % 1000 == 0)
             {
                 progressListener.updateProgress(((double) count) / totalPermutations * 100);
             }
         }
+        progressListener.updateProgress(100); // Finished.
         return shortestRoute;
     }
 }

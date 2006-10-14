@@ -74,7 +74,7 @@ class StrategyPanel extends JPanel
     }
 
 
-    private static class EvolutionPanel extends JPanel
+    private static final class EvolutionPanel extends JPanel
     {
         private JLabel populationLabel;
         private JSpinner populationSpinner;
@@ -87,7 +87,7 @@ class StrategyPanel extends JPanel
             JPanel innerPanel = new JPanel(new SpringLayout());
 
             populationLabel = new JLabel("Population Size: ");
-            populationSpinner = new JSpinner(new SpinnerNumberModel(300, 1, 10000, 1));
+            populationSpinner = new JSpinner(new SpinnerNumberModel(300, 2, 10000, 1));
             populationLabel.setLabelFor(populationSpinner);
             innerPanel.add(populationLabel);
             innerPanel.add(populationSpinner);
