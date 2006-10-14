@@ -63,9 +63,9 @@ public class StringsExample
                                                                                new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
         engine.setEliteRatio(0.05);
-        String result = engine.evolve(100, // 100 individuals in the population.
-                                      target.length(), // Perfect fitness score.
-                                      120000); // Two minute timeout.
+        engine.evolve(100, // 100 individuals in the population.
+                      target.length(), // Perfect fitness score.
+                      120000); // Two minute timeout.
     }
 
     private static String convertArgs(String[] args)

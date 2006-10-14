@@ -17,6 +17,7 @@ package org.uncommons.maths;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -41,6 +42,11 @@ public class PermutationGenerator<T>
     private long remainingPermutations;
     private long totalPermutations;
 
+
+    /**
+     * Permutation generator that generates all possible orderings of
+     * the elements in the specified set.
+     */
     public PermutationGenerator(T[] elements)
     {
         if (elements.length < 1 || elements.length > 20)
@@ -51,6 +57,17 @@ public class PermutationGenerator<T>
         permutationIndices = new int[elements.length];
         totalPermutations = Maths.factorial(elements.length);
         reset();
+    }
+
+
+    /**
+     * Permutation generator that generates all possible orderings of
+     * the elements in the specified set.
+     */
+    @SuppressWarnings("unchecked")
+    public PermutationGenerator(Collection<T> elements)
+    {
+        this(elements.toArray((T[]) new Object[elements.size()]));
     }
 
 

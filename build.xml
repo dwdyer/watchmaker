@@ -163,18 +163,26 @@
   </target>
 
 
-  <!-- Builds the examples JAR, which depends on the framework module. -->
-  <target name="examples" depends="framework" description="Build the examples.">
+  <!-- Builds the GUI module. -->
+  <target name="gui" description="Build the GUI module.">
+    <compile.module module.name="gui" />
+    <jar.module module.name="gui" jar.name="uncommons-gui.jar"/>
+  </target>
+
+
+  <!-- Builds the examples JAR, which depends on each of the other modules. -->
+  <target name="examples" depends="framework,gui" description="Build the examples.">
     <compile.module module.name="examples">
       <moduleclasspath>
         <path location="./framework/${build.dir}/watchmaker-framework.jar" />
         <path location="./maths/${build.dir}/uncommons-maths.jar" />
+        <path location="./gui/${build.dir}/uncommons-gui.jar" />
       </moduleclasspath>
     </compile.module>
     <jar.module module.name="examples" jar.name="watchmaker-examples.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-maths.jar"/>
+          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-maths.jar uncommons-gui.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -182,7 +190,7 @@
 
 
   <!-- Copy all necessary files to distribution directory. -->
-  <target name="dist" depends="maths, framework, examples" description="Generate the project distribution." >
+  <target name="dist" depends="maths, framework, gui, examples" description="Generate the project distribution." >
     <mkdir dir="${dist.dir}/watchmaker-framework-${version}" />
     <!-- Copy all application JARs and 3rd party libraries. -->
     <copy todir="${dist.dir}/watchmaker-framework-${version}" flatten="true">

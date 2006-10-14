@@ -16,7 +16,6 @@
 package org.uncommons.watchmaker.examples.travellingsalesman;
 
 import java.util.List;
-import java.util.Map;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
@@ -29,24 +28,19 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
  */
 public class RouteEvaluator implements FitnessEvaluator<List<String>>
 {
-    private final Map<String, Map<String, Integer>> distances;
-
-    public RouteEvaluator(Map<String, Map<String, Integer>> distances)
-    {
-        this.distances = distances;
-    }
-
     public double getFitness(List<String> candidate)
     {
         int totalDistance = 0;
         for (int i = 0; i < candidate.size(); i++)
         {
             int nextIndex = i < candidate.size() - 1 ? i + 1 : 0;
-            totalDistance += distances.get(candidate.get(i)).get(candidate.get(nextIndex));
+            totalDistance += Europe.getInstance().getDistance(candidate.get(i),
+                                                              candidate.get(nextIndex));
         }
         return totalDistance;
     }
 
+    
     public boolean isFitnessNormalised()
     {
         return false;

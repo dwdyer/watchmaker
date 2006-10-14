@@ -17,6 +17,7 @@ package org.uncommons.maths;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -62,6 +63,21 @@ public class CombinationGenerator<T>
         long differenceFactorial = Maths.factorial(elements.length - combinationLength);
         totalCombinations = sizeFactorial / (lengthFactorial * differenceFactorial);
         reset();
+    }
+
+
+    /**
+     * Create a combination generator that generates all combinations of
+     * a specified length from the given set.
+     * @param elements The set from which to generate combinations.
+     * @param combinationLength The length of the combinations to be generated.
+     */
+    @SuppressWarnings("unchecked")
+    public CombinationGenerator(Collection<T> elements,
+                                int combinationLength)
+    {
+        this(elements.toArray((T[]) new Object[elements.size()]),
+             combinationLength);
     }
 
 

@@ -91,7 +91,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         }
         catch (InterruptedException ex)
         {
-            throw new IllegalStateException(ex);
+            throw new IllegalStateException("Evolution aborted - concurrency failure.", ex);
         }
         assert evaluatedPopulation.size() == population.size() : "Wrong number of evaluated candidates.";
 
@@ -145,11 +145,17 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 
         public void run()
         {
+            // Use a temporary unsynchronised list to store evaluated candidates and then
+            // add them to the synchronised result list in one go at the end.  This avoids
+            // contention when there are several threads trying repeatedly to add items to
+            // the result list.
+            List<EvaluatedCandidate<T>> evaluatedCandidates = new ArrayList<EvaluatedCandidate<T>>(candidates.size());
             for (T candidate : candidates)
             {
-                evaluatedPopulation.add(new EvaluatedCandidate<T>(candidate,
+                evaluatedCandidates.add(new EvaluatedCandidate<T>(candidate,
                                                                   fitnessEvaluator.getFitness(candidate)));
             }
+            evaluatedPopulation.addAll(evaluatedCandidates);
             latch.countDown();
         }
     }

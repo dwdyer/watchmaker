@@ -16,6 +16,8 @@
 package org.uncommons.watchmaker.examples.travellingsalesman;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.maths.random.MersenneTwisterRNG;
@@ -31,57 +33,45 @@ import org.uncommons.watchmaker.framework.operators.ListOrderMutation;
 import org.uncommons.watchmaker.framework.selection.TruncationSelection;
 
 /**
- * Sample application - an evolutionary solution to the well-known Travelling
- * Salesman problem.
+ * Evolutionary algorithm for finding (approximate) solutions to the
+ * travelling salesman problem.
  * @author Daniel Dyer
  */
-public class TravellingSalesmanExample
+public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrategy
 {
-    private TravellingSalesmanExample()
+    private final int populationSize;
+    private final int generationCount;
+
+    public EvolutionaryTravellingSalesman(int populationSize,
+                                          int generationCount)
     {
-        // Prevents instantiation.
+        this.populationSize = populationSize;
+        this.generationCount = generationCount;
     }
 
-    public static void main(String args[])
+
+    public List<String> calculateShortestRoute(Collection<String> cities,
+                                               final ProgressListener progressListener)
     {
         Random rng = new MersenneTwisterRNG();
         List<EvolutionaryOperator<? super List<String>>> pipeline = new ArrayList<EvolutionaryOperator<? super List<String>>>(2);
         pipeline.add(new ListOrderMutation(new PoissonSequence(1.5, rng),
                                            new PoissonSequence(1.5, rng)));
-        CandidateFactory<List<String>> candidateFactory = new ListPermutationFactory<String>(Europe.getInstance().getCities());
+        CandidateFactory<List<String>> candidateFactory = new ListPermutationFactory<String>(new LinkedList<String>(cities));
         EvolutionEngine<List<String>> engine = new StandaloneEvolutionEngine<List<String>>(candidateFactory,
                                                                                            pipeline,
                                                                                            new RouteEvaluator(),
                                                                                            new TruncationSelection(0.5),
                                                                                            rng);
         engine.setEliteRatio(0.01d); // Preserve the top 1% of each generation.
-        engine.addEvolutionObserver(new EvolutionLogger());
-        long startTime = System.currentTimeMillis();
-        engine.evolve(300, // 300 individuals in the population.
-                      100); // 100 generations.
-        long elapsedTime = System.currentTimeMillis() - startTime;
-        System.out.println("Elapsed time: " + elapsedTime + "ms.");
-    }
-
-
-    private static String stringListToString(List<String> list)
-    {
-        StringBuilder buffer = new StringBuilder();
-        for (String s : list)
+        engine.addEvolutionObserver(new EvolutionObserver<List<String>>()
         {
-            buffer.append(s);
-            buffer.append(' ');
-        }
-        return buffer.toString();
-    }
 
-
-    private static class EvolutionLogger implements EvolutionObserver<List<String>>
-    {
-        public void populationUpdate(PopulationData<? extends List<String>> data)
-        {
-            System.out.println("Generation " + data.getGenerationNumber() + ": " + data.getBestCandidateFitness() + "km");
-            System.out.println("  " + stringListToString(data.getBestCandidate()));
-        }
+            public void populationUpdate(PopulationData<? extends List<String>> data)
+            {
+                progressListener.updateProgress(((double) data.getGenerationNumber() + 1) / generationCount);
+            }
+        });
+        return engine.evolve(populationSize, generationCount);
     }
 }
