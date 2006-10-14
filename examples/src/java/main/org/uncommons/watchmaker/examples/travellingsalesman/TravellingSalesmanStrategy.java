@@ -23,6 +23,15 @@ import java.util.List;
  */
 public interface TravellingSalesmanStrategy
 {
+    /**
+     * Returns a description of the strategy.
+     */
+    String getDescription();
+
+    /**
+     * Calculates the shortest round trip distance that visits each
+     * of the specified cities once and returns to the starting point.
+     */
     List<String> calculateShortestRoute(Collection<String> cities,
                                         ProgressListener progressListener);
 }

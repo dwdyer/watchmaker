@@ -31,6 +31,11 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
  */
 public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
 {
+    public String getDescription()
+    {
+        return "Brute Force";
+    }
+
     public List<String> calculateShortestRoute(Collection<String> cities,
                                                ProgressListener progressListener)
     {

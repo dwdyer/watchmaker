@@ -37,6 +37,8 @@ import javax.swing.JPanel;
 final class ItineraryPanel extends JPanel
 {
     private final Collection<JCheckBox> checkBoxes;
+    private JButton selectAllButton;
+    private JButton clearButton;
 
     public ItineraryPanel(List<String> cities)
     {
@@ -53,9 +55,9 @@ final class ItineraryPanel extends JPanel
         add(checkBoxPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new GridLayout(2, 1));
-        final JButton selectAllButton = new JButton("Select All");
+        selectAllButton = new JButton("Select All");
         buttonPanel.add(selectAllButton);
-        final JButton clearButton = new JButton("Clear Selection");
+        clearButton = new JButton("Clear Selection");
         buttonPanel.add(clearButton);
         ActionListener buttonListener = new ActionListener()
         {
@@ -91,5 +93,18 @@ final class ItineraryPanel extends JPanel
             }
         }
         return cities;
+    }
+
+
+    @Override
+    public void setEnabled(boolean b)
+    {
+        for (JCheckBox checkBox : checkBoxes)
+        {
+            checkBox.setEnabled(b);
+        }
+        selectAllButton.setEnabled(b);
+        clearButton.setEnabled(b);
+        super.setEnabled(b);
     }
 }

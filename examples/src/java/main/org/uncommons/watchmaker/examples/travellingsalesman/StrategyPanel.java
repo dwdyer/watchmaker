@@ -74,6 +74,16 @@ class StrategyPanel extends JPanel
     }
 
 
+    @Override
+    public void setEnabled(boolean b)
+    {
+        evolutionOption.setEnabled(b);
+        bruteForceOption.setEnabled(b);
+        evolutionPanel.setEnabled(b && evolutionOption.isSelected());
+        super.setEnabled(b);
+    }
+
+
     private static final class EvolutionPanel extends JPanel
     {
         private JLabel populationLabel;

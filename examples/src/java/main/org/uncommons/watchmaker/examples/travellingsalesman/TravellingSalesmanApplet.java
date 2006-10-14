@@ -55,22 +55,36 @@ public class TravellingSalesmanApplet extends JApplet
     }
 
 
+    @Override
+    public void setEnabled(boolean b)
+    {
+        itineraryPanel.setEnabled(b);
+        strategyPanel.setEnabled(b);
+        executionPanel.setEnabled(b);
+        super.setEnabled(b);
+    }
+
+
     private final class ExecutionPanel extends JPanel
     {
+        private JButton startButton;
+        private JScrollPane scroller;
+
         public ExecutionPanel()
         {
             super(new BorderLayout());
             JPanel controlPanel = new JPanel(new BorderLayout());
-            JButton startButton = new JButton("Start");
+            startButton = new JButton("Start");
             controlPanel.add(startButton, BorderLayout.WEST);
             final JProgressBar progressBar = new JProgressBar(0, 100);
             controlPanel.add(progressBar, BorderLayout.CENTER);
             add(controlPanel, BorderLayout.NORTH);
             final JTextArea output = new JTextArea();
+            output.setEditable(false);
             output.setLineWrap(true);
             output.setWrapStyleWord(true);
             output.setFont(new Font("Monospaced", Font.PLAIN, 10));
-            JScrollPane scroller = new JScrollPane(output);
+            scroller = new JScrollPane(output);
             scroller.setBorder(BorderFactory.createTitledBorder("Results"));
             add(scroller, BorderLayout.CENTER);
 
@@ -91,6 +105,7 @@ public class TravellingSalesmanApplet extends JApplet
                     }
                     else
                     {
+                        TravellingSalesmanApplet.this.setEnabled(false);
                         final TravellingSalesmanStrategy strategy = strategyPanel.getStrategy();
                         SwingBackgroundTask<List<String>> task = new SwingBackgroundTask<List<String>>()
                         {
@@ -107,6 +122,9 @@ public class TravellingSalesmanApplet extends JApplet
 
                             protected void postProcessing(List<String> result)
                             {
+                                output.append("[");
+                                output.append(strategy.getDescription());
+                                output.append("]\n");
                                 output.append("ROUTE: ");
                                 for (String s : result)
                                 {
@@ -121,12 +139,21 @@ public class TravellingSalesmanApplet extends JApplet
                                 output.append("(Search Time: ");
                                 output.append(String.valueOf(elapsedTime));
                                 output.append("ms)\n\n");
+                                TravellingSalesmanApplet.this.setEnabled(true);
                             }
                         };
                         task.execute();
                     }
                 }
             });
+        }
+
+        @Override
+        public void setEnabled(boolean b)
+        {
+            startButton.setEnabled(b);
+            scroller.setEnabled(b);
+            super.setEnabled(b);
         }
     }
 
@@ -144,13 +171,13 @@ public class TravellingSalesmanApplet extends JApplet
             this.progressBar = progressBar;
         }
 
-        public void updateProgress(double percentComplete)
+        public synchronized void updateProgress(double percentComplete)
         {
             this.newValue = (int) percentComplete;
             SwingUtilities.invokeLater(this);
         }
 
-        public void run()
+        public synchronized void run()
         {
             progressBar.setValue(newValue);
         }

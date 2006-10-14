@@ -50,6 +50,12 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
     }
 
 
+    public String getDescription()
+    {
+        return "Evolution (population: " + populationSize + ", generations: " + generationCount + ")";
+    }
+
+
     public List<String> calculateShortestRoute(Collection<String> cities,
                                                final ProgressListener progressListener)
     {
