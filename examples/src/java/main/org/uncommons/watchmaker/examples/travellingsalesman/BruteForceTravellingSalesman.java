@@ -17,16 +17,17 @@ package org.uncommons.watchmaker.examples.travellingsalesman;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import org.uncommons.maths.PermutationGenerator;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
  * Naive brute-force solution to the travelling salesman problem. It would take about
- * 3 weeks to brute-force the 15-city travelling salesman problem on a home computer
- * using this implementation.  However, this is a very naive implementation that could
- * be improved upon (one way to reduce the search space would be to pick a fixed
- * starting city).
+ * a day and a half to brute-force the 15-city travelling salesman problem on a home
+ * computer using this implementation.  However, this is a not the best possible
+ * implementation that is guaranteed to find a the shortest route (for example there
+ * is no branch-and-bound optimisation).
  * @author Daniel Dyer
  */
 public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
@@ -39,8 +40,20 @@ public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
     public List<String> calculateShortestRoute(Collection<String> cities,
                                                ProgressListener progressListener)
     {
+        // To reduce the search space we will only consider routes that start
+        // and end at one city (whichever is first in the collection).  All other
+        // possible routes are equivalent to one of these routes since start city
+        // is irrelevant in determining the shortest cycle.
+        Iterator<String> iterator = cities.iterator();
+        String startCity = iterator.next();
+        Collection<String> destinations = new ArrayList<String>(cities.size() - 1);
+        while (iterator.hasNext())
+        {
+            destinations.add(iterator.next());
+        }
+
         FitnessEvaluator<List<String>> evaluator = new RouteEvaluator();
-        PermutationGenerator<String> generator = new PermutationGenerator<String>(cities);
+        PermutationGenerator<String> generator = new PermutationGenerator<String>(destinations);
         long totalPermutations = generator.getTotalPermutations();
         long count = 0;
         List<String> shortestRoute = null;
@@ -49,6 +62,7 @@ public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
         while (generator.hasMore())
         {
             List<String> route = generator.nextPermutationAsList(currentRoute);
+            route.add(0, startCity);
             double distance = evaluator.getFitness(route);
             if (distance < shortestDistance)
             {

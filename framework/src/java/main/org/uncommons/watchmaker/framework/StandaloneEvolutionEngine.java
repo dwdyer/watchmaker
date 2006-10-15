@@ -78,16 +78,19 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         // proceed until all threads have finished processing.
         try
         {
-            CountDownLatch latch = new CountDownLatch(threadCount);
-            int subListSize = population.size() / threadCount;
-            for (int i = 0; i < threadCount; i++)
+            // Make sure that we don't try to use more threads than we have candidates.
+            int threadUtilisation = threadCount <= population.size() ? threadCount : population.size();
+
+            CountDownLatch latch = new CountDownLatch(threadUtilisation);
+            int subListSize = population.size() / threadUtilisation;
+            for (int i = 0; i < threadUtilisation; i++)
             {
                 int fromIndex = i * subListSize;
-                int toIndex = i < threadCount -1 ? fromIndex + subListSize : population.size();
+                int toIndex = i < threadUtilisation - 1 ? fromIndex + subListSize : population.size();
                 List<T> subList = population.subList(fromIndex, toIndex);
                 threadPool.execute(new FitnessEvalutationTask(subList, evaluatedPopulation, latch));
             }
-            latch.await();
+            latch.await(); // Wait until all threads have finished fitness evaluations.
         }
         catch (InterruptedException ex)
         {
