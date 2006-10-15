@@ -63,7 +63,13 @@ final class DefaultSeedGenerator implements SeedGenerator
             }
             catch (SeedException ex)
             {
-                // Ignore and try the next generator.
+                // Ignore and try the next generator...
+            }
+            catch (SecurityException ex)
+            {
+                // Might be thrown if resource access is restricted (such as in
+                // an applet sandbox).
+                // Ignore and try the next generator...
             }
         }
         // This shouldn't happen as at least one the generators should be
