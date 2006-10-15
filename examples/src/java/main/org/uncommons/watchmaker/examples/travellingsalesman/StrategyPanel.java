@@ -32,7 +32,7 @@ import org.uncommons.gui.SpringUtilities;
 /**
  * @author Daniel Dyer
  */
-class StrategyPanel extends JPanel
+final class StrategyPanel extends JPanel
 {
     private final JRadioButton evolutionOption;
     private final JRadioButton bruteForceOption;
@@ -88,6 +88,8 @@ class StrategyPanel extends JPanel
     {
         private JLabel populationLabel;
         private JSpinner populationSpinner;
+        private JLabel elitismLabel;
+        private JSpinner elitismSpinner;
         private JLabel generationsLabel;
         private JSpinner generationsSpinner;
 
@@ -102,13 +104,19 @@ class StrategyPanel extends JPanel
             innerPanel.add(populationLabel);
             innerPanel.add(populationSpinner);
 
+            elitismLabel = new JLabel("Elitism (no. candidates preserved unchanged): ");
+            elitismSpinner = new JSpinner(new SpinnerNumberModel(3, 0, 10000, 1));
+            elitismLabel.setLabelFor(elitismSpinner);
+            innerPanel.add(elitismLabel);
+            innerPanel.add(elitismSpinner);
+
             generationsLabel = new JLabel("Number of Generations: ");
             generationsSpinner = new JSpinner(new SpinnerNumberModel(100, 1, 10000, 1));
             generationsLabel.setLabelFor(generationsSpinner);
             innerPanel.add(generationsLabel);
             innerPanel.add(generationsSpinner);
 
-            SpringUtilities.makeCompactGrid(innerPanel, 2, 2, 30, 6, 6, 6);
+            SpringUtilities.makeCompactGrid(innerPanel, 3, 2, 30, 6, 6, 6);
             add(innerPanel);
         }
 
@@ -117,6 +125,8 @@ class StrategyPanel extends JPanel
         {
             populationLabel.setEnabled(b);
             populationSpinner.setEnabled(b);
+            elitismLabel.setEnabled(b);
+            elitismSpinner.setEnabled(b);
             generationsLabel.setEnabled(b);
             generationsSpinner.setEnabled(b);
             super.setEnabled(b);
@@ -125,6 +135,7 @@ class StrategyPanel extends JPanel
         public TravellingSalesmanStrategy getStrategy()
         {
             return new EvolutionaryTravellingSalesman((Integer) populationSpinner.getValue(),
+                                                      (Integer) elitismSpinner.getValue(),
                                                       (Integer) generationsSpinner.getValue());
         }
     }

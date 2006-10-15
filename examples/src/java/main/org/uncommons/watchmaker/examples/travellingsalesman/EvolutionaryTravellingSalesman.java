@@ -40,12 +40,19 @@ import org.uncommons.watchmaker.framework.selection.TruncationSelection;
 public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrategy
 {
     private final int populationSize;
+    private final int eliteCount;
     private final int generationCount;
 
     public EvolutionaryTravellingSalesman(int populationSize,
+                                          int eliteCount,
                                           int generationCount)
     {
+        if (eliteCount < 0 || eliteCount >= populationSize)
+        {
+            throw new IllegalArgumentException("Elite count must be non-zero and less than population size.");
+        }
         this.populationSize = populationSize;
+        this.eliteCount = eliteCount;
         this.generationCount = generationCount;
     }
 
@@ -69,7 +76,6 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
                                                                                            new RouteEvaluator(),
                                                                                            new TruncationSelection(0.5),
                                                                                            rng);
-        engine.setEliteRatio(0.01d); // Preserve the top 1% of each generation.
         engine.addEvolutionObserver(new EvolutionObserver<List<String>>()
         {
 
@@ -78,6 +84,8 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
                 progressListener.updateProgress(((double) data.getGenerationNumber() + 1) / generationCount * 100);
             }
         });
-        return engine.evolve(populationSize, generationCount);
+        return engine.evolve(populationSize,
+                             eliteCount,
+                             generationCount);
     }
 }

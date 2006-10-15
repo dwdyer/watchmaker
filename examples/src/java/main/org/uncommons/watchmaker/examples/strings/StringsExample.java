@@ -62,8 +62,8 @@ public class StringsExample
                                                                                new RouletteWheelSelection(),
                                                                                new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
-        engine.setEliteRatio(0.05);
         engine.evolve(100, // 100 individuals in the population.
+                      5, // 5% elitism.
                       target.length(), // Perfect fitness score.
                       120000); // Two minute timeout.
     }

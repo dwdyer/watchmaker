@@ -36,8 +36,6 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     private final List<EvolutionaryOperator<? super T>> evolutionPipeline;
     private final SelectionStrategy selectionStrategy;
 
-    private double eliteRatio = 0.0d;
-
     private long startTime;
     private int currentGenerationIndex;
 
@@ -55,36 +53,30 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
 
 
-    public double getEliteRatio()
-    {
-        return eliteRatio;
-    }
-
-
-    public void setEliteRatio(double eliteRatio)
-    {
-        if (eliteRatio < 0 || eliteRatio >= 1)
-        {
-            throw new IllegalArgumentException("Elite ratio must be non-negative and less than 1.");
-        }
-        this.eliteRatio = eliteRatio;
-    }
-
-
     @SuppressWarnings("unchecked")
     public T evolve(int populationSize,
+                    int eliteCount,
                     int generationCount)
     {
         return evolve(populationSize,
-                      (Collection<T>) Collections.emptySet(),
-                      generationCount);
+                      eliteCount,
+                      generationCount,
+                      (Collection<T>) Collections.emptySet()
+        );
     }
 
 
     public T evolve(int populationSize,
-                    Collection<T> seedCandidates,
-                    int generationCount)
+                    int eliteCount,
+                    int generationCount,
+                    Collection<T> seedCandidates
+    )
     {
+        if (eliteCount < 0 || eliteCount >= populationSize)
+        {
+            throw new IllegalArgumentException("Elite count must be non-zero and less than population size.");
+        }
+
         currentGenerationIndex = 0;
         startTime = System.currentTimeMillis();
 
@@ -100,7 +92,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         for (int i = 1; i < generationCount; i++)
         {
             ++currentGenerationIndex;
-            population = createNextGeneration(evaluatedPopulation);
+            population = createNextGeneration(evaluatedPopulation, eliteCount);
             evaluatedPopulation = evaluatePopulation(population);
             // Notify observers of the state of the population.
             notifyPopulationChange(evaluatedPopulation);
@@ -112,21 +104,30 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
     @SuppressWarnings("unchecked")
     public T evolve(int populationSize,
+                    int eliteCount,
                     double targetFitness,
                     long timeout)
     {
         return evolve(populationSize,
-                      (Collection<T>) Collections.emptySet(),
+                      eliteCount,
                       targetFitness,
-                      timeout);
+                      timeout,
+                      (Collection<T>) Collections.emptySet()
+        );
     }
 
 
     public T evolve(int populationSize,
-                    Collection<T> seedCandidates,
+                    int eliteCount,
                     double targetFitness,
-                    long timeout)
+                    long timeout,
+                    Collection<T> seedCandidates)
     {
+        if (eliteCount < 0 || eliteCount >= populationSize)
+        {
+            throw new IllegalArgumentException("Elite count must be non-zero and less than population size.");
+        }
+
         currentGenerationIndex = 0;
         startTime = System.currentTimeMillis();
         long endTime = startTime + timeout;
@@ -142,7 +143,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         while (bestFitness < targetFitness && System.currentTimeMillis() < endTime)
         {
             ++currentGenerationIndex;
-            population = createNextGeneration(evaluatedPopulation);
+            population = createNextGeneration(evaluatedPopulation, eliteCount);
             evaluatedPopulation = evaluatePopulation(population);
             bestFitness = evaluatedPopulation.get(0).getFitness();
             // Notify observers of the state of the population.
@@ -167,12 +168,12 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      * Evolve the specified evaluated population (the current generation).
      * and return the resultant population (the next generation).
      */
-    private List<T> createNextGeneration(List<EvaluatedCandidate<T>> evaluatedPopulation)
+    private List<T> createNextGeneration(List<EvaluatedCandidate<T>> evaluatedPopulation,
+                                         int eliteCount)
     {
         List<T> population = new ArrayList<T>(evaluatedPopulation.size());
 
         // First perform any elitist selection.
-        int eliteCount = (int) Math.round(evaluatedPopulation.size() * eliteRatio);
         List<T> elite = new ArrayList<T>(eliteCount);
         Iterator<EvaluatedCandidate<T>> iterator = evaluatedPopulation.iterator();
         while (elite.size() < eliteCount)

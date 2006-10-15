@@ -24,61 +24,47 @@ import java.util.Collection;
 public interface EvolutionEngine<T>
 {
     /**
-     * <p>Returns the ratio of the elite to the total population.  This parameter is used
-     * to implement elitism in selection.  In elitism, a proportion of the population with
-     * the best fitness scores are preserved unchanged in the subsequent generation.
-     * Candidate solutions that are preserved unchanged through elitism remain eligible
-     * for selection for breeding the remainder of the next generation.</p>
-     *
-     * <p>The size of the elite sub-set depends on the elite ratio, which has a value greater
-     * than or equal to zero (no elitism) and less than 1 (no evolution).  The default value
-     * is zero.</p>
-     */
-    double getEliteRatio();
-
-
-    /**
-     * <p>Configures the ratio of the elite to the total population.  This parameter is used
-     * to implement elitism in selection.  In elitism, a propotion of the population with
-     * the best fitness scores are preserved unchanged in the subsequent generation.
-     * Candidate solutions that are preserved unchanged through elitism remain eligible
-     * for selection for breeding the remainder of the next generation.</p>
-     *
-     * <p>The size of the elite sub-set depends on the elite ratio, which has a value greater
-     * than or equal to zero (no elitism) and less than 1 (no evolution).  The default value
-     * is zero.</p>
-     */
-    void setEliteRatio(double eliteRatio);
-
-
-    /**
      * @param populationSize The number of candidate solutions present in the population
      * at any point in time.
+     * @param eliteCount The number of candidates preserved via elitism..  In elitism, a
+     * sub-set of the population with the best fitness scores are preserved unchanged in
+     * the subsequent generation.  Candidate solutions that are preserved unchanged through
+     * elitism remain eligible for selection for breeding the remainder of the next generation.
+     * This value must be non-negative and less than the population size.  A value of zero
+     * means that no elitism will be applied.
      * @param generationCount The number of iterations to perform (including the
      * creation and evaluation of the initial population, which counts as the first
      * generation).
      * @return The best solution found by the evolutionary process.
-     * @see #evolve(int, double, long)
+     * @see #evolve(int,int,double,long)
      */
     T evolve(int populationSize,
+             int eliteCount,
              int generationCount);
 
 
     /**
      * @param populationSize The number of candidate solutions present in the population
      * at any point in time.
+     * @param eliteCount The number of candidates preserved via elitism..  In elitism, a
+     * sub-set of the population with the best fitness scores are preserved unchanged in
+     * the subsequent generation.  Candidate solutions that are preserved unchanged through
+     * elitism remain eligible for selection for breeding the remainder of the next generation.
+     * This value must be non-negative and less than the population size.  A value of zero
+     * means that no elitism will be applied.
+     * @param generationCount The number of iterations to perform (including the
+     * creation and evaluation of the initial population, which counts as the first
+     * generation).
      * @param seedCandidates A set of candidates to seed the population with.  The size of
      * this collection must be no greater than the specified population size.
-     * @param generationCount The number of iterations to perform (including the
-     * creation and evaluation of the initial population, which counts as the first
-     * generation).
      * @return The best solution found by the evolutionary process.
-     * @see #evolve(int, int)
-     * @see #evolve(int, java.util.Collection, double, long)
+     * @see #evolve(int,int,int)
+     * @see #evolve(int,int,double,long,java.util.Collection
      */
     T evolve(int populationSize,
-             Collection<T> seedCandidates,
-             int generationCount);
+             int eliteCount,
+             int generationCount,
+             Collection<T> seedCandidates);
 
 
     /**
@@ -87,15 +73,22 @@ public interface EvolutionEngine<T>
      * a timeout is also specified.
      * @param populationSize The number of candidate solutions present in the population
      * at any point in time.
+     * @param eliteCount The number of candidates preserved via elitism..  In elitism, a
+     * sub-set of the population with the best fitness scores are preserved unchanged in
+     * the subsequent generation.  Candidate solutions that are preserved unchanged through
+     * elitism remain eligible for selection for breeding the remainder of the next generation.
+     * This value must be non-negative and less than the population size.  A value of zero
+     * means that no elitism will be applied.
      * @param targetFitness The minimum satisfactory fitness score.  The evolution will
      * continue until a candidate is found with an equal or higher score, or the
      * execution times out.
      * @param timeout How long (in milliseconds) the evolution is allowed to run for
      * without finding a matching candidate.
-     * @see #evolve(int, int)
-     * @see #evolve(int, java.util.Collection, double, long)
+     * @see #evolve(int,int,int)
+     * @see #evolve(int,int,double,long,java.util.Collection
      */
     T evolve(int populationSize,
+             int eliteCount,
              double targetFitness,
              long timeout);
 
@@ -106,31 +99,38 @@ public interface EvolutionEngine<T>
      * a timeout is also specified.
      * @param populationSize The number of candidate solutions present in the population
      * at any point in time.
-     * @param seedCandidates A set of candidates to seed the population with.  The size of
-     * this collection must be no greater than the specified population size.
+     * @param eliteCount The number of candidates preserved via elitism..  In elitism, a
+     * sub-set of the population with the best fitness scores are preserved unchanged in
+     * the subsequent generation.  Candidate solutions that are preserved unchanged through
+     * elitism remain eligible for selection for breeding the remainder of the next generation.
+     * This value must be non-negative and less than the population size.  A value of zero
+     * means that no elitism will be applied.
      * @param targetFitness The minimum satisfactory fitness score.  The evolution will
      * continue until a candidate is found with an equal or higher score, or the
      * execution times out.
      * @param timeout How long (in milliseconds) the evolution is allowed to run for
      * without finding a matching candidate.
-     * @see #evolve(int, int)
+     * @param seedCandidates A set of candidates to seed the population with.  The size of
+     * this collection must be no greater than the specified population size.
+     * @see #evolve(int,int,int)
      */
     T evolve(int populationSize,
-             Collection<T> seedCandidates,
+             int eliteCount,
              double targetFitness,
-             long timeout);
+             long timeout,
+             Collection<T> seedCandidates);
 
 
     /**
      * Adds a listener to receive status updates on the evolution progress.
-     * @see #removeEvolutionObserver(org.uncommons.watchmaker.framework.EvolutionObserver)
+     * @see #removeEvolutionObserver(EvolutionObserver)
      */
     void addEvolutionObserver(EvolutionObserver<? super T> observer);
 
 
     /**
      * Removes an evolution progress listener.
-     * @see #addEvolutionObserver(org.uncommons.watchmaker.framework.EvolutionObserver)
+     * @see #addEvolutionObserver(EvolutionObserver)
      */
     void removeEvolutionObserver(EvolutionObserver<? super T> observer);
 }

@@ -36,7 +36,7 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
 /**
  * @author Daniel Dyer
  */
-public class TravellingSalesmanApplet extends JApplet
+public final class TravellingSalesmanApplet extends JApplet
 {
     private final ItineraryPanel itineraryPanel;
     private final StrategyPanel strategyPanel;
@@ -67,8 +67,11 @@ public class TravellingSalesmanApplet extends JApplet
 
     private final class ExecutionPanel extends JPanel
     {
-        private JButton startButton;
-        private JScrollPane scroller;
+        private final JButton startButton;
+        private final JTextArea output;
+        private final JScrollPane scroller;
+
+        private final FitnessEvaluator<List<String>> evaluator = new RouteEvaluator();
 
         public ExecutionPanel()
         {
@@ -76,10 +79,11 @@ public class TravellingSalesmanApplet extends JApplet
             JPanel controlPanel = new JPanel(new BorderLayout());
             startButton = new JButton("Start");
             controlPanel.add(startButton, BorderLayout.WEST);
-            final JProgressBar progressBar = new JProgressBar(0, 100);
+            JProgressBar progressBar = new JProgressBar(0, 100);
             controlPanel.add(progressBar, BorderLayout.CENTER);
+            final ProgressBarUpdater progressBarUpdater = new ProgressBarUpdater(progressBar);
             add(controlPanel, BorderLayout.NORTH);
-            final JTextArea output = new JTextArea();
+            output = new JTextArea();
             output.setEditable(false);
             output.setLineWrap(true);
             output.setWrapStyleWord(true);
@@ -90,9 +94,6 @@ public class TravellingSalesmanApplet extends JApplet
 
             startButton.addActionListener(new ActionListener()
             {
-                private final ProgressBarUpdater progressBarUpdater = new ProgressBarUpdater(progressBar);
-                private final FitnessEvaluator<List<String>> evaluator = new RouteEvaluator();
-
                 public void actionPerformed(ActionEvent actionEvent)
                 {
                     final Collection<String> cities = itineraryPanel.getSelectedCities();
@@ -106,47 +107,86 @@ public class TravellingSalesmanApplet extends JApplet
                     else
                     {
                         TravellingSalesmanApplet.this.setEnabled(false);
-                        final TravellingSalesmanStrategy strategy = strategyPanel.getStrategy();
-                        SwingBackgroundTask<List<String>> task = new SwingBackgroundTask<List<String>>()
+                        try
                         {
-                            private long elapsedTime = 0;
-
-                            protected List<String> performTask()
-                            {
-                                long startTime = System.currentTimeMillis();
-                                List<String> result = strategy.calculateShortestRoute(cities,
-                                                                                      progressBarUpdater);
-                                elapsedTime = System.currentTimeMillis() - startTime;
-                                return result;
-                            }
-
-                            protected void postProcessing(List<String> result)
-                            {
-                                output.append("[");
-                                output.append(strategy.getDescription());
-                                output.append("]\n");
-                                output.append("ROUTE: ");
-                                for (String s : result)
-                                {
-                                    output.append(s);
-                                    output.append(" -> ");
-                                }
-                                output.append(result.get(0));
-                                output.append("\n");
-                                output.append("TOTAL DISTANCE: ");
-                                output.append(String.valueOf(evaluator.getFitness(result)));
-                                output.append("km\n");
-                                output.append("(Search Time: ");
-                                output.append(String.valueOf(elapsedTime));
-                                output.append("ms)\n\n");
-                                TravellingSalesmanApplet.this.setEnabled(true);
-                            }
-                        };
-                        task.execute();
+                            createTask(cities, progressBarUpdater).execute();
+                        }
+                        catch (IllegalArgumentException ex)
+                        {
+                            JOptionPane.showMessageDialog(TravellingSalesmanApplet.this,
+                                                          ex.getMessage(),
+                                                          "Error",
+                                                          JOptionPane.ERROR_MESSAGE);
+                            TravellingSalesmanApplet.this.setEnabled(true);
+                        }
                     }
                 }
             });
         }
+
+
+        /**
+         * Helper method to create a background task for running the travelling
+         * salesman algorithm.
+         */
+        private SwingBackgroundTask<List<String>> createTask(final Collection<String> cities,
+                                                             final ProgressBarUpdater progressBarUpdater)
+        {
+            final TravellingSalesmanStrategy strategy = strategyPanel.getStrategy();
+            return new SwingBackgroundTask<List<String>>()
+            {
+                private long elapsedTime = 0;
+
+                protected List<String> performTask()
+                {
+                    long startTime = System.currentTimeMillis();
+                    List<String> result = strategy.calculateShortestRoute(cities,
+                                                                          progressBarUpdater);
+                    elapsedTime = System.currentTimeMillis() - startTime;
+                    return result;
+                }
+
+                protected void postProcessing(List<String> result)
+                {
+                    output.append(createResultString(strategy.getDescription(),
+                                                     result,
+                                                     evaluator.getFitness(result),
+                                                     elapsedTime));
+                    TravellingSalesmanApplet.this.setEnabled(true);
+                }
+            };
+        }
+
+
+        /**
+         * Helper method for formatting a result as a string for display.
+         */
+        private String createResultString(String strategyDescription,
+                                          List<String> shortestRoute,
+                                          double distance,
+                                          long elapsedTime)
+        {
+            StringBuilder buffer = new StringBuilder();
+            buffer.append('[');
+            buffer.append(strategyDescription);
+            buffer.append("]\n");
+            buffer.append("ROUTE: ");
+            for (String s : shortestRoute)
+            {
+                buffer.append(s);
+                buffer.append(" -> ");
+            }
+            buffer.append(shortestRoute.get(0));
+            buffer.append('\n');
+            buffer.append("TOTAL DISTANCE: ");
+            buffer.append(String.valueOf(distance));
+            buffer.append("km\n");
+            buffer.append("(Search Time: ");
+            buffer.append(String.valueOf(elapsedTime));
+            buffer.append("ms)\n\n");
+            return buffer.toString();
+        }
+
 
         @Override
         public void setEnabled(boolean b)
@@ -161,7 +201,7 @@ public class TravellingSalesmanApplet extends JApplet
     /**
      * Class for updating the progress bar.
      */
-    private class ProgressBarUpdater implements ProgressListener, Runnable
+    private static class ProgressBarUpdater implements ProgressListener, Runnable
     {
         private final JProgressBar progressBar;
         private int newValue = 0;
