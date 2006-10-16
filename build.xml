@@ -30,12 +30,16 @@
   <property name="lib.compiletime" location="${lib.dir}/compiletime"/>
   <property name="lib.runtime" location="${lib.dir}/runtime"/>
 
-  <!-- Target directory for the distribution artifacts. -->
+  <!-- Target directory for the distributable software artifacts. -->
   <property name="dist.dir" location="./dist"/>
 
   <property name="docs.dir" location="./docs"/>
   <property name="api.dir" location="${docs.dir}/api" />
   <property name="test-results.dir" location="${docs.dir}/test-results" />
+
+  <property name="release.dir" location="./release" />
+
+  <property name="web.dir" location="./www" />
 
   <!-- Classpath for compilation and tests. -->
   <path id="base.path">
@@ -44,7 +48,7 @@
     </fileset>
   </path>
 
-  <property name="version" value="0.1"/>
+  <property name="version" value="0.2"/>
 
 
 <!-- ==================================================================
@@ -121,18 +125,53 @@
   </macrodef>
 
 
+  <!-- Generates API documentation for all modules. -->
+  <macrodef name="api.docs">
+    <attribute name="api.dir"/>
+    <sequential>
+      <mkdir dir="@{api.dir}"/>
+      <javadoc destdir="@{api.dir}"
+               doctitle="The Watchmaker Framework for Evolutionary Algorithms"
+               header="Watchmaker Framework API"
+               windowtitle="Watchmaker Framework API">
+        <fileset dir="./maths/${java.dir}/main" defaultexcludes="yes">
+          <include name="org/uncommons/**"/>
+        </fileset>
+        <fileset dir="./framework/${java.dir}/main" defaultexcludes="yes">
+          <include name="org/uncommons/**"/>
+        </fileset>
+        <fileset dir="./gui/${java.dir}/main" defaultexcludes="yes">
+          <include name="org/uncommons/**"/>
+        </fileset>
+        <fileset dir="./examples/${java.dir}/main" defaultexcludes="yes">
+          <include name="org/uncommons/**"/>
+        </fileset>
+        <group title="Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
+        <group title="Example Evolutionary Algorithms" packages="org.uncommons.watchmaker.examples.*"/>
+        <group title="Uncommons Maths" packages="org.uncommons.maths:org.uncommons.maths.*"/>
+        <group title="Uncommons GUI" packages="org.uncommons.gui:org.uncommons.gui.*"/>
+        <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
+      </javadoc>
+    </sequential>
+  </macrodef>
+
+
 <!-- ==================================================================
      TARGETS FOR BUILDING THE SOFTWARE
 =================================================================== -->
 
   <!-- Builds everything from scratch. -->
-  <target name="all" depends="clean, test" description="Builds everything, excluding docs, from scratch."/>
+  <target name="all"
+          depends="clean, test"
+          description="Builds everything, excluding docs, from scratch."/>
   
   
   <!-- Deletes all directories and files created by the build process. -->
-  <target name="clean" description="Remove all files created by the build process." >
+  <target name="clean"
+          description="Remove all files created by the build process." >
     <delete dir="${docs.dir}" />
     <delete dir="${dist.dir}" />
+    <delete dir="${release.dir}" />
     <clean.module module.name="examples" />
     <clean.module module.name="framework" />
     <clean.module module.name="maths" />
@@ -140,14 +179,17 @@
   
 
   <!-- Builds the maths module. -->
-  <target name="maths" description="Build the maths module.">
+  <target name="maths"
+          description="Build the maths module.">
     <compile.module module.name="maths" />
     <jar.module module.name="maths" jar.name="uncommons-maths.jar"/>
   </target>
 
 
   <!-- Builds the framework JAR, which depends on the maths module. -->
-  <target name="framework" depends="maths" description="Build the framework module.">
+  <target name="framework"
+          depends="maths"
+          description="Build the framework module.">
     <compile.module module.name="framework">
       <moduleclasspath>
         <path location="./maths/${build.dir}/uncommons-maths.jar" />
@@ -164,14 +206,17 @@
 
 
   <!-- Builds the GUI module. -->
-  <target name="gui" description="Build the GUI module.">
+  <target name="gui"
+          description="Build the GUI module.">
     <compile.module module.name="gui" />
     <jar.module module.name="gui" jar.name="uncommons-gui.jar"/>
   </target>
 
 
   <!-- Builds the examples JAR, which depends on each of the other modules. -->
-  <target name="examples" depends="framework,gui" description="Build the examples.">
+  <target name="examples"
+          depends="framework, gui"
+          description="Build the examples.">
     <compile.module module.name="examples">
       <moduleclasspath>
         <path location="./framework/${build.dir}/watchmaker-framework.jar" />
@@ -190,24 +235,58 @@
 
 
   <!-- Copy all necessary files to distribution directory. -->
-  <target name="dist" depends="maths, framework, gui, examples" description="Generate the project distribution." >
-    <mkdir dir="${dist.dir}/watchmaker-framework-${version}" />
+  <target name="dist"
+          depends="maths, framework, gui, examples"
+          description="Generate the project distribution." >
+    <mkdir dir="${dist.dir}" />
     <!-- Copy all application JARs and 3rd party libraries. -->
-    <copy todir="${dist.dir}/watchmaker-framework-${version}" flatten="true">
+    <copy todir="${dist.dir}" flatten="true">
       <fileset dir="." includes="**/${build.dir}/*.jar" />
       <fileset dir="." includes="${lib.runtime}/*.jar" />
     </copy>
-    <tar destfile="${dist.dir}/watchmaker-framework-${version}.tgz"
-         compression="gzip">
-      <tarfileset dir="${dist.dir}">
-        <include name="**/*" />
-      </tarfileset>
-    </tar>
   </target>
 
+
+  <!-- Create the release artifacts. -->
+  <target name="release"
+          depends="clean, dist, test, docs"
+          description="Creates the release archives.">
+    <mkdir dir="${release.dir}" />
+    <!-- Create a GZipped TAR file containing the built binaries and the API
+         documentation -->
+    <tar destfile="${release.dir}/watchmaker-framework-${version}.tgz"
+         compression="gzip"
+         longfile="gnu">
+      <tarfileset dir="${dist.dir}" prefix="watchmaker-framework-${version}">
+        <include name="**/*" />
+      </tarfileset>
+      <tarfileset dir="${api.dir}" prefix="watchmaker-framework-${version}/docs/api">
+        <include name="**/*" />
+      </tarfileset>
+      <!-- Don't forget to include the licence and other important information. -->
+      <tarfileset dir="." prefix="watchmaker-framework-${version}">
+        <include name="*.txt" />
+      </tarfileset>
+    </tar>
+    <!-- Also create a zip file release for the convenience of Windows users. -->
+    <zip destfile="${release.dir}/watchmaker-framework-${version}.zip">
+      <zipfileset dir="${dist.dir}" prefix="watchmaker-framework-${version}">
+        <include name="**/*" />
+      </zipfileset>
+      <zipfileset dir="${api.dir}" prefix="watchmaker-framework-${version}/docs/api">
+        <include name="**/*" />
+      </zipfileset>
+      <!-- Don't forget to include the licence and other important information. -->
+      <zipfileset dir="." prefix="watchmaker-framework-${version}">
+        <include name="*.txt" />
+      </zipfileset>
+    </zip>
+  </target>
+
+
 <!-- ==================================================================
-     TARGETS FOR GENERATING TEST REPORTS & DOCUMENTATION
-=================================================================== -->
+      TARGETS FOR GENERATING TEST REPORTS & DOCUMENTATION
+ =================================================================== -->
 
   <!-- Runs unit tests for all modules. -->
   <target name="test" depends="dist" description="Run the unit test suite.">
@@ -216,7 +295,7 @@
       <dirset dir=".">
         <include name="**/${classes.dir}/test" />
       </dirset>
-      <fileset dir="${dist.dir}/watchmaker-framework-${version}" includes="*.jar"/>
+      <fileset dir="${dist.dir}" includes="*.jar"/>
       <path refid="base.path" />
     </path>
     <taskdef resource="testngtasks" classpathref="test.path"/>
@@ -231,25 +310,24 @@
 
   <!-- Generates API documentation for all modules. -->
   <target name="docs" description="Generates Javadoc API documentation for all modules.">
-    <mkdir dir="${api.dir}"/>
-    <javadoc destdir="${api.dir}"
-             doctitle="The Watchmaker Framework for Evolutionary Algorithms"
-             header="Watchmaker Framework API"
-             windowtitle="Watchmaker Framework API">
-      <fileset dir="./maths/${java.dir}/main" defaultexcludes="yes">
-        <include name="org/uncommons/**"/>
+    <api.docs api.dir="${api.dir}" />
+  </target>
+
+
+<!-- ==================================================================
+      TARGETS FOR UPDATING THE PROJECT WEBSITE
+ =================================================================== -->
+
+  <!-- Refresh the API documentation tree for the Watchmaker Framework website. -->
+  <target name="website-docs"
+          description="Re-builds the website Javadocs.">
+    <!-- Delete all existing HTML files and then regenerate the docs over the top. -->
+    <delete>
+      <fileset dir="${web.dir}/api">
+        <include name="**/*.html" />
       </fileset>
-      <fileset dir="./framework/${java.dir}/main" defaultexcludes="yes">
-        <include name="org/uncommons/**"/>
-      </fileset>
-      <fileset dir="./examples/${java.dir}/main" defaultexcludes="yes">
-        <include name="org/uncommons/**"/>
-      </fileset>
-      <group title="Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
-      <group title="Example Evolutionary Algorithms" packages="org.uncommons.watchmaker.examples.*"/>
-      <group title="Uncommons Maths" packages="org.uncommons.maths:org.uncommons.maths.*"/>
-      <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
-    </javadoc>
+    </delete>
+    <api.docs api.dir="${web.dir}/api" />
   </target>
 
 </project>

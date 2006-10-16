@@ -182,8 +182,9 @@ public final class TravellingSalesmanApplet extends JApplet
             buffer.append(String.valueOf(distance));
             buffer.append("km\n");
             buffer.append("(Search Time: ");
-            buffer.append(String.valueOf(elapsedTime));
-            buffer.append("ms)\n\n");
+            double seconds = (double) elapsedTime / 1000;
+            buffer.append(String.valueOf(seconds));
+            buffer.append(" seconds)\n\n");
             return buffer.toString();
         }
 

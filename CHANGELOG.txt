@@ -1,0 +1,12 @@
+Changes in version 0.2
+----------------------
+
+* Added support for concurrent fitness evaluations to take advantage of
+  multi-core and multi-processor machines.
+
+* Modified the way elitism is configured (the number of candidates to preserve
+  is now specifed as an argument to the evolve method of the EvolutionEngine.
+
+* Converted the Travelling Salesman example program into an applet that allows
+  parameters to be tweaked and performance to be compared to a brute force
+  implementation.
