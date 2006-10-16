@@ -19,6 +19,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Defines methods that must be implemented by classes that provide
+ * solutions to the Travelling Salesman problem.
  * @author Daniel Dyer
  */
 public interface TravellingSalesmanStrategy

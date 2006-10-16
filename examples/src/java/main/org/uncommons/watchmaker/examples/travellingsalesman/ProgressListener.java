@@ -16,9 +16,11 @@
 package org.uncommons.watchmaker.examples.travellingsalesman;
 
 /**
+ * Call-back interface for keeping track of the progress of a
+ * {@link TravellingSalesmanStrategy} implementation.
  * @author Daniel Dyer
  */
-interface ProgressListener
+public interface ProgressListener
 {
     void updateProgress(double percentComplete);
 }

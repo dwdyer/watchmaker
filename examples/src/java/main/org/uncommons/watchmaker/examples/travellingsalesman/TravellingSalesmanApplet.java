@@ -34,6 +34,8 @@ import org.uncommons.gui.SwingBackgroundTask;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
+ * Applet for comparing evolutionary and brute force approaches to the
+ * Travelling Salesman problem.
  * @author Daniel Dyer
  */
 public final class TravellingSalesmanApplet extends JApplet

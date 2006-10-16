@@ -29,8 +29,9 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  * swapping a random element in the list with the element immediately
  * after it.  This operation can either apply a fixed number of
  * mutations to each candidate or it can draw values from a random
- * sequence, typically a poisson distribution (@see PoissonSequence),
- * to determine how many mutations to apply.
+ * sequence, typically a poisson distribution (see
+ * {@link org.uncommons.maths.stats.PoissonSequence}), to determine how
+ * many mutations to apply.
  * @author Daniel Dyer
  */
 public class ListOrderMutation implements EvolutionaryOperator<List<?>>
