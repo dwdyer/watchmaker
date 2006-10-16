@@ -87,7 +87,7 @@ public final class TravellingSalesmanApplet extends JApplet
             output.setEditable(false);
             output.setLineWrap(true);
             output.setWrapStyleWord(true);
-            output.setFont(new Font("Monospaced", Font.PLAIN, 10));
+            output.setFont(new Font("Monospaced", Font.PLAIN, 12));
             scroller = new JScrollPane(output);
             scroller.setBorder(BorderFactory.createTitledBorder("Results"));
             add(scroller, BorderLayout.CENTER);

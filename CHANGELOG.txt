@@ -10,3 +10,7 @@ Changes in version 0.2
 * Converted the Travelling Salesman example program into an applet that allows
   parameters to be tweaked and performance to be compared to a brute force
   implementation.
+
+* Fixed RNG seeding to work in an untrusted applet environment (previously
+  SecurityExceptions were thrown when attempting to access resources for
+  seeding).
