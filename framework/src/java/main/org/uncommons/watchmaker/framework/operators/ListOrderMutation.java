@@ -77,13 +77,12 @@ public class ListOrderMutation<T> implements EvolutionaryOperator<List<T>>
     }
 
 
-    @SuppressWarnings("unchecked")
-    public <S extends List<T>> List<S> apply(List<S> population, Random rng)
+    public List<List<T>> apply(List<List<T>> population, Random rng)
     {
-        List<S> result = new ArrayList<S>(population.size());
-        for (S candidate : population)
+        List<List<T>> result = new ArrayList<List<T>>(population.size());
+        for (List<T> candidate : population)
         {
-            List<Object> newCandidate = new ArrayList<Object>(candidate);
+            List<T> newCandidate = new ArrayList<T>(candidate);
             int mutationCount = Math.abs(mutationCountVariable.nextValue());
             for (int i = 0; i < mutationCount; i++)
             {
@@ -98,7 +97,7 @@ public class ListOrderMutation<T> implements EvolutionaryOperator<List<T>>
                 // specified displacement distance away.
                 Collections.swap(newCandidate, fromIndex, toIndex);
             }
-            result.add((S) newCandidate);
+            result.add(newCandidate);
         }
         return result;
     }

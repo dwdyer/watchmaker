@@ -43,9 +43,6 @@ public interface EvolutionaryOperator<T>
      * operators, such as mutation, that process each candidate in isolation.
      * It should only be an issue for operators, such as cross-over, that
      * deal with multiple candidates in a single operation.</p>
-     * @param <S> A more spefic type restriction than the one specified
-     * for this class.  Allows the operation to be applied to sub-classes
-     * of T and still return a list of the appropriate type.
      */
-    <S extends T> List<S> apply(List<S> selectedCandidates, Random rng);
+    List<T> apply(List<T> selectedCandidates, Random rng);
 }

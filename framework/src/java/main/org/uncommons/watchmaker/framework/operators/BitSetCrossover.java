@@ -53,10 +53,10 @@ public class BitSetCrossover extends AbstractCrossover<BitSet>
     }
 
 
-    protected List<? extends BitSet> reproduce(BitSet parent1,
-                                               BitSet parent2,
-                                               int numberOfCrossoverPoints,
-                                               Random rng)
+    protected List<BitSet> reproduce(BitSet parent1,
+                                     BitSet parent2,
+                                     int numberOfCrossoverPoints,
+                                     Random rng)
     {
         if (parent1.length() != parent2.length())
         {

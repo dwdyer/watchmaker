@@ -188,7 +188,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                                                    evaluatedPopulation.size() - eliteCount,
                                                    rng));
         // Then apply each evolutionary transformation to the selection in turn.
-        for (EvolutionaryOperator<? super T> transform : evolutionPipeline)
+        for (EvolutionaryOperator<T> transform : evolutionPipeline)
         {
             population = transform.apply(population, rng);
         }
