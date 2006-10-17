@@ -67,9 +67,9 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
                                                final ProgressListener progressListener)
     {
         Random rng = new MersenneTwisterRNG();
-        List<EvolutionaryOperator<? super List<String>>> pipeline = new ArrayList<EvolutionaryOperator<? super List<String>>>(2);
-        pipeline.add(new ListOrderMutation(new PoissonSequence(1.5, rng),
-                                           new PoissonSequence(1.5, rng)));
+        List<EvolutionaryOperator<List<String>>> pipeline = new ArrayList<EvolutionaryOperator<List<String>>>(2);
+        pipeline.add(new ListOrderMutation<String>(new PoissonSequence(1.5, rng),
+                                                   new PoissonSequence(1.5, rng)));
         CandidateFactory<List<String>> candidateFactory = new ListPermutationFactory<String>(new LinkedList<String>(cities));
         EvolutionEngine<List<String>> engine = new StandaloneEvolutionEngine<List<String>>(candidateFactory,
                                                                                            pipeline,
@@ -79,7 +79,7 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
         engine.addEvolutionObserver(new EvolutionObserver<List<String>>()
         {
 
-            public void populationUpdate(PopulationData<? extends List<String>> data)
+            public void populationUpdate(PopulationData<List<String>> data)
             {
                 progressListener.updateProgress(((double) data.getGenerationNumber() + 1) / generationCount * 100);
             }

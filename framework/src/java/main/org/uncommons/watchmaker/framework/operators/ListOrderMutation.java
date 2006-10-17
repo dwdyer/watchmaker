@@ -34,7 +34,7 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  * many mutations to apply.
  * @author Daniel Dyer
  */
-public class ListOrderMutation implements EvolutionaryOperator<List<?>>
+public class ListOrderMutation<T> implements EvolutionaryOperator<List<T>>
 {
     private final NumberSequence<Integer> mutationCountVariable;
     private final NumberSequence<Integer> mutationAmountVariable;
@@ -78,7 +78,7 @@ public class ListOrderMutation implements EvolutionaryOperator<List<?>>
 
 
     @SuppressWarnings("unchecked")
-    public <S extends List<?>> List<S> apply(List<S> population, Random rng)
+    public <S extends List<T>> List<S> apply(List<S> population, Random rng)
     {
         List<S> result = new ArrayList<S>(population.size());
         for (S candidate : population)

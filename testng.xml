@@ -14,6 +14,12 @@
     </packages>
   </test>
 
+  <test name="GUI Module" >
+    <packages>
+      <package name="org.uncommons.watchmaker.gui.*" />
+    </packages>
+  </test>
+
   <test name="Examples" >
     <packages>
       <package name="org.uncommons.watchmaker.examples.*" />

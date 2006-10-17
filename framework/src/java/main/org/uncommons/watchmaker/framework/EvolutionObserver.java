@@ -31,5 +31,5 @@ public interface EvolutionObserver<T>
      * at the end of a generation).
      * @param data
      */
-    void populationUpdate(PopulationData<? extends T> data);
+    void populationUpdate(PopulationData<T> data);
 }

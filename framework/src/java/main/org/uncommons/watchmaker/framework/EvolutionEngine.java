@@ -125,12 +125,12 @@ public interface EvolutionEngine<T>
      * Adds a listener to receive status updates on the evolution progress.
      * @see #removeEvolutionObserver(EvolutionObserver)
      */
-    void addEvolutionObserver(EvolutionObserver<? super T> observer);
+    void addEvolutionObserver(EvolutionObserver<T> observer);
 
 
     /**
      * Removes an evolution progress listener.
      * @see #addEvolutionObserver(EvolutionObserver)
      */
-    void removeEvolutionObserver(EvolutionObserver<? super T> observer);
+    void removeEvolutionObserver(EvolutionObserver<T> observer);
 }

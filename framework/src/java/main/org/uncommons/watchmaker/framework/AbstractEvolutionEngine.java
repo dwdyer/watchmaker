@@ -30,18 +30,18 @@ import org.uncommons.maths.stats.PopulationDataSet;
  */
 public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 {
-    private final List<EvolutionObserver<? super T>> observers = new LinkedList<EvolutionObserver<? super T>>();
+    private final List<EvolutionObserver<T>> observers = new LinkedList<EvolutionObserver<T>>();
     private final Random rng;
-    private final CandidateFactory<? extends T> candidateFactory;
-    private final List<EvolutionaryOperator<? super T>> evolutionPipeline;
+    private final CandidateFactory<T> candidateFactory;
+    private final List<EvolutionaryOperator<T>> evolutionPipeline;
     private final SelectionStrategy selectionStrategy;
 
     private long startTime;
     private int currentGenerationIndex;
 
 
-    protected AbstractEvolutionEngine(CandidateFactory<? extends T> candidateFactory,
-                                      List<EvolutionaryOperator<? super T>> evolutionPipeline,
+    protected AbstractEvolutionEngine(CandidateFactory<T> candidateFactory,
+                                      List<EvolutionaryOperator<T>> evolutionPipeline,
                                       SelectionStrategy selectionStrategy,
                                       Random rng)
     {
@@ -61,8 +61,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         return evolve(populationSize,
                       eliteCount,
                       generationCount,
-                      (Collection<T>) Collections.emptySet()
-        );
+                      (Collection<T>) Collections.emptySet());
     }
 
 
@@ -82,7 +81,9 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
         // Don't use the list returned by the factory, because the type might be too specific.
         // Instead copy the contents into a list of the desired type.
-        List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize, rng));
+        List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize,
+                                                                                         seedCandidates,
+                                                                                         rng));
         // Calculate the fitness scores for each member of the population.
         List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
         // Notify observers of the state of the population.
@@ -112,8 +113,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                       eliteCount,
                       targetFitness,
                       timeout,
-                      (Collection<T>) Collections.emptySet()
-        );
+                      (Collection<T>) Collections.emptySet());
     }
 
 
@@ -133,7 +133,9 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         long endTime = startTime + timeout;
         // Don't use the list returned by the factory, because the type might be too specific.
         // Instead copy the contents into a list of the desired type.
-        List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize, rng));
+        List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize,
+                                                                                         seedCandidates,
+                                                                                         rng));
         List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
         // Notify observers of the state of the population.
         notifyPopulationChange(evaluatedPopulation);
@@ -197,13 +199,13 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     }
 
 
-    public void addEvolutionObserver(EvolutionObserver<? super T> observer)
+    public void addEvolutionObserver(EvolutionObserver<T> observer)
     {
         observers.add(observer);
     }
 
 
-    public void removeEvolutionObserver(EvolutionObserver<? super T> observer)
+    public void removeEvolutionObserver(EvolutionObserver<T> observer)
     {
         observers.remove(observer);
     }
@@ -215,7 +217,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     private void notifyPopulationChange(List<EvaluatedCandidate<T>> evaluatedPopulation)
     {
         PopulationData<T> data = getPopulationData(evaluatedPopulation);
-        for (EvolutionObserver<? super T> observer : observers)
+        for (EvolutionObserver<T> observer : observers)
         {
             observer.populationUpdate(data);
         }

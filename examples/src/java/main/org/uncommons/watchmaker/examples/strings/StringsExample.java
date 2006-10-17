@@ -53,7 +53,7 @@ public class StringsExample
     public static void main(String args[])
     {
         String target = args.length == 0 ? "HELLO WORLD" : convertArgs(args);
-        List<EvolutionaryOperator<? super String>> pipeline = new ArrayList<EvolutionaryOperator<? super String>>(2);
+        List<EvolutionaryOperator<String>> pipeline = new ArrayList<EvolutionaryOperator<String>>(2);
         pipeline.add(new StringMutation(ALPHABET, 0.02d));
         pipeline.add(new StringCrossover());
         EvolutionEngine<String> engine = new StandaloneEvolutionEngine<String>(new StringFactory(ALPHABET, target.length()),
@@ -85,7 +85,7 @@ public class StringsExample
 
     private static class EvolutionLogger implements EvolutionObserver<String>
     {
-        public void populationUpdate(PopulationData<? extends String> data)
+        public void populationUpdate(PopulationData<String> data)
         {
             System.out.println("Generation " + data.getGenerationNumber() + ": " + data.getBestCandidate());
         }

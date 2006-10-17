@@ -49,8 +49,8 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 
     private final FitnessEvaluator<? super T> fitnessEvaluator;
 
-    public StandaloneEvolutionEngine(CandidateFactory<? extends T> candidateFactory,
-                                     List<EvolutionaryOperator<? super T>> evolutionPipeline,
+    public StandaloneEvolutionEngine(CandidateFactory<T> candidateFactory,
+                                     List<EvolutionaryOperator<T>> evolutionPipeline,
                                      FitnessEvaluator<? super T> fitnessEvaluator,
                                      SelectionStrategy selectionStrategy,
                                      Random rng)
