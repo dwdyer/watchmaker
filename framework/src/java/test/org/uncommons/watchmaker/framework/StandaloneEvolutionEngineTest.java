@@ -88,8 +88,7 @@ public class StandaloneEvolutionEngineTest
      * Trivial test operator that mutates all integers into zeroes.
      */
     private static final class IntegerZeroMaker implements EvolutionaryOperator<Integer>
-    {
-        @SuppressWarnings("unchecked")
+    {        
         public List<Integer> apply(List<Integer> selectedCandidates, Random rng)
         {
             List<Integer> result = new ArrayList<Integer>(selectedCandidates.size());
@@ -97,7 +96,7 @@ public class StandaloneEvolutionEngineTest
             {
                 result.add(0);
             }
-            return (List<Integer>) result;
+            return result;
         }
     }
 }

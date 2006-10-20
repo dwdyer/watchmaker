@@ -64,7 +64,7 @@ public final class Maths
     /**
      * Calculate the first argument raised to the power of the second.
      */
-    public static int raiseToPower(int value, int power)
+    public static long raiseToPower(int value, int power)
     {
         int result = 1;
         for (int i = 0; i < power; i++)
