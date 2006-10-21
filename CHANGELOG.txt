@@ -1,3 +1,15 @@
+Changes in version 0.2.1
+------------------------
+
+* Reworked evolutionary operators to allow more flexibility.  Specifically,
+* evolution can now be split into separate streams, which enables common
+* genetic programming techniques to be used.
+
+* Simplified the use of generics within the API.
+
+* Fixed bug with pre-seeding populations.
+
+
 Changes in version 0.2
 ----------------------
 

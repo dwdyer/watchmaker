@@ -48,7 +48,7 @@
     </fileset>
   </path>
 
-  <property name="version" value="0.2"/>
+  <property name="version" value="0.2.1"/>
 
 
 <!-- ==================================================================
@@ -131,8 +131,7 @@
     <sequential>
       <mkdir dir="@{api.dir}"/>
       <javadoc destdir="@{api.dir}"
-               doctitle="The Watchmaker Framework for Evolutionary Algorithms"
-               header="Watchmaker Framework API"
+               doctitle="The Watchmaker Framework for Evolutionary Algorithms ${version}"
                windowtitle="Watchmaker Framework API">
         <fileset dir="./maths/${java.dir}/main" defaultexcludes="yes">
           <include name="org/uncommons/**"/>
@@ -150,6 +149,7 @@
         <group title="Example Evolutionary Algorithms" packages="org.uncommons.watchmaker.examples.*"/>
         <group title="Uncommons Maths" packages="org.uncommons.maths:org.uncommons.maths.*"/>
         <group title="Uncommons GUI" packages="org.uncommons.gui:org.uncommons.gui.*"/>
+        <header><![CDATA[Watchmaker Framework API<br><small>(Version ${version})</small>]]></header>
         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
       </javadoc>
     </sequential>
