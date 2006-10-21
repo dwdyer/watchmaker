@@ -31,12 +31,13 @@ public class StringMutation implements EvolutionaryOperator<String>
     }
 
 
-    public List<String> apply(List<String> selectedCandidates, Random rng)
+    @SuppressWarnings("unchecked")
+    public <S extends String> List<S> apply(List<S> selectedCandidates, Random rng)
     {
-        List<String> mutatedPopulation = new ArrayList<String>(selectedCandidates.size());
+        List<S> mutatedPopulation = new ArrayList<S>(selectedCandidates.size());
         for (String s : selectedCandidates)
         {
-            mutatedPopulation.add(mutateString(s, rng));
+            mutatedPopulation.add((S) mutateString(s, rng));
         }
         return mutatedPopulation;
     }

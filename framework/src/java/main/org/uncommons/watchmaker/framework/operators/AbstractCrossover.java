@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.framework.operators;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -52,20 +53,25 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
         this.crossoverPointsVariable = crossoverPointsVariable;
     }
 
-
-    public List<T> apply(List<T> selectedCandidates, Random rng)
+    /**
+     * @param <S> A more specific type restriction than that associated
+     * with this class (T).  Ensures that the returned list is of the appropriate
+     * type even when dealing with sub-classes of T.
+     */
+    @SuppressWarnings("unchecked")
+    public <S extends T> List<S> apply(List<S> selectedCandidates, Random rng)
     {
         // Shuffle the collection before applying each operation so that the
         // evolution is not influenced by any ordering artifacts from previous
         // operations.
-        List<T> selectionClone = new ArrayList<T>(selectedCandidates);
+        List<S> selectionClone = new ArrayList<S>(selectedCandidates);
         Collections.shuffle(selectionClone, rng);
 
-        List<T> result = new ArrayList<T>(selectedCandidates.size());
-        Iterator<T> iterator = selectionClone.iterator();
+        List<S> result = new ArrayList<S>(selectedCandidates.size());
+        Iterator<S> iterator = selectionClone.iterator();
         while (iterator.hasNext())
         {
-            T parent1 = iterator.next();
+            S parent1 = iterator.next();
             if (!iterator.hasNext())
             {
                 // If we have an odd number of selected candidates, we can't pair up
@@ -74,14 +80,13 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
             }
             else
             {
-                T parent2 = iterator.next();
+                S parent2 = iterator.next();
                 int crossoverPoints = crossoverPointsVariable.nextValue();
-                result.addAll(reproduce(parent1, parent2, crossoverPoints, rng));
+                result.addAll((Collection<? extends S>) reproduce(parent1, parent2, crossoverPoints, rng));
             }
         }
         return result;
     }
-
 
     /**
      * Implementing classes should return the list elements of the most specific
@@ -92,8 +97,8 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
      * cross-over implementation can correctly deal with populations of
      * sub-classes of T.
      */
-    protected abstract List<T> reproduce(T parent1,
-                                         T parent2,
-                                         int numberOfCrossoverPoints,
-                                         Random rng);
+    protected abstract List<? extends T> reproduce(T parent1,
+                                                   T parent2,
+                                                   int numberOfCrossoverPoints,
+                                                   Random rng);
 }

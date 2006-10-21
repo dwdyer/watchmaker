@@ -33,7 +33,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     private final List<EvolutionObserver<T>> observers = new LinkedList<EvolutionObserver<T>>();
     private final Random rng;
     private final CandidateFactory<T> candidateFactory;
-    private final List<EvolutionaryOperator<T>> evolutionPipeline;
+    private final EvolutionaryOperator<? super T> evolutionScheme;
     private final SelectionStrategy selectionStrategy;
 
     private long startTime;
@@ -41,12 +41,12 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
 
     protected AbstractEvolutionEngine(CandidateFactory<T> candidateFactory,
-                                      List<EvolutionaryOperator<T>> evolutionPipeline,
+                                      EvolutionaryOperator<? super T> evolutionScheme,
                                       SelectionStrategy selectionStrategy,
                                       Random rng)
     {
         this.candidateFactory = candidateFactory;
-        this.evolutionPipeline = evolutionPipeline;
+        this.evolutionScheme = evolutionScheme;
         this.selectionStrategy = selectionStrategy;
         this.rng = rng;
     }
@@ -68,8 +68,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     public T evolve(int populationSize,
                     int eliteCount,
                     int generationCount,
-                    Collection<T> seedCandidates
-    )
+                    Collection<T> seedCandidates)
     {
         if (eliteCount < 0 || eliteCount >= populationSize)
         {
@@ -187,11 +186,8 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         population.addAll(selectionStrategy.select(evaluatedPopulation,
                                                    evaluatedPopulation.size() - eliteCount,
                                                    rng));
-        // Then apply each evolutionary transformation to the selection in turn.
-        for (EvolutionaryOperator<T> transform : evolutionPipeline)
-        {
-            population = transform.apply(population, rng);
-        }
+        // Then evolve the population.
+        population = evolutionScheme.apply(population, rng);
         // When the evolution is finished, add the elite to the population.
         population.addAll(elite);
         assert population.size() == evaluatedPopulation.size() : "Population size is not consistent.";

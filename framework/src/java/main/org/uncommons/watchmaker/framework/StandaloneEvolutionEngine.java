@@ -50,12 +50,12 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     private final FitnessEvaluator<? super T> fitnessEvaluator;
 
     public StandaloneEvolutionEngine(CandidateFactory<T> candidateFactory,
-                                     List<EvolutionaryOperator<T>> evolutionPipeline,
+                                     EvolutionaryOperator<? super T> evolutionScheme,
                                      FitnessEvaluator<? super T> fitnessEvaluator,
                                      SelectionStrategy selectionStrategy,
                                      Random rng)
     {
-        super(candidateFactory, evolutionPipeline, selectionStrategy, rng);
+        super(candidateFactory, evolutionScheme, selectionStrategy, rng);
         this.fitnessEvaluator = fitnessEvaluator;
         int threadCount = threadPool.prestartAllCoreThreads();
         System.out.println("Standalone evolution engine initialised with " + threadCount + " threads.");

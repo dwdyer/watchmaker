@@ -25,12 +25,13 @@ public class BitSetMutation implements EvolutionaryOperator<BitSet>
     }
 
 
-    public List<BitSet> apply(List<BitSet> selectedCandidates, Random rng)
+    @SuppressWarnings("unchecked")
+    public <S extends BitSet> List<S> apply(List<S> selectedCandidates, Random rng)
     {
-        List<BitSet> mutatedPopulation = new ArrayList<BitSet>(selectedCandidates.size());
+        List<S> mutatedPopulation = new ArrayList<S>(selectedCandidates.size());
         for (BitSet b : selectedCandidates)
         {
-            mutatedPopulation.add(mutateBitSet(b, rng));
+            mutatedPopulation.add((S) mutateBitSet(b, rng));
         }
         return mutatedPopulation;
     }

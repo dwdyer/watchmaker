@@ -15,7 +15,6 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.travellingsalesman;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,12 +66,11 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
                                                final ProgressListener progressListener)
     {
         Random rng = new MersenneTwisterRNG();
-        List<EvolutionaryOperator<List<String>>> pipeline = new ArrayList<EvolutionaryOperator<List<String>>>(2);
-        pipeline.add(new ListOrderMutation<String>(new PoissonSequence(1.5, rng),
-                                                   new PoissonSequence(1.5, rng)));
+        EvolutionaryOperator<List<?>> evolutionStrategy = new ListOrderMutation(new PoissonSequence(1.5, rng),
+                                                                                new PoissonSequence(1.5, rng));
         CandidateFactory<List<String>> candidateFactory = new ListPermutationFactory<String>(new LinkedList<String>(cities));
         EvolutionEngine<List<String>> engine = new StandaloneEvolutionEngine<List<String>>(candidateFactory,
-                                                                                           pipeline,
+                                                                                           evolutionStrategy,
                                                                                            new RouteEvaluator(),
                                                                                            new TruncationSelection(0.5),
                                                                                            rng);

@@ -17,10 +17,8 @@ public class StandaloneEvolutionEngineTest
     @Test
     public void testElitism()
     {
-        List<EvolutionaryOperator<Integer>> pipeline = new ArrayList<EvolutionaryOperator<Integer>>(0);
-        pipeline.add(new IntegerZeroMaker());
         EvolutionEngine<Integer> engine = new StandaloneEvolutionEngine<Integer>(new IntegerFactory(),
-                                                                                 pipeline,
+                                                                                 new IntegerZeroMaker(),
                                                                                  new IntegerEvaluator(),
                                                                                  new RouletteWheelSelection(),
                                                                                  new MersenneTwisterRNG());
@@ -87,14 +85,15 @@ public class StandaloneEvolutionEngineTest
     /**
      * Trivial test operator that mutates all integers into zeroes.
      */
+    @SuppressWarnings("unchecked")
     private static final class IntegerZeroMaker implements EvolutionaryOperator<Integer>
     {        
-        public List<Integer> apply(List<Integer> selectedCandidates, Random rng)
+        public <S extends Integer> List<S> apply(List<S> selectedCandidates, Random rng)
         {
-            List<Integer> result = new ArrayList<Integer>(selectedCandidates.size());
+            List<S> result = new ArrayList<S>(selectedCandidates.size());
             for (int i = 0; i < selectedCandidates.size(); i++)
             {
-                result.add(0);
+                result.add((S) Integer.valueOf(0));
             }
             return result;
         }
