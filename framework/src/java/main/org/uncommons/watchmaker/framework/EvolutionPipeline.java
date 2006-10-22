@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * A compound evolutionary operator that applies multiple operators (of the
- * same type) in series.
+ * <p>A compound evolutionary operator that applies multiple operators (of the
+ * same type) in series.</p>
  *
- * By combining EvolutionPipeline operators with {@link SplitEvolution} operators,
- * elaborate evolutionary schemes can be constructed.
+ * <p>By combining EvolutionPipeline operators with {@link SplitEvolution} operators,
+ * elaborate evolutionary schemes can be constructed.</p>
  *
  * @author Daniel Dyer
  */
