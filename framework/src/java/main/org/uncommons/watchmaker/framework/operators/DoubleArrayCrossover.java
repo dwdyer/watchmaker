@@ -18,7 +18,7 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.NumberSequence;
+import org.uncommons.maths.NumberGenerator;
 
 /**
  * Cross-over with a configurable number of points (fixed or random) for
@@ -48,7 +48,7 @@ public class DoubleArrayCrossover extends AbstractCrossover<double[]>
     /**
      * Cross-over with a variable number of cross-over points.
      */
-    public DoubleArrayCrossover(NumberSequence<Integer> crossoverPointsVariable)
+    public DoubleArrayCrossover(NumberGenerator<Integer> crossoverPointsVariable)
     {
         super(crossoverPointsVariable);
     }

@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.ConstantSequence;
-import org.uncommons.maths.NumberSequence;
+import org.uncommons.maths.Constant;
+import org.uncommons.maths.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
@@ -30,14 +30,14 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  * after it.  This operation can either apply a fixed number of
  * mutations to each candidate or it can draw values from a random
  * sequence, typically a poisson distribution (see
- * {@link org.uncommons.maths.stats.PoissonSequence}), to determine how
+ * {@link org.uncommons.maths.random.PoissonGenerator}), to determine how
  * many mutations to apply.
  * @author Daniel Dyer
  */
 public class ListOrderMutation implements EvolutionaryOperator<List<?>>
 {
-    private final NumberSequence<Integer> mutationCountVariable;
-    private final NumberSequence<Integer> mutationAmountVariable;
+    private final NumberGenerator<Integer> mutationCountVariable;
+    private final NumberGenerator<Integer> mutationAmountVariable;
 
     /**
      * Default is one mutation per candidate.
@@ -55,8 +55,8 @@ public class ListOrderMutation implements EvolutionaryOperator<List<?>>
      */
     public ListOrderMutation(int mutationCount, int mutationAmount)
     {
-        this.mutationCountVariable =  new ConstantSequence<Integer>(mutationCount);
-        this.mutationAmountVariable = new ConstantSequence<Integer>(mutationAmount);
+        this.mutationCountVariable =  new Constant<Integer>(mutationCount);
+        this.mutationAmountVariable = new Constant<Integer>(mutationAmount);
     }
 
 
@@ -69,8 +69,8 @@ public class ListOrderMutation implements EvolutionaryOperator<List<?>>
      * @param mutationAmount A random variable that provides a number
      * of positions by which to displace an element when mutating.
      */
-    public ListOrderMutation(NumberSequence<Integer> mutationCount,
-                             NumberSequence<Integer> mutationAmount)
+    public ListOrderMutation(NumberGenerator<Integer> mutationCount,
+                             NumberGenerator<Integer> mutationAmount)
     {
         this.mutationCountVariable = mutationCount;
         this.mutationAmountVariable = mutationAmount;

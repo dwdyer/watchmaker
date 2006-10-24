@@ -16,10 +16,21 @@
 package org.uncommons.maths;
 
 /**
- * Interface for providing different types of sequences of numbers.
+ * Convenience implementation of {@link org.uncommons.maths.NumberGenerator} that always
+ * returns the same value.
  * @author Daniel Dyer
  */
-public interface NumberSequence<T extends Number>
+public class Constant<T extends Number> implements NumberGenerator<T>
 {
-    T nextValue();
+    private final T constant;
+
+    public Constant(T constant)
+    {
+        this.constant = constant;
+    }
+
+    public T nextValue()
+    {
+        return constant;
+    }
 }

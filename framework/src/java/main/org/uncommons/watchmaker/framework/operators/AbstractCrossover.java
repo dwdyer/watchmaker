@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.ConstantSequence;
-import org.uncommons.maths.NumberSequence;
+import org.uncommons.maths.Constant;
+import org.uncommons.maths.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
@@ -32,7 +32,7 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
 {
-    private final NumberSequence<Integer> crossoverPointsVariable;
+    private final NumberGenerator<Integer> crossoverPointsVariable;
 
     /**
      * @param crossoverPoints The constant number of cross-over points
@@ -40,7 +40,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
      */
     protected AbstractCrossover(int crossoverPoints)
     {
-        this(new ConstantSequence<Integer>(crossoverPoints));
+        this(new Constant<Integer>(crossoverPoints));
     }
 
 
@@ -48,7 +48,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
      * @param crossoverPointsVariable A random variable that provides a number
      * of cross-over points for each cross-over operation.
      */
-    protected AbstractCrossover(NumberSequence<Integer> crossoverPointsVariable)
+    protected AbstractCrossover(NumberGenerator<Integer> crossoverPointsVariable)
     {
         this.crossoverPointsVariable = crossoverPointsVariable;
     }

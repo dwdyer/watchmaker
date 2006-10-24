@@ -13,22 +13,22 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.maths.stats;
+package org.uncommons.maths.random;
 
 import java.util.Random;
-import org.uncommons.maths.NumberSequence;
+import org.uncommons.maths.NumberGenerator;
 
 /**
  * Discrete random sequence that follows a Poisson distribution.
  * @author Daniel Dyer
  */
-public class PoissonSequence implements NumberSequence<Integer>
+public class PoissonGenerator implements NumberGenerator<Integer>
 {
     private final Random rng;
     private final double mean;
 
-    public PoissonSequence(double mean,
-                           Random rng)
+    public PoissonGenerator(double mean,
+                            Random rng)
     {
         this.mean = mean;
         this.rng = rng;

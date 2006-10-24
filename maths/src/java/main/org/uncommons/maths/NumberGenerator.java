@@ -13,32 +13,13 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.maths.stats;
-
-import java.util.Random;
-import org.uncommons.maths.NumberSequence;
+package org.uncommons.maths;
 
 /**
- * Discrete, uniformly distributed random sequence.
+ * Interface for providing different types of sequences of numbers.
  * @author Daniel Dyer
  */
-public class DiscreteUniformSequence implements NumberSequence<Integer>
+public interface NumberGenerator<T extends Number>
 {
-    private final Random rng;
-    private final int range;
-    private final int minimumValue;
-
-    public DiscreteUniformSequence(int minimumValue,
-                                   int maximumValue,
-                                   Random rng)
-    {
-        this.rng = rng;
-        this.minimumValue = minimumValue;
-        this.range = maximumValue - minimumValue + 1;
-    }
-
-    public Integer nextValue()
-    {
-        return rng.nextInt(range) + minimumValue;
-    }
+    T nextValue();
 }

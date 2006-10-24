@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.NumberSequence;
+import org.uncommons.maths.NumberGenerator;
 
 /**
  * Cross-over with a configurable number of points (fixed or random) for
@@ -47,7 +47,7 @@ public class BitSetCrossover extends AbstractCrossover<BitSet>
     /**
      * Cross-over with a variable number of cross-over points.
      */
-    public BitSetCrossover(NumberSequence<Integer> crossoverPointsVariable)
+    public BitSetCrossover(NumberGenerator<Integer> crossoverPointsVariable)
     {
         super(crossoverPointsVariable);
     }

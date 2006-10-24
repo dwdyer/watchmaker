@@ -20,7 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.maths.random.MersenneTwisterRNG;
-import org.uncommons.maths.stats.PoissonSequence;
+import org.uncommons.maths.random.PoissonGenerator;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
@@ -66,8 +66,8 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
                                                final ProgressListener progressListener)
     {
         Random rng = new MersenneTwisterRNG();
-        EvolutionaryOperator<List<?>> evolutionStrategy = new ListOrderMutation(new PoissonSequence(1.5, rng),
-                                                                                new PoissonSequence(1.5, rng));
+        EvolutionaryOperator<List<?>> evolutionStrategy = new ListOrderMutation(new PoissonGenerator(1.5, rng),
+                                                                                new PoissonGenerator(1.5, rng));
         CandidateFactory<List<String>> candidateFactory = new ListPermutationFactory<String>(new LinkedList<String>(cities));
         EvolutionEngine<List<String>> engine = new StandaloneEvolutionEngine<List<String>>(candidateFactory,
                                                                                            evolutionStrategy,

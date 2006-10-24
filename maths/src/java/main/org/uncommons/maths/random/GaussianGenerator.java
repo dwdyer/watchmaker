@@ -13,32 +13,34 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.maths.stats;
+package org.uncommons.maths.random;
 
 import java.util.Random;
-import org.uncommons.maths.NumberSequence;
+import org.uncommons.maths.NumberGenerator;
 
 /**
- * Continuous, uniformly distributed random sequence.
+ * Normally distributed random sequence.
  * @author Daniel Dyer
  */
-public class ContinuousUniformSequence implements NumberSequence<Double>
+public class GaussianGenerator implements NumberGenerator<Double>
 {
     private final Random rng;
-    private final double range;
-    private final double minimumValue;
+    private final double mean;
+    private final double standardDeviation;
 
-    public ContinuousUniformSequence(double minimumValue,
-                                     double maximumValue,
-                                     Random rng)
+
+    public GaussianGenerator(double mean,
+                             double standardDeviation,
+                             Random rng)
     {
         this.rng = rng;
-        this.minimumValue = minimumValue;
-        this.range = maximumValue - minimumValue + 1;
+        this.mean = mean;
+        this.standardDeviation = standardDeviation;
     }
+
 
     public Double nextValue()
     {
-        return rng.nextDouble() * range + minimumValue;
+        return rng.nextGaussian() * standardDeviation + mean;
     }
 }

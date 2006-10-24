@@ -21,7 +21,7 @@ package org.uncommons.maths.random;
  * current operating environment.
  * @author Daniel Dyer
  */
-final class DefaultSeedGenerator implements SeedGenerator
+public class DefaultSeedGenerator implements SeedGenerator
 {
     /** Singleton instance. */
     private static final DefaultSeedGenerator INSTANCE = new DefaultSeedGenerator();

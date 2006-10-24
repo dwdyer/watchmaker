@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.ConstantSequence;
-import org.uncommons.maths.NumberSequence;
+import org.uncommons.maths.Constant;
+import org.uncommons.maths.NumberGenerator;
 
 /**
  * <p>Compound evolutionary operator that allows the evolution of a population
@@ -44,7 +44,7 @@ public class SplitEvolution<T> implements EvolutionaryOperator<T>
 {
     private final EvolutionaryOperator<? super T> operator1;
     private final EvolutionaryOperator<? super T> operator2;
-    private final NumberSequence<Double> weightVariable;
+    private final NumberGenerator<Double> weightVariable;
 
     /**
      * @param weight The proportion (as a real number between zero and 1 exclusive)
@@ -55,7 +55,7 @@ public class SplitEvolution<T> implements EvolutionaryOperator<T>
                           EvolutionaryOperator<? super T> operator2,
                           double weight)
     {
-        this(operator1, operator2, new ConstantSequence<Double>(weight));
+        this(operator1, operator2, new Constant<Double>(weight));
         if (weight <= 0 || weight >= 1)
         {
             throw new IllegalArgumentException("Split ratio must be greater than 0 and less than 1.");
@@ -70,7 +70,7 @@ public class SplitEvolution<T> implements EvolutionaryOperator<T>
      */
     public SplitEvolution(EvolutionaryOperator<? super T> operator1,
                           EvolutionaryOperator<? super T> operator2,
-                          NumberSequence<Double> weightVariable)
+                          NumberGenerator<Double> weightVariable)
     {
         this.operator1 = operator1;
         this.operator2 = operator2;

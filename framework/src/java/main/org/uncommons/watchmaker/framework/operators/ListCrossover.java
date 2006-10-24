@@ -18,7 +18,7 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.NumberSequence;
+import org.uncommons.maths.NumberGenerator;
 
 /**
  * Variable-point (fixed or random) cross-over for arbitrary lists.
@@ -47,7 +47,7 @@ public class ListCrossover extends AbstractCrossover<List<?>>
     /**
      * Cross-over with a variable number of cross-over points.
      */
-    public ListCrossover(NumberSequence<Integer> crossoverPointsVariable)
+    public ListCrossover(NumberGenerator<Integer> crossoverPointsVariable)
     {
         super(crossoverPointsVariable);
     }

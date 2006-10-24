@@ -13,24 +13,32 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.maths;
+package org.uncommons.maths.random;
+
+import java.util.Random;
+import org.uncommons.maths.NumberGenerator;
 
 /**
- * Convenience implementation of {@link org.uncommons.maths.NumberSequence} that always
- * returns the same value.
+ * Discrete, uniformly distributed random sequence.
  * @author Daniel Dyer
  */
-public class ConstantSequence<T extends Number> implements NumberSequence<T>
+public class DiscreteUniformGenerator implements NumberGenerator<Integer>
 {
-    private final T constant;
+    private final Random rng;
+    private final int range;
+    private final int minimumValue;
 
-    public ConstantSequence(T constant)
+    public DiscreteUniformGenerator(int minimumValue,
+                                    int maximumValue,
+                                    Random rng)
     {
-        this.constant = constant;
+        this.rng = rng;
+        this.minimumValue = minimumValue;
+        this.range = maximumValue - minimumValue + 1;
     }
 
-    public T nextValue()
+    public Integer nextValue()
     {
-        return constant;
+        return rng.nextInt(range) + minimumValue;
     }
 }

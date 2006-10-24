@@ -19,7 +19,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.NumberSequence;
+import org.uncommons.maths.NumberGenerator;
 
 /**
  * Cross-over with a configurable number of points (fixed or random) for
@@ -49,7 +49,7 @@ public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
     /**
      * Cross-over with a variable number of cross-over points.
      */
-    public ObjectArrayCrossover(NumberSequence<Integer> crossoverPointsVariable)
+    public ObjectArrayCrossover(NumberGenerator<Integer> crossoverPointsVariable)
     {
         super(crossoverPointsVariable);
     }

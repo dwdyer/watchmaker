@@ -13,16 +13,16 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.maths.stats;
+package org.uncommons.maths.random;
 
 import java.util.Random;
-import org.uncommons.maths.NumberSequence;
+import org.uncommons.maths.NumberGenerator;
 
 /**
  * Discrete random sequence that follows a binomial distribution.
  * @author Daniel Dyer
  */
-public class BinomialSequence implements NumberSequence<Integer>
+public class BinomialGenerator implements NumberGenerator<Integer>
 {
     private final Random rng;
     private final int n;
@@ -34,9 +34,9 @@ public class BinomialSequence implements NumberSequence<Integer>
      * @param p The probability (between 0 and 1) of success in any one trial.
      * @param rng
      */
-    public BinomialSequence(int n,
-                            double p,
-                            Random rng)
+    public BinomialGenerator(int n,
+                             double p,
+                             Random rng)
     {
         if (n <= 0)
         {
