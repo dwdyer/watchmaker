@@ -34,6 +34,16 @@ public interface DataSet
     int getSize();
 
     /**
+     * Returns the sum of all values.
+     */
+    double getAggregate();
+
+    /**
+     * Returns the product of all values.
+     */
+    double getProduct();
+
+    /**
      * The arithemthic mean of an n-element set is the sum of
      * all the elements divided by n.
      * @see #getGeometricMean()

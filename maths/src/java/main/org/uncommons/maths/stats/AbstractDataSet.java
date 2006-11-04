@@ -91,6 +91,18 @@ public abstract class AbstractDataSet implements DataSet
     }
 
 
+    public final double getAggregate()
+    {
+        return total;
+    }
+
+
+    public final double getProduct()
+    {
+        return product;
+    }
+
+
     public double getArithmeticMean()
     {
         return total / dataSetSize;

@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.Constant;
+import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.maths.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
@@ -40,7 +40,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
      */
     protected AbstractCrossover(int crossoverPoints)
     {
-        this(new Constant<Integer>(crossoverPoints));
+        this(new ConstantGenerator<Integer>(crossoverPoints));
     }
 
 

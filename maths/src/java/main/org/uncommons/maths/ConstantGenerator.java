@@ -20,11 +20,11 @@ package org.uncommons.maths;
  * returns the same value.
  * @author Daniel Dyer
  */
-public class Constant<T extends Number> implements NumberGenerator<T>
+public class ConstantGenerator<T extends Number> implements NumberGenerator<T>
 {
     private final T constant;
 
-    public Constant(T constant)
+    public ConstantGenerator(T constant)
     {
         this.constant = constant;
     }

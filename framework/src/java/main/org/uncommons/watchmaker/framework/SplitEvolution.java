@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.Constant;
+import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.maths.NumberGenerator;
 
 /**
@@ -55,7 +55,7 @@ public class SplitEvolution<T> implements EvolutionaryOperator<T>
                           EvolutionaryOperator<? super T> operator2,
                           double weight)
     {
-        this(operator1, operator2, new Constant<Double>(weight));
+        this(operator1, operator2, new ConstantGenerator<Double>(weight));
         if (weight <= 0 || weight >= 1)
         {
             throw new IllegalArgumentException("Split ratio must be greater than 0 and less than 1.");

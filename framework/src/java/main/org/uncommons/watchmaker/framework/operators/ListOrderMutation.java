@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.Constant;
+import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.maths.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
@@ -55,8 +55,8 @@ public class ListOrderMutation implements EvolutionaryOperator<List<?>>
      */
     public ListOrderMutation(int mutationCount, int mutationAmount)
     {
-        this.mutationCountVariable =  new Constant<Integer>(mutationCount);
-        this.mutationAmountVariable = new Constant<Integer>(mutationAmount);
+        this.mutationCountVariable =  new ConstantGenerator<Integer>(mutationCount);
+        this.mutationAmountVariable = new ConstantGenerator<Integer>(mutationAmount);
     }
 
 
