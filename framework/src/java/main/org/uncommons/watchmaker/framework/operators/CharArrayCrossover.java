@@ -54,10 +54,10 @@ public class CharArrayCrossover extends AbstractCrossover<char[]>
     }
 
 
-    protected List<char[]> reproduce(char[] parent1,
-                                     char[] parent2,
-                                     int numberOfCrossoverPoints,
-                                     Random rng)
+    protected List<char[]> mate(char[] parent1,
+                                char[] parent2,
+                                int numberOfCrossoverPoints,
+                                Random rng)
     {
         if (parent1.length != parent2.length)
         {

@@ -47,6 +47,7 @@ public class TournamentSelection implements SelectionStrategy
 
 
     public <T> List<T> select(List<EvaluatedCandidate<T>> population,
+                              boolean naturalFitnessScores,
                               int selectionSize,
                               Random rng)
     {
@@ -59,7 +60,7 @@ public class TournamentSelection implements SelectionStrategy
 
             // Use a random value to decide wether to select the fitter individual or the weaker one.
             double value = rng.nextDouble();
-            if (value < selectionProbability)
+            if (value >= selectionProbability ^ naturalFitnessScores)
             {
                 // Select the fitter candidate.
                 selection.add(candidate2.getFitness() > candidate1.getFitness() ? candidate2.getCandidate() : candidate1.getCandidate());

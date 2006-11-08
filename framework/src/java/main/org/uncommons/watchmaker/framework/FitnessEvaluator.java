@@ -26,25 +26,35 @@ public interface FitnessEvaluator<T>
     /**
      * Calculates a fitness score for the given candidate.  Whether
      * a higher score indicates a fitter candidate or not depends on
-     * whether the fitness scores are normalised (see {@link #isFitnessNormalised}).
+     * whether the fitness scores are natural (see {@link #isNatural}).
      * @param candidate
      */
     double getFitness(T candidate);
 
     /**
-     * <p>Specifies whether this evaluator generates normalised
-     * (descending) fitness scores or not.</p>
-     * <p>Normalised fitness scores are those in which the fittest
+     * <p>Specifies whether this evaluator generates <i>natural</i> fitness
+     * scores or not.</p>
+     * <p>Natural fitness scores are those in which the fittest
      * individual in a population has the highest fitness value.  In this
      * case the algorithm is attempting to maximise fitness scores.
-     * In contrast, de-normalised fitness evaluation results in fitter
+     * There need not be a specified maximum possible value.</p>
+     * <p>In contrast, <i>non-natural<i> fitness evaluation results in fitter
      * individuals being assigned lower scores than weaker individuals.
-     * In this case the algorithm is attempting to minimise fitness scores.</p>
-     * <p>An example of a situation in which a low fitness score is good
-     * is when the fitness corresponds to a cost and the algorithm
+     * In the case of non-natural fitness, the algorithm is attempting to
+     * minimise fitness scores.</p>
+     * <p>An example of a situation in which non-natural fitness scores are
+     * preferable is when the fitness corresponds to a cost and the algorithm
      * is attempting to minimise that cost.</p>
+     * <p>The terminology of <i>natural</i> and <i>non-natural</i> fitness scores
+     * is introduced by the Watchmaker Framework to describe the two types of fitness
+     * scoring that imortant within the framework.  It does not correspond to either
+     * <i>standardised fitness</i> or <i>normalised fitness</i> in the EA
+     * literature.  Standardised fitness evaluation generates non-natural
+     * scores with a score of zero corresponding to the best possible fitness.
+     * Normalised fitness evaluation is similar to standardised fitness but
+     * with the scores adjusted to fall within the range 0 - 1.</p>
      * @return True if a high fitness score means a fitter candidate
      * or false if a low fitness score means a fitter candidate.
      */
-    boolean isFitnessNormalised();
+    boolean isNatural();
 }

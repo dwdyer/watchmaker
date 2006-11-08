@@ -25,13 +25,14 @@ import java.util.Random;
 public interface SelectionStrategy
 {
     /**
-     * Select the specified number of candidates from the population.
+     * <p>Select the specified number of candidates from the population.
      * Implementations can assume that the population is sorted in descending
      * order according to fitness (so the fittest individual is the first item
-     * in the list).
-     * It is an error to call this method with an empty or null population.
+     * in the list).</p>
+     * <p>It is an error to call this method with an empty or null population.</p>
      */
     <T> List<T> select(List<EvaluatedCandidate<T>> population,
+                       boolean naturalFitnessScores,
                        int selectionSize,
                        Random rng);
 }

@@ -41,7 +41,7 @@ public class RouteEvaluator implements FitnessEvaluator<List<String>>
     }
 
     
-    public boolean isFitnessNormalised()
+    public boolean isNatural()
     {
         return false;
     }

@@ -54,10 +54,10 @@ public class IntArrayCrossover extends AbstractCrossover<int[]>
     }
 
 
-    protected List<int[]> reproduce(int[] parent1,
-                                    int[] parent2,
-                                    int numberOfCrossoverPoints,
-                                    Random rng)
+    protected List<int[]> mate(int[] parent1,
+                               int[] parent2,
+                               int numberOfCrossoverPoints,
+                               Random rng)
     {
         if (parent1.length != parent2.length)
         {

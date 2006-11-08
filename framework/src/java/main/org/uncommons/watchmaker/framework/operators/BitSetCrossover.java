@@ -36,6 +36,7 @@ public class BitSetCrossover extends AbstractCrossover<BitSet>
         this(1);
     }
 
+
     /**
      * Cross-over with a fixed number of cross-over points.
      */
@@ -43,6 +44,7 @@ public class BitSetCrossover extends AbstractCrossover<BitSet>
     {
         super(crossoverPoints);
     }
+
 
     /**
      * Cross-over with a variable number of cross-over points.
@@ -53,10 +55,10 @@ public class BitSetCrossover extends AbstractCrossover<BitSet>
     }
 
 
-    protected List<BitSet> reproduce(BitSet parent1,
-                                     BitSet parent2,
-                                     int numberOfCrossoverPoints,
-                                     Random rng)
+    protected List<BitSet> mate(BitSet parent1,
+                                BitSet parent2,
+                                int numberOfCrossoverPoints,
+                                Random rng)
     {
         if (parent1.length() != parent2.length())
         {

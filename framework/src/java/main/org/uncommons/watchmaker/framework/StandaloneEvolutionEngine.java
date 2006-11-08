@@ -47,7 +47,6 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                                                          new LinkedBlockingQueue<Runnable>(),
                                                                          new DaemonThreadFactory());
 
-    private final FitnessEvaluator<? super T> fitnessEvaluator;
 
     public StandaloneEvolutionEngine(CandidateFactory<T> candidateFactory,
                                      EvolutionaryOperator<? super T> evolutionScheme,
@@ -55,8 +54,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                      SelectionStrategy selectionStrategy,
                                      Random rng)
     {
-        super(candidateFactory, evolutionScheme, selectionStrategy, rng);
-        this.fitnessEvaluator = fitnessEvaluator;
+        super(candidateFactory, evolutionScheme, fitnessEvaluator, selectionStrategy, rng);
         int threadCount = threadPool.prestartAllCoreThreads();
         System.out.println("Standalone evolution engine initialised with " + threadCount + " threads.");
     }
@@ -99,11 +97,11 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         assert evaluatedPopulation.size() == population.size() : "Wrong number of evaluated candidates.";
 
         // Sort candidates in descending order according to fitness.
-        if (fitnessEvaluator.isFitnessNormalised()) // Descending values for normalised fitness.
+        if (fitnessEvaluator.isNatural()) // Descending values for natural fitness.
         {
             Collections.sort(evaluatedPopulation, Collections.reverseOrder());
         }
-        else // Ascending values for de-normalised fitness.
+        else // Ascending values for non-natural fitness.
         {
             Collections.sort(evaluatedPopulation);
         }

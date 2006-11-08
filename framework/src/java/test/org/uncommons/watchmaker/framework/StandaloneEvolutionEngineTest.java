@@ -90,7 +90,7 @@ public class StandaloneEvolutionEngineTest
             return candidate;
         }
 
-        public boolean isFitnessNormalised()
+        public boolean isNatural()
         {
             return true;
         }

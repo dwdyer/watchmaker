@@ -46,7 +46,7 @@ public class RouletteWheelSelectionTest
         population.add(john);
         population.add(gary);
         Collections.sort(population, Collections.reverseOrder());
-        List<String> selection = selector.select(population, 2, new Random());
+        List<String> selection = selector.select(population, true, 2, new Random());
         assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
     }
 }

@@ -36,17 +36,15 @@ public abstract class FitnessProportionateSelection implements SelectionStrategy
      * {@link #fpSelect(java.util.List, int, java.util.Random)}.
      */
     public final <T> List<T> select(List<EvaluatedCandidate<T>> population,
+                                    boolean naturalFitnessScores,
                                     int selectionSize,
                                     Random rng)
     {
         assert !population.isEmpty() : "Cannot select from an empty population.";
 
         // Make sure we are dealing with a population with normalised (descending)
-        // fitnesses.  Since the population is sorted by fitness this is just a
-        // matter of comparing the first and last scores to see whether the list
-        // is in ascending or descending order.
-        boolean normalised = population.get(0).getFitness() >= population.get(population.size() - 1).getFitness();
-        List<EvaluatedCandidate<T>> normalisedPopulation = normalised ? population : normaliseFitnesses(population);
+        // fitnesses.
+        List<EvaluatedCandidate<T>> normalisedPopulation = naturalFitnessScores ? population : normaliseFitnesses(population);
         return fpSelect(normalisedPopulation, selectionSize, rng);
     }
 

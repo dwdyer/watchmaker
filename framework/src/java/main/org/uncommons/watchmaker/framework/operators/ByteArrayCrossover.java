@@ -54,10 +54,10 @@ public class ByteArrayCrossover extends AbstractCrossover<byte[]>
     }
 
 
-    protected List<byte[]> reproduce(byte[] parent1,
-                                     byte[] parent2,
-                                     int numberOfCrossoverPoints,
-                                     Random rng)
+    protected List<byte[]> mate(byte[] parent1,
+                                byte[] parent2,
+                                int numberOfCrossoverPoints,
+                                Random rng)
     {
         if (parent1.length != parent2.length)
         {

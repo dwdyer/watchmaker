@@ -1,9 +1,17 @@
+Changes in version 0.3
+----------------------
+
+* Renamed classes for generating random values from various probability
+  distributions.  Now called "generators" rather than "sequences" in order to
+  avoid confusion with mathematical sequences.
+
+
 Changes in version 0.2.1
 ------------------------
 
 * Reworked evolutionary operators to allow more flexibility.  Specifically,
-* evolution can now be split into separate streams, which enables common
-* genetic programming techniques to be used.
+  evolution can now be split into separate streams, which enables common
+  genetic programming techniques to be used.
 
 * Simplified the use of generics within the API.
 

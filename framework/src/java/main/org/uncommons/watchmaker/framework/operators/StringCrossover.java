@@ -53,10 +53,10 @@ public class StringCrossover extends AbstractCrossover<String>
     }
 
 
-    protected List<String> reproduce(String parent1,
-                                     String parent2,
-                                     int numberOfCrossoverPoints,
-                                     Random rng)
+    protected List<String> mate(String parent1,
+                                String parent2,
+                                int numberOfCrossoverPoints,
+                                Random rng)
     {
         if (parent1.length() != parent2.length())
         {

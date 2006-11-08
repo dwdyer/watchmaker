@@ -53,6 +53,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
         this.crossoverPointsVariable = crossoverPointsVariable;
     }
 
+    
     /**
      * @param <S> A more specific type restriction than that associated
      * with this class (T).  Ensures that the returned list is of the appropriate
@@ -82,11 +83,12 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
             {
                 S parent2 = iterator.next();
                 int crossoverPoints = crossoverPointsVariable.nextValue();
-                result.addAll((Collection<? extends S>) reproduce(parent1, parent2, crossoverPoints, rng));
+                result.addAll((Collection<? extends S>) mate(parent1, parent2, crossoverPoints, rng));
             }
         }
         return result;
     }
+
 
     /**
      * Implementing classes should return the list elements of the most specific
@@ -97,8 +99,8 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
      * cross-over implementation can correctly deal with populations of
      * sub-classes of T.
      */
-    protected abstract List<? extends T> reproduce(T parent1,
-                                                   T parent2,
-                                                   int numberOfCrossoverPoints,
-                                                   Random rng);
+    protected abstract List<? extends T> mate(T parent1,
+                                              T parent2,
+                                              int numberOfCrossoverPoints,
+                                              Random rng);
 }

@@ -62,6 +62,7 @@ public class RankSelection implements SelectionStrategy
 
 
     public <T> List<T> select(List<EvaluatedCandidate<T>> population,
+                              boolean naturalFitnessScores,
                               int selectionSize,
                               Random rng)
     {
@@ -73,7 +74,7 @@ public class RankSelection implements SelectionStrategy
             T candidate = iterator.next().getCandidate();
             rankedPopulation.add(new EvaluatedCandidate<T>(candidate, mapRankToScore(++index, population.size())));
         }
-        return delegate.select(rankedPopulation, selectionSize, rng);
+        return delegate.select(rankedPopulation, true, selectionSize, rng);
     }
 
 

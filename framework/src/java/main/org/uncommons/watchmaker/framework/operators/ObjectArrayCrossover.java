@@ -56,10 +56,10 @@ public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
 
 
     @SuppressWarnings("unchecked")
-    protected List<T[]> reproduce(T[] parent1,
-                                  T[] parent2,
-                                  int numberOfCrossoverPoints,
-                                  Random rng)
+    protected List<T[]> mate(T[] parent1,
+                             T[] parent2,
+                             int numberOfCrossoverPoints,
+                             Random rng)
     {
         if (parent1.length != parent2.length)
         {

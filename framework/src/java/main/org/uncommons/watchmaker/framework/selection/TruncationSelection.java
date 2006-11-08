@@ -47,6 +47,7 @@ public class TruncationSelection implements SelectionStrategy
      * selected multiple times to make up the shortfall.
      */
     public <T> List<T> select(List<EvaluatedCandidate<T>> population,
+                              boolean naturalFitnessScores,
                               int selectionSize,
                               Random rng)
     {

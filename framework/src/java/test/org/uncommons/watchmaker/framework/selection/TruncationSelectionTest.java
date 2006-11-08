@@ -43,7 +43,7 @@ public class TruncationSelectionTest
         population.add(gary);
         population.add(mary);
         Collections.sort(population, Collections.reverseOrder());
-        List<String> selection = selector.select(population, 2, null);
+        List<String> selection = selector.select(population, true, 2, null);
         assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
         assert selection.contains(steve.getCandidate()) : "Best candidate not selected.";
         assert selection.contains(mary.getCandidate()) : "Second best candidate not selected.";

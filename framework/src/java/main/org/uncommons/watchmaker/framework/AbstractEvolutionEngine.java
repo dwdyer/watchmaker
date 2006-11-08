@@ -34,6 +34,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     private final Random rng;
     private final CandidateFactory<T> candidateFactory;
     private final EvolutionaryOperator<? super T> evolutionScheme;
+    protected final FitnessEvaluator<? super T> fitnessEvaluator;
     private final SelectionStrategy selectionStrategy;
 
     private long startTime;
@@ -42,11 +43,13 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
     protected AbstractEvolutionEngine(CandidateFactory<T> candidateFactory,
                                       EvolutionaryOperator<? super T> evolutionScheme,
+                                      FitnessEvaluator<? super T> fitnessEvaluator,
                                       SelectionStrategy selectionStrategy,
                                       Random rng)
     {
         this.candidateFactory = candidateFactory;
         this.evolutionScheme = evolutionScheme;
+        this.fitnessEvaluator = fitnessEvaluator;
         this.selectionStrategy = selectionStrategy;
         this.rng = rng;
     }
@@ -86,7 +89,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         // Calculate the fitness scores for each member of the population.
         List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
         // Notify observers of the state of the population.
-        notifyPopulationChange(evaluatedPopulation);
+        notifyPopulationChange(getPopulationData(evaluatedPopulation));
 
         // This loop starts counting at 1, because the initial population counts as generation zero.
         for (int i = 1; i < generationCount; i++)
@@ -95,7 +98,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
             population = createNextGeneration(evaluatedPopulation, eliteCount);
             evaluatedPopulation = evaluatePopulation(population);
             // Notify observers of the state of the population.
-            notifyPopulationChange(evaluatedPopulation);
+            notifyPopulationChange(getPopulationData(evaluatedPopulation));
         }
         // Return the fittest candidate from the final generation.
         return evaluatedPopulation.get(0).getCandidate();
@@ -136,19 +139,19 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                                                                                          seedCandidates,
                                                                                          rng));
         List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
+        PopulationData<T> data = getPopulationData(evaluatedPopulation);
         // Notify observers of the state of the population.
-        notifyPopulationChange(evaluatedPopulation);
+        notifyPopulationChange(data);
 
         // Keep evolving until we match the target fitness or run out of time.
-        double bestFitness = evaluatedPopulation.get(0).getFitness();
-        while (bestFitness < targetFitness && System.currentTimeMillis() < endTime)
+        while (data.getBestCandidateFitness() < targetFitness && System.currentTimeMillis() < endTime)
         {
             ++currentGenerationIndex;
             population = createNextGeneration(evaluatedPopulation, eliteCount);
             evaluatedPopulation = evaluatePopulation(population);
-            bestFitness = evaluatedPopulation.get(0).getFitness();
+            data = getPopulationData(evaluatedPopulation);
             // Notify observers of the state of the population.
-            notifyPopulationChange(evaluatedPopulation);
+            notifyPopulationChange(data);
         }
 
         // Return the fittest candidate from the final generation.
@@ -184,6 +187,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         // Then select candidates that will be operated on to create the evolved
         // portion of the next generation.
         population.addAll(selectionStrategy.select(evaluatedPopulation,
+                                                   fitnessEvaluator.isNatural(),
                                                    evaluatedPopulation.size() - eliteCount,
                                                    rng));
         // Then evolve the population.
@@ -210,9 +214,8 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     /**
      * Send the population data to all registered observers.
      */
-    private void notifyPopulationChange(List<EvaluatedCandidate<T>> evaluatedPopulation)
+    private void notifyPopulationChange(PopulationData<T> data)
     {
-        PopulationData<T> data = getPopulationData(evaluatedPopulation);
         for (EvolutionObserver<T> observer : observers)
         {
             observer.populationUpdate(data);

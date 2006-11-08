@@ -53,10 +53,10 @@ public class ListCrossover extends AbstractCrossover<List<?>>
     }
 
 
-    protected List<List<?>> reproduce(List<?> parent1,
-                                      List<?> parent2,
-                                      int numberOfCrossoverPoints,
-                                      Random rng)
+    protected List<List<?>> mate(List<?> parent1,
+                                 List<?> parent2,
+                                 int numberOfCrossoverPoints,
+                                 Random rng)
     {
         if (parent1.size() != parent2.size())
         {

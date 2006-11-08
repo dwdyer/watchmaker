@@ -51,7 +51,7 @@ public class StringEvaluator implements FitnessEvaluator<String>
     }
 
 
-    public boolean isFitnessNormalised()
+    public boolean isNatural()
     {
         return true;
     }
