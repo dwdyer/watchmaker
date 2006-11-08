@@ -63,8 +63,8 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     /**
      * Takes a population, assigns a fitness score to each member and returns
      * the members with their scores attached, sorted in descending order of
-     * fitness (descending order of fitness score for normalised scores, ascending
-     * order of scores for de-normalised scores).
+     * fitness (descending order of fitness score for natural scores, ascending
+     * order of scores for non-natural scores).
      */
     protected List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population)
     {

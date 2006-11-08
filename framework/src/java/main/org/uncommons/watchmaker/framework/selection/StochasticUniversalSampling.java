@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
+import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
  * An alternative to {@link org.uncommons.watchmaker.framework.selection.RouletteWheelSelection}
@@ -26,17 +27,18 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
  * each candidate is consistent with its expected frequency of selection.
  * @author Daniel Dyer
  */
-public class StochasticUniversalSampling extends FitnessProportionateSelection
+public class StochasticUniversalSampling implements SelectionStrategy
 {
-    protected <T> List<T> fpSelect(List<EvaluatedCandidate<T>> normalisedPopulation,
-                                   int selectionSize,
-                                   Random rng)
+    public <T> List<T> select(List<EvaluatedCandidate<T>> population,
+                              boolean naturalFitnessScores,
+                              int selectionSize,
+                              Random rng)
     {
         // Calculate the sum of all fitness values.
         double aggregateFitness = 0;
-        for (EvaluatedCandidate<T> candidate : normalisedPopulation)
+        for (EvaluatedCandidate<T> candidate : population)
         {
-            aggregateFitness += candidate.getFitness();
+            aggregateFitness += getAdjustedFitness(candidate.getFitness(), naturalFitnessScores);
         }
 
         List<T> selection = new ArrayList<T>(selectionSize);
@@ -44,12 +46,12 @@ public class StochasticUniversalSampling extends FitnessProportionateSelection
         double startOffset = rng.nextDouble();
         double cumulativeExpectation = 0;
         int index = 0;
-        for (EvaluatedCandidate<T> candidate : normalisedPopulation)
+        for (EvaluatedCandidate<T> candidate : population)
         {
             // Calculate the number of times this candidate is expected to
             // be selected on average and add it to the cumulative total
             // of expected frequencies.
-            cumulativeExpectation += candidate.getFitness() / aggregateFitness * selectionSize;
+            cumulativeExpectation += getAdjustedFitness(candidate.getFitness(), naturalFitnessScores) / aggregateFitness * selectionSize;
 
             // If f is the expected frequency, the candidate will be selected at
             // least as often as floor(f) and at most as often as ceil(f). The
@@ -61,5 +63,21 @@ public class StochasticUniversalSampling extends FitnessProportionateSelection
             }
         }
         return selection;
+    }
+
+
+    private double getAdjustedFitness(double rawFitness, boolean naturalFitness)
+    {
+        if (naturalFitness)
+        {
+            return rawFitness;
+        }
+        else
+        {
+            // If standardised fitness is zero we have found the best possible
+            // solution.  The evolutionary algorithm should not be continuing
+            // after finding it.
+            return rawFitness == 0 ? Double.POSITIVE_INFINITY : 1 / rawFitness;
+        }
     }
 }

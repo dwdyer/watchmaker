@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
+import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
  * <p>Implements selection of <i>n</i> candidates from a population by selecting
@@ -36,11 +37,12 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
  *
  * @author Daniel Dyer
  */
-public class RouletteWheelSelection extends FitnessProportionateSelection
+public class RouletteWheelSelection implements SelectionStrategy
 {
-    protected <T> List<T> fpSelect(List<EvaluatedCandidate<T>> normalisedPopulation,
-                                   int selectionSize,
-                                   Random rng)
+    public <T> List<T> select(List<EvaluatedCandidate<T>> population,
+                              boolean naturalFitnessScores,
+                              int selectionSize,
+                              Random rng)
     {
         // Record the cumulative fitness scores.  It doesn't matter whether the
         // population is sorted or not.  We will use these cumulative scores to work out
@@ -49,11 +51,12 @@ public class RouletteWheelSelection extends FitnessProportionateSelection
         // numerical difference between an element and the previous one is directly
         // proportional to the probability of the corresponding candidate in the population
         // being selected.
-        double[] cumulativeFitnesses = new double[normalisedPopulation.size()];
-        cumulativeFitnesses[0] = normalisedPopulation.get(0).getFitness();
-        for (int i = 1; i < normalisedPopulation.size(); i++)
+        double[] cumulativeFitnesses = new double[population.size()];
+        cumulativeFitnesses[0] = getAdjustedFitness(population.get(0).getFitness(), naturalFitnessScores);
+        for (int i = 1; i < population.size(); i++)
         {
-            cumulativeFitnesses[i] = cumulativeFitnesses[i - 1] + normalisedPopulation.get(i).getFitness();
+            double fitness = getAdjustedFitness(population.get(0).getFitness(), naturalFitnessScores);
+            cumulativeFitnesses[i] = cumulativeFitnesses[i - 1] + fitness;
         }
 
         List<T> selection = new ArrayList<T>(selectionSize);
@@ -66,8 +69,24 @@ public class RouletteWheelSelection extends FitnessProportionateSelection
                 // Convert negative insertion point to array index.
                 index = Math.abs(index + 1);
             }
-            selection.add(normalisedPopulation.get(index).getCandidate());
+            selection.add(population.get(index).getCandidate());
         }
         return selection;
+    }
+
+
+    private double getAdjustedFitness(double rawFitness, boolean naturalFitness)
+    {
+        if (naturalFitness)
+        {
+            return rawFitness;
+        }
+        else
+        {
+            // If standardised fitness is zero we have found the best possible
+            // solution.  The evolutionary algorithm should not be continuing
+            // after finding it.
+            return rawFitness == 0 ? Double.POSITIVE_INFINITY : 1 / rawFitness;
+        }
     }
 }

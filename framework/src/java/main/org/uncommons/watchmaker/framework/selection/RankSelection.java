@@ -36,7 +36,7 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  */
 public class RankSelection implements SelectionStrategy
 {
-    private final FitnessProportionateSelection delegate;
+    private final SelectionStrategy delegate;
 
     /**
      * Creates a default rank-based selector with a linear
@@ -55,7 +55,7 @@ public class RankSelection implements SelectionStrategy
      * @param delegate The proportionate selector that will be delegated
      * to after converting rankings into relative fitness scores.
      */
-    public RankSelection(FitnessProportionateSelection delegate)
+    public RankSelection(SelectionStrategy delegate)
     {
         this.delegate = delegate;
     }
@@ -82,11 +82,10 @@ public class RankSelection implements SelectionStrategy
      * <p>Maps a population index to a relative pseudo-fitness score that can be used for
      * fitness-proportionate selection.  The general contract for the mapping function
      * <code>f</code> is: <code>f(rank) >= f(rank + 1)</code> for all legal values of
-     * <code>rank</code>, assuming normalised scores.</p>
+     * <code>rank</code>, assuming natural scores.</p>
      * <p>The default mapping function is a simple linear transformation, but this
      * can be over-ridden in sub-classes.  Alternative implementations can be linear or
-     * non-linear and either normalised or de-normalised.  However, for performance reasons
-     * it is preferable to return normalised scores.</p>
+     * non-linear and either natural or non-natural.</p>
      * @param rank A zero-based index into the population
      * <code>(0 <= rank < populationSize)</code>.
      * @param populationSize The number of individuals in the population.

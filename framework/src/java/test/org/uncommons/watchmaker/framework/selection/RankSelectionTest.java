@@ -15,10 +15,10 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
 public class RankSelectionTest
 {
     /**
-     * Test selection when scores are normalised (higher is better).
+     * Test selection when fitness scoring is natural (higher is better).
      */
     @Test
-    public void testNormalisedSelection()
+    public void testNaturalFitnessSelection()
     {
         SelectionStrategy selector = new RankSelection();
         List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
@@ -45,10 +45,10 @@ public class RankSelectionTest
 
 
     /**
-     * Test selection when scores are de-normalised (lower is better).
+     * Test selection when fitness scoring is non-natural (lower is better).
      */
     @Test
-    public void testDenormalisedSelection()
+    public void testNonNaturalFitnessSelection()
     {
         SelectionStrategy selector = new RankSelection();
         List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
