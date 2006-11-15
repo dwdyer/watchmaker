@@ -43,6 +43,10 @@ public interface EvolutionaryOperator<T>
      * operators, such as mutation, that process each candidate in isolation.
      * It should only be an issue for operators, such as cross-over, that
      * deal with multiple candidates in a single operation.</p>
+     * <p>The operator should not modify any of the candidates passed in,
+     * instead it should return a list that contains evolved copies of those
+     * candidates (umodified candidates can be included in the results without
+     * having to be copied).</p>
      * @param <S> A more spefic type restriction than the one specified
      * for this class.  Allows the operation to be applied to sub-classes
      * of T and still return a list of the appropriate type.

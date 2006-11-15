@@ -13,11 +13,12 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.framework;
+package org.uncommons.watchmaker.framework.operators;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
  * Trivial test operator that mutates all integers by adding a fixed offset.

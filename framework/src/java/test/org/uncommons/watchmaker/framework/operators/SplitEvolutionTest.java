@@ -13,7 +13,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.framework;
+package org.uncommons.watchmaker.framework.operators;
 
 import java.util.ArrayList;
 import java.util.List;
