@@ -3,7 +3,7 @@ package org.uncommons.maths;
 import java.math.BigInteger;
 
 /**
- * Maths operations not provided by <code>java.lang.Math</code>.
+ * Maths operations not provided by {@link Math java.lang.Math}.
  * @author Daniel Dyer
  */
 public final class Maths

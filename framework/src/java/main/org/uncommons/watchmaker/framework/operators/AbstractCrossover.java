@@ -93,7 +93,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
     /**
      * Implementing classes should return the list elements of the most specific
      * type possible (derived from the actual types of the arguments).  In other
-     * words, if <code>parent1</code> and <code>parent2</code> are instances of
+     * words, if {@code parent1} and {@code parent2} are instances of
      * a sub-class of T, then the elements returned returned in the list must
      * also be instances of the same sub-class.  This is to ensure that the
      * cross-over implementation can correctly deal with populations of

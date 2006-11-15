@@ -38,7 +38,7 @@ public interface FitnessEvaluator<T>
      * individual in a population has the highest fitness value.  In this
      * case the algorithm is attempting to maximise fitness scores.
      * There need not be a specified maximum possible value.</p>
-     * <p>In contrast, <i>non-natural<i> fitness evaluation results in fitter
+     * <p>In contrast, <i>non-natural</i> fitness evaluation results in fitter
      * individuals being assigned lower scores than weaker individuals.
      * In the case of non-natural fitness, the algorithm is attempting to
      * minimise fitness scores.</p>

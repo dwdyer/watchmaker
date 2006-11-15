@@ -49,8 +49,8 @@ public class SplitEvolution<T> implements EvolutionaryOperator<T>
 
     /**
      * @param weight The proportion (as a real number between zero and 1 exclusive)
-     * of the population that will be evolved by <code>operator1</code>.  The
-     * remainder will be evolved by <code>operator2</code>.
+     * of the population that will be evolved by {@code operator1}.  The
+     * remainder will be evolved by {@code operator2}.
      */
     public SplitEvolution(EvolutionaryOperator<? super T> operator1,
                           EvolutionaryOperator<? super T> operator2,
@@ -67,7 +67,7 @@ public class SplitEvolution<T> implements EvolutionaryOperator<T>
     /**
      * @param weightVariable A random variable that provides the ratio for
      * dividing the population between the two evolutionary streams.  Must
-     * only generate values in the range <code>0 &lt; ratio &lt; 1</code>.
+     * only generate values in the range {@literal 0 < ratio < 1}.
      */
     public SplitEvolution(EvolutionaryOperator<? super T> operator1,
                           EvolutionaryOperator<? super T> operator2,

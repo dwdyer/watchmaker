@@ -81,15 +81,15 @@ public class RankSelection implements SelectionStrategy
     /**
      * <p>Maps a population index to a relative pseudo-fitness score that can be used for
      * fitness-proportionate selection.  The general contract for the mapping function
-     * <code>f</code> is: <code>f(rank) >= f(rank + 1)</code> for all legal values of
-     * <code>rank</code>, assuming natural scores.</p>
+     * {@code f} is: {@code f(rank) >= f(rank + 1)} for all legal values of
+     * {@code rank}, assuming natural scores.</p>
      * <p>The default mapping function is a simple linear transformation, but this
      * can be over-ridden in sub-classes.  Alternative implementations can be linear or
      * non-linear and either natural or non-natural.</p>
      * @param rank A zero-based index into the population
-     * <code>(0 <= rank < populationSize)</code>.
+     * {@code (0 <= rank < populationSize)}.
      * @param populationSize The number of individuals in the population.
-     * @return <code>populationSize - rank</code>
+     * @return {@code populationSize - rank}
      */
     protected double mapRankToScore(int rank, int populationSize)
     {

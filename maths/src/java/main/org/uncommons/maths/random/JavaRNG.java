@@ -3,7 +3,7 @@ package org.uncommons.maths.random;
 import java.util.Random;
 
 /**
- * <p>This is the default JDK RNG (<code>java.util.Random</code>) extended
+ * <p>This is the default {@link java.util.Random JDK RNG} extended
  * to implement the {@link RepeatableRNG} interface (for consitency with
  * the other RNGs in this package).</p>
  *
