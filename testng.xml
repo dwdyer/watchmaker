@@ -16,7 +16,7 @@
 
   <test name="GUI Module" >
     <packages>
-      <package name="org.uncommons.watchmaker.gui.*" />
+      <package name="org.uncommons.gui.*" />
     </packages>
   </test>
 
