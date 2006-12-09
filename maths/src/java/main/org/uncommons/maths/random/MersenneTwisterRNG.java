@@ -84,8 +84,8 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
 
     public MersenneTwisterRNG(byte[] seed)
     {
-        this.seed = seed;
-        int[] seedInts = convertBytesToInts(seed);
+        this.seed = seed.clone();
+        int[] seedInts = convertBytesToInts(this.seed);
 
         // This section is translated from the init_genrand code in the C version.
         mt[0] = BOOTSTRAP_SEED;
@@ -130,7 +130,7 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
 
     public byte[] getSeed()
     {
-        return seed;
+        return seed.clone();
     }
 
 

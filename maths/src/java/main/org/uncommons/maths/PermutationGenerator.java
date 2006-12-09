@@ -53,7 +53,7 @@ public class PermutationGenerator<T>
         {
             throw new IllegalArgumentException("Size must be between 1 and 20.");
         }
-        this.elements = elements;
+        this.elements = elements.clone();
         permutationIndices = new int[elements.length];
         totalPermutations = Maths.factorial(elements.length);
         reset();

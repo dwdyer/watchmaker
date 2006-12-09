@@ -37,7 +37,7 @@ public class AESCounterRNG extends Random implements RepeatableRNG
     private static final int SEED_SIZE_BYTES = 16;
 
     private final byte[] seed;
-    private final Cipher cipher;
+    private final Cipher cipher; // TO DO: This field is not Serializable.
     private final byte[] counter = new byte[16]; // 128-bit counter.
 
     private byte[] currentBlock = null;
@@ -74,15 +74,15 @@ public class AESCounterRNG extends Random implements RepeatableRNG
         {
             throw new IllegalArgumentException("AES RNG requires a 128-bit (16-byte) seed.");
         }
-        this.seed = seed;
+        this.seed = seed.clone();
         cipher = Cipher.getInstance("AES/ECB/NoPadding");
-        cipher.init(Cipher.ENCRYPT_MODE, new AESKey(seed));
+        cipher.init(Cipher.ENCRYPT_MODE, new AESKey(this.seed));
     }
 
 
     public byte[] getSeed()
     {
-        return seed;
+        return seed.clone();
     }
 
 

@@ -41,13 +41,13 @@ public class JavaRNG extends Random implements RepeatableRNG
     public JavaRNG(byte[] seed)
     {
         super(convertBytesToLong(seed));
-        this.seed = seed;
+        this.seed = seed.clone();
     }
 
 
     public byte[] getSeed()
     {
-        return seed;
+        return seed.clone();
     }
 
 

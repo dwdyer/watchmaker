@@ -55,7 +55,7 @@ public class CombinationGenerator<T>
             throw new IllegalArgumentException("Combination length must be between 1 and 20.");
         }
 
-        this.elements = elements;
+        this.elements = elements.clone();
         this.combinationIndices = new int[combinationLength];
 
         long sizeFactorial = Maths.factorial(elements.length);

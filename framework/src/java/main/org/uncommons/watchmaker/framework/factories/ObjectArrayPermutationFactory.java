@@ -32,9 +32,10 @@ public class ObjectArrayPermutationFactory<T>  extends AbstractCandidateFactory<
 
     public ObjectArrayPermutationFactory(T[] elements)
     {
-        this.elements = elements;
+        this.elements = elements.clone();
     }
 
+    
     protected T[] generateRandomCandidate(Random rng)
     {
         T[] candidate = elements.clone();
