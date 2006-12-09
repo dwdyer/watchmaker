@@ -44,12 +44,14 @@ public class StringsExample
         ALPHABET[26] = ' ';
     }
 
+
     private StringsExample()
     {
         // Prevents instantiation.
     }
 
-    public static void main(String args[])
+
+    public static void main(String[] args)
     {
         String target = args.length == 0 ? "HELLO WORLD" : convertArgs(args);
         EvolutionaryOperator<String> pipeline = new EvolutionPipeline<String>(new StringMutation(ALPHABET, 0.02d),
@@ -66,6 +68,7 @@ public class StringsExample
                       120000); // Two minute timeout.
     }
 
+    
     private static String convertArgs(String[] args)
     {
         StringBuilder result = new StringBuilder();

@@ -19,13 +19,13 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 /**
- * {@link org.uncommons.maths.random.SeedGenerator} implementation that uses Java's bundled
- * {@link java.security.SecureRandom} RNG to generate random seed data.
+ * {@link SeedGenerator} implementation that uses Java's bundled
+ * {@link SecureRandom} RNG to generate random seed data.
  * This is not the ideal seeding strategy because it inflicts the
  * limitations of SecureRandom on the RNG being seeded.  However, it
  * is the only seeding strategy that is guaranteed to work on all
  * platforms and therefore is provided as a fall-back option should
- * none of the other provided {@link org.uncommons.maths.random.SeedGenerator} implementations be
+ * none of the other provided {@link SeedGenerator} implementations be
  * useable.
  * @author Daniel Dyer
  */

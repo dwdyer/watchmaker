@@ -16,7 +16,7 @@
 package org.uncommons.maths.random;
 
 /**
- * Exception thrown by {@link org.uncommons.maths.random.SeedGenerator} implementations when
+ * Exception thrown by {@link SeedGenerator} implementations when
  * they are unable to generate a new seed for an RNG.
  * @author Daniel Dyer
  */

@@ -22,7 +22,7 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
- * An alternative to {@link org.uncommons.watchmaker.framework.selection.RouletteWheelSelection}
+ * An alternative to {@link RouletteWheelSelection}
  * as a fitness-proportionate selection strategy.  Ensures that the frequency of selection for
  * each candidate is consistent with its expected frequency of selection.
  * @author Daniel Dyer

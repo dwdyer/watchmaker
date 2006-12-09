@@ -59,7 +59,7 @@ public interface EvolutionEngine<T>
      * this collection must be no greater than the specified population size.
      * @return The best solution found by the evolutionary process.
      * @see #evolve(int,int,int)
-     * @see #evolve(int,int,double,long,java.util.Collection)
+     * @see #evolve(int,int,double,long,Collection)
      */
     T evolve(int populationSize,
              int eliteCount,
@@ -85,7 +85,7 @@ public interface EvolutionEngine<T>
      * @param timeout How long (in milliseconds) the evolution is allowed to run for
      * without finding a matching candidate.
      * @see #evolve(int,int,int)
-     * @see #evolve(int,int,double,long,java.util.Collection)
+     * @see #evolve(int,int,double,long,Collection)
      */
     T evolve(int populationSize,
              int eliteCount,

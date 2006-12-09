@@ -16,7 +16,7 @@
 package org.uncommons.maths;
 
 /**
- * Convenience implementation of {@link org.uncommons.maths.NumberGenerator} that always
+ * Convenience implementation of {@link NumberGenerator} that always
  * returns the same value.
  * @author Daniel Dyer
  */

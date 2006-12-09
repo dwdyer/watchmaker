@@ -200,7 +200,7 @@ public final class SpringUtilities
 
 
     /**
-     * Helper method for {@link #makeCompactGrid(java.awt.Container, int, int, int, int, int, int)}.
+     * Helper method for {@link #makeCompactGrid(Container, int, int, int, int, int, int)}.
      */
     private static SpringLayout.Constraints getConstraintsForCell(int row,
                                                                   int col,
