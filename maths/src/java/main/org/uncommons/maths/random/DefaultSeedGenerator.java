@@ -21,7 +21,7 @@ package org.uncommons.maths.random;
  * current operating environment.
  * @author Daniel Dyer
  */
-public class DefaultSeedGenerator implements SeedGenerator
+public final class DefaultSeedGenerator implements SeedGenerator
 {
     /** Singleton instance. */
     private static final DefaultSeedGenerator INSTANCE = new DefaultSeedGenerator();
@@ -35,15 +35,18 @@ public class DefaultSeedGenerator implements SeedGenerator
     };
 
 
-    public static DefaultSeedGenerator getInstance()
-    {
-        return INSTANCE;
-    }
-
-
     private DefaultSeedGenerator()
     {
         // Private constructor prevents external instantiation.
+    }
+
+
+    /**
+     * @return The singleton instance of this class.
+     */
+    public static DefaultSeedGenerator getInstance()
+    {
+        return INSTANCE;
     }
 
 
@@ -52,6 +55,8 @@ public class DefaultSeedGenerator implements SeedGenerator
      * turn until one succeeds.  Tries the most suitable strategy first
      * and eventually degrades to the least suitable but guaranteed to
      * work strategy.
+     * @param length The length (in bytes) of the seed.
+     * @return A random seed of the requested length.
      */
     public byte[] generateSeed(int length)
     {

@@ -63,12 +63,26 @@ public class TournamentSelection implements SelectionStrategy
             if (value >= selectionProbability ^ naturalFitnessScores)
             {
                 // Select the fitter candidate.
-                selection.add(candidate2.getFitness() > candidate1.getFitness() ? candidate2.getCandidate() : candidate1.getCandidate());
+                if (candidate2.getFitness() > candidate1.getFitness())
+                {
+                    selection.add(candidate2.getCandidate());
+                }
+                else
+                {
+                    selection.add(candidate1.getCandidate());
+                }
             }
             else
             {
                 // Select the less fit candidate.
-                selection.add(candidate2.getFitness() > candidate1.getFitness() ? candidate1.getCandidate() : candidate2.getCandidate());
+                if (candidate2.getFitness() > candidate1.getFitness())
+                {
+                    selection.add(candidate1.getCandidate());
+                }
+                else
+                {
+                    selection.add(candidate2.getCandidate());
+                }
             }
         }
         return selection;

@@ -60,7 +60,7 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
     private final byte[] seed;
 
     private final int[] mt = new int[N]; // State vector.
-    private int mt_index = 0; // Index into state vector.
+    private int mtIndex = 0; // Index into state vector.
 
 
     public MersenneTwisterRNG()
@@ -89,11 +89,11 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
 
         // This section is translated from the init_genrand code in the C version.
         mt[0] = BOOTSTRAP_SEED;
-        for (mt_index = 1; mt_index < N; mt_index++)
+        for (mtIndex = 1; mtIndex < N; mtIndex++)
         {
-            mt[mt_index] = (BOOTSTRAP_FACTOR
-                    * (mt[mt_index - 1] ^ (mt[mt_index - 1] >>> 30))
-                    + mt_index);
+            mt[mtIndex] = (BOOTSTRAP_FACTOR
+                    * (mt[mtIndex - 1] ^ (mt[mtIndex - 1] >>> 30))
+                    + mtIndex);
         }
 
         // This section is translated from the init_by_array code in the C version.
@@ -138,7 +138,7 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
     protected final synchronized int next(int bits)
     {
         int y;
-        if (mt_index >= N) // Generate N ints at a time.
+        if (mtIndex >= N) // Generate N ints at a time.
         {
             int kk;
             for (kk = 0; kk < N - M; kk++)
@@ -154,10 +154,10 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
             y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
             mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ MAG01[y & 0x1];
 
-            mt_index = 0;
+            mtIndex = 0;
         }
 
-        y = mt[mt_index++];
+        y = mt[mtIndex++];
 
         // Tempering
         y ^= (y >>> 11);
@@ -178,7 +178,7 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
         int[] ints = new int[bytes.length / 4];
         for (int i = 0; i < bytes.length; i += 4)
         {
-            ints[i / 4] = (bytes[i] << 24) + (bytes[i + 1] << 16) + (bytes[i + 2] << 8) + bytes[i + 3]; 
+            ints[i / 4] = (bytes[i] << 24) + (bytes[i + 1] << 16) + (bytes[i + 2] << 8) + bytes[i + 3];
         }
         return ints;
     }

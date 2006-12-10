@@ -30,6 +30,15 @@ public interface SelectionStrategy
      * order according to fitness (so the fittest individual is the first item
      * in the list).</p>
      * <p>It is an error to call this method with an empty or null population.</p>
+     * @param population The population from which to select.
+     * @param naturalFitnessScores Whether higher fitness values represent fitter
+     * individuals or not.
+     * @param selectionSize The number of individuals selections to make (not necessarily
+     * the number of distinct candidates to select, since the same individual may
+     * potentially be selected more than once).
+     * @param rng Source of randomness for stochastic selection strategies.
+     * @return A list containing the selected candidates.  Some individual canidates may
+     * potentially have been selected multiple times.
      */
     <T> List<T> select(List<EvaluatedCandidate<T>> population,
                        boolean naturalFitnessScores,

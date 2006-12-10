@@ -19,6 +19,7 @@ import java.util.Collection;
 
 /**
  * Operations for classes that provide an evolution implementation.
+ * @param <T> The type of entity evolved by the evolution engine.
  * @author Daniel Dyer
  */
 public interface EvolutionEngine<T>

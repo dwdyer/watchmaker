@@ -22,7 +22,8 @@ import java.util.Random;
 /**
  * Creates new populations of candidates.  For most implementations it
  * will be easiest just to extend {@link org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory} and
- * implement the method to generate a single random candidate. 
+ * implement the method to generate a single random candidate.
+ * @param <T> The type of evolvable entity created by the factory.
  * @author Daniel Dyer
  */
 public interface CandidateFactory<T>
@@ -54,6 +55,8 @@ public interface CandidateFactory<T>
      * candidates to fill the population when the number of seed candidates is
      * insufficient.  This can be null if and only if the number of seed
      * candidates provided is sufficient to fully populate the initial population.
+     * @return An initial population of candidate solutions, including the
+     * specified seed candidates.
      */
     List<T> generateInitialPopulation(int populationSize,
                                       Collection<T> seedCandidates,

@@ -296,15 +296,18 @@ public final class Europe
 
     private static final Europe INSTANCE = new Europe();
 
-    public static Europe getInstance()
-    {
-        return INSTANCE;
-    }
-
-
     private Europe()
     {
         // Private constructor prevents direct instantiation.
+    }
+
+
+    /**
+     * @return The singleton instance of this class.
+     */
+    public static Europe getInstance()
+    {
+        return INSTANCE;
     }
 
 
@@ -317,6 +320,12 @@ public final class Europe
     }
 
 
+    /**
+     * Looks-up the distance between two cities.
+     * @param startingCity The city to start from.
+     * @param destinationCity The city to end in.
+     * @return The distance (in kilometres) between the two cities.
+     */
     public int getDistance(String startingCity, String destinationCity)
     {
         return DISTANCES.get(startingCity).get(destinationCity);

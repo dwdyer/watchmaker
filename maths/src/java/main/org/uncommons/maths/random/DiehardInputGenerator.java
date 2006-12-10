@@ -27,16 +27,23 @@ import java.util.Random;
  * tests for random number generators.
  * @author Daniel Dyer
  */
-public class DiehardInputGenerator
+public final class DiehardInputGenerator
 {
+    // How many 32-bit values should be written to the output file.
+    private static final int INT_COUNT = 3000000;
+
     private DiehardInputGenerator()
     {
         // Prevents instantiation.
     }
 
-    // How many 32-bit values should be written to the output file.
-    private static final int INT_COUNT = 3000000;
 
+    /**
+     * @param args The first argument is the class name of the RNG, the second
+     * is the file to use for output.
+     * @throws Exception If there are problems setting up the RNG or writing to
+     * the output file.
+     */
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws Exception
     {
@@ -52,6 +59,13 @@ public class DiehardInputGenerator
     }
 
 
+    /**
+     * Generates a file of random data in a format suitable for the DIEHARD test.
+     * DIEHARD requires 3 million 32-bit integers.
+     * @param rng The random number generator to use to generate the data.
+     * @param outputFile The file that the random data is written to.
+     * @throws IOException If there is a problem writing to the file.
+     */
     public static void generateOutputFile(Random rng,
                                           File outputFile) throws IOException
     {

@@ -25,18 +25,25 @@ public final class EvaluatedCandidate<T> implements Comparable<EvaluatedCandidat
 {
     private final T candidate;
     private final double fitness;
-    
+
+
+    /**
+     * @param candidate The evolved candidate.
+     * @param fitness The candidates fitness score.
+     */
     public EvaluatedCandidate(T candidate, double fitness)
     {
         this.candidate = candidate;
         this.fitness = fitness;
     }
-    
+
+
     public T getCandidate()
     {
         return candidate;
     }
-    
+
+
     public double getFitness()
     {
         return fitness;

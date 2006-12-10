@@ -35,7 +35,7 @@ public class ObjectArrayPermutationFactory<T>  extends AbstractCandidateFactory<
         this.elements = elements.clone();
     }
 
-    
+
     protected T[] generateRandomCandidate(Random rng)
     {
         T[] candidate = elements.clone();

@@ -20,26 +20,24 @@
 <!-- ==================================================================
      GLOBAL BUILD PROPERTIES
 =================================================================== -->
-  
-  <property name="src.dir" value="src"/>
+
+  <!-- Project-global locations. -->
+  <property name="conf.dir" location="./etc" />
+  <property name="lib.dir" location="./lib" />
+  <property name="lib.compiletime" location="${lib.dir}/compiletime" />
+  <property name="lib.runtime" location="${lib.dir}/runtime" />
+  <property name="dist.dir" location="./dist" />
+  <property name="docs.dir" location="./docs" />
+  <property name="api.dir" location="${docs.dir}/api" />
+  <property name="test-results.dir" location="${docs.dir}/test-results" />
+  <property name="release.dir" location="./release" />
+  <property name="web.dir" location="./www" />
+
+  <!-- Per-module locations. -->
+  <property name="src.dir" value="src" />
   <property name="java.dir" value="${src.dir}/java" />
   <property name="build.dir" value="build"/>
   <property name="classes.dir" value="${build.dir}/classes" />
-
-  <property name="lib.dir" location="./lib"/>
-  <property name="lib.compiletime" location="${lib.dir}/compiletime"/>
-  <property name="lib.runtime" location="${lib.dir}/runtime"/>
-
-  <!-- Target directory for the distributable software artifacts. -->
-  <property name="dist.dir" location="./dist"/>
-
-  <property name="docs.dir" location="./docs"/>
-  <property name="api.dir" location="${docs.dir}/api" />
-  <property name="test-results.dir" location="${docs.dir}/test-results" />
-
-  <property name="release.dir" location="./release" />
-
-  <property name="web.dir" location="./www" />
 
   <!-- Classpath for compilation and tests. -->
   <path id="base.path">
@@ -289,7 +287,9 @@
  =================================================================== -->
 
   <!-- Runs unit tests for all modules. -->
-  <target name="test" depends="dist" description="Run the unit test suite.">
+  <target name="test"
+          depends="dist"
+          description="Run the unit test suite.">
     <mkdir dir="${test-results.dir}" />
     <path id="test.path">
       <dirset dir=".">
@@ -303,13 +303,39 @@
             outputdir="${test-results.dir}"
             haltonfailure="true"
             reporter="org.uncommons.reportng.HTMLReporter">
-      <xmlfileset dir="." includes="testng.xml"/>
+      <xmlfileset dir="${conf.dir}" includes="testng.xml"/>
     </testng>
   </target>
 
 
+  <target name="checkstyle"
+          description="Check that coding standard are adhered to.">
+    <taskdef resource="checkstyletask.properties" classpathref="base.path"/>
+    <checkstyle config="${conf.dir}/checks.xml"
+                failonviolation="false">
+      <fileset dir="./maths/${java.dir}/main" defaultexcludes="yes">
+        <include name="org/uncommons/**"/>
+      </fileset>
+      <fileset dir="./framework/${java.dir}/main" defaultexcludes="yes">
+        <include name="org/uncommons/**"/>
+      </fileset>
+      <fileset dir="./gui/${java.dir}/main" defaultexcludes="yes">
+        <include name="org/uncommons/**"/>
+      </fileset>
+      <fileset dir="./examples/${java.dir}/main" defaultexcludes="yes">
+        <include name="org/uncommons/**"/>
+      </fileset>
+      <formatter type="xml" tofile="${test-results.dir}/checkstyle_report.xml"/>
+    </checkstyle>
+    <style in="${test-results.dir}/checkstyle_report.xml"
+           out="${test-results.dir}/checkstyle_report.html"
+           style="${conf.dir}/checkstyle-noframes-sorted.xsl"/>
+  </target>
+
+
   <!-- Generates API documentation for all modules. -->
-  <target name="docs" description="Generates Javadoc API documentation for all modules.">
+  <target name="docs"
+          description="Generates Javadoc API documentation for all modules.">
     <api.docs api.dir="${api.dir}" />
   </target>
 

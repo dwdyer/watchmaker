@@ -35,7 +35,8 @@ public class RandomDotOrgSeedGenerator implements SeedGenerator
     private static final byte[] CACHE = new byte[CACHE_SIZE];
 
     /** The URL from which the random bytes are retrieved. */
-    private static final String RANDOM_URL = "http://www.random.org/cgi-bin/randbyte?nbytes=" + CACHE_SIZE + "&format=d";
+    private static final String RANDOM_URL = "http://www.random.org/cgi-bin/randbyte?nbytes="
+                                             + CACHE_SIZE + "&format=d";
     /** Used to identify the client to the random.org service. */
     private static final String USER_AGENT = RandomDotOrgSeedGenerator.class.getName();
 
@@ -74,7 +75,7 @@ public class RandomDotOrgSeedGenerator implements SeedGenerator
 
         StreamTokenizer tokenizer = new StreamTokenizer(new InputStreamReader(connection.getInputStream()));
 
-        int	index = -1;
+        int index = -1;
         while(tokenizer.nextToken() != StreamTokenizer.TT_EOF)
         {
             if(tokenizer.ttype != StreamTokenizer.TT_NUMBER)

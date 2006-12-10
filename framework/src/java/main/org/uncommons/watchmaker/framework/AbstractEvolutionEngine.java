@@ -26,6 +26,7 @@ import org.uncommons.maths.stats.PopulationDataSet;
 
 /**
  * Base class for {@link EvolutionEngine} implementations.
+ * @param <T> The type of entity evolved by the evolution engine.
  * @author Daniel Dyer
  */
 public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
@@ -34,7 +35,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     private final Random rng;
     private final CandidateFactory<T> candidateFactory;
     private final EvolutionaryOperator<? super T> evolutionScheme;
-    protected final FitnessEvaluator<? super T> fitnessEvaluator;
+    private final FitnessEvaluator<? super T> fitnessEvaluator;
     private final SelectionStrategy selectionStrategy;
 
     private long startTime;
@@ -54,6 +55,15 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         this.rng = rng;
     }
 
+
+    /**
+     * Provides sub-classes with access to the fitness evaluator.
+     * @return A reference to the fitness evaluator configured for this engine.
+     */
+    protected final FitnessEvaluator<? super T> getFitnessEvaluator()
+    {
+        return fitnessEvaluator;
+    }
 
 
     @SuppressWarnings("unchecked")

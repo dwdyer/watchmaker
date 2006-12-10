@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+                        "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+
+<!-- Checkstyle configuration for uncommons.org Coding Standards. -->
+<module name="Checker">
+
+  <module name="NewlineAtEndOfFile"/>
+  <module name="Translation"/>
+
+  <module name="TreeWalker">
+
+    <!-- Documentation. -->
+    <module name="Header">
+      <property name="headerFile" value="${conf.dir}/java.header"/>
+    </module>
+    <module name="JavadocMethod">
+      <property name="scope" value="protected"/>
+    </module>
+    <module name="JavadocStyle"/>
+    <module name="JavadocType"/>
+    <module name="JavadocVariable">
+      <property name="scope" value="package"/>
+    </module>
+
+
+    <!-- Imports. -->
+    <module name="AvoidStarImport"/>
+    <module name="IllegalImport"/>
+    <module name="RedundantImport"/>
+    <module name="UnusedImports"/>
+    <module name="ImportOrder" />
+
+
+    <!-- Length. -->
+    <module name="AnonInnerLength"/>
+    <module name="FileLength"/>
+    <module name="LineLength">
+      <property name="max" value="120"/>
+    </module>
+    <module name="MethodLength"/>
+    <module name="ParameterNumber"/>
+
+
+    <!-- Naming conventions. -->
+    <module name="ConstantName"/>
+    <module name="LocalFinalVariableName"/>
+    <module name="LocalVariableName"/>
+    <module name="MemberName"/>
+    <module name="MethodName"/>
+    <module name="PackageName"/>
+    <module name="ParameterName"/>
+    <module name="StaticVariableName"/>
+    <module name="TypeName"/>
+
+
+    <!-- Whitespace. -->
+    <module name="EmptyForIteratorPad"/>
+    <module name="Indentation"/>
+    <module name="MethodParamPad"/>
+    <module name="NoWhitespaceAfter"/>
+    <module name="NoWhitespaceBefore"/>
+    <module name="OperatorWrap"/>
+    <module name="ParenPad"/>
+    <module name="TypecastParenPad"/>
+    <module name="TabCharacter"/>
+    <module name="WhitespaceAfter"/>
+    <module name="WhitespaceAround">
+      <property name="tokens" value="ASSIGN, BAND, BAND_ASSIGN, BOR, BOR_ASSIGN, BSR, BSR_ASSIGN, BXOR, BXOR_ASSIGN, COLON, DIV, DIV_ASSIGN, EQUAL, GE, GT, LAND, LCURLY, LE, LITERAL_ASSERT, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_RETURN, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, LOR, LT, MINUS, MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, RCURLY, SL, SLIST, SL_ASSIGN, SR, SR_ASSIGN, STAR, STAR_ASSIGN, TYPE_EXTENSION_AND"/>
+    </module>
+
+
+    <!-- Modifiers. -->
+    <module name="ModifierOrder"/>
+    <module name="RedundantModifier"/>
+
+
+    <!-- Blocks. -->
+    <module name="AvoidNestedBlocks">
+      <property name="allowInSwitchCase" value="true"/>
+    </module>
+    <module name="EmptyBlock">
+      <property name="option" value="text"/>
+    </module>
+    <module name="LeftCurly">
+      <property name="option" value="nl"/>
+    </module>
+    <module name="NeedBraces"/>
+    <module name="RightCurly">
+      <property name="option" value="alone"/>
+    </module>
+
+
+    <!-- Exceptions. -->
+    <module name="IllegalCatch"/>
+
+
+    <!-- Inheritance -->
+    <module name="SuperClone"/>
+    <module name="SuperFinalize"/>
+
+
+    <!-- Probable bugs or confusing constructs. -->
+    <module name="BooleanExpressionComplexity"/>
+    <module name="CovariantEquals"/>
+    <module name="DefaultComesLast"/>
+    <module name="DoubleCheckedLocking"/>
+    <module name="EmptyStatement"/>
+    <module name="EqualsHashCode"/>
+    <module name="HiddenField">
+      <property name="ignoreConstructorParameter" value="true"/>
+      <property name="ignoreSetter" value="true"/>
+    </module>
+    <module name="InnerAssignment"/>
+    <module name="MissingSwitchDefault"/>
+    <module name="ModifiedControlVariable"/>
+    <module name="RedundantThrows"/>
+    <module name="SimplifyBooleanExpression"/>
+    <module name="SimplifyBooleanReturn"/>
+    <module name="StringLiteralEquality"/>
+    <module name="UpperEll"/>
+
+
+    <!-- Class design. -->
+    <module name="FinalClass"/>
+    <module name="HideUtilityClassConstructor"/>
+    <module name="InterfaceIsType">
+      <property name="allowMarkerInterfaces" value="false" />
+    </module>
+    <module name="PackageDeclaration"/>
+    <module name="VisibilityModifier"/>
+
+
+    <!-- Miscellaneous style issues. -->
+    <module name="ArrayTypeStyle"/>
+    <module name="DeclarationOrder"/>
+    <module name="MultipleVariableDeclarations"/>
+
+  </module>
+
+</module>

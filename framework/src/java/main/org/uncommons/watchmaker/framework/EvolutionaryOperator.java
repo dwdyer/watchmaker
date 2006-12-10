@@ -22,6 +22,7 @@ import java.util.Random;
  * An evolutionary operator is a function that takes a population of
  * candidates as an argument and returns a new population that is the
  * result of applying a transformation to the original population.
+ * @param <T> The type of evolvable entity that this operator accepts.
  * @author Daniel Dyer
  */
 public interface EvolutionaryOperator<T>
@@ -50,6 +51,10 @@ public interface EvolutionaryOperator<T>
      * @param <S> A more spefic type restriction than the one specified
      * for this class.  Allows the operation to be applied to sub-classes
      * of T and still return a list of the appropriate type.
+     * @param selectedCandidates The individuals to evolve.
+     * @param rng A source of randomness for stochastic operators (most
+     * operators will be stochastic).
+     * @return The evolved individuals.
      */
     <S extends T> List<S> apply(List<S> selectedCandidates, Random rng);
 }

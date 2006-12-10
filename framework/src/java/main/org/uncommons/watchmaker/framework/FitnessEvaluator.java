@@ -19,6 +19,7 @@ package org.uncommons.watchmaker.framework;
  * Calculates the fitness score of a given candidate of the appropriate type.
  * Fitness evaluations may be executed concurrently and therefore any access
  * to mutable shared state should be properly synchronised.
+ * @param <T> The type of evolvable entity that can be evaluated.
  * @author Daniel Dyer
  */
 public interface FitnessEvaluator<T>
@@ -27,7 +28,8 @@ public interface FitnessEvaluator<T>
      * Calculates a fitness score for the given candidate.  Whether
      * a higher score indicates a fitter candidate or not depends on
      * whether the fitness scores are natural (see {@link #isNatural}).
-     * @param candidate
+     * @param candidate The candidate solution to calculate fitness for.
+     * @return The fitness score for the specified candidate.
      */
     double getFitness(T candidate);
 

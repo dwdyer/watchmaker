@@ -23,6 +23,7 @@ import java.util.Random;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 
 /**
+ * @param <T> The type of entity evolved by this engine.
  * @author Daniel Dyer
  */
 public abstract class AbstractCandidateFactory<T> implements CandidateFactory<T>

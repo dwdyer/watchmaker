@@ -31,6 +31,7 @@ import java.util.List;
  * sets of size 20 or less (this affords better performance by allowing primitive
  * numeric types to be used for calculations rather than
  * {@link java.math.BigInteger}.
+ * @param <T> The type of element that the permutation will consist of.
  * @author Daniel Dyer (modified from the original version written by Michael
  * Gilleland of Merriam Park Software -
  * <a href="http://www.merriampark.com/perm.htm">http://www.merriampark.com/perm.htm</a>).
@@ -215,9 +216,9 @@ public class PermutationGenerator<T>
     {
         if (remainingPermutations < totalPermutations)
         {
-            // Find largest index j with permutationIndices[j] < permutationIndices[j+1]
+            // Find largest index j with permutationIndices[j] < permutationIndices[j + 1]
             int j = permutationIndices.length - 2;
-            while (permutationIndices[j] > permutationIndices[j+1])
+            while (permutationIndices[j] > permutationIndices[j + 1])
             {
                 j--;
             }

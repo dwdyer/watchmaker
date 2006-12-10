@@ -51,7 +51,8 @@ public class StochasticUniversalSampling implements SelectionStrategy
             // Calculate the number of times this candidate is expected to
             // be selected on average and add it to the cumulative total
             // of expected frequencies.
-            cumulativeExpectation += getAdjustedFitness(candidate.getFitness(), naturalFitnessScores) / aggregateFitness * selectionSize;
+            cumulativeExpectation += getAdjustedFitness(candidate.getFitness(),
+                                                        naturalFitnessScores) / aggregateFitness * selectionSize;
 
             // If f is the expected frequency, the candidate will be selected at
             // least as often as floor(f) and at most as often as ceil(f). The

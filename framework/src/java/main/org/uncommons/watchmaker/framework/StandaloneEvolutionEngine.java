@@ -55,8 +55,8 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                      Random rng)
     {
         super(candidateFactory, evolutionScheme, fitnessEvaluator, selectionStrategy, rng);
-        int threadCount = threadPool.prestartAllCoreThreads();
-        System.out.println("Standalone evolution engine initialised with " + threadCount + " threads.");
+        int noOfThreads = threadPool.prestartAllCoreThreads();
+        System.out.println("Standalone evolution engine initialised with " + noOfThreads + " threads.");
     }
 
 
@@ -69,7 +69,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     protected List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population)
     {
         List<EvaluatedCandidate<T>> evaluatedPopulation
-                = Collections.synchronizedList(new ArrayList<EvaluatedCandidate<T>>(population.size()));
+            = Collections.synchronizedList(new ArrayList<EvaluatedCandidate<T>>(population.size()));
 
         // Divide the required number of fitness evaluations equally among the
         // available processors and coordinate the threads so that we do not
@@ -97,7 +97,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         assert evaluatedPopulation.size() == population.size() : "Wrong number of evaluated candidates.";
 
         // Sort candidates in descending order according to fitness.
-        if (fitnessEvaluator.isNatural()) // Descending values for natural fitness.
+        if (getFitnessEvaluator().isNatural()) // Descending values for natural fitness.
         {
             Collections.sort(evaluatedPopulation, Collections.reverseOrder());
         }
@@ -154,7 +154,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
             for (T candidate : candidates)
             {
                 evaluatedCandidates.add(new EvaluatedCandidate<T>(candidate,
-                                                                  fitnessEvaluator.getFitness(candidate)));
+                                                                  getFitnessEvaluator().getFitness(candidate)));
             }
             evaluatedPopulation.addAll(evaluatedCandidates);
             latch.countDown();

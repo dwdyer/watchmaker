@@ -31,8 +31,6 @@ public abstract class SwingBackgroundTask<V>
     /**
      * Asynchronous call that begins execution of the task
      * and returns immediately.
-     * @throws IllegalStateException If execution of the task has
-     * already been invoked.
      */
     public void execute()
     {
@@ -73,6 +71,7 @@ public abstract class SwingBackgroundTask<V>
      * Implement in sub-classes to provide the task logic.  This method will
      * run on a background thread and not on the Event Dispatch Thread and
      * therefore should not manipulate any Swing components.
+     * @return The result of executing this task.
      */
     protected abstract V performTask();
 
@@ -82,6 +81,7 @@ public abstract class SwingBackgroundTask<V>
      * has been executed.
      * This should be implemented in sub-classes in order to provide GUI
      * updates that should occur following task completion.
+     * @param result The result from the {@link #performTask()} method.
      */
     protected abstract void postProcessing(V result);
 }

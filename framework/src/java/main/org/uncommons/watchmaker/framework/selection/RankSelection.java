@@ -48,7 +48,7 @@ public class RankSelection implements SelectionStrategy
         this(new StochasticUniversalSampling());
     }
 
-    
+
     /**
      * Creates a rank-based selector with a linear mapping function and
      * configurable delegate for performing the proportionate selection.
@@ -61,6 +61,9 @@ public class RankSelection implements SelectionStrategy
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public <T> List<T> select(List<EvaluatedCandidate<T>> population,
                               boolean naturalFitnessScores,
                               int selectionSize,

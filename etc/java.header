@@ -13,23 +13,3 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.maths.random;
-
-/**
- * Exception thrown by {@link SeedGenerator} implementations when
- * they are unable to generate a new seed for an RNG.
- * @author Daniel Dyer
- */
-public class SeedException extends Exception
-{
-    public SeedException(String message)
-    {
-        super(message);
-    }
-
-
-    public SeedException(String message, Throwable cause)
-    {
-        super(message, cause);
-    }
-}

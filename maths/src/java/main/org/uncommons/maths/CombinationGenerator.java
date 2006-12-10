@@ -26,12 +26,16 @@ import java.util.List;
  * provide the best possible performance for small sets by avoiding the need
  * to perform the internal arithmetic using {@link java.math.BigInteger} (which
  * would be necessary to calculate any factorial greater than 20!).
+ * @param <T> The type of element that the combinations are made from.
  * @author Daniel Dyer (modified from the original version written by Michael
  * Gilleland of Merriam Park Software -
  * <a href="http://www.merriampark.com/perm.htm">http://www.merriampark.com/comb.htm</a>).
  */
 public class CombinationGenerator<T>
 {
+    // Maximum number of elements that can be combined by this class.
+    private static final int MAX_SET_LENGTH = 20;
+
     private final T[] elements;
     private final int[] combinationIndices;
     private long remainingCombinations;
@@ -50,7 +54,7 @@ public class CombinationGenerator<T>
         {
             throw new IllegalArgumentException("Combination length cannot be greater than set size.");
         }
-        if (elements.length < 1 || elements.length > 20)
+        if (elements.length < 1 || elements.length > MAX_SET_LENGTH)
         {
             throw new IllegalArgumentException("Combination length must be between 1 and 20.");
         }
@@ -95,9 +99,9 @@ public class CombinationGenerator<T>
 
 
     /**
-     * Returns the number of combinations not yet generated.
+     * @return The number of combinations not yet generated.
      */
-    public long getRemainingCombinations ()
+    public long getRemainingCombinations()
     {
         return remainingCombinations;
     }
@@ -105,6 +109,7 @@ public class CombinationGenerator<T>
 
     /**
      * Are there more combinations?
+     * @return true if there are more combinations available, false otherwise.
      */
     public boolean hasMore()
     {
@@ -113,9 +118,9 @@ public class CombinationGenerator<T>
 
 
     /**
-     * Returns the total number of combinations.
+     * @return The total number of combinations.
      */
-    public long getTotalCombinations ()
+    public long getTotalCombinations()
     {
         return totalCombinations;
     }
@@ -126,6 +131,7 @@ public class CombinationGenerator<T>
      * the appropriate elements.
      * @see #nextCombinationAsArray(Object[])
      * @see #nextCombinationAsList()
+     * @return An array containing the elements that make up the next combination.
      */
     @SuppressWarnings("unchecked")
     public T[] nextCombinationAsArray()
@@ -154,10 +160,9 @@ public class CombinationGenerator<T>
      * instance to be reused in such circumstances.
      * @param destination Provides an array to use to create the
      * combination.  The specified array must be the same length as a
-     * combination.  This is the array that will be returned, once
-     * it has been filled with the appropriate elements.
+     * combination.
      */
-    public T[] nextCombinationAsArray(T[] destination)
+    public void nextCombinationAsArray(T[] destination)
     {
         if (destination.length != elements.length)
         {
@@ -168,7 +173,6 @@ public class CombinationGenerator<T>
         {
             destination[i] = elements[combinationIndices[i]];
         }
-        return destination;
     }
 
 
@@ -177,6 +181,7 @@ public class CombinationGenerator<T>
      * appropriate elements.
      * @see #nextCombinationAsList(List)
      * @see #nextCombinationAsArray()
+     * @return A list containing the elements that make up the next combination.
      */
     public List<T> nextCombinationAsList()
     {
@@ -202,10 +207,9 @@ public class CombinationGenerator<T>
      * have to be garbage collected.  This method allows a single list
      * instance to be reused in such circumstances.
      * @param destination Provides a list to use to create the
-     * combination.  This is the list that will be returned, once
-     * it has been filled with the appropriate elements.
+     * combination.
      */
-    public List<T> nextCombinationAsList(List<T> destination)
+    public void nextCombinationAsList(List<T> destination)
     {
         generateNextCombinationIndices();
         // Generate actual combination.
@@ -214,7 +218,6 @@ public class CombinationGenerator<T>
         {
             destination.add(elements[i]);
         }
-        return destination;
     }
 
 

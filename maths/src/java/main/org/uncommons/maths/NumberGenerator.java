@@ -17,9 +17,13 @@ package org.uncommons.maths;
 
 /**
  * Interface for providing different types of sequences of numbers.
+ * @param <T> The type (Integer, Long, Double, etc.) of number to generate.
  * @author Daniel Dyer
  */
 public interface NumberGenerator<T extends Number>
 {
+    /**
+     * @return The next value from the generator.
+     */
     T nextValue();
 }
