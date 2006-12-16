@@ -32,7 +32,7 @@ import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
  * strings until at least one matches a specified target string.
  * @author Daniel Dyer
  */
-public class StringsExample
+public final class StringsExample
 {
     private static final char[] ALPHABET = new char[27];
     static
@@ -51,12 +51,19 @@ public class StringsExample
     }
 
 
+    /**
+     * Entry point for the sample application.  Any data specified on the
+     * command line is considered to be the target String.  If no target is
+     * specified, a default of "HELLOW WORLD" is used instead.
+     * @param args The target String (as an array of words).
+     */
     public static void main(String[] args)
     {
         String target = args.length == 0 ? "HELLO WORLD" : convertArgs(args);
         EvolutionaryOperator<String> pipeline = new EvolutionPipeline<String>(new StringMutation(ALPHABET, 0.02d),
                                                                               new StringCrossover());
-        EvolutionEngine<String> engine = new StandaloneEvolutionEngine<String>(new StringFactory(ALPHABET, target.length()),
+        EvolutionEngine<String> engine = new StandaloneEvolutionEngine<String>(new StringFactory(ALPHABET,
+                                                                                                 target.length()),
                                                                                pipeline,
                                                                                new StringEvaluator(target),
                                                                                new RouletteWheelSelection(),
@@ -68,7 +75,13 @@ public class StringsExample
                       120000); // Two minute timeout.
     }
 
-    
+
+    /**
+     * Converts an arguments array into a single String of words
+     * separated by spaces.
+     * @param args The command-line arguments.
+     * @return A single String made from the command line data.
+     */
     private static String convertArgs(String[] args)
     {
         StringBuilder result = new StringBuilder();
@@ -84,6 +97,10 @@ public class StringsExample
     }
 
 
+    /**
+     * Trivial evolution observer for displaying information at the end
+     * of each generation.
+     */
     private static class EvolutionLogger implements EvolutionObserver<String>
     {
         public void populationUpdate(PopulationData<String> data)

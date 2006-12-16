@@ -23,16 +23,17 @@ import org.testng.annotations.Test;
  */
 public class PermutationGeneratorTest
 {
-    @Test public void testPermutationGenerator()
+    @Test
+    public void testPermutationGenerator()
     {
         String[] elements = new String[]{"1", "2", "3"};
         PermutationGenerator<String> generator = new PermutationGenerator<String>(elements);
         assert generator.getTotalPermutations() == 6 : "Possible permutations should be 6.";
-        assert generator.getRemainingPermutations() == 6: "Remaining combinations should be 6.";
+        assert generator.getRemainingPermutations() == 6 : "Remaining combinations should be 6.";
 
         String[] permutation1 = generator.nextPermutationAsArray();
         assert permutation1.length == 3 : "Permutation length should be 3.";
-        assert generator.getRemainingPermutations() == 5: "Remaining combinations should be 5.";
+        assert generator.getRemainingPermutations() == 5 : "Remaining combinations should be 5.";
         assert !permutation1[0].equals(permutation1[1]) : "Permutation elements should be different.";
         assert !permutation1[0].equals(permutation1[2]) : "Permutation elements should be different.";
         assert !permutation1[1].equals(permutation1[2]) : "Permutation elements should be different.";
@@ -45,6 +46,8 @@ public class PermutationGeneratorTest
         assert !permutation2[0].equals(permutation2[2]) : "Permutation elements should be different.";
         assert !permutation2[1].equals(permutation2[2]) : "Permutation elements should be different.";
 
-        assert !(permutation1[0] + permutation1[1] + permutation1[2]).equals(permutation2[0] + permutation2[1] + permutation2[2]) : "Permutation should be different from previous one.";
+        String perm1String = permutation1[0] + permutation1[1] + permutation1[2];
+        String perm2String = permutation2[0] + permutation2[1] + permutation2[2];
+        assert !(perm1String).equals(perm2String) : "Permutation should be different from previous one.";
     }
 }

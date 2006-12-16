@@ -30,6 +30,7 @@
   <property name="docs.dir" location="./docs" />
   <property name="api.dir" location="${docs.dir}/api" />
   <property name="test-results.dir" location="${docs.dir}/test-results" />
+  <property name="checkstyle-results.dir" location="${docs.dir}/checkstyle-results" />
   <property name="release.dir" location="./release" />
   <property name="web.dir" location="./www" />
 
@@ -131,17 +132,8 @@
       <javadoc destdir="@{api.dir}"
                doctitle="The Watchmaker Framework for Evolutionary Algorithms ${version}"
                windowtitle="Watchmaker Framework API">
-        <fileset dir="./maths/${java.dir}/main" defaultexcludes="yes">
-          <include name="org/uncommons/**"/>
-        </fileset>
-        <fileset dir="./framework/${java.dir}/main" defaultexcludes="yes">
-          <include name="org/uncommons/**"/>
-        </fileset>
-        <fileset dir="./gui/${java.dir}/main" defaultexcludes="yes">
-          <include name="org/uncommons/**"/>
-        </fileset>
-        <fileset dir="./examples/${java.dir}/main" defaultexcludes="yes">
-          <include name="org/uncommons/**"/>
+        <fileset dir="." defaultexcludes="yes">
+          <include name="**/${java.dir}/main/org/uncommons/**/*.java"/>
         </fileset>
         <group title="Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
         <group title="Example Evolutionary Algorithms" packages="org.uncommons.watchmaker.examples.*"/>
@@ -302,7 +294,8 @@
     <testng classpathref="test.path"
             outputdir="${test-results.dir}"
             haltonfailure="true"
-            reporter="org.uncommons.reportng.HTMLReporter">
+            useDefaultListeners="false"
+            listeners="org.uncommons.reportng.HTMLReporter">
       <xmlfileset dir="${conf.dir}" includes="testng.xml"/>
     </testng>
   </target>
@@ -311,24 +304,16 @@
   <target name="checkstyle"
           description="Check that coding standard are adhered to.">
     <taskdef resource="checkstyletask.properties" classpathref="base.path"/>
+    <mkdir dir="${checkstyle-results.dir}" />
     <checkstyle config="${conf.dir}/checks.xml"
                 failonviolation="false">
-      <fileset dir="./maths/${java.dir}/main" defaultexcludes="yes">
-        <include name="org/uncommons/**"/>
+      <fileset dir="." defaultexcludes="yes">
+        <include name="**/${java.dir}/main/org/uncommons/**/*.java"/>
       </fileset>
-      <fileset dir="./framework/${java.dir}/main" defaultexcludes="yes">
-        <include name="org/uncommons/**"/>
-      </fileset>
-      <fileset dir="./gui/${java.dir}/main" defaultexcludes="yes">
-        <include name="org/uncommons/**"/>
-      </fileset>
-      <fileset dir="./examples/${java.dir}/main" defaultexcludes="yes">
-        <include name="org/uncommons/**"/>
-      </fileset>
-      <formatter type="xml" tofile="${test-results.dir}/checkstyle_report.xml"/>
+      <formatter type="xml" tofile="${checkstyle-results.dir}/checkstyle_report.xml"/>
     </checkstyle>
-    <style in="${test-results.dir}/checkstyle_report.xml"
-           out="${test-results.dir}/checkstyle_report.html"
+    <style in="${checkstyle-results.dir}/checkstyle_report.xml"
+           out="${checkstyle-results.dir}/checkstyle_report.html"
            style="${conf.dir}/checkstyle-noframes-sorted.xsl"/>
   </target>
 

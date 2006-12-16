@@ -50,6 +50,15 @@ public final class EvaluatedCandidate<T> implements Comparable<EvaluatedCandidat
     }
 
 
+    /**
+     * Compares this candidate's fitness score with that of the specified
+     * candidate.
+     * @param evaluatedCandidate The candidate to compare scores with.
+     * @return -1, 0 or 1 if this candidate's score is less than, equal to,
+     * or greater than that of the specified candidate.  The comparison applies
+     * to the raw numerical score and does not consider whether that score is
+     * a natural fitness score or not.
+     */
     public int compareTo(EvaluatedCandidate<T> evaluatedCandidate)
     {
         return Double.compare(fitness, evaluatedCandidate.getFitness());
@@ -57,7 +66,7 @@ public final class EvaluatedCandidate<T> implements Comparable<EvaluatedCandidat
 
 
     /**
-     * Over-ridden to be consistent with {@link #compareTo(EvaluatedCandidate)}
+     * Over-ridden to be consistent with {@link #compareTo(EvaluatedCandidate)}.
      */
     @Override
     public boolean equals(Object o)
@@ -76,7 +85,7 @@ public final class EvaluatedCandidate<T> implements Comparable<EvaluatedCandidat
 
 
     /**
-     * Over-ridden to be consistent with {@link #equals(Object)}
+     * Over-ridden to be consistent with {@link #equals(Object)}.
      */
     @Override
     public int hashCode()

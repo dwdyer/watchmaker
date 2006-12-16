@@ -19,6 +19,8 @@ package org.uncommons.watchmaker.framework;
  * Immutable data object containing statistics about the state of
  * an evolved population and a reference to the fittest candidate
  * solution in the population.
+ * @param <T> The type of evolved entity present in the population
+ * that this data describes.
  * @see EvolutionObserver
  * @author Daniel Dyer
  */
@@ -50,24 +52,41 @@ public final class PopulationData<T>
     }
 
 
+    /**
+     * @return The fittest candidate present in the population.
+     * @see #getBestCandidateFitness()
+     */
     public T getBestCandidate()
     {
         return bestCandidate;
     }
 
 
+    /**
+     * @return The fitness score of the fittest candidate.
+     * @see #getBestCandidateFitness()
+     */
     public double getBestCandidateFitness()
     {
         return bestCandidateFitness;
     }
 
 
+    /**
+     * Returns the average fitness score of population members.
+     * @return The arithmetic mean fitness of individual candidates.
+     */
     public double getMeanFitness()
     {
         return meanFitness;
     }
 
 
+    /**
+     * Returns a statistical measure of variation in fitness scores within
+     * the population. 
+     * @return Population standard deviation for fitness scores.
+     */
     public double getFitnessStandardDeviation()
     {
         return fitnessStandardDeviation;
@@ -75,7 +94,7 @@ public final class PopulationData<T>
 
 
     /**
-     * Returns the number of individuals in the current population.
+     * @return The number of individuals in the current population.
      */
     public int getPopulationSize()
     {
@@ -84,7 +103,7 @@ public final class PopulationData<T>
 
 
     /**
-     * Returns the number of this generation (zero-based).
+     * @return The number of this generation (zero-based).
      */
     public int getGenerationNumber()
     {
@@ -94,7 +113,8 @@ public final class PopulationData<T>
 
     /**
      * Returns the amount of time (in milliseconds) since the
-     * beginning of the algorithm execution.
+     * start of the evolutionary algorithm's execution.
+     * @return How long (in milliseconds) the algorithm has been running.
      */
     public long getElapsedTime()
     {

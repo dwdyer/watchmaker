@@ -47,6 +47,7 @@ public class PermutationGenerator<T>
     /**
      * Permutation generator that generates all possible orderings of
      * the elements in the specified set.
+     * @param elements The elements to permute.
      */
     public PermutationGenerator(T[] elements)
     {
@@ -64,6 +65,7 @@ public class PermutationGenerator<T>
     /**
      * Permutation generator that generates all possible orderings of
      * the elements in the specified set.
+     * @param elements The elements to permute.
      */
     @SuppressWarnings("unchecked")
     public PermutationGenerator(Collection<T> elements)
@@ -72,6 +74,9 @@ public class PermutationGenerator<T>
     }
 
 
+    /**
+     * Resets the generator state.
+     */
     public final void reset()
     {
         for (int i = 0; i < permutationIndices.length; i++)
@@ -84,6 +89,7 @@ public class PermutationGenerator<T>
 
     /**
      * Returns the number of permutations not yet generated.
+     * @return The number of unique permutations still to be generated.
      */
     public long getRemainingPermutations()
     {
@@ -92,7 +98,9 @@ public class PermutationGenerator<T>
 
 
     /**
-     * Returns the total number of permutations.
+     * Returns the total number of unique permutations that can be
+     * generated for the given set of elements.
+     * @return The total number of permutations.
      */
     public long getTotalPermutations()
     {
@@ -102,6 +110,7 @@ public class PermutationGenerator<T>
 
     /**
      * Are there more permutations that have not yet been returned?
+     * @return true if there are more permutations, false otherwise.
      */
     public boolean hasMore()
     {
@@ -114,6 +123,7 @@ public class PermutationGenerator<T>
      * the elements in the appropriate order.
      * @see #nextPermutationAsArray(Object[])
      * @see #nextPermutationAsList()
+     * @return The next permutation as an array.
      */
     @SuppressWarnings("unchecked")
     public T[] nextPermutationAsArray()
@@ -144,6 +154,7 @@ public class PermutationGenerator<T>
      * permutation.  The specified array must be the same length as a
      * permutation.  This is the array that will be returned, once
      * it has been filled with the elements in the appropriate order.
+     * @return The next permutation as an array.
      */
     public T[] nextPermutationAsArray(T[] destination)
     {
@@ -166,6 +177,7 @@ public class PermutationGenerator<T>
      * the elements in the appropriate order.
      * @see #nextPermutationAsList(java.util.List)
      * @see #nextPermutationAsArray()
+     * @return The next permutation as a list.
      */
     public List<T> nextPermutationAsList()
     {
@@ -193,6 +205,7 @@ public class PermutationGenerator<T>
      * @param destination Provides a list to use to create the
      * permutation.  This is the list that will be returned, once
      * it has been filled with the elements in the appropriate order.
+     * @return The next permutation as a list.
      */
     public List<T> nextPermutationAsList(List<T> destination)
     {

@@ -32,18 +32,29 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
  */
 public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
 {
+    /**
+     * {@inheritDoc}
+     */
     public String getDescription()
     {
         return "Brute Force";
     }
 
+    
+    /**
+     * To reduce the search space we will only consider routes that start
+     * and end at one city (whichever is first in the collection).  All other
+     * possible routes are equivalent to one of these routes since start city
+     * is irrelevant in determining the shortest cycle.
+     * @param cities The list of destinations, each of which must be visited
+     * once.
+     * @param progressListener Call-back for receiving the status of the
+     * algorithm as it progresses.
+     * @return The shortest route that visits each of the specified cities once.
+     */
     public List<String> calculateShortestRoute(Collection<String> cities,
                                                ProgressListener progressListener)
     {
-        // To reduce the search space we will only consider routes that start
-        // and end at one city (whichever is first in the collection).  All other
-        // possible routes are equivalent to one of these routes since start city
-        // is irrelevant in determining the shortest cycle.
         Iterator<String> iterator = cities.iterator();
         String startCity = iterator.next();
         Collection<String> destinations = new ArrayList<String>(cities.size() - 1);

@@ -48,6 +48,20 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                                                          new DaemonThreadFactory());
 
 
+    /**
+     * Creates a new evolution engine by specifying the various components required by
+     * an evolutionary algorithm.
+     * @param candidateFactory Factory used to create the initial population that is
+     * iteratively evolved.
+     * @param evolutionScheme The combination of evolutionary operators used to evolve
+     * the population at each generation.
+     * @param fitnessEvaluator A function for assigning fitness scores to candidate
+     * solutions.
+     * @param selectionStrategy A strategy for selecting which candidates survive to
+     * be evolved.
+     * @param rng The source of randomness used by all stochastic processes (including
+     * evolutionary operators and selection strategies).
+     */
     public StandaloneEvolutionEngine(CandidateFactory<T> candidateFactory,
                                      EvolutionaryOperator<? super T> evolutionScheme,
                                      FitnessEvaluator<? super T> fitnessEvaluator,
@@ -65,6 +79,10 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      * the members with their scores attached, sorted in descending order of
      * fitness (descending order of fitness score for natural scores, ascending
      * order of scores for non-natural scores).
+     * @param population The population to evaluate (each candidate is assigned
+     * a fitness score).
+     * @return The evaluated population (a list of candidates with attached fitness
+     * scores).
      */
     protected List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population)
     {

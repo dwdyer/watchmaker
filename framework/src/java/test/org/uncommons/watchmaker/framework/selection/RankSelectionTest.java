@@ -1,3 +1,18 @@
+// ============================================================================
+//   Copyright 2006 Daniel W. Dyer
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// ============================================================================
 package org.uncommons.watchmaker.framework.selection;
 
 import java.util.ArrayList;
@@ -37,8 +52,10 @@ public class RankSelectionTest
         int johnCount = Collections.frequency(selection, john.getCandidate());
         int garyCount = Collections.frequency(selection, gary.getCandidate());
         int maryCount = Collections.frequency(selection, mary.getCandidate());
-        assert steveCount >= 1 && steveCount <= 2 : "Candidate selected wrong number of times (should be 1 or 2, was " + steveCount + ")";
-        assert johnCount >= 1 && johnCount <= 2 : "Candidate selected wrong number of times (should be 1 or 2, was " + johnCount + ")";
+        assert steveCount >= 1 && steveCount <= 2
+            : "Candidate selected wrong number of times (should be 1 or 2, was " + steveCount + ")";
+        assert johnCount >= 1 && johnCount <= 2
+            : "Candidate selected wrong number of times (should be 1 or 2, was " + johnCount + ")";
         assert garyCount <= 1 : "Candidate selected wrong number of times (should be 0 or 1, was " + garyCount + ")";
         assert maryCount <= 1 : "Candidate selected wrong number of times (should be 0 or 1, was " + maryCount + ")";
     }
@@ -67,8 +84,10 @@ public class RankSelectionTest
         int maryCount = Collections.frequency(selection, mary.getCandidate());
         int johnCount = Collections.frequency(selection, john.getCandidate());
         int steveCount = Collections.frequency(selection, steve.getCandidate());
-        assert garyCount >= 1 && garyCount <= 2 : "Candidate selected wrong number of times (should be 1 or 2, was " + garyCount + ")";
-        assert maryCount >= 1 && maryCount <= 2 : "Candidate selected wrong number of times (should be 1 or 2, was " + maryCount + ")";
+        assert garyCount >= 1 && garyCount <= 2
+            : "Candidate selected wrong number of times (should be 1 or 2, was " + garyCount + ")";
+        assert maryCount >= 1 && maryCount <= 2
+            : "Candidate selected wrong number of times (should be 1 or 2, was " + maryCount + ")";
         assert johnCount <= 1 : "Candidate selected wrong number of times (should be 0 or 1, was " + johnCount + ")";
         assert steveCount <= 1 : "Candidate selected wrong number of times (should be 0 or 1, was " + steveCount + ")";
     }

@@ -40,7 +40,12 @@ public class RouteEvaluator implements FitnessEvaluator<List<String>>
         return totalDistance;
     }
 
-    
+
+    /**
+     * {@inheritDoc}
+     * Returns false since shorter distances represent fitter candidates.
+     * @return false
+     */
     public boolean isNatural()
     {
         return false;

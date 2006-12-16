@@ -56,19 +56,34 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getDescription()
     {
         return "Evolution (population: " + populationSize + ", generations: " + generationCount + ")";
     }
 
 
+    /**
+     * Calculates the shortest route using a generational evolutionary
+     * algorithm with a single ordered mutation operator and truncation
+     * selection.
+     * @param cities The list of destinations, each of which must be visited
+     * once.
+     * @param progressListener Call-back for receiving the status of the
+     * algorithm as it progresses.
+     * @return The (approximate) shortest route that visits each of the
+     * specified cities once.
+     */
     public List<String> calculateShortestRoute(Collection<String> cities,
                                                final ProgressListener progressListener)
     {
         Random rng = new MersenneTwisterRNG();
         EvolutionaryOperator<List<?>> evolutionStrategy = new ListOrderMutation(new PoissonGenerator(1.5, rng),
                                                                                 new PoissonGenerator(1.5, rng));
-        CandidateFactory<List<String>> candidateFactory = new ListPermutationFactory<String>(new LinkedList<String>(cities));
+        CandidateFactory<List<String>> candidateFactory
+            = new ListPermutationFactory<String>(new LinkedList<String>(cities));
         EvolutionEngine<List<String>> engine = new StandaloneEvolutionEngine<List<String>>(candidateFactory,
                                                                                            evolutionStrategy,
                                                                                            new RouteEvaluator(),

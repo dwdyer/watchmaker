@@ -23,17 +23,28 @@ import java.util.Random;
 /**
  * Generates random candidates from a set of elements.  Each candidate is a random
  * permutation of the full set of elements.
+ * @param <T> The component type of the lists created by this factory.
  * @author Daniel Dyer
  */
 public class ListPermutationFactory<T>  extends AbstractCandidateFactory<List<T>>
 {
     private final List<T> elements;
 
+    /**
+     * Creates a factory that creates lists that contain each of the specified
+     * elements exactly once.  The ordering of those elements within generated
+     * lists is random.
+     * @param elements The elements to permute.
+     */
     public ListPermutationFactory(List<T> elements)
     {
         this.elements = elements;
     }
 
+
+    /**
+     * Generates a random permutation from the configured elements.
+     */
     protected List<T> generateRandomCandidate(Random rng)
     {
         List<T> candidate = new ArrayList<T>(elements);

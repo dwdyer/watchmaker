@@ -24,6 +24,7 @@ public interface DataSet
     /**
      * Adds a single value to the data set and updates any
      * statistics that are calculated cumulatively.
+     * @param value The value to add.
      */
     void addValue(double value);
 
@@ -34,12 +35,12 @@ public interface DataSet
     int getSize();
 
     /**
-     * Returns the sum of all values.
+     * @return The sum of all values.
      */
     double getAggregate();
 
     /**
-     * Returns the product of all values.
+     * @return The product of all values.
      */
     double getProduct();
 
@@ -47,6 +48,7 @@ public interface DataSet
      * The arithemthic mean of an n-element set is the sum of
      * all the elements divided by n.
      * @see #getGeometricMean()
+     * @return The arithmetic mean of all elements in the data set.
      */
     double getArithmeticMean();
 
@@ -54,6 +56,7 @@ public interface DataSet
      * The geometric mean of an n-element set is the nth-root of
      * the product of all the elements.
      * @see #getArithmeticMean()
+     * @return The geometric mean of all elements in the data set.
      */
     double getGeometricMean();
 
@@ -66,6 +69,7 @@ public interface DataSet
      * @see SampleDataSet
      * @see #getStandardDeviation()
      * @see #getMeanDeviation()
+     * @return The variance of the data set.
      */
     double getVariance();
 
@@ -76,6 +80,7 @@ public interface DataSet
      * @see #getArithmeticMean()
      * @see #getVariance()
      * @see #getStandardDeviation()
+     * @return The mean absolute deviation of the data set.
      */
     double getMeanDeviation();
 
@@ -84,6 +89,7 @@ public interface DataSet
      * (however the variance is calculated).
      * @see #getVariance()
      * @see #getMeanDeviation()
+     * @return The standard deviation of the data set.
      */
     double getStandardDeviation();
 }

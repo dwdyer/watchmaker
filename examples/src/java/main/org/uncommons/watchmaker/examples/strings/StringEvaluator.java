@@ -27,6 +27,11 @@ public class StringEvaluator implements FitnessEvaluator<String>
     private final String targetString;
 
 
+    /**
+     * Creates a {@link FitnessEvaluator} that calculates scores
+     * for Strings based on how close they are to a target String.
+     * @param targetString The target of the evolution.
+     */
     public StringEvaluator(String targetString)
     {
         this.targetString = targetString;
@@ -36,6 +41,9 @@ public class StringEvaluator implements FitnessEvaluator<String>
     /**
      * Assigns one "fitness point" for every character in the candidate
      * string that matches the corresponding position in the target string.
+     * @param candidate The evolved string to evaluate.
+     * @return The fitness score (how many characters are correct) of the
+     * specified string.
      */
     public double getFitness(String candidate)
     {
@@ -51,6 +59,9 @@ public class StringEvaluator implements FitnessEvaluator<String>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isNatural()
     {
         return true;

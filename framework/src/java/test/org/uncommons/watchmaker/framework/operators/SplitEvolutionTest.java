@@ -65,4 +65,28 @@ public class SplitEvolutionTest
         assert decrementedCount == 7 : "Should be 7 decremented candidates, is " + decrementedCount;
         assert aggregate == 546 : "Aggregate should be 546 after mutation, is " + aggregate;
     }
+
+
+    /**
+     * Make sure that the split cannot be set-up with a negative weight.  If
+     * this is attempted, an IllegalArgumentException should be thrown.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testNegativeWeight()
+    {
+        // Negative weight.
+        new SplitEvolution<Integer>(new IntegerAdjuster(1), new IntegerAdjuster(-1), -0.01d);
+    }
+
+
+    /**
+     * Make sure that the split cannot be set-up with a weight greater than 1.  If
+     * this is attempted, an IllegalArgumentException should be thrown.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testWeightTooHigh()
+    {
+        // Weight too high (must be less than or equal to one).
+        new SplitEvolution<Integer>(new IntegerAdjuster(1), new IntegerAdjuster(-1), 1.01d);
+    }
 }

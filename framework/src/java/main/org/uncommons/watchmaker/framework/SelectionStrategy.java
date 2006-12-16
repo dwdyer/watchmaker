@@ -30,6 +30,7 @@ public interface SelectionStrategy
      * order according to fitness (so the fittest individual is the first item
      * in the list).</p>
      * <p>It is an error to call this method with an empty or null population.</p>
+     * @param <T> The type of evolved entity that we are selecting.
      * @param population The population from which to select.
      * @param naturalFitnessScores Whether higher fitness values represent fitter
      * individuals or not.

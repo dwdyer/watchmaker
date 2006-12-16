@@ -23,7 +23,8 @@ import org.testng.annotations.Test;
  */
 public class CombinationGeneratorTest
 {
-    @Test public void testCombinationGenerator()
+    @Test
+    public void testCombinationGenerator()
     {
         String[] elements = new String[]{"1", "2", "3"};
         CombinationGenerator<String> generator = new CombinationGenerator<String>(elements, 2);
