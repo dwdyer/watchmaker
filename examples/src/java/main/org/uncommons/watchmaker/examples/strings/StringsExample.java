@@ -15,6 +15,8 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.strings;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
@@ -60,8 +62,11 @@ public final class StringsExample
     public static void main(String[] args)
     {
         String target = args.length == 0 ? "HELLO WORLD" : convertArgs(args);
-        EvolutionaryOperator<String> pipeline = new EvolutionPipeline<String>(new StringMutation(ALPHABET, 0.02d),
-                                                                              new StringCrossover());
+        
+        List<EvolutionaryOperator<? super String>> operators = new ArrayList<EvolutionaryOperator<? super String>>(2);
+        operators.add(new StringMutation(ALPHABET, 0.02d));
+        operators.add(new StringCrossover());
+        EvolutionaryOperator<String> pipeline = new EvolutionPipeline<String>(operators);
         EvolutionEngine<String> engine = new StandaloneEvolutionEngine<String>(new StringFactory(ALPHABET,
                                                                                                  target.length()),
                                                                                pipeline,

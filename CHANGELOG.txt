@@ -1,3 +1,10 @@
+Changes in version 0.?.?
+------------------------
+
+* Removed varargs constructor from EvolutionPipeline since it was impossible
+  to invoke without generating a compiler warning about generic array
+  creation.
+
 Changes in version 0.2.2
 ------------------------
 

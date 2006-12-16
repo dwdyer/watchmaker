@@ -40,16 +40,6 @@ public class EvolutionPipeline<T> implements EvolutionaryOperator<T>
     }
 
 
-    public EvolutionPipeline(EvolutionaryOperator<? super T>... pipeline)
-    {
-        this.pipeline = new ArrayList<EvolutionaryOperator<? super T>>(pipeline.length);
-        for (EvolutionaryOperator<? super T> operator : pipeline)
-        {
-            this.pipeline.add(operator);
-        }
-    }
-
-
     public <S extends T> List<S> apply(List<S> selectedCandidates, Random rng)
     {
         List<S> population = selectedCandidates;

@@ -16,7 +16,6 @@
 package org.uncommons.watchmaker.framework.factories;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -72,9 +71,12 @@ public class ListPermutationFactoryTest
         List<Integer> seed1 = new ArrayList<Integer>(elements);
         List<Integer> seed2 = new ArrayList<Integer>(elements);
         Collections.reverse(elements);
+        List<List<Integer>> seeds = new ArrayList<List<Integer>>(2);
+        seeds.add(seed1);
+        seeds.add(seed2);
 
         List<List<Integer>> population = factory.generateInitialPopulation(populationSize,
-                                                                           Arrays.asList(seed1, seed2),
+                                                                           seeds,
                                                                            rng);
         // Check that the seed candidates appear in the generated population.
         assert population.contains(seed1) : "Population does not contain seed candidate 1.";
