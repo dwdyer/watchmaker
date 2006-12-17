@@ -29,7 +29,7 @@ public interface EvolutionObserver<T>
     /**
      * Invoked when the state of the population has changed (typically
      * at the end of a generation).
-     * @param data
+     * @param data Statistics about the state of the current generation.
      */
     void populationUpdate(PopulationData<T> data);
 }

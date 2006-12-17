@@ -26,7 +26,7 @@ import javax.swing.SwingUtilities;
  */
 public abstract class SwingBackgroundTask<V>
 {
-    private final CountDownLatch latch = new CountDownLatch(2);
+    private final CountDownLatch latch = new CountDownLatch(1);
 
     /**
      * Asynchronous call that begins execution of the task
@@ -47,7 +47,6 @@ public abstract class SwingBackgroundTask<V>
                         latch.countDown();
                     }
                 });
-                latch.countDown();
             }
         };
         new Thread(task).start();

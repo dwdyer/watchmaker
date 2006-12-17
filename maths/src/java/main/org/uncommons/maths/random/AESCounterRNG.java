@@ -101,7 +101,9 @@ public class AESCounterRNG extends Random implements RepeatableRNG
 
     /**
      * Generates a single 128-bit block (16 bytes).
-     * @throws GeneralSecurityException
+     * @throws GeneralSecurityException If there is a problem with the cipher
+     * that generates the random data.
+     * @return A 16-byte block of random data.
      */
     private byte[] nextBlock() throws GeneralSecurityException
     {
@@ -136,6 +138,9 @@ public class AESCounterRNG extends Random implements RepeatableRNG
     /**
      * Take four bytes from the specified position in the specified
      * block and convert them into a 32-bit int.
+     * @param bytes The data to read from.
+     * @param offset The position to start reading the 4-byte int from.
+     * @return The 32-bit integer represented by the four bytes.
      */
     private int convertBytesToInt(byte[] bytes, int offset)
     {

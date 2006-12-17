@@ -36,7 +36,7 @@ public interface EvolutionEngine<T>
      * @param generationCount The number of iterations to perform (including the
      * creation and evaluation of the initial population, which counts as the first
      * generation).
-     * @return The best solution found by the evolutionary process.
+     * @return The fittest solution found by the evolutionary process.
      * @see #evolve(int,int,double,long)
      */
     T evolve(int populationSize,
@@ -58,7 +58,7 @@ public interface EvolutionEngine<T>
      * generation).
      * @param seedCandidates A set of candidates to seed the population with.  The size of
      * this collection must be no greater than the specified population size.
-     * @return The best solution found by the evolutionary process.
+     * @return The fittest solution found by the evolutionary process.
      * @see #evolve(int,int,int)
      * @see #evolve(int,int,double,long,Collection)
      */
@@ -85,6 +85,8 @@ public interface EvolutionEngine<T>
      * execution times out.
      * @param timeout How long (in milliseconds) the evolution is allowed to run for
      * without finding a matching candidate.
+     * @return An evolved candidate that has a fitness score greater than or equal to
+     * {@code targetFitness}.
      * @see #evolve(int,int,int)
      * @see #evolve(int,int,double,long,Collection)
      */
@@ -113,6 +115,8 @@ public interface EvolutionEngine<T>
      * without finding a matching candidate.
      * @param seedCandidates A set of candidates to seed the population with.  The size of
      * this collection must be no greater than the specified population size.
+     * @return An evolved candidate that has a fitness score greater than or equal to
+     * {@code targetFitness}.
      * @see #evolve(int,int,int)
      */
     T evolve(int populationSize,
@@ -124,6 +128,7 @@ public interface EvolutionEngine<T>
 
     /**
      * Adds a listener to receive status updates on the evolution progress.
+     * @param observer An evolution observer call-back.
      * @see #removeEvolutionObserver(EvolutionObserver)
      */
     void addEvolutionObserver(EvolutionObserver<T> observer);
@@ -131,6 +136,7 @@ public interface EvolutionEngine<T>
 
     /**
      * Removes an evolution progress listener.
+     * @param observer An evolution observer call-back.
      * @see #addEvolutionObserver(EvolutionObserver)
      */
     void removeEvolutionObserver(EvolutionObserver<T> observer);

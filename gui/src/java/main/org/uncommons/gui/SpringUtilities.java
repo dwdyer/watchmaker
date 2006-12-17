@@ -34,13 +34,13 @@ public final class SpringUtilities
 
 
     /**
-     * Aligns the first <code>rows</code> * <code>cols</code> components of
-     * <code>parent</code> in a grid. Each component is as big as the maximum
-     * preferred width and height of the components.  The parent is made just
-     * big enough to fit them all.
-     *
-     * @param rows number of rows
-     * @param cols number of columns
+     * Aligns the first {@code rows} * {@code cols} components of {@code parent}
+     * in a grid. Each component is as big as the maximum preferred width and
+     * height of the components.  The parent is made just big enough to fit them
+     * all.
+     * @param parent The container to layout.
+     * @param rows Number of rows
+     * @param cols Number of columns
      * @param initialX x location to start the grid at
      * @param initialY y location to start the grid at
      * @param xPad x padding between cells
@@ -127,12 +127,11 @@ public final class SpringUtilities
 
 
     /**
-     * Aligns the first <code>rows</code> * <code>cols</code> components of
-     * <code>parent</code> in a grid.  Each component in a column is as wide as
-     * the maximum preferred width of the components in that column; height is
-     * similarly determined for each row.  The parent is made just big enough to
-     * fit them all.
-     *
+     * Aligns the first {@code rows} * {@code cols} components of {@code parent}
+     * in a grid.  Each component in a column is as wide as the maximum preferred
+     * width of the components in that column; height is similarly determined for
+     * each row.  The parent is made just big enough to fit them all.
+     * @param parent The container to layout.
      * @param rows number of rows
      * @param columns number of columns
      * @param initialX x location to start the grid at

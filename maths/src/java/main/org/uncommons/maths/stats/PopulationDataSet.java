@@ -22,18 +22,29 @@ package org.uncommons.maths.stats;
  */
 public final class PopulationDataSet extends AbstractDataSet
 {
+    /**
+     * Creates an empty data set with a default initial capacity.
+     */
     public PopulationDataSet()
     {
         super();
     }
 
 
+    /**
+     * Creates a data set and populates it with the specified values.
+     * @param dataSet The values to add to this data set.
+     */
     public PopulationDataSet(double[] dataSet)
     {
         super(dataSet);
     }
 
 
+    /**
+     * Calculates the population variance of this data set.
+     * @return The population variance of the data set.
+     */
     public double getVariance()
     {
         double mean = getArithmeticMean();

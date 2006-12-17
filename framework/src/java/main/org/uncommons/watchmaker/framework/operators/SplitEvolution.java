@@ -39,6 +39,7 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  * {@link EvolutionPipeline} operators, elaborate evolutionary schemes can be
  * constructed.</p>
  *
+ * @param <T> The type of evolved entity dealt with by this operator.
  * @author Daniel Dyer
  */
 public class SplitEvolution<T> implements EvolutionaryOperator<T>
@@ -48,6 +49,10 @@ public class SplitEvolution<T> implements EvolutionaryOperator<T>
     private final NumberGenerator<Double> weightVariable;
 
     /**
+     * @param operator1 The operator that will apply to the first part of the
+     * population (as determined by the {@code weight} parameter).
+     * @param operator2 The operator that will apply to the second part of the
+     * population (as determined by the {@code weight} parameter).
      * @param weight The proportion (as a real number between zero and 1 exclusive)
      * of the population that will be evolved by {@code operator1}.  The
      * remainder will be evolved by {@code operator2}.
@@ -65,6 +70,10 @@ public class SplitEvolution<T> implements EvolutionaryOperator<T>
 
 
     /**
+     * @param operator1 The operator that will apply to the first part of the
+     * population (as determined by the {@code weightVariable} parameter).
+     * @param operator2 The operator that will apply to the second part of the
+     * population (as determined by the {@code weightVariable} parameter).
      * @param weightVariable A random variable that provides the ratio for
      * dividing the population between the two evolutionary streams.  Must
      * only generate values in the range {@literal 0 < ratio < 1}.
@@ -83,6 +92,13 @@ public class SplitEvolution<T> implements EvolutionaryOperator<T>
      * Applies one evolutionary operator to part of the population and another
      * to the remainder.  Returns a list combining the output of both.  Which
      * candidates are submitted to which stream is determined randomly.
+     * @param <S> Any sub-type of the evolved type recognised by this split
+     * operator.
+     * @param selectedCandidates A list of the candidates that survived to be
+     * eligible for evolution.
+     * @param rng A source of randomness passed to each of the two delegate
+     * evolutionary operators.
+     * @return The combined results from the two streams of evolution.
      */
     public <S extends T> List<S> apply(List<S> selectedCandidates, Random rng)
     {

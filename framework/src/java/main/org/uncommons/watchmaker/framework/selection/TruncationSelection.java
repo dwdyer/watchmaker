@@ -45,6 +45,16 @@ public class TruncationSelection implements SelectionStrategy
      * Selects the fittest candidates.  If the selectionRatio results in
      * fewer selected candidates than required, then these candidates are
      * selected multiple times to make up the shortfall.
+     * @param population The population of evolved and evaluated candidates
+     * from which to select.
+     * @param naturalFitnessScores Whether higher fitness values represent fitter
+     * individuals or not.
+     * @param selectionSize The number of candidates to select from the
+     * evolved population.
+     * @param rng A source of randomness (not used by this selection
+     * implementation since truncation selection is deterministic).
+     * @param <T> The type of evolved entity that is being selected.
+     * @return The selected candidates.
      */
     public <T> List<T> select(List<EvaluatedCandidate<T>> population,
                               boolean naturalFitnessScores,

@@ -49,11 +49,23 @@ public final class TravellingSalesmanApplet extends JApplet
         itineraryPanel = new ItineraryPanel(Europe.getInstance().getCities());
         strategyPanel = new StrategyPanel();
         executionPanel = new ExecutionPanel();
-        add(itineraryPanel, BorderLayout.WEST);
-        JPanel innerPanel = new JPanel(new BorderLayout());
-        innerPanel.add(strategyPanel, BorderLayout.NORTH);
-        innerPanel.add(executionPanel, BorderLayout.CENTER);
-        add(innerPanel, BorderLayout.CENTER);
+    }
+
+
+    @Override
+    public void init()
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                add(itineraryPanel, BorderLayout.WEST);
+                JPanel innerPanel = new JPanel(new BorderLayout());
+                innerPanel.add(strategyPanel, BorderLayout.NORTH);
+                innerPanel.add(executionPanel, BorderLayout.CENTER);
+                add(innerPanel, BorderLayout.CENTER);
+            }
+        });
     }
 
 
@@ -108,9 +120,9 @@ public final class TravellingSalesmanApplet extends JApplet
                     }
                     else
                     {
-                        TravellingSalesmanApplet.this.setEnabled(false);
                         try
                         {
+                            TravellingSalesmanApplet.this.setEnabled(false);
                             createTask(cities, progressBarUpdater).execute();
                         }
                         catch (IllegalArgumentException ex)

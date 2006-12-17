@@ -41,6 +41,15 @@ public class StringFactory extends AbstractCandidateFactory<String>
     }
 
 
+    /**
+     * Generates a random string of a pre-configured length.  Each character
+     * is randomly selected from the pre-configured alphabet.  The same
+     * character may appear multiple times and some characters may not appear
+     * at all.
+     * @param rng A source of randomness used to select characters to make up
+     * the string.
+     * @return A randomly generated string.
+     */
     protected String generateRandomCandidate(Random rng)
     {
         char[] chars = new char[stringLength];

@@ -44,6 +44,9 @@ public class ListPermutationFactory<T>  extends AbstractCandidateFactory<List<T>
 
     /**
      * Generates a random permutation from the configured elements.
+     * @param rng A source of randomness used to generate the random
+     * permutation.
+     * @return A random permutation.
      */
     protected List<T> generateRandomCandidate(Random rng)
     {

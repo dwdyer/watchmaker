@@ -30,12 +30,24 @@ public class ObjectArrayPermutationFactory<T>  extends AbstractCandidateFactory<
 {
     private final T[] elements;
 
+    /**
+     * Creates a factory that creates arrays that contain each of the specified
+     * elements exactly once.  The ordering of those elements within generated
+     * arrays is random.
+     * @param elements The elements to permute.
+     */
     public ObjectArrayPermutationFactory(T[] elements)
     {
         this.elements = elements.clone();
     }
 
 
+    /**
+     * Generates a random permutation from the configured elements.
+     * @param rng A source of randomness used to generate the random
+     * permutation.
+     * @return A random permutation.
+     */
     protected T[] generateRandomCandidate(Random rng)
     {
         T[] candidate = elements.clone();

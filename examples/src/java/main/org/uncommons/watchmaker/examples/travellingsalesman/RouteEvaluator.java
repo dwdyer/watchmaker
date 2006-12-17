@@ -28,6 +28,12 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
  */
 public class RouteEvaluator implements FitnessEvaluator<List<String>>
 {
+    /**
+     * Calculates the length of an evolved route. 
+     * @param candidate The route to evaluate.
+     * @return The total distance (in kilometres) of a journey that visits
+     * each city in order and returns to the starting point.
+     */
     public double getFitness(List<String> candidate)
     {
         int totalDistance = 0;

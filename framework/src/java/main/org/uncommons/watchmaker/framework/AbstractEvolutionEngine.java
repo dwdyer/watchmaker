@@ -42,6 +42,20 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     private int currentGenerationIndex;
 
 
+    /**
+     * Creates a new evolution engine by specifying the various components required by
+     * an evolutionary algorithm.
+     * @param candidateFactory Factory used to create the initial population that is
+     * iteratively evolved.
+     * @param evolutionScheme The combination of evolutionary operators used to evolve
+     * the population at each generation.
+     * @param fitnessEvaluator A function for assigning fitness scores to candidate
+     * solutions.
+     * @param selectionStrategy A strategy for selecting which candidates survive to
+     * be evolved.
+     * @param rng The source of randomness used by all stochastic processes (including
+     * evolutionary operators and selection strategies).
+     */
     protected AbstractEvolutionEngine(CandidateFactory<T> candidateFactory,
                                       EvolutionaryOperator<? super T> evolutionScheme,
                                       FitnessEvaluator<? super T> fitnessEvaluator,
@@ -66,6 +80,9 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public T evolve(int populationSize,
                     int eliteCount,
@@ -78,6 +95,9 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public T evolve(int populationSize,
                     int eliteCount,
                     int generationCount,
@@ -115,6 +135,9 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public T evolve(int populationSize,
                     int eliteCount,
@@ -129,6 +152,9 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public T evolve(int populationSize,
                     int eliteCount,
                     double targetFitness,
@@ -174,6 +200,9 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      * the members with their scores attached, sorted in descending order of
      * fitness (descending order of fitness score for natural scores, ascending
      * order of scores for non-natural scores).
+     * @param population The population of evolved candidate to be evaluated.
+     * @return A list containing each of the candidates with an attached fitness
+     * score.
      */
     protected abstract List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population);
 
@@ -181,6 +210,11 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     /**
      * Evolve the specified evaluated population (the current generation).
      * and return the resultant population (the next generation).
+     * @param evaluatedPopulation The population of evolved candidates, with
+     * fitness scores attached.
+     * @param eliteCount The number of the most fit candidates that will be
+     * preserved unchanged in the next generation.
+     * @return The next generation of evolved individuals.
      */
     private List<T> createNextGeneration(List<EvaluatedCandidate<T>> evaluatedPopulation,
                                          int eliteCount)
@@ -209,12 +243,18 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addEvolutionObserver(EvolutionObserver<T> observer)
     {
         observers.add(observer);
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void removeEvolutionObserver(EvolutionObserver<T> observer)
     {
         observers.remove(observer);
@@ -223,6 +263,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
     /**
      * Send the population data to all registered observers.
+     * @param data Information about the current state of the population.
      */
     private void notifyPopulationChange(PopulationData<T> data)
     {
@@ -238,6 +279,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      * and statistics about the population as a whole.
      * @param evaluatedPopulation Population of candidate solutions with their
      * associated fitness scores.
+     * @return Statistics about the current generation of evolved individuals.
      */
     private PopulationData<T> getPopulationData(List<EvaluatedCandidate<T>> evaluatedPopulation)
     {

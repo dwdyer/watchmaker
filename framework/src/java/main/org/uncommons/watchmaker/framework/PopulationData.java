@@ -34,6 +34,19 @@ public final class PopulationData<T>
     private final int generationNumber;
     private final long elapsedTime;
 
+    /**
+     * @param bestCandidate The fittest candidate present in the population.
+     * @param bestCandidateFitness The fitness score for the fittest candidate
+     * in the population.
+     * @param meanFitness The arithmetic mean of fitness scores for each member
+     * of the population.
+     * @param fitnessStandardDeviation A measure of the variation in fitness
+     * scores.
+     * @param populationSize The number of individuals in the population.
+     * @param generationCount The number of generation that have been processed.
+     * @param elapsedTime The number of milliseconds since the start of the
+     * evolutionary algorithm.
+     */
     public PopulationData(T bestCandidate,
                           double bestCandidateFitness,
                           double meanFitness,

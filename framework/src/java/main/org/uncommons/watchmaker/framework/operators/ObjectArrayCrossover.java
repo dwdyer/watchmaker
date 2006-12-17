@@ -24,6 +24,7 @@ import org.uncommons.maths.NumberGenerator;
 /**
  * Cross-over with a configurable number of points (fixed or random) for
  * arrays of reference types.
+ * @param <T> The component type of the arrays that are being evolved.
  * @author Daniel Dyer
  */
 public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
@@ -39,6 +40,7 @@ public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
 
     /**
      * Cross-over with a fixed number of cross-over points.
+     * @param crossoverPoints The number of cross-overs to perform.
      */
     public ObjectArrayCrossover(int crossoverPoints)
     {
@@ -48,6 +50,8 @@ public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
 
     /**
      * Cross-over with a variable number of cross-over points.
+     * @param crossoverPointsVariable A random variable that controls the
+     * number of cross-overs performed for each pair of parents.
      */
     public ObjectArrayCrossover(NumberGenerator<Integer> crossoverPointsVariable)
     {

@@ -38,12 +38,18 @@ public final class EvaluatedCandidate<T> implements Comparable<EvaluatedCandidat
     }
 
 
+    /**
+     * @return The evolved candidate solution.
+     */
     public T getCandidate()
     {
         return candidate;
     }
 
 
+    /**
+     * @return The fitness score for the associated candidate.
+     */
     public double getFitness()
     {
         return fitness;
@@ -67,6 +73,8 @@ public final class EvaluatedCandidate<T> implements Comparable<EvaluatedCandidat
 
     /**
      * Over-ridden to be consistent with {@link #compareTo(EvaluatedCandidate)}.
+     * @param o The object to check for equality.
+     * @return true If this object is logically equivalent to {code o}.
      */
     @Override
     public boolean equals(Object o)
@@ -86,6 +94,7 @@ public final class EvaluatedCandidate<T> implements Comparable<EvaluatedCandidat
 
     /**
      * Over-ridden to be consistent with {@link #equals(Object)}.
+     * @return This object's hash code.
      */
     @Override
     public int hashCode()

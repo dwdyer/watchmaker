@@ -34,6 +34,9 @@ public abstract class AbstractDataSet implements DataSet
     private double product = 1;
 
 
+    /**
+     * Creates an empty data set with a default initial capacity.
+     */
     protected AbstractDataSet()
     {
         this.dataSet = new double[DEFAULT_CAPACITY];
@@ -41,6 +44,10 @@ public abstract class AbstractDataSet implements DataSet
     }
 
 
+    /**
+     * Creates a data set and populates it with the specified values.
+     * @param dataSet The values to add to this data set.
+     */
     protected AbstractDataSet(double[] dataSet)
     {
         this.dataSet = dataSet.clone();
@@ -52,7 +59,10 @@ public abstract class AbstractDataSet implements DataSet
     }
 
 
-    public void addValue(double value)
+    /**
+     * {@inheritDoc}
+     */
+    public final void addValue(double value)
     {
         if (dataSetSize == dataSet.length)
         {
@@ -75,12 +85,20 @@ public abstract class AbstractDataSet implements DataSet
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public final int getSize()
     {
         return dataSetSize;
     }
 
 
+    /**
+     * Retrieves a single value from the data set.
+     * @param index The index of the value to retrieve.
+     * @return The value at {@code index}.
+     */
     protected final double getValue(int index)
     {
         if (index < 0 || index >= dataSetSize)
@@ -91,31 +109,47 @@ public abstract class AbstractDataSet implements DataSet
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public final double getAggregate()
     {
         return total;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public final double getProduct()
     {
         return product;
     }
 
 
-    public double getArithmeticMean()
+    /**
+     * {@inheritDoc}
+     */
+    public final double getArithmeticMean()
     {
         return total / dataSetSize;
     }
 
 
-    public double getGeometricMean()
+
+    /**
+     * {@inheritDoc}
+     */
+    public final double getGeometricMean()
     {
         return Math.pow(product, 1.0d / dataSetSize);
     }
 
 
-    public double getMeanDeviation()
+    /**
+     * {@inheritDoc}
+     */
+    public final double getMeanDeviation()
     {
         double mean = getArithmeticMean();
         double diffs = 0;
@@ -127,7 +161,10 @@ public abstract class AbstractDataSet implements DataSet
     }
 
 
-    public double getStandardDeviation()
+    /**
+     * {@inheritDoc}
+     */
+    public final double getStandardDeviation()
     {
         return Math.sqrt(getVariance());
     }

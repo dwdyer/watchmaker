@@ -28,18 +28,29 @@ package org.uncommons.maths.stats;
  */
 public class SampleDataSet extends AbstractDataSet
 {
+    /**
+     * Creates an empty data set with a default initial capacity.
+     */
     public SampleDataSet()
     {
         super();
     }
 
 
+    /**
+     * Creates a data set and populates it with the specified values.
+     * @param dataSet The values to add to this data set.
+     */
     public SampleDataSet(double[] dataSet)
     {
         super(dataSet);
     }
 
 
+    /**
+     * Calculates the sample variance of this data set.
+     * @return The sample variance of the data set.
+     */
     public double getVariance()
     {
         double mean = getArithmeticMean();

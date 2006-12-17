@@ -84,6 +84,9 @@ final class StrategyPanel extends JPanel
     }
 
 
+    /**
+     * Panel of evolution controls.
+     */
     private static final class EvolutionPanel extends JPanel
     {
         private JLabel populationLabel;
