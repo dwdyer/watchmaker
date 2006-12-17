@@ -34,13 +34,21 @@ import org.uncommons.gui.SpringUtilities;
  */
 final class StrategyPanel extends JPanel
 {
+    private final DistanceLookup distances;
     private final JRadioButton evolutionOption;
     private final JRadioButton bruteForceOption;
     private final EvolutionPanel evolutionPanel;
 
-    public StrategyPanel()
+    /**
+     * Creates a panel with components for controlling the route-finding
+     * strategy.
+     * @param distances Data used by the strategy in order to calculate
+     * shortest routes.
+     */
+    public StrategyPanel(DistanceLookup distances)
     {
         super(new BorderLayout());
+        this.distances = distances;
         evolutionOption = new JRadioButton("Evolution", true);
         bruteForceOption = new JRadioButton("Brute Force", false);
         evolutionOption.addItemListener(new ItemListener()
@@ -65,7 +73,7 @@ final class StrategyPanel extends JPanel
     {
         if (bruteForceOption.isSelected())
         {
-            return new BruteForceTravellingSalesman();
+            return new BruteForceTravellingSalesman(distances);
         }
         else
         {
@@ -87,7 +95,7 @@ final class StrategyPanel extends JPanel
     /**
      * Panel of evolution controls.
      */
-    private static final class EvolutionPanel extends JPanel
+    private final class EvolutionPanel extends JPanel
     {
         private JLabel populationLabel;
         private JSpinner populationSpinner;
@@ -137,7 +145,8 @@ final class StrategyPanel extends JPanel
 
         public TravellingSalesmanStrategy getStrategy()
         {
-            return new EvolutionaryTravellingSalesman((Integer) populationSpinner.getValue(),
+            return new EvolutionaryTravellingSalesman(distances,
+                                                      (Integer) populationSpinner.getValue(),
                                                       (Integer) elitismSpinner.getValue(),
                                                       (Integer) generationsSpinner.getValue());
         }

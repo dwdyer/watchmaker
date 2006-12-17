@@ -32,6 +32,18 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
  */
 public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
 {
+    private final DistanceLookup distances;
+
+
+    /**
+     * @param distances Information about the distances between cities.
+     */
+    public BruteForceTravellingSalesman(DistanceLookup distances)
+    {
+        this.distances = distances;
+    }
+
+    
     /**
      * {@inheritDoc}
      */
@@ -49,7 +61,7 @@ public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
      * @param cities The list of destinations, each of which must be visited
      * once.
      * @param progressListener Call-back for receiving the status of the
-     * algorithm as it progresses.
+     * algorithm as it progresses.  May be null.
      * @return The shortest route that visits each of the specified cities once.
      */
     public List<String> calculateShortestRoute(Collection<String> cities,
@@ -63,7 +75,7 @@ public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
             destinations.add(iterator.next());
         }
 
-        FitnessEvaluator<List<String>> evaluator = new RouteEvaluator();
+        FitnessEvaluator<List<String>> evaluator = new RouteEvaluator(distances);
         PermutationGenerator<String> generator = new PermutationGenerator<String>(destinations);
         long totalPermutations = generator.getTotalPermutations();
         long count = 0;
@@ -81,12 +93,15 @@ public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
                 shortestRoute = new ArrayList<String>(route);
             }
             ++count;
-            if (count % 1000 == 0)
+            if (count % 1000 == 0 && progressListener != null)
             {
                 progressListener.updateProgress(((double) count) / totalPermutations * 100);
             }
         }
-        progressListener.updateProgress(100); // Finished.
+        if (progressListener != null)
+        {
+            progressListener.updateProgress(100); // Finished.
+        }
         return shortestRoute;
     }
 }

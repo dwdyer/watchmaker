@@ -46,9 +46,10 @@ public final class TravellingSalesmanApplet extends JApplet
 
     public TravellingSalesmanApplet()
     {
-        itineraryPanel = new ItineraryPanel(Europe.getInstance().getCities());
-        strategyPanel = new StrategyPanel();
-        executionPanel = new ExecutionPanel();
+        DistanceLookup distances = new EuropeanDistanceLookup();
+        itineraryPanel = new ItineraryPanel(distances.getKnownCities());
+        strategyPanel = new StrategyPanel(distances);
+        executionPanel = new ExecutionPanel(distances);
     }
 
 
@@ -85,11 +86,12 @@ public final class TravellingSalesmanApplet extends JApplet
         private final JTextArea output;
         private final JScrollPane scroller;
 
-        private final FitnessEvaluator<List<String>> evaluator = new RouteEvaluator();
+        private final FitnessEvaluator<List<String>> evaluator;
 
-        public ExecutionPanel()
+        public ExecutionPanel(DistanceLookup distances)
         {
             super(new BorderLayout());
+            evaluator = new RouteEvaluator(distances);
             JPanel controlPanel = new JPanel(new BorderLayout());
             startButton = new JButton("Start");
             controlPanel.add(startButton, BorderLayout.WEST);

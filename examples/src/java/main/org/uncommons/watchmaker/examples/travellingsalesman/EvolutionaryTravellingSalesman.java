@@ -38,20 +38,23 @@ import org.uncommons.watchmaker.framework.selection.TruncationSelection;
  */
 public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrategy
 {
+    private final DistanceLookup distances;
     private final int populationSize;
     private final int eliteCount;
     private final int generationCount;
 
     /**
      * Creates an evolutionary Travelling Salesman solver with the
-     * specified configuration. 
+     * specified configuration.
+     * @param distances Information about the distances between cities. 
      * @param populationSize The number of candidates in the population
      * of evolved routes.
      * @param eliteCount The number of candidates to preserve via elitism
      * at each generation.
      * @param generationCount The number of iterations of evolution to perform.
      */
-    public EvolutionaryTravellingSalesman(int populationSize,
+    public EvolutionaryTravellingSalesman(DistanceLookup distances,
+                                          int populationSize,
                                           int eliteCount,
                                           int generationCount)
     {
@@ -59,6 +62,7 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
         {
             throw new IllegalArgumentException("Elite count must be non-zero and less than population size.");
         }
+        this.distances = distances;
         this.populationSize = populationSize;
         this.eliteCount = eliteCount;
         this.generationCount = generationCount;
@@ -93,14 +97,14 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
                                                                                 new PoissonGenerator(1.5, rng));
         CandidateFactory<List<String>> candidateFactory
             = new ListPermutationFactory<String>(new LinkedList<String>(cities));
-        EvolutionEngine<List<String>> engine = new StandaloneEvolutionEngine<List<String>>(candidateFactory,
-                                                                                           evolutionStrategy,
-                                                                                           new RouteEvaluator(),
-                                                                                           new TruncationSelection(0.5),
+        EvolutionEngine<List<String>> engine
+            = new StandaloneEvolutionEngine<List<String>>(candidateFactory,
+                                                          evolutionStrategy,
+                                                          new RouteEvaluator(distances),
+                                                          new TruncationSelection(0.5),
                                                                                            rng);
         engine.addEvolutionObserver(new EvolutionObserver<List<String>>()
         {
-
             public void populationUpdate(PopulationData<List<String>> data)
             {
                 progressListener.updateProgress(((double) data.getGenerationNumber() + 1) / generationCount * 100);

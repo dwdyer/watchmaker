@@ -25,7 +25,9 @@ import org.testng.annotations.Test;
  */
 public class SwingBackgroundTaskTest
 {
+    private boolean taskExecuted;
     private boolean taskOnEDT;
+    private boolean postProcessingExecuted;
     private boolean postProcessingOnEDT;
 
     @Test
@@ -35,18 +37,22 @@ public class SwingBackgroundTaskTest
         {
             protected Object performTask()
             {
+                taskExecuted = true;
                 taskOnEDT = SwingUtilities.isEventDispatchThread();
                 return null;
             }
 
             protected void postProcessing(Object result)
             {
+                postProcessingExecuted = true;
                 postProcessingOnEDT = SwingUtilities.isEventDispatchThread();
             }
         };
         testTask.execute();
         testTask.waitForCompletion();
-        assert !taskOnEDT : "Task should not be executed on EDT.";
-        assert postProcessingOnEDT : "Post-processing should be executed on EDT.";
+        assert taskExecuted : "Task was not executed.";
+        assert postProcessingExecuted : "Post-processing was not executed.";
+        assert !taskOnEDT : "Task was executed on EDT.";
+        assert postProcessingOnEDT : "Post-processing was not executed on EDT.";
     }
 }

@@ -16,7 +16,6 @@
 package org.uncommons.watchmaker.framework.selection;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
@@ -30,22 +29,43 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
 public class TruncationSelectionTest
 {
     @Test
-    public void testSelection()
+    public void testNaturalFitnessSelection()
     {
         SelectionStrategy selector = new TruncationSelection(0.5d);
         List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
+        // Higher score is better.
         EvaluatedCandidate<String> steve = new EvaluatedCandidate<String>("Steve", 10.0);
+        EvaluatedCandidate<String> mary = new EvaluatedCandidate<String>("Mary", 9.1);
         EvaluatedCandidate<String> john = new EvaluatedCandidate<String>("John", 8.4);
         EvaluatedCandidate<String> gary = new EvaluatedCandidate<String>("Gary", 6.2);
-        EvaluatedCandidate<String> mary = new EvaluatedCandidate<String>("Mary", 9.1);
         population.add(steve);
+        population.add(mary);
         population.add(john);
         population.add(gary);
-        population.add(mary);
-        Collections.sort(population, Collections.reverseOrder());
         List<String> selection = selector.select(population, true, 2, null);
         assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
         assert selection.contains(steve.getCandidate()) : "Best candidate not selected.";
         assert selection.contains(mary.getCandidate()) : "Second best candidate not selected.";
+    }
+
+
+    @Test
+    public void testNonNaturalFitnessSelection()
+    {
+        SelectionStrategy selector = new TruncationSelection(0.5d);
+        List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
+        // Lower score is better.
+        EvaluatedCandidate<String> gary = new EvaluatedCandidate<String>("Gary", 6.2);
+        EvaluatedCandidate<String> john = new EvaluatedCandidate<String>("John", 8.4);
+        EvaluatedCandidate<String> mary = new EvaluatedCandidate<String>("Mary", 9.1);
+        EvaluatedCandidate<String> steve = new EvaluatedCandidate<String>("Steve", 10.0);
+        population.add(gary);
+        population.add(john);
+        population.add(mary);
+        population.add(steve);
+        List<String> selection = selector.select(population, false, 2, null);
+        assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
+        assert selection.contains(gary.getCandidate()) : "Best candidate not selected.";
+        assert selection.contains(john.getCandidate()) : "Second best candidate not selected.";
     }
 }

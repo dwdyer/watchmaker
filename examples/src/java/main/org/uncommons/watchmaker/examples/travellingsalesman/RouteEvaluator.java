@@ -28,6 +28,18 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
  */
 public class RouteEvaluator implements FitnessEvaluator<List<String>>
 {
+    private final DistanceLookup distances;
+
+
+    /**
+     * @param distances Provides distances between a set of cities.
+     */
+    public RouteEvaluator(DistanceLookup distances)
+    {
+        this.distances = distances;
+    }
+
+
     /**
      * Calculates the length of an evolved route. 
      * @param candidate The route to evaluate.
@@ -40,8 +52,8 @@ public class RouteEvaluator implements FitnessEvaluator<List<String>>
         for (int i = 0; i < candidate.size(); i++)
         {
             int nextIndex = i < candidate.size() - 1 ? i + 1 : 0;
-            totalDistance += Europe.getInstance().getDistance(candidate.get(i),
-                                                              candidate.get(nextIndex));
+            totalDistance += distances.getDistance(candidate.get(i),
+                                                   candidate.get(nextIndex));
         }
         return totalDistance;
     }

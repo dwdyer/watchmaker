@@ -22,19 +22,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class contains data about cities in Europe and the distances
+ * This class contains data about cities in EuropeanDistanceLookup and the distances
  * between them.
  * @author Daniel Dyer
  */
-public final class Europe
+public final class EuropeanDistanceLookup implements DistanceLookup
 {
-    private static final List<String> CITIES;
     private static final Map<String, Map<String, Integer>> DISTANCES = new HashMap<String, Map<String, Integer>>(15);
     static
     {
         // Distances are in km as the crow flies (from http://www.indo.com/distance/)
 
-        Map<String, Integer> amsterdam = new HashMap<String, Integer>(14);
+        Map<String, Integer> amsterdam = new HashMap<String, Integer>(15);
+        amsterdam.put("Amsterdam", 0);
         amsterdam.put("Athens", 2162);
         amsterdam.put("Berlin", 576);
         amsterdam.put("Brussels", 171);
@@ -51,8 +51,9 @@ public final class Europe
         amsterdam.put("Vienna", 938);
         DISTANCES.put("Amsterdam", amsterdam);
 
-        Map<String, Integer> athens = new HashMap<String, Integer>(14);
+        Map<String, Integer> athens = new HashMap<String, Integer>(15);
         athens.put("Amsterdam", 2162);
+        athens.put("Athens", 0);
         athens.put("Berlin", 1801);
         athens.put("Brussels", 2089);
         athens.put("Copenhagen", 2140);
@@ -68,9 +69,10 @@ public final class Europe
         athens.put("Vienna", 1280);
         DISTANCES.put("Athens", athens);
 
-        Map<String, Integer> berlin = new HashMap<String, Integer>(14);
+        Map<String, Integer> berlin = new HashMap<String, Integer>(15);
         berlin.put("Amsterdam", 576);
         berlin.put("Athens", 1801);
+        berlin.put("Berlin", 0);
         berlin.put("Brussels", 648);
         berlin.put("Copenhagen", 361);
         berlin.put("Dublin", 1315);
@@ -85,10 +87,11 @@ public final class Europe
         berlin.put("Vienna", 525);
         DISTANCES.put("Berlin", berlin);
 
-        Map<String, Integer> brussels = new HashMap<String, Integer>(14);
+        Map<String, Integer> brussels = new HashMap<String, Integer>(15);
         brussels.put("Amsterdam", 171);
         brussels.put("Athens", 2089);
         brussels.put("Berlin", 648);
+        brussels.put("Brussels", 0);
         brussels.put("Copenhagen", 764);
         brussels.put("Dublin", 780);
         brussels.put("Helsinki", 1649);
@@ -102,11 +105,12 @@ public final class Europe
         brussels.put("Vienna", 917);
         DISTANCES.put("Brussels", brussels);
 
-        Map<String, Integer> copenhagen = new HashMap<String, Integer>(14);
+        Map<String, Integer> copenhagen = new HashMap<String, Integer>(15);
         copenhagen.put("Amsterdam", 622);
         copenhagen.put("Athens", 2140);
         copenhagen.put("Berlin", 361);
         copenhagen.put("Brussels", 764);
+        copenhagen.put("Copenhagen", 0);
         copenhagen.put("Dublin", 1232);
         copenhagen.put("Helsinki", 885);
         copenhagen.put("Lisbon", 2477);
@@ -119,12 +123,13 @@ public final class Europe
         copenhagen.put("Vienna", 876);
         DISTANCES.put("Copenhagen", copenhagen);
 
-        Map<String, Integer> dublin = new HashMap<String, Integer>(14);
+        Map<String, Integer> dublin = new HashMap<String, Integer>(15);
         dublin.put("Amsterdam", 757);
         dublin.put("Athens", 2860);
         dublin.put("Berlin", 1315);
         dublin.put("Brussels", 780);
         dublin.put("Copenhagen", 1232);
+        dublin.put("Dublin", 0);
         dublin.put("Helsinki", 2021);
         dublin.put("Lisbon", 1652);
         dublin.put("London", 469);
@@ -136,13 +141,14 @@ public final class Europe
         dublin.put("Vienna", 1687);
         DISTANCES.put("Dublin", dublin);
 
-        Map<String, Integer> helsinki = new HashMap<String, Integer>(14);
+        Map<String, Integer> helsinki = new HashMap<String, Integer>(15);
         helsinki.put("Amsterdam", 1506);
         helsinki.put("Athens", 2464);
         helsinki.put("Berlin", 1108);
         helsinki.put("Brussels", 1649);
         helsinki.put("Copenhagen", 885);
         helsinki.put("Dublin", 2021);
+        helsinki.put("Helsinki", 0);
         helsinki.put("Lisbon", 3362);
         helsinki.put("London", 1823);
         helsinki.put("Luxembourg", 1667);
@@ -153,7 +159,7 @@ public final class Europe
         helsinki.put("Vienna", 1439);
         DISTANCES.put("Helsinki", helsinki);
 
-        Map<String, Integer> lisbon = new HashMap<String, Integer>(14);
+        Map<String, Integer> lisbon = new HashMap<String, Integer>(15);
         lisbon.put("Amsterdam", 1861);
         lisbon.put("Athens", 2854);
         lisbon.put("Berlin", 2310);
@@ -161,6 +167,7 @@ public final class Europe
         lisbon.put("Copenhagen", 2477);
         lisbon.put("Dublin", 1652);
         lisbon.put("Helsinki", 3362);
+        lisbon.put("Lisbon", 0);
         lisbon.put("London", 1585);
         lisbon.put("Luxembourg", 1716);
         lisbon.put("Madrid", 501);
@@ -170,7 +177,7 @@ public final class Europe
         lisbon.put("Vienna", 2300);
         DISTANCES.put("Lisbon", lisbon);
 
-        Map<String, Integer> london = new HashMap<String, Integer>(14);
+        Map<String, Integer> london = new HashMap<String, Integer>(15);
         london.put("Amsterdam", 356);
         london.put("Athens", 2391);
         london.put("Berlin", 929);
@@ -179,6 +186,7 @@ public final class Europe
         london.put("Dublin", 469);
         london.put("Helsinki", 1823);
         london.put("Lisbon", 1585);
+        london.put("London", 0);
         london.put("Luxembourg", 494);
         london.put("Madrid", 1261);
         london.put("Paris", 343);
@@ -187,7 +195,7 @@ public final class Europe
         london.put("Vienna", 1237);
         DISTANCES.put("London", london);
 
-        Map<String, Integer> luxembourg = new HashMap<String, Integer>(14);
+        Map<String, Integer> luxembourg = new HashMap<String, Integer>(15);
         luxembourg.put("Amsterdam", 318);
         luxembourg.put("Athens", 1901);
         luxembourg.put("Berlin", 595);
@@ -197,6 +205,7 @@ public final class Europe
         luxembourg.put("Helsinki", 1667);
         luxembourg.put("Lisbon", 1716);
         luxembourg.put("London", 494);
+        luxembourg.put("Luxembourg", 0);
         luxembourg.put("Madrid", 1282);
         luxembourg.put("Paris", 294);
         luxembourg.put("Rome", 995);
@@ -204,7 +213,7 @@ public final class Europe
         luxembourg.put("Vienna", 761);
         DISTANCES.put("Luxembourg", luxembourg);
 
-        Map<String, Integer> madrid = new HashMap<String, Integer>(14);
+        Map<String, Integer> madrid = new HashMap<String, Integer>(15);
         madrid.put("Amsterdam", 1477);
         madrid.put("Athens", 2374);
         madrid.put("Berlin", 1866);
@@ -215,13 +224,14 @@ public final class Europe
         madrid.put("Lisbon", 501);
         madrid.put("London", 1261);
         madrid.put("Luxembourg", 1282);
+        madrid.put("Madrid", 0);
         madrid.put("Paris", 1050);
         madrid.put("Rome", 1377);
         madrid.put("Stockholm", 2596);
         madrid.put("Vienna", 1812);
         DISTANCES.put("Madrid", madrid);
 
-        Map<String, Integer> paris = new HashMap<String, Integer>(14);
+        Map<String, Integer> paris = new HashMap<String, Integer>(15);
         paris.put("Amsterdam", 429);
         paris.put("Athens", 2097);
         paris.put("Berlin", 877);
@@ -233,12 +243,13 @@ public final class Europe
         paris.put("London", 343);
         paris.put("Luxembourg", 294);
         paris.put("Madrid", 1050);
+        paris.put("Paris", 0);
         paris.put("Rome", 1117);
         paris.put("Stockholm", 1549);
         paris.put("Vienna", 1037);
         DISTANCES.put("Paris", paris);
 
-        Map<String, Integer> rome = new HashMap<String, Integer>(14);
+        Map<String, Integer> rome = new HashMap<String, Integer>(15);
         rome.put("Amsterdam", 1304);
         rome.put("Athens", 1040);
         rome.put("Berlin", 1185);
@@ -251,11 +262,12 @@ public final class Europe
         rome.put("Luxembourg", 995);
         rome.put("Madrid", 1377);
         rome.put("Paris", 1117);
+        rome.put("Rome", 0);
         rome.put("Stockholm", 1984);
         rome.put("Vienna", 765);
         DISTANCES.put("Rome", rome);
 
-        Map<String, Integer> stockholm = new HashMap<String, Integer>(14);
+        Map<String, Integer> stockholm = new HashMap<String, Integer>(15);
         stockholm.put("Amsterdam", 1132);
         stockholm.put("Athens", 2410);
         stockholm.put("Berlin", 818);
@@ -269,10 +281,11 @@ public final class Europe
         stockholm.put("Madrid", 2596);
         stockholm.put("Paris", 1549);
         stockholm.put("Rome", 1984);
+        stockholm.put("Stockholm", 0);
         stockholm.put("Vienna", 1247);
         DISTANCES.put("Stockholm", stockholm);
 
-        Map<String, Integer> vienna = new HashMap<String, Integer>(14);
+        Map<String, Integer> vienna = new HashMap<String, Integer>(15);
         vienna.put("Amsterdam", 938);
         vienna.put("Athens", 1280);
         vienna.put("Berlin", 525);
@@ -287,44 +300,24 @@ public final class Europe
         vienna.put("Paris", 1037);
         vienna.put("Rome", 765);
         vienna.put("Stockholm", 1247);
+        vienna.put("Vienna", 0);
         DISTANCES.put("Vienna", vienna);
+    }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> getKnownCities()
+    {
         List<String> cities = new ArrayList<String>(DISTANCES.keySet());
         Collections.sort(cities);
-        CITIES = Collections.unmodifiableList(cities);
-    }
-
-    private static final Europe INSTANCE = new Europe();
-
-    private Europe()
-    {
-        // Private constructor prevents direct instantiation.
+        return cities;
     }
 
 
     /**
-     * @return The singleton instance of this class.
-     */
-    public static Europe getInstance()
-    {
-        return INSTANCE;
-    }
-
-
-    /**
-     * @return The list of European cities that this object knows about.
-     */
-    public List<String> getCities()
-    {
-        return CITIES;
-    }
-
-
-    /**
-     * Looks-up the distance between two cities.
-     * @param startingCity The city to start from.
-     * @param destinationCity The city to end in.
-     * @return The distance (in kilometres) between the two cities.
+     * {@inheritDoc}
      */
     public int getDistance(String startingCity, String destinationCity)
     {
