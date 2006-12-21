@@ -31,7 +31,7 @@ public class StringFactoryTest
     private final int candidateLength = 8;
     private final int populationSize = 5;
 
-    private final char[] elements = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+    private final char[] alphabet = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
 
 
     /**
@@ -42,7 +42,7 @@ public class StringFactoryTest
     @Test
     public void testUnseededPopulation()
     {
-        CandidateFactory<String> factory = new StringFactory(elements, candidateLength);
+        CandidateFactory<String> factory = new StringFactory(alphabet, candidateLength);
         List<String> population = factory.generateInitialPopulation(populationSize, rng);
         assert population.size() == populationSize : "Wrong size population generated: " + population.size();
 
@@ -58,7 +58,7 @@ public class StringFactoryTest
     @Test
     public void testSeededPopulation()
     {
-        CandidateFactory<String> factory = new StringFactory(elements, candidateLength);
+        CandidateFactory<String> factory = new StringFactory(alphabet, candidateLength);
 
         String seed1 = "cdefghij";
         String seed2 = "bbbbbbbb";
