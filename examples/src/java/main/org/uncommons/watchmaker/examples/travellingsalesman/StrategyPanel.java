@@ -16,24 +16,41 @@
 package org.uncommons.watchmaker.examples.travellingsalesman;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 import org.uncommons.gui.SpringUtilities;
+import org.uncommons.watchmaker.framework.SelectionStrategy;
+import org.uncommons.watchmaker.framework.selection.RankSelection;
+import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
+import org.uncommons.watchmaker.framework.selection.StochasticUniversalSampling;
+import org.uncommons.watchmaker.framework.selection.TournamentSelection;
+import org.uncommons.watchmaker.framework.selection.TruncationSelection;
 
 /**
+ * Panel for configuring a route-finding strategy for the travelling
+ * salesman problem.
  * @author Daniel Dyer
  */
 final class StrategyPanel extends JPanel
 {
+    private final SelectionStrategy[] selectionStrategies = {new RankSelection(),
+                                                             new RouletteWheelSelection(),
+                                                             new StochasticUniversalSampling(),
+                                                             new TournamentSelection(0.95d),
+                                                             new TruncationSelection(0.5d)};
     private final DistanceLookup distances;
     private final JRadioButton evolutionOption;
     private final JRadioButton bruteForceOption;
@@ -97,12 +114,14 @@ final class StrategyPanel extends JPanel
      */
     private final class EvolutionPanel extends JPanel
     {
-        private JLabel populationLabel;
-        private JSpinner populationSpinner;
-        private JLabel elitismLabel;
-        private JSpinner elitismSpinner;
-        private JLabel generationsLabel;
-        private JSpinner generationsSpinner;
+        private final JLabel populationLabel;
+        private final JSpinner populationSpinner;
+        private final JLabel elitismLabel;
+        private final JSpinner elitismSpinner;
+        private final JLabel generationsLabel;
+        private final JSpinner generationsSpinner;
+        private final JLabel selectionLabel;
+        private final JComboBox selectionCombo;
 
         public EvolutionPanel()
         {
@@ -115,7 +134,7 @@ final class StrategyPanel extends JPanel
             innerPanel.add(populationLabel);
             innerPanel.add(populationSpinner);
 
-            elitismLabel = new JLabel("Elitism (no. candidates preserved unchanged): ");
+            elitismLabel = new JLabel("Elitism: ");
             elitismSpinner = new JSpinner(new SpinnerNumberModel(3, 0, 10000, 1));
             elitismLabel.setLabelFor(elitismSpinner);
             innerPanel.add(elitismLabel);
@@ -127,7 +146,27 @@ final class StrategyPanel extends JPanel
             innerPanel.add(generationsLabel);
             innerPanel.add(generationsSpinner);
 
-            SpringUtilities.makeCompactGrid(innerPanel, 3, 2, 30, 6, 6, 6);
+            selectionLabel = new JLabel("Selection Strategy: ");
+            innerPanel.add(selectionLabel);
+            selectionCombo = new JComboBox(selectionStrategies);
+            selectionCombo.setRenderer(new DefaultListCellRenderer()
+            {
+                @Override
+                public Component getListCellRendererComponent(JList list,
+                                                              Object value,
+                                                              int index,
+                                                              boolean isSelected,
+                                                              boolean hasFocus)
+                {
+                    SelectionStrategy strategy = (SelectionStrategy) value;
+                    String text = strategy.getClass().getSimpleName();
+                    return super.getListCellRendererComponent(list, text, index, isSelected, hasFocus);
+                }
+            });
+            selectionCombo.setSelectedIndex(selectionCombo.getItemCount() - 1);
+            innerPanel.add(selectionCombo);
+
+            SpringUtilities.makeCompactGrid(innerPanel, 4, 2, 30, 6, 6, 6);
             add(innerPanel);
         }
 
@@ -140,12 +179,15 @@ final class StrategyPanel extends JPanel
             elitismSpinner.setEnabled(b);
             generationsLabel.setEnabled(b);
             generationsSpinner.setEnabled(b);
+            selectionLabel.setEnabled(b);
+            selectionCombo.setEnabled(b);
             super.setEnabled(b);
         }
 
         public TravellingSalesmanStrategy getStrategy()
         {
             return new EvolutionaryTravellingSalesman(distances,
+                                                      (SelectionStrategy) selectionCombo.getSelectedItem(),
                                                       (Integer) populationSpinner.getValue(),
                                                       (Integer) elitismSpinner.getValue(),
                                                       (Integer) generationsSpinner.getValue());

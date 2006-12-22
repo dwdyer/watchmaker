@@ -26,10 +26,10 @@ import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
+import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.factories.ListPermutationFactory;
 import org.uncommons.watchmaker.framework.operators.ListOrderMutation;
-import org.uncommons.watchmaker.framework.selection.TruncationSelection;
 
 /**
  * Evolutionary algorithm for finding (approximate) solutions to the
@@ -39,6 +39,7 @@ import org.uncommons.watchmaker.framework.selection.TruncationSelection;
 public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrategy
 {
     private final DistanceLookup distances;
+    private final SelectionStrategy selectionStrategy;
     private final int populationSize;
     private final int eliteCount;
     private final int generationCount;
@@ -46,7 +47,9 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
     /**
      * Creates an evolutionary Travelling Salesman solver with the
      * specified configuration.
-     * @param distances Information about the distances between cities. 
+     * @param distances Information about the distances between cities.
+     * @param selectionStrategy The selection implementation to use for
+     * the evolutionary algorithm.
      * @param populationSize The number of candidates in the population
      * of evolved routes.
      * @param eliteCount The number of candidates to preserve via elitism
@@ -54,6 +57,7 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
      * @param generationCount The number of iterations of evolution to perform.
      */
     public EvolutionaryTravellingSalesman(DistanceLookup distances,
+                                          SelectionStrategy selectionStrategy,
                                           int populationSize,
                                           int eliteCount,
                                           int generationCount)
@@ -63,6 +67,7 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
             throw new IllegalArgumentException("Elite count must be non-zero and less than population size.");
         }
         this.distances = distances;
+        this.selectionStrategy = selectionStrategy;
         this.populationSize = populationSize;
         this.eliteCount = eliteCount;
         this.generationCount = generationCount;
@@ -74,7 +79,9 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
      */
     public String getDescription()
     {
-        return "Evolution (population: " + populationSize + ", generations: " + generationCount + ")";
+        String selectionName = selectionStrategy.getClass().getSimpleName();
+        return "Evolution (pop: " + populationSize + ", gen: " + generationCount +
+                ", elite: " + eliteCount + ", " + selectionName + ")";
     }
 
 
@@ -101,8 +108,8 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
             = new StandaloneEvolutionEngine<List<String>>(candidateFactory,
                                                           evolutionStrategy,
                                                           new RouteEvaluator(distances),
-                                                          new TruncationSelection(0.5),
-                                                                                           rng);
+                                                          selectionStrategy,
+                                                          rng);
         engine.addEvolutionObserver(new EvolutionObserver<List<String>>()
         {
             public void populationUpdate(PopulationData<List<String>> data)
