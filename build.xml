@@ -47,7 +47,7 @@
     </fileset>
   </path>
 
-  <property name="version" value="0.2.2"/>
+  <property name="version" value="0.3.0"/>
 
 
 <!-- ==================================================================
