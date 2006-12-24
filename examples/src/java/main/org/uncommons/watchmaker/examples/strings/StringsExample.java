@@ -47,12 +47,6 @@ public final class StringsExample
     }
 
 
-    private StringsExample()
-    {
-        // Prevents instantiation.
-    }
-
-
     /**
      * Entry point for the sample application.  Any data specified on the
      * command line is considered to be the target String.  If no target is

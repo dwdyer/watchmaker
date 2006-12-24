@@ -16,17 +16,17 @@
 package org.uncommons.watchmaker.framework.operators;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.types.BitString;
 
 /**
- * Mutation of individual bits in a {@link BitSet} according to some
+ * Mutation of individual bits in a {@link BitString} according to some
  * probability.
  * @author Daniel Dyer
  */
-public class BitSetMutation implements EvolutionaryOperator<BitSet>
+public class BitStringMutation implements EvolutionaryOperator<BitString>
 {
     private final double mutationProbability;
 
@@ -34,34 +34,34 @@ public class BitSetMutation implements EvolutionaryOperator<BitSet>
     /**
      * @param mutationProbability The probability of a single bit being flipped.
      */
-    public BitSetMutation(double mutationProbability)
+    public BitStringMutation(double mutationProbability)
     {
         this.mutationProbability = mutationProbability;
     }
 
 
     @SuppressWarnings("unchecked")
-    public <S extends BitSet> List<S> apply(List<S> selectedCandidates, Random rng)
+    public <S extends BitString> List<S> apply(List<S> selectedCandidates, Random rng)
     {
         List<S> mutatedPopulation = new ArrayList<S>(selectedCandidates.size());
-        for (BitSet b : selectedCandidates)
+        for (BitString b : selectedCandidates)
         {
-            mutatedPopulation.add((S) mutateBitSet(b, rng));
+            mutatedPopulation.add((S) mutateBitString(b, rng));
         }
         return mutatedPopulation;
     }
 
 
-    private BitSet mutateBitSet(BitSet bitSet, Random rng)
+    private BitString mutateBitString(BitString bitString, Random rng)
     {
-        BitSet mutatedBitSet = (BitSet) bitSet.clone();
-        for (int i = 0; i < mutatedBitSet.length(); i++)
+        BitString mutatedBitString = bitString.clone();
+        for (int i = 0; i < mutatedBitString.getLength(); i++)
         {
-            if (rng.nextDouble() <= mutationProbability)
+            if (rng.nextDouble() < mutationProbability)
             {
-                mutatedBitSet.flip(i);
+                mutatedBitString.flipBit(i);
             }
         }
-        return mutatedBitSet;
+        return mutatedBitString;
     }
 }

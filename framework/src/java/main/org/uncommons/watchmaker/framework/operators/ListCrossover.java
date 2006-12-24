@@ -67,7 +67,10 @@ public class ListCrossover extends AbstractCrossover<List<?>>
         // Apply as many cross-overs as required.
         for (int i = 0; i < numberOfCrossoverPoints; i++)
         {
-            int crossoverIndex = rng.nextInt(parent1.size());
+            // Cross-over index is always greater than zero and less than
+            // the length of the parent so that we always pick a point that
+            // will result in a meaningful cross-over.
+            int crossoverIndex = (1 + rng.nextInt(parent1.size() - 1));
             for (int j = 0; j < crossoverIndex; j++)
             {
                 Object temp = offspring1.get(j);

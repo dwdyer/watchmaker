@@ -67,7 +67,10 @@ public class StringCrossover extends AbstractCrossover<String>
         // Apply as many cross-overs as required.
         for (int i = 0; i < numberOfCrossoverPoints; i++)
         {
-            int crossoverIndex = rng.nextInt(parent1.length());
+            // Cross-over index is always greater than zero and less than
+            // the length of the parent so that we always pick a point that
+            // will result in a meaningful cross-over.
+            int crossoverIndex = (1 + rng.nextInt(parent1.length() - 1));
             for (int j = 0; j < crossoverIndex; j++)
             {
                 char temp = offspring1.charAt(j);

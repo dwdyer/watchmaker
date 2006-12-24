@@ -1,9 +1,37 @@
-Changes in version 0.?.?
+Changes in version 0.3.0
 ------------------------
+
+* Removed java.util.BitSet operators and candidate factory.  BitSets are
+  somewhat lacking as a generic bit string for genetic algorithms.
+
+* Introduced a new general-purpose BitString type with an associated candidate
+  factory plus mutation and cross-over operators.
+
+* Added probabilities to cross-over implementations so that parents may
+  sometimes pass through the operator unaltered.  A similar effect could have
+  been achieved previously by combining the cross-over operator with a
+  SplitEvolution operator that processed some of the individuals with an
+  IdentityOperator, but this is more straightforward.
+
+* Modified cross-over operators so that the cross-over index is always
+  non-zero.  This means all cross-overs are meaningful.  With a zero index,
+  each parent is split before the first position, making the cross-over
+  effectively a no-op.  This change was required in order to honour the new
+  cross-over probability, and is also sensibe in its own right.
 
 * Removed varargs constructor from EvolutionPipeline since it was impossible
   to invoke without generating a compiler warning about generic array
   creation.
+
+* Fixed very slightly skewed probability in StringMutation.
+
+* Fixed bug in RouletteWheelSelection.
+
+* Improved Travelling Salesman applet to allow different selection strategies
+  to be applied.
+
+* More unit test cases and improved API documentation.
+
 
 Changes in version 0.2.2
 ------------------------
@@ -48,7 +76,7 @@ Changes in version 0.2
   multi-core and multi-processor machines.
 
 * Modified the way elitism is configured (the number of candidates to preserve
-  is now specifed as an argument to the evolve method of the EvolutionEngine.
+  is now specifed as an argument to the evolve method of the EvolutionEngine).
 
 * Converted the Travelling Salesman example program into an applet that allows
   parameters to be tweaked and performance to be compared to a brute force

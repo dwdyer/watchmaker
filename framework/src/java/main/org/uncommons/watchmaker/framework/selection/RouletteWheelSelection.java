@@ -55,7 +55,7 @@ public class RouletteWheelSelection implements SelectionStrategy
         cumulativeFitnesses[0] = getAdjustedFitness(population.get(0).getFitness(), naturalFitnessScores);
         for (int i = 1; i < population.size(); i++)
         {
-            double fitness = getAdjustedFitness(population.get(0).getFitness(), naturalFitnessScores);
+            double fitness = getAdjustedFitness(population.get(i).getFitness(), naturalFitnessScores);
             cumulativeFitnesses[i] = cumulativeFitnesses[i - 1] + fitness;
         }
 

@@ -78,7 +78,10 @@ public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
         Object[] temp = new Object[parent1.length];
         for (int i = 0; i < numberOfCrossoverPoints; i++)
         {
-            int crossoverIndex = rng.nextInt(parent1.length);
+            // Cross-over index is always greater than zero and less than
+            // the length of the parent so that we always pick a point that
+            // will result in a meaningful cross-over.
+            int crossoverIndex = (1 + rng.nextInt(parent1.length - 1));
             System.arraycopy(offspring1, 0, temp, 0, crossoverIndex);
             System.arraycopy(offspring2, 0, offspring1, 0, crossoverIndex);
             System.arraycopy(temp, 0, offspring2, 0, crossoverIndex);

@@ -63,7 +63,7 @@ public class StringMutation implements EvolutionaryOperator<String>
         StringBuilder buffer = new StringBuilder(s);
         for (int i = 0; i < buffer.length(); i++)
         {
-            if (rng.nextDouble() <= mutationProbability)
+            if (rng.nextDouble() < mutationProbability)
             {
                 buffer.setCharAt(i, alphabet[rng.nextInt(alphabet.length)]);
             }
