@@ -37,6 +37,10 @@ public class DiscreteUniformGenerator implements NumberGenerator<Integer>
         this.range = maximumValue - minimumValue + 1;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     public Integer nextValue()
     {
         return rng.nextInt(range) + minimumValue;

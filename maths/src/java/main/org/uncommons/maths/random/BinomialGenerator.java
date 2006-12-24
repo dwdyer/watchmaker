@@ -32,7 +32,7 @@ public class BinomialGenerator implements NumberGenerator<Integer>
      * @param n The number of trials (and therefore the maximum possible value returned
      * by this sequence).
      * @param p The probability (between 0 and 1) of success in any one trial.
-     * @param rng
+     * @param rng The source of randomness used to generate the binomial values.
      */
     public BinomialGenerator(int n,
                              double p,
@@ -52,6 +52,9 @@ public class BinomialGenerator implements NumberGenerator<Integer>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Integer nextValue()
     {
         // TO DO: When n is large, apply an approximation using the normal distribution

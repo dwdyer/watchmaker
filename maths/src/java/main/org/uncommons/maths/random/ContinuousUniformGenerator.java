@@ -37,6 +37,10 @@ public class ContinuousUniformGenerator implements NumberGenerator<Double>
         this.range = maximumValue - minimumValue + 1;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     public Double nextValue()
     {
         return rng.nextDouble() * range + minimumValue;

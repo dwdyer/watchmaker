@@ -51,6 +51,28 @@ public class BitString implements Cloneable, Serializable
 
 
     /**
+     * Initialisies the bit string from a character string of 1s and 0s
+     * in little-endian order.
+     * @param value A character string of ones and zeros.
+     */    
+    public BitString(String value)
+    {
+        this(value.length());
+        for (int i = 0; i < value.length(); i++)
+        {
+            if (value.charAt(i) == '1')
+            {
+                setBit(value.length() - (i + 1), true);
+            }
+            else if (value.charAt(i) != '0')
+            {
+                throw new IllegalArgumentException("Illegal character at position " + i);
+            }
+        }
+    }
+
+
+    /**
      * @return The length of this bit string.
      */
     public int getLength()

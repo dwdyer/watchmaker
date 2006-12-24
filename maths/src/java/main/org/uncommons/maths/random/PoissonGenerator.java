@@ -34,6 +34,10 @@ public class PoissonGenerator implements NumberGenerator<Integer>
         this.rng = rng;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     public Integer nextValue()
     {
         int x = 0;

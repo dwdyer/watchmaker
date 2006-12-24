@@ -39,6 +39,9 @@ public class GaussianGenerator implements NumberGenerator<Double>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Double nextValue()
     {
         return rng.nextGaussian() * standardDeviation + mean;

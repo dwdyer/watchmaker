@@ -92,8 +92,8 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
         for (mtIndex = 1; mtIndex < N; mtIndex++)
         {
             mt[mtIndex] = (BOOTSTRAP_FACTOR
-                    * (mt[mtIndex - 1] ^ (mt[mtIndex - 1] >>> 30))
-                    + mtIndex);
+                           * (mt[mtIndex - 1] ^ (mt[mtIndex - 1] >>> 30))
+                           + mtIndex);
         }
 
         // This section is translated from the init_by_array code in the C version.

@@ -93,6 +93,20 @@ public class BitStringTest
 
 
     /**
+     * Checks that the String-parsing constructor works correctly.
+     */
+    @Test(dependsOnMethods = "testToString")
+    public void testParsing()
+    {
+        // Use a 33-bit string to check that word boundaries are dealt with correctly.
+        String fromString = "111010101110101100010100101000101";
+        BitString bitString = new BitString(fromString);
+        String toString = bitString.toString();
+        assert toString.equals(fromString) : "Failed parsing: String representations do not match.";
+    }
+
+
+    /**
      * Checks that integer conversion is correct.
      */
     @Test(dependsOnMethods = "testSetBits")

@@ -101,8 +101,8 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
     {
         if (crossoverProbability <= 0d || crossoverProbability > 1d)
         {
-            throw new IllegalArgumentException("Cross-over probability must be greater" +
-                                               "than zero and less than or equal to 1.");
+            throw new IllegalArgumentException("Cross-over probability must be greater"
+                                               + "than zero and less than or equal to 1.");
         }
         this.crossoverPointsVariable = crossoverPointsVariable;
         this.crossoverProbability = crossoverProbability;
