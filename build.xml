@@ -339,6 +339,7 @@
       </fileset>
     </delete>
     <api.docs api.dir="${web.dir}/api" />
+    <copy todir="${web.dir}" file="./CHANGELOG.txt" />
   </target>
 
 </project>
