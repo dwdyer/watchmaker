@@ -125,6 +125,24 @@ public class BitStringTest
     }
 
 
+    /**
+     * Checks that the bit string can correctly count its number of unset bits.
+     */
+    @Test(dependsOnMethods = "testSetBits")
+    public void testCountUnsetBits()
+    {
+        BitString bitString = new BitString(12);
+        assert bitString.countUnsetBits() == 12 : "Initial string should have no 1s.";
+        bitString.setBit(0, true);
+        bitString.setBit(5, true);
+        bitString.setBit(6, true);
+        bitString.setBit(9, true);
+        bitString.setBit(10, true);
+        int setBits = bitString.countUnsetBits();
+        assert setBits == 7 : "No. set bits should be 7, is " + setBits;
+    }
+
+
     @Test(dependsOnMethods = {"testSetBits", "testFlipBits"})
     public void testClone()
     {

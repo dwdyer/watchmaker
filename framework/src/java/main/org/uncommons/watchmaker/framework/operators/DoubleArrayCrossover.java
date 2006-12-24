@@ -28,7 +28,7 @@ import org.uncommons.maths.NumberGenerator;
 public class DoubleArrayCrossover extends AbstractCrossover<double[]>
 {
     /**
-     * Default is single-point cross-over.
+     * Default is single-point cross-over, applied to all parents.
      */
     public DoubleArrayCrossover()
     {
@@ -38,6 +38,8 @@ public class DoubleArrayCrossover extends AbstractCrossover<double[]>
 
     /**
      * Cross-over with a fixed number of cross-over points.
+     * @param crossoverPoints The constant number of cross-over points
+     * to use for all cross-over operations.
      */
     public DoubleArrayCrossover(int crossoverPoints)
     {
@@ -46,11 +48,48 @@ public class DoubleArrayCrossover extends AbstractCrossover<double[]>
 
 
     /**
+     * Cross-over with a fixed number of cross-over points.  Cross-over
+     * may or may not be applied to a given pair of parents depending on
+     * the {@code crossoverProbability}.
+     * @param crossoverPoints The constant number of cross-over points
+     * to use for all cross-over operations.
+     * @param crossoverProbability The probability that, once selected,
+     * a pair of parents will be subjected to cross-over rather than
+     * being copied, unchanged, into the output population.  Must be in the range
+     * {@literal 0 < crossoverProbability <= 1}
+     */
+    public DoubleArrayCrossover(int crossoverPoints, double crossoverProbability)
+    {
+        super(crossoverPoints, crossoverProbability);
+    }
+
+
+    /**
      * Cross-over with a variable number of cross-over points.
+     * @param crossoverPointsVariable A random variable that provides a number
+     * of cross-over points for each cross-over operation.
      */
     public DoubleArrayCrossover(NumberGenerator<Integer> crossoverPointsVariable)
     {
         super(crossoverPointsVariable);
+    }
+
+
+    /**
+     * Cross-over with a variable number of cross-over points.  Cross-over
+     * may or may not be applied to a given pair of parents depending on
+     * the {@code crossoverProbability}.
+     * @param crossoverPointsVariable A random variable that provides a number
+     * of cross-over points for each cross-over operation.
+     * @param crossoverProbability The probability that, once selected,
+     * a pair of parents will be subjected to cross-over rather than
+     * being copied, unchanged, into the output population.  Must be in the range
+     * {@literal 0 < crossoverProbability <= 1}
+     */
+    public DoubleArrayCrossover(NumberGenerator<Integer> crossoverPointsVariable,
+                                double crossoverProbability)
+    {
+        super(crossoverPointsVariable, crossoverProbability);
     }
 
 

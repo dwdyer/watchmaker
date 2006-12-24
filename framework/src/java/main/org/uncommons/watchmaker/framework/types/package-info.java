@@ -15,7 +15,7 @@
 // ============================================================================
 /**
  * Implementations of data types that should prove useful for implementing
- * evolutionary algorithms but that are not available in the core Java API.
+ * evolutionary algorithms but are not available in the core Java API.
  * @author Daniel Dyer
  */
 package org.uncommons.watchmaker.framework.types;

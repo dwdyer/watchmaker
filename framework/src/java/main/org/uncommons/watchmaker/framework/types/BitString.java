@@ -139,6 +139,23 @@ public class BitString implements Cloneable, Serializable
 
 
     /**
+     * @return The number of bits that are 1s rather than 0s.
+     */
+    public int countUnsetBits()
+    {
+        int count = 0;
+        for (int i = 0; i < length; i++)
+        {
+            if (!getBit(i))
+            {
+                ++count;
+            }
+        }
+        return count;
+    }
+
+
+    /**
      * Interprets this bit string as being a binary numeric value and returns
      * the integer that it represents.
      * @return A {@link BigInteger} that contains the numeric value represented
