@@ -27,26 +27,26 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  * each candidate is consistent with its expected frequency of selection.
  * @author Daniel Dyer
  */
-public class StochasticUniversalSampling implements SelectionStrategy
+public class StochasticUniversalSampling implements SelectionStrategy<Object>
 {
-    public <T> List<T> select(List<EvaluatedCandidate<T>> population,
+    public <S> List<S> select(List<EvaluatedCandidate<S>> population,
                               boolean naturalFitnessScores,
                               int selectionSize,
                               Random rng)
     {
         // Calculate the sum of all fitness values.
         double aggregateFitness = 0;
-        for (EvaluatedCandidate<T> candidate : population)
+        for (EvaluatedCandidate<S> candidate : population)
         {
             aggregateFitness += getAdjustedFitness(candidate.getFitness(), naturalFitnessScores);
         }
 
-        List<T> selection = new ArrayList<T>(selectionSize);
+        List<S> selection = new ArrayList<S>(selectionSize);
         // Pick a random offset between 0 and 1 as the starting point for selection.
         double startOffset = rng.nextDouble();
         double cumulativeExpectation = 0;
         int index = 0;
-        for (EvaluatedCandidate<T> candidate : population)
+        for (EvaluatedCandidate<S> candidate : population)
         {
             // Calculate the number of times this candidate is expected to
             // be selected on average and add it to the cumulative total

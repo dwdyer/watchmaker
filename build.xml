@@ -312,9 +312,9 @@
       </fileset>
       <formatter type="xml" tofile="${checkstyle-results.dir}/checkstyle_report.xml"/>
     </checkstyle>
-    <style in="${checkstyle-results.dir}/checkstyle_report.xml"
-           out="${checkstyle-results.dir}/checkstyle_report.html"
-           style="${conf.dir}/checkstyle-noframes-sorted.xsl"/>
+    <xslt in="${checkstyle-results.dir}/checkstyle_report.xml"
+          out="${checkstyle-results.dir}/checkstyle_report.html"
+          style="${conf.dir}/checkstyle-noframes-sorted.xsl"/>
   </target>
 
 

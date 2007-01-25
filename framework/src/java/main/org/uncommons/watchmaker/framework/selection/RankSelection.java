@@ -34,9 +34,9 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  * drive the delegate selector.</p>
  * @author Daniel Dyer
  */
-public class RankSelection implements SelectionStrategy
+public class RankSelection implements SelectionStrategy<Object>
 {
-    private final SelectionStrategy delegate;
+    private final SelectionStrategy<Object> delegate;
 
     /**
      * Creates a default rank-based selector with a linear
@@ -55,7 +55,7 @@ public class RankSelection implements SelectionStrategy
      * @param delegate The proportionate selector that will be delegated
      * to after converting rankings into relative fitness scores.
      */
-    public RankSelection(SelectionStrategy delegate)
+    public RankSelection(SelectionStrategy<Object> delegate)
     {
         this.delegate = delegate;
     }
@@ -64,18 +64,18 @@ public class RankSelection implements SelectionStrategy
     /**
      * {@inheritDoc}
      */
-    public <T> List<T> select(List<EvaluatedCandidate<T>> population,
+    public <S> List<S> select(List<EvaluatedCandidate<S>> population,
                               boolean naturalFitnessScores,
                               int selectionSize,
                               Random rng)
     {
-        List<EvaluatedCandidate<T>> rankedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());
-        Iterator<EvaluatedCandidate<T>> iterator = population.iterator();
+        List<EvaluatedCandidate<S>> rankedPopulation = new ArrayList<EvaluatedCandidate<S>>(population.size());
+        Iterator<EvaluatedCandidate<S>> iterator = population.iterator();
         int index = -1;
         while (iterator.hasNext())
         {
-            T candidate = iterator.next().getCandidate();
-            rankedPopulation.add(new EvaluatedCandidate<T>(candidate, mapRankToScore(++index, population.size())));
+            S candidate = iterator.next().getCandidate();
+            rankedPopulation.add(new EvaluatedCandidate<S>(candidate, mapRankToScore(++index, population.size())));
         }
         return delegate.select(rankedPopulation, true, selectionSize, rng);
     }

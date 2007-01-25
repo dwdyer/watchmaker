@@ -1,3 +1,9 @@
+Changes in version 0.?.?
+------------------------
+
+* Introduced framework support for interactive evolutionary algorithms.
+
+
 Changes in version 0.3.0
 ------------------------
 
@@ -17,7 +23,7 @@ Changes in version 0.3.0
   non-zero.  This means all cross-overs are meaningful.  With a zero index,
   each parent is split before the first position, making the cross-over
   effectively a no-op.  This change was required in order to honour the new
-  cross-over probability, and is also sensibe in its own right.
+  cross-over probability, and is also sensible in its own right.
 
 * Removed varargs constructor from EvolutionPipeline since it was impossible
   to invoke without generating a compiler warning about generic array

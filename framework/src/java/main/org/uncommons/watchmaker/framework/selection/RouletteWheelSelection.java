@@ -37,9 +37,9 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  *
  * @author Daniel Dyer
  */
-public class RouletteWheelSelection implements SelectionStrategy
+public class RouletteWheelSelection implements SelectionStrategy<Object>
 {
-    public <T> List<T> select(List<EvaluatedCandidate<T>> population,
+    public <S> List<S> select(List<EvaluatedCandidate<S>> population,
                               boolean naturalFitnessScores,
                               int selectionSize,
                               Random rng)
@@ -59,7 +59,7 @@ public class RouletteWheelSelection implements SelectionStrategy
             cumulativeFitnesses[i] = cumulativeFitnesses[i - 1] + fitness;
         }
 
-        List<T> selection = new ArrayList<T>(selectionSize);
+        List<S> selection = new ArrayList<S>(selectionSize);
         for (int i = 0; i < selectionSize; i++)
         {
             double randomFitness = rng.nextDouble() * cumulativeFitnesses[cumulativeFitnesses.length - 1];

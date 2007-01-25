@@ -27,7 +27,7 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  * rest are discarded).  A candidate is never selected more than once.
  * @author Daniel Dyer
  */
-public class TruncationSelection implements SelectionStrategy
+public class TruncationSelection implements SelectionStrategy<Object>
 {
     private final double selectionRatio;
 
@@ -53,15 +53,15 @@ public class TruncationSelection implements SelectionStrategy
      * evolved population.
      * @param rng A source of randomness (not used by this selection
      * implementation since truncation selection is deterministic).
-     * @param <T> The type of evolved entity that is being selected.
+     * @param <S> The type of evolved entity that is being selected.
      * @return The selected candidates.
      */
-    public <T> List<T> select(List<EvaluatedCandidate<T>> population,
+    public <S> List<S> select(List<EvaluatedCandidate<S>> population,
                               boolean naturalFitnessScores,
                               int selectionSize,
                               Random rng)
     {
-        List<T> selection = new ArrayList<T>(selectionSize);
+        List<S> selection = new ArrayList<S>(selectionSize);
 
         int eligibleCount = (int) Math.round(selectionRatio * population.size());
         eligibleCount = eligibleCount > selectionSize ? selectionSize : eligibleCount;

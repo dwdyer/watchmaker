@@ -20,9 +20,10 @@ import java.util.Random;
 
 /**
  * Strategy interface for "natural" selection.
+ * @param <T> The type of evolved entity that we are selecting.
  * @author Daniel Dyer
  */
-public interface SelectionStrategy
+public interface SelectionStrategy<T>
 {
     /**
      * <p>Select the specified number of candidates from the population.
@@ -30,7 +31,7 @@ public interface SelectionStrategy
      * order according to fitness (so the fittest individual is the first item
      * in the list).</p>
      * <p>It is an error to call this method with an empty or null population.</p>
-     * @param <T> The type of evolved entity that we are selecting.
+     * @param <S> The type of evolved entity that we are selecting, a sub-type of T.
      * @param population The population from which to select.
      * @param naturalFitnessScores Whether higher fitness values represent fitter
      * individuals or not.
@@ -41,8 +42,8 @@ public interface SelectionStrategy
      * @return A list containing the selected candidates.  Some individual canidates may
      * potentially have been selected multiple times.
      */
-    <T> List<T> select(List<EvaluatedCandidate<T>> population,
-                       boolean naturalFitnessScores,
-                       int selectionSize,
-                       Random rng);
+    <S extends T> List<S> select(List<EvaluatedCandidate<S>> population,
+                                 boolean naturalFitnessScores,
+                                 int selectionSize,
+                                 Random rng);
 }

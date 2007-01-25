@@ -24,7 +24,7 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
 /**
  * @author Daniel Dyer
  */
-public class TournamentSelection implements SelectionStrategy
+public class TournamentSelection implements SelectionStrategy<Object>
 {
     private final double selectionProbability;
 
@@ -46,17 +46,17 @@ public class TournamentSelection implements SelectionStrategy
     }
 
 
-    public <T> List<T> select(List<EvaluatedCandidate<T>> population,
+    public <S> List<S> select(List<EvaluatedCandidate<S>> population,
                               boolean naturalFitnessScores,
                               int selectionSize,
                               Random rng)
     {
-        List<T> selection = new ArrayList<T>(selectionSize);
+        List<S> selection = new ArrayList<S>(selectionSize);
         for (int i = 0; i < selectionSize; i++)
         {
             // Pick two candidates at random.
-            EvaluatedCandidate<T> candidate1 = population.get(rng.nextInt(population.size()));
-            EvaluatedCandidate<T> candidate2 = population.get(rng.nextInt(population.size()));
+            EvaluatedCandidate<S> candidate1 = population.get(rng.nextInt(population.size()));
+            EvaluatedCandidate<S> candidate2 = population.get(rng.nextInt(population.size()));
 
             // Use a random value to decide wether to select the fitter individual or the weaker one.
             double value = rng.nextDouble();
