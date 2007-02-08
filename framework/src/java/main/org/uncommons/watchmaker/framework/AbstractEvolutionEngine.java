@@ -36,7 +36,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     private final CandidateFactory<T> candidateFactory;
     private final EvolutionaryOperator<? super T> evolutionScheme;
     private final FitnessEvaluator<? super T> fitnessEvaluator;
-    private final SelectionStrategy selectionStrategy;
+    private final SelectionStrategy<? super T> selectionStrategy;
 
     private long startTime;
     private int currentGenerationIndex;
@@ -59,7 +59,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     protected AbstractEvolutionEngine(CandidateFactory<T> candidateFactory,
                                       EvolutionaryOperator<? super T> evolutionScheme,
                                       FitnessEvaluator<? super T> fitnessEvaluator,
-                                      SelectionStrategy selectionStrategy,
+                                      SelectionStrategy<? super T> selectionStrategy,
                                       Random rng)
     {
         this.candidateFactory = candidateFactory;

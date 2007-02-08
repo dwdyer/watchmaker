@@ -65,7 +65,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     public StandaloneEvolutionEngine(CandidateFactory<T> candidateFactory,
                                      EvolutionaryOperator<? super T> evolutionScheme,
                                      FitnessEvaluator<? super T> fitnessEvaluator,
-                                     SelectionStrategy selectionStrategy,
+                                     SelectionStrategy<? super T> selectionStrategy,
                                      Random rng)
     {
         super(candidateFactory, evolutionScheme, fitnessEvaluator, selectionStrategy, rng);

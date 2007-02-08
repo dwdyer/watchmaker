@@ -15,16 +15,85 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework.interactive;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 /**
  * @author Daniel Dyer
  */
-public class SwingConsole implements Console<JComponent>
+public class SwingConsole extends JPanel implements Console<JComponent>
 {
+    private final Object lock = new Object();
+    private int selectedIndex;
+
+    public SwingConsole()
+    {
+        this(3);
+    }
+
+
+    public SwingConsole(int columns)
+    {
+        super(new GridLayout(0, columns));
+    }
+
+
     public int select(List<JComponent> renderedEntities)
     {
-        return 0; // TO DO:
+        removeAll();
+        selectedIndex = -1;
+        int index = -1;
+        for (JComponent entity : renderedEntities)
+        {
+            add(new EntityPanel(entity, ++index));
+        }
+        revalidate();
+        synchronized (lock)
+        {
+            while (selectedIndex < 0)
+            {
+                try
+                {
+                    lock.wait();
+                }
+                catch (InterruptedException ex)
+                {
+                    // Ignore.
+                }
+            }
+        }
+        return selectedIndex;
+    }
+
+
+    private class EntityPanel extends JPanel
+    {
+        public EntityPanel(JComponent entityComponent,
+                           final int index)
+        {
+            super(new BorderLayout());
+            add(entityComponent, BorderLayout.CENTER);
+            JButton selectButton = new JButton("Select");
+            selectButton.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent actionEvent)
+                {
+                    synchronized (lock)
+                    {
+                        selectedIndex = index;
+                        lock.notifyAll();
+                    }
+                }
+            });
+            add(selectButton, BorderLayout.SOUTH);
+            setBorder(BorderFactory.createEtchedBorder());
+        }
     }
 }
