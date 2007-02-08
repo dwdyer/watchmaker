@@ -24,6 +24,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * @author Daniel Dyer
@@ -45,16 +46,35 @@ public class SwingConsole extends JPanel implements Console<JComponent>
     }
 
 
-    public int select(List<JComponent> renderedEntities)
+    /**
+     * {@inheritDoc}
+     */
+    public int select(final List<JComponent> renderedEntities)
     {
-        removeAll();
         selectedIndex = -1;
-        int index = -1;
-        for (JComponent entity : renderedEntities)
+        SwingUtilities.invokeLater(new Runnable()
         {
-            add(new EntityPanel(entity, ++index));
-        }
-        revalidate();
+            public void run()
+            {
+                removeAll();
+                int index = -1;
+                for (JComponent entity : renderedEntities)
+                {
+                    add(new EntityPanel(entity, ++index));
+                }
+                revalidate();
+            }
+        });
+        return waitForSelection();
+    }
+
+
+    /**
+     * Wait until the user has made a selection.
+     * @return The index of the selected item.
+     */
+    private int waitForSelection()
+    {
         synchronized (lock)
         {
             while (selectedIndex < 0)
@@ -73,6 +93,10 @@ public class SwingConsole extends JPanel implements Console<JComponent>
     }
 
 
+    /**
+     * Swing panel that wraps a rendered entity and a button for selecting
+     * that entity. 
+     */
     private class EntityPanel extends JPanel
     {
         public EntityPanel(JComponent entityComponent,

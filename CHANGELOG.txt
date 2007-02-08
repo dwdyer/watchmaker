@@ -3,6 +3,9 @@ Changes in version 0.?.?
 
 * Introduced framework support for interactive evolutionary algorithms.
 
+* New example application based on Dawkins' biomorph experiment.  Demonstrates
+  the new interactive features of the framework.
+
 
 Changes in version 0.3.0
 ------------------------

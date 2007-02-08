@@ -160,6 +160,7 @@ public final class TravellingSalesmanApplet extends JApplet
                 innerPanel.add(strategyPanel, BorderLayout.NORTH);
                 innerPanel.add(executionPanel, BorderLayout.CENTER);
                 add(innerPanel, BorderLayout.CENTER);
+                validate();
             }
         });
     }

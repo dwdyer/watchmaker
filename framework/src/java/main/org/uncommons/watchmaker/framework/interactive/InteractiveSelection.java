@@ -18,7 +18,6 @@ package org.uncommons.watchmaker.framework.interactive;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
@@ -33,6 +32,7 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
 {
     private final Console<?> console;
     private final Renderer<T, ?> renderer;
+    private final int groupSize;
 
 
     /**
@@ -42,23 +42,30 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
      * @param console The user interface (graphical, textual or other) used
      * to present a selection choice to the user.
      * @param renderer A renderer used to map the evolved entities to objects
-     * that can be processed by the supplied console. 
+     * that can be processed by the supplied console.
+     * @param groupSize The number of candidates to present to the user at
+     * once (the user selects one from this number).
      */
     public <R> InteractiveSelection(Console<R> console,
-                                    Renderer<T, R> renderer)
+                                    Renderer<T, R> renderer,
+                                    int groupSize)
     {
         this.console = console;
         this.renderer = renderer;
+        this.groupSize = groupSize;
     }
 
     
     /**
      * @param console The user interface (graphical, textual or other) used
      * to present a selection choice to the user.
+     * @param groupSize The number of candidates to present to the user at
+     * once (the user selects one from this number). 
      */
-    public InteractiveSelection(Console<T> console)
+    public InteractiveSelection(Console<T> console,
+                                int groupSize)
     {
-        this(console, new NoOpRenderer<T>());
+        this(console, new NoOpRenderer<T>(), groupSize);
     }
     
 
@@ -70,29 +77,33 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
         List<S> selection = new ArrayList<S>(selectionSize);
         for (int i = 0; i < selectionSize; i++)
         {
-            // Pick two candidates at random.
-            EvaluatedCandidate<S> candidate1 = population.get(rng.nextInt(population.size()));
-            EvaluatedCandidate<S> candidate2 = population.get(rng.nextInt(population.size()));
-
+            // Pick candidates at random.
+            List<S> candidates = new ArrayList<S>(groupSize);
+            for (int j = 0; j < groupSize; j++)
+            {
+                candidates.add(population.get(rng.nextInt(population.size())).getCandidate());
+            }
             // Get the user to pick which one should survive to reproduce.
-            selection.add(select(candidate1.getCandidate(), candidate2.getCandidate()));
+            selection.add(select(candidates));
         }
         return selection;
     }
 
 
     @SuppressWarnings({"unchecked"})
-    private <S extends T> S select(S candidate1, S candidate2)
+    private <S extends T> S select(List<S> candidates)
     {
-        Object rendereredCandidate1 = renderer.render(candidate1);
-        Object rendereredCandidate2 = renderer.render(candidate2);
+        List<Object> renderedCandidates = new ArrayList<Object>(candidates.size());
+        for (S candidate : candidates)
+        {
+            renderedCandidates.add(renderer.render(candidate));
+        }
         try
         {
             Method consoleSelectMethod = console.getClass().getMethod("select", List.class);
             int selection = (Integer) consoleSelectMethod.invoke(console,
-                                                                 Arrays.asList(rendereredCandidate1,
-                                                                               rendereredCandidate2));
-            return selection == 0 ? candidate1 : candidate2;
+                                                                 renderedCandidates);
+            return candidates.get(selection);
         }
         catch (IllegalAccessException ex)
         {

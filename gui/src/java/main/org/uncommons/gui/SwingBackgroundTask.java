@@ -26,7 +26,21 @@ import javax.swing.SwingUtilities;
  */
 public abstract class SwingBackgroundTask<V>
 {
+    // Used to assign thread IDs to make threads easier to identify when debugging.
+    private static int instanceCount = 0;
+
     private final CountDownLatch latch = new CountDownLatch(1);
+    private final int id;
+
+    protected SwingBackgroundTask()
+    {
+        synchronized(SwingBackgroundTask.class)
+        {
+            this.id = instanceCount;
+            ++instanceCount;
+        }
+    }
+
 
     /**
      * Asynchronous call that begins execution of the task
@@ -49,7 +63,7 @@ public abstract class SwingBackgroundTask<V>
                 });
             }
         };
-        new Thread(task).start();
+        new Thread(task, "SwingBackgroundTask-" + id).start();
     }
 
 

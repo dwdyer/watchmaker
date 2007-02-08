@@ -30,7 +30,7 @@ public class BiomorphMutation implements EvolutionaryOperator<Biomorph>
     private final double mutationProbability;
 
     /**
-     * @param mutationProbability The probability that a given character
+     * @param mutationProbability The probability that a given gene
      * is changed.
      */
     public BiomorphMutation(double mutationProbability)
