@@ -33,6 +33,7 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
     private final Console<?> console;
     private final Renderer<T, ?> renderer;
     private final int groupSize;
+    private final int maxSelectionsPerGeneration;
 
 
     /**
@@ -45,14 +46,32 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
      * that can be processed by the supplied console.
      * @param groupSize The number of candidates to present to the user at
      * once (the user selects one from this number).
+     * @param maxSelectionsPerGeneration The maximum number of selections that
+     * the user will be asked to make for each generation of the evolutionary
+     * algorithm.  If this number is lower than the required selection size,
+     * the user's selections will be repeated to make up the shortfall.  The
+     * purpose of this setting is two-fold.  Firstly it minimises user fatigue.
+     * Secondly, it can be used to increase selection pressure.  In the extreme
+     * case, a setting of 1 will ensure that members of the subsequent generation
+     * are all descended from a single parent.
      */
     public <R> InteractiveSelection(Console<R> console,
                                     Renderer<T, R> renderer,
-                                    int groupSize)
+                                    int groupSize,
+                                    int maxSelectionsPerGeneration)
     {
+        if (groupSize < 2)
+        {
+            throw new IllegalArgumentException("Group size must be at least 2.");
+        }
+        if (maxSelectionsPerGeneration < 1)
+        {
+            throw new IllegalArgumentException("Maximum selections must be 1 or more.");
+        }
         this.console = console;
         this.renderer = renderer;
         this.groupSize = groupSize;
+        this.maxSelectionsPerGeneration = maxSelectionsPerGeneration;
     }
 
     
@@ -60,12 +79,21 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
      * @param console The user interface (graphical, textual or other) used
      * to present a selection choice to the user.
      * @param groupSize The number of candidates to present to the user at
-     * once (the user selects one from this number). 
+     * once (the user selects one from this number).
+     * @param maxSelectionsPerGeneration The maximum number of selections that
+     * the user will be asked to make for each generation of the evolutionary
+     * algorithm.  If this number is lower than the required selection size,
+     * the user's selections will be repeated to make up the shortfall.  The
+     * purpose of this setting is two-fold.  Firstly it minimises user fatigue.
+     * Secondly, it can be used to increase selection pressure.  In the extreme
+     * case, a setting of 1 will ensure that members of the subsequent generation
+     * are all descended from a single parent. 
      */
     public InteractiveSelection(Console<T> console,
-                                int groupSize)
+                                int groupSize,
+                                int maxSelectionsPerGeneration)
     {
-        this(console, new NoOpRenderer<T>(), groupSize);
+        this(console, new NoOpRenderer<T>(), groupSize, maxSelectionsPerGeneration);
     }
     
 
@@ -74,8 +102,9 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
                                         int selectionSize,
                                         Random rng)
     {
-        List<S> selection = new ArrayList<S>(selectionSize);
-        for (int i = 0; i < selectionSize; i++)
+        int selectionCount = Math.min(selectionSize, maxSelectionsPerGeneration);
+        List<S> selection = new ArrayList<S>(selectionCount);
+        for (int i = 0; i < selectionCount; i++)
         {
             // Pick candidates at random.
             List<S> candidates = new ArrayList<S>(groupSize);
@@ -86,7 +115,23 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
             // Get the user to pick which one should survive to reproduce.
             selection.add(select(candidates));
         }
-        return selection;
+
+        // If the selection is not big enough, extend it by randomly duplicating some
+        // of the selections.
+        if (selectionCount < selectionSize)
+        {
+            List<S> extendedSelection = new ArrayList<S>(selectionSize);
+            extendedSelection.addAll(selection);
+            for (int i = 0; i < selectionSize - selectionCount; i++)
+            {
+                extendedSelection.add(selection.get(selectionCount == 1 ? 0 : rng.nextInt(selectionCount)));
+            }
+            return extendedSelection;
+        }
+        else
+        {
+            return selection;
+        }
     }
 
 

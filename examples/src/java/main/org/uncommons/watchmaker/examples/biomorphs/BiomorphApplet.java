@@ -34,6 +34,8 @@ import org.uncommons.watchmaker.framework.interactive.SwingConsole;
  */
 public class BiomorphApplet extends JApplet
 {
+    private static final int POPULATION_SIZE = 6;
+
     private final Renderer<Biomorph, JComponent> renderer = new SwingBiomorphRenderer();
     private final SwingConsole console = new SwingConsole();
 
@@ -58,13 +60,13 @@ public class BiomorphApplet extends JApplet
         {
             protected Biomorph performTask()
             {
-                SelectionStrategy<Biomorph> selection = new InteractiveSelection<Biomorph>(console, renderer, 6);
+                SelectionStrategy<Biomorph> selection = new InteractiveSelection<Biomorph>(console, renderer, POPULATION_SIZE, 1);
                 EvolutionEngine<Biomorph> engine = new StandaloneEvolutionEngine<Biomorph>(new BiomorphFactory(),
                                                                                            new BiomorphMutation(0.1d),
                                                                                            new NullFitnessEvaluator(),
                                                                                            selection,
                                                                                            new MersenneTwisterRNG());
-                return engine.evolve(10, 0, 20);
+                return engine.evolve(POPULATION_SIZE, 0, 20);
             }
 
             protected void postProcessing(Biomorph result)

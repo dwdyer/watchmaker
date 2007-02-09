@@ -95,7 +95,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         try
         {
             // Make sure that we don't try to use more threads than we have candidates.
-            int threadUtilisation = threadCount <= population.size() ? threadCount : population.size();
+            int threadUtilisation = Math.min(threadCount, population.size());
 
             CountDownLatch latch = new CountDownLatch(threadUtilisation);
             int subListSize = population.size() / threadUtilisation;

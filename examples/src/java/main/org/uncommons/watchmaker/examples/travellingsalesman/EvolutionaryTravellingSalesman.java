@@ -39,7 +39,7 @@ import org.uncommons.watchmaker.framework.operators.ListOrderMutation;
 public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrategy
 {
     private final DistanceLookup distances;
-    private final SelectionStrategy selectionStrategy;
+    private final SelectionStrategy<? super List<String>> selectionStrategy;
     private final int populationSize;
     private final int eliteCount;
     private final int generationCount;
@@ -57,7 +57,7 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
      * @param generationCount The number of iterations of evolution to perform.
      */
     public EvolutionaryTravellingSalesman(DistanceLookup distances,
-                                          SelectionStrategy selectionStrategy,
+                                          SelectionStrategy<? super List<String>> selectionStrategy,
                                           int populationSize,
                                           int eliteCount,
                                           int generationCount)

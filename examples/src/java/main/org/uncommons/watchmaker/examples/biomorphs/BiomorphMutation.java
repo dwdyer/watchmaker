@@ -70,7 +70,7 @@ public class BiomorphMutation implements EvolutionaryOperator<Biomorph>
             if (rng.nextDouble() < mutationProbability)
             {
                 boolean increase = rng.nextBoolean();
-                genes[i] =+ (increase ? 1 : -1);
+                genes[i] += (increase ? 1 : -1);
                 if (genes[i] > 5)
                 {
                     genes[i] = -5;
@@ -82,7 +82,7 @@ public class BiomorphMutation implements EvolutionaryOperator<Biomorph>
             }
         }
         boolean increase = rng.nextBoolean();
-        genes[8] =+ (increase ? 1 : -1);
+        genes[8] += (increase ? 1 : -1);
         if (genes[8] > 8)
         {
             genes[8] = 1;
