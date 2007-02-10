@@ -19,7 +19,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 
@@ -45,7 +44,6 @@ public class SwingBiomorphRenderer implements Renderer<Biomorph, JComponent>
             Dimension size = new Dimension(200, 200);
             setMinimumSize(size);
             setPreferredSize(size);
-            setBorder(BorderFactory.createEtchedBorder());
         }
 
 

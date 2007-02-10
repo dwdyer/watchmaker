@@ -20,6 +20,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -46,11 +47,11 @@ import org.uncommons.watchmaker.framework.selection.TruncationSelection;
  */
 final class StrategyPanel extends JPanel
 {
-    private final SelectionStrategy[] selectionStrategies = {new RankSelection(),
-                                                             new RouletteWheelSelection(),
-                                                             new StochasticUniversalSampling(),
-                                                             new TournamentSelection(0.95d),
-                                                             new TruncationSelection(0.5d)};
+    private final SelectionStrategy<?>[] selectionStrategies = {new RankSelection(),
+                                                                new RouletteWheelSelection(),
+                                                                new StochasticUniversalSampling(),
+                                                                new TournamentSelection(0.95d),
+                                                                new TruncationSelection(0.5d)};
     private final DistanceLookup distances;
     private final JRadioButton evolutionOption;
     private final JRadioButton bruteForceOption;
@@ -158,7 +159,7 @@ final class StrategyPanel extends JPanel
                                                               boolean isSelected,
                                                               boolean hasFocus)
                 {
-                    SelectionStrategy strategy = (SelectionStrategy) value;
+                    SelectionStrategy<?> strategy = (SelectionStrategy<?>) value;
                     String text = strategy.getClass().getSimpleName();
                     return super.getListCellRendererComponent(list, text, index, isSelected, hasFocus);
                 }
@@ -169,6 +170,7 @@ final class StrategyPanel extends JPanel
             SpringUtilities.makeCompactGrid(innerPanel, 4, 2, 30, 6, 6, 6);
             add(innerPanel);
         }
+
 
         @Override
         public void setEnabled(boolean b)
@@ -184,10 +186,12 @@ final class StrategyPanel extends JPanel
             super.setEnabled(b);
         }
 
+
+        @SuppressWarnings({"unchecked"})
         public TravellingSalesmanStrategy getStrategy()
         {
             return new EvolutionaryTravellingSalesman(distances,
-                                                      (SelectionStrategy) selectionCombo.getSelectedItem(),
+                                                      (SelectionStrategy<? super List<String>>) selectionCombo.getSelectedItem(),
                                                       (Integer) populationSpinner.getValue(),
                                                       (Integer) elitismSpinner.getValue(),
                                                       (Integer) generationsSpinner.getValue());

@@ -23,7 +23,6 @@ import java.util.List;
 import javax.swing.JApplet;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import org.uncommons.gui.SwingBackgroundTask;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
@@ -48,6 +47,12 @@ public final class TravellingSalesmanApplet extends JApplet
         itineraryPanel = new ItineraryPanel(distances.getKnownCities());
         strategyPanel = new StrategyPanel(distances);
         executionPanel = new ExecutionPanel();
+        add(itineraryPanel, BorderLayout.WEST);
+        JPanel innerPanel = new JPanel(new BorderLayout());
+        innerPanel.add(strategyPanel, BorderLayout.NORTH);
+        innerPanel.add(executionPanel, BorderLayout.CENTER);
+        add(innerPanel, BorderLayout.CENTER);
+        
         executionPanel.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent actionEvent)
@@ -78,7 +83,7 @@ public final class TravellingSalesmanApplet extends JApplet
                 }
             }
         });
-
+        validate();
     }
 
 
@@ -146,24 +151,6 @@ public final class TravellingSalesmanApplet extends JApplet
         return buffer.toString();
     }
 
-
-
-    @Override
-    public void init()
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                add(itineraryPanel, BorderLayout.WEST);
-                JPanel innerPanel = new JPanel(new BorderLayout());
-                innerPanel.add(strategyPanel, BorderLayout.NORTH);
-                innerPanel.add(executionPanel, BorderLayout.CENTER);
-                add(innerPanel, BorderLayout.CENTER);
-                validate();
-            }
-        });
-    }
 
 
     @Override
