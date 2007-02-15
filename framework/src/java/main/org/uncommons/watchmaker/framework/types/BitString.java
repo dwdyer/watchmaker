@@ -51,8 +51,8 @@ public class BitString implements Cloneable, Serializable
 
 
     /**
-     * Initialisies the bit string from a character string of 1s and 0s
-     * in little-endian order.
+     * Initialises the bit string from a character string of 1s and 0s
+     * in big-endian order.
      * @param value A character string of ones and zeros.
      */    
     public BitString(String value)
@@ -190,8 +190,8 @@ public class BitString implements Cloneable, Serializable
 
 
     /**
-     * Creates a textual representation of this bit string in little-endian
-     * order (index 0 is the left-most bit).
+     * Creates a textual representation of this bit string in big-endian
+     * order (index 0 is the right-most bit).
      * @return This bit string rendered as a String of 1s and 0s.
      */
     @Override
