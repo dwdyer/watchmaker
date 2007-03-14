@@ -19,6 +19,7 @@ import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.util.Random;
 import javax.crypto.Cipher;
+import org.uncommons.maths.Maths;
 
 /**
  * Non-linear random number generator based on the AES block cipher in counter mode.
@@ -30,10 +31,6 @@ import javax.crypto.Cipher;
  */
 public class AESCounterRNG extends Random implements RepeatableRNG
 {
-    // Mask for casting a byte to an int, bit-by-bit (with
-    // bitwise AND) with no special consideration for the sign bit.
-    private static final int BITWISE_BYTE_TO_INT = 0x000000FF;
-
     private static final int SEED_SIZE_BYTES = 16;
 
     private final byte[] seed;
@@ -129,26 +126,11 @@ public class AESCounterRNG extends Random implements RepeatableRNG
                 throw new IllegalStateException("Failed creating next random block.", ex);
             }
         }
-        int result = convertBytesToInt(currentBlock, index);
+        int result = Maths.convertBytesToInt(currentBlock, index);
         index += 4;
         return result >>> (32 - bits);
     }
 
-
-    /**
-     * Take four bytes from the specified position in the specified
-     * block and convert them into a 32-bit int.
-     * @param bytes The data to read from.
-     * @param offset The position to start reading the 4-byte int from.
-     * @return The 32-bit integer represented by the four bytes.
-     */
-    private int convertBytesToInt(byte[] bytes, int offset)
-    {
-        return (BITWISE_BYTE_TO_INT & bytes[offset])
-                | ((BITWISE_BYTE_TO_INT & bytes[offset + 1]) << 8)
-                | ((BITWISE_BYTE_TO_INT & bytes[offset + 2]) << 16)
-                | ((BITWISE_BYTE_TO_INT & bytes[offset + 3]) << 24);
-    }
 
 
     /**

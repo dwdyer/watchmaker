@@ -16,7 +16,6 @@
 package org.uncommons.maths.random;
 
 import java.security.SecureRandom;
-import java.util.Random;
 
 /**
  * {@link SeedGenerator} implementation that uses Java's bundled
@@ -31,12 +30,10 @@ import java.util.Random;
  */
 public class SecureRandomSeedGenerator implements SeedGenerator
 {
-    private static final Random SOURCE = new SecureRandom();
+    private static final SecureRandom SOURCE = new SecureRandom();
 
     public byte[] generateSeed(int length) throws SeedException
     {
-        byte[] bytes = new byte[length];
-        SOURCE.nextBytes(bytes);
-        return bytes;
+        return SOURCE.generateSeed(length);
     }
 }

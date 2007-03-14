@@ -63,10 +63,11 @@ public class RNGBenchmark implements Runnable
     public static void main(String[] args) throws GeneralSecurityException
     {
         System.out.println("------------------------------------------------------------");
-        new RNGBenchmark(new Random(), ITERATIONS).run();
+        new RNGBenchmark(new JavaRNG(), ITERATIONS).run();
         new RNGBenchmark(new SecureRandom(), ITERATIONS).run();
         new RNGBenchmark(new AESCounterRNG(), ITERATIONS).run();
         new RNGBenchmark(new MersenneTwisterRNG(), ITERATIONS).run();
+        new RNGBenchmark(new CellularAutomatonRNG(), ITERATIONS).run();
         System.out.println("------------------------------------------------------------");
     }
 }

@@ -1,5 +1,5 @@
 The Watchmaker Framework for Evolutionary Algorithms
-Copyright 2006 Daniel W. Dyer (http://www.dandyer.co.uk)
+Copyright 2006, 2007 Daniel W. Dyer (http://www.dandyer.co.uk)
 
 Acknowledgements:
 -----------------

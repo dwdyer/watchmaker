@@ -26,6 +26,10 @@ public final class Maths
     // The biggest factorial that can be calculated using 64-bit signed longs.
     private static final int MAX_LONG_FACTORIAL = 20;
 
+    // Mask for casting a byte to an int, bit-by-bit (with
+    // bitwise AND) with no special consideration for the sign bit.
+    private static final int BITWISE_BYTE_TO_INT = 0x000000FF;
+
     private Maths()
     {
         // Prevent instantiation.
@@ -106,5 +110,21 @@ public final class Maths
     {
         // Use natural logarithms and change the base.
         return Math.log(arg) / Math.log(base);
+    }
+
+
+    /**
+     * Take four bytes from the specified position in the specified
+     * block and convert them into a 32-bit int.
+     * @param bytes The data to read from.
+     * @param offset The position to start reading the 4-byte int from.
+     * @return The 32-bit integer represented by the four bytes.
+     */
+    public static int convertBytesToInt(byte[] bytes, int offset)
+    {
+        return (BITWISE_BYTE_TO_INT & bytes[offset])
+                | ((BITWISE_BYTE_TO_INT & bytes[offset + 1]) << 8)
+                | ((BITWISE_BYTE_TO_INT & bytes[offset + 2]) << 16)
+                | ((BITWISE_BYTE_TO_INT & bytes[offset + 3]) << 24);
     }
 }
