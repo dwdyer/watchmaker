@@ -47,7 +47,6 @@ public class RendererAdapterTest
      */
     private static final class TimestampToDateRenderer implements Renderer<Long, Date>
     {
-
         public Date render(Long timestamp)
         {
             return new Date(timestamp);
@@ -60,7 +59,6 @@ public class RendererAdapterTest
      */
     private static final class DateToStringRenderer implements Renderer<Date, String>
     {
-
         public String render(Date date)
         {
             return date.toString();

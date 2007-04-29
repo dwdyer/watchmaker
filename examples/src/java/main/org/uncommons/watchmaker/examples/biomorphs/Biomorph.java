@@ -15,6 +15,8 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.biomorphs;
 
+import java.util.Arrays;
+
 /**
  * <p>Candidate representation for a biomorph.  We could just as easily have
  * used an array of integers or a bit string representation with Gray codes
@@ -28,6 +30,13 @@ package org.uncommons.watchmaker.examples.biomorphs;
  */
 public final class Biomorph
 {
+    public static final int GENE_COUNT = 9;
+    public static final int GENE_MIN = -5;
+    public static final int GENE_MAX = 5;
+    public static final int LENGTH_GENE_INDEX = 8;
+    public static final int LENGTH_GENE_MIN = 1;
+    public static final int LENGTH_GENE_MAX = 8;
+
     private final int[] genes;
 
     private int[][] phenotype;
@@ -40,9 +49,9 @@ public final class Biomorph
      */
     public Biomorph(int[] genes)
     {
-        if (genes.length != 9)
+        if (genes.length != GENE_COUNT)
         {
-            throw new IllegalArgumentException("Biomorph must have 9 genes.");
+            throw new IllegalArgumentException("Biomorph must have " + GENE_COUNT + " genes.");
         }
         this.genes = genes.clone();
     }
@@ -59,7 +68,7 @@ public final class Biomorph
         if (phenotype == null)
         {
             // Decode the genes as per Dawkins' rules.
-            int[] dx = new int[8];
+            int[] dx = new int[GENE_COUNT - 1];
             dx[3] = genes[0];
             dx[4] = genes[1];
             dx[5] = genes[2];
@@ -71,7 +80,7 @@ public final class Biomorph
             dx[2] = 0;
             dx[6] = 0;
 
-            int[] dy = new int[8];
+            int[] dy = new int[GENE_COUNT - 1];
             dy[2] = genes[3];
             dy[3] = genes[4];
             dy[4] = genes[5];
@@ -90,7 +99,7 @@ public final class Biomorph
     
     public int getLengthPhenotype()
     {
-        return genes[8];
+        return genes[LENGTH_GENE_INDEX];
     }
 
 
@@ -101,5 +110,30 @@ public final class Biomorph
     public int[] getGenotype()
     {
         return genes.clone();
+    }
+
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass())
+        {
+            return false;
+        }
+
+        Biomorph biomorph = (Biomorph) obj;
+
+        return Arrays.equals(genes, biomorph.genes);
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        return Arrays.hashCode(genes);
     }
 }

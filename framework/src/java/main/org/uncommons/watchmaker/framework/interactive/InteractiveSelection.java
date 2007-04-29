@@ -18,6 +18,7 @@ package org.uncommons.watchmaker.framework.interactive;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
@@ -102,18 +103,25 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
                                         int selectionSize,
                                         Random rng)
     {
+        if (population.size() < groupSize)
+        {
+            throw new IllegalArgumentException("Population is too small for selection group size of " + groupSize);
+        }
+
         int selectionCount = Math.min(selectionSize, maxSelectionsPerGeneration);
         List<S> selection = new ArrayList<S>(selectionCount);
         for (int i = 0; i < selectionCount; i++)
         {
-            // Pick candidates at random.
-            List<S> candidates = new ArrayList<S>(groupSize);
+            // Pick candidates at random (without replacement).
+            List<S> group = new ArrayList<S>(groupSize);
+            List<EvaluatedCandidate<S>> candidates = new ArrayList<EvaluatedCandidate<S>>(population);
+            Collections.shuffle(candidates);
             for (int j = 0; j < groupSize; j++)
             {
-                candidates.add(population.get(rng.nextInt(population.size())).getCandidate());
+                group.add(candidates.get(j).getCandidate());
             }
             // Get the user to pick which one should survive to reproduce.
-            selection.add(select(candidates));
+            selection.add(select(group));
         }
 
         // If the selection is not big enough, extend it by randomly duplicating some

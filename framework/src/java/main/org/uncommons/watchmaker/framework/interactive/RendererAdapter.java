@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 /**
  * Adapter class for chaining together two renderers in series to provide
  * flexibility.  For example, if we have a Long -> Date renderer that turns
- * an number of milliseconds since epoch into a Java date, and a Date -> String
+ * a number of milliseconds since epoch into a Java date, and a Date -> String
  * renderer that converts a Java date into its String representation in a
  * particular locale, we can combine the two to create a Long -> String renderer
  * without having to write a separate implementation of the {@link Renderer}

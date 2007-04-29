@@ -67,7 +67,7 @@ public class RNGBenchmark implements Runnable
         new RNGBenchmark(new SecureRandom(), ITERATIONS).run();
         new RNGBenchmark(new AESCounterRNG(), ITERATIONS).run();
         new RNGBenchmark(new MersenneTwisterRNG(), ITERATIONS).run();
-        new RNGBenchmark(new CellularAutomatonRNG(), ITERATIONS).run();
+        // new RNGBenchmark(new CellularAutomatonRNG(), ITERATIONS).run();
         System.out.println("------------------------------------------------------------");
     }
 }

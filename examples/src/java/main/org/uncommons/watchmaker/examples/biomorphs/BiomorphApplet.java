@@ -84,7 +84,8 @@ public class BiomorphApplet extends JApplet
             {
                 SelectionStrategy<Biomorph> selection = new InteractiveSelection<Biomorph>(console, renderer, populationSize, 1);
                 EvolutionEngine<Biomorph> engine = new StandaloneEvolutionEngine<Biomorph>(new BiomorphFactory(),
-                                                                                           new BiomorphMutation(0.1d),
+                                                                                           new DawkinsBiomorphMutation(),
+                                                                                           // new RandomBiomorphMutation(0.1d),
                                                                                            new NullFitnessEvaluator(),
                                                                                            selection,
                                                                                            new MersenneTwisterRNG());

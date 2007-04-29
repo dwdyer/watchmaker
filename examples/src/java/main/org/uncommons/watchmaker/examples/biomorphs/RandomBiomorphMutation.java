@@ -25,7 +25,7 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  * according to some mutation probability.
  * @author Daniel Dyer
  */
-public class BiomorphMutation implements EvolutionaryOperator<Biomorph>
+public class RandomBiomorphMutation implements EvolutionaryOperator<Biomorph>
 {
     private final double mutationProbability;
 
@@ -33,7 +33,7 @@ public class BiomorphMutation implements EvolutionaryOperator<Biomorph>
      * @param mutationProbability The probability that a given gene
      * is changed.
      */
-    public BiomorphMutation(double mutationProbability)
+    public RandomBiomorphMutation(double mutationProbability)
     {
         if (mutationProbability < 0 || mutationProbability > 1)
         {
@@ -64,32 +64,32 @@ public class BiomorphMutation implements EvolutionaryOperator<Biomorph>
     private Biomorph mutateBiomorph(Biomorph biomorph, Random rng)
     {
         int[] genes = biomorph.getGenotype();
-        assert genes.length == 9 : "Biomorphs must have 9 genes.";
-        for (int i = 0; i < 8; i++)
+        assert genes.length == Biomorph.GENE_COUNT : "Biomorphs must have " + Biomorph.GENE_COUNT + " genes.";
+        for (int i = 0; i < Biomorph.GENE_COUNT - 1; i++)
         {
             if (rng.nextDouble() < mutationProbability)
             {
                 boolean increase = rng.nextBoolean();
                 genes[i] += (increase ? 1 : -1);
-                if (genes[i] > 5)
+                if (genes[i] > Biomorph.GENE_MAX)
                 {
-                    genes[i] = -5;
+                    genes[i] = Biomorph.GENE_MIN;
                 }
-                else if (genes[i] < -5)
+                else if (genes[i] < Biomorph.GENE_MIN)
                 {
-                    genes[i] = 5;
+                    genes[i] = Biomorph.GENE_MAX;
                 }
             }
         }
         boolean increase = rng.nextBoolean();
-        genes[8] += (increase ? 1 : -1);
-        if (genes[8] > 8)
+        genes[Biomorph.LENGTH_GENE_INDEX] += (increase ? 1 : -1);
+        if (genes[Biomorph.LENGTH_GENE_INDEX] > Biomorph.LENGTH_GENE_MAX)
         {
-            genes[8] = 1;
+            genes[Biomorph.LENGTH_GENE_INDEX] = Biomorph.LENGTH_GENE_MIN;
         }
-        else if (genes[8] < 1)
+        else if (genes[Biomorph.LENGTH_GENE_INDEX] < Biomorph.LENGTH_GENE_MIN)
         {
-            genes[8] = 8;
+            genes[Biomorph.LENGTH_GENE_INDEX] = Biomorph.LENGTH_GENE_MAX;
         }
         return new Biomorph(genes);
     }
