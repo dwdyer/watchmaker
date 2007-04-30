@@ -1,10 +1,13 @@
-Changes in version 0.?.?
+Changes in version 0.4.0
 ------------------------
 
 * Introduced framework support for interactive evolutionary algorithms.
 
-* New example application based on Dawkins' biomorph experiment.  Demonstrates
-  the new interactive features of the framework.
+* New example application based on Richard Dawkins' biomorph experiment.
+  Demonstrates the new interactive features of the framework.
+
+* Added new, extremely fast RNG - a Java port of Tony Pasqualoni's cellular
+  automaton RNG (http://home.southernct.edu/~pasqualonia1/ca/report.html).
 
 
 Changes in version 0.3.0
