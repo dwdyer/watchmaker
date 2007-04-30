@@ -49,14 +49,10 @@ public class RNGBenchmark implements Runnable
             rng.nextInt(i);
             rng.nextDouble();
             rng.nextGaussian();
-            if (i % 10000 == 0)
-            {
-                System.out.print('.');
-            }
         }
         long elapsedTime = System.currentTimeMillis() - startTime;
         double seconds = ((double) elapsedTime) / 1000;
-        System.out.println("\nCompleted " + iterations + " iterations in " + seconds + " seconds.\n");
+        System.out.println("Completed " + iterations + " iterations in " + seconds + " seconds.\n");
     }
 
 
@@ -67,7 +63,7 @@ public class RNGBenchmark implements Runnable
         new RNGBenchmark(new SecureRandom(), ITERATIONS).run();
         new RNGBenchmark(new AESCounterRNG(), ITERATIONS).run();
         new RNGBenchmark(new MersenneTwisterRNG(), ITERATIONS).run();
-        // new RNGBenchmark(new CellularAutomatonRNG(), ITERATIONS).run();
+        new RNGBenchmark(new CellularAutomatonRNG(), ITERATIONS).run();
         System.out.println("------------------------------------------------------------");
     }
 }
