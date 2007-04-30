@@ -34,7 +34,7 @@ public class TournamentSelectionTest
     @Test
     public void testNaturalFitnessSelection()
     {
-        SelectionStrategy selector = new TournamentSelection(0.7d);
+        SelectionStrategy<Object> selector = new TournamentSelection(0.7d);
         List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
         EvaluatedCandidate<String> steve = new EvaluatedCandidate<String>("Steve", 10.0);
         EvaluatedCandidate<String> mary = new EvaluatedCandidate<String>("Mary", 9.1);
@@ -52,7 +52,7 @@ public class TournamentSelectionTest
     @Test
     public void testNonNaturalFitnessSelection()
     {
-        SelectionStrategy selector = new TournamentSelection(0.7d);
+        SelectionStrategy<Object> selector = new TournamentSelection(0.7d);
         List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
         EvaluatedCandidate<String> gary = new EvaluatedCandidate<String>("Gary", 6.2);
         EvaluatedCandidate<String> john = new EvaluatedCandidate<String>("John", 8.4);

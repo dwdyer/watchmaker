@@ -31,7 +31,7 @@ public class TruncationSelectionTest
     @Test
     public void testNaturalFitnessSelection()
     {
-        SelectionStrategy selector = new TruncationSelection(0.5d);
+        SelectionStrategy<Object> selector = new TruncationSelection(0.5d);
         List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
         // Higher score is better.
         EvaluatedCandidate<String> steve = new EvaluatedCandidate<String>("Steve", 10.0);
@@ -52,7 +52,7 @@ public class TruncationSelectionTest
     @Test
     public void testNonNaturalFitnessSelection()
     {
-        SelectionStrategy selector = new TruncationSelection(0.5d);
+        SelectionStrategy<Object> selector = new TruncationSelection(0.5d);
         List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
         // Lower score is better.
         EvaluatedCandidate<String> gary = new EvaluatedCandidate<String>("Gary", 6.2);
