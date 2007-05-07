@@ -51,16 +51,11 @@ public class ListOrderCrossoverTest
         parent2.add(4);
         List<List<Integer>> population = Arrays.asList(parent1, parent2);
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 20; i++) // Do more than one cross-over to check different cross-over points.
         {
             population = operator.apply(population, new MersenneTwisterRNG());
             for (List<Integer> offspring : population)
             {
-                for (int j = 0; j < 8; j++)
-                {
-                    System.out.print(offspring.get(j));
-                }
-                System.out.println();
                 for (int j = 1; j <= 8; j++)
                 {
                     assert offspring.contains(j) : "Evolved candidate missing required element " + j;

@@ -58,21 +58,21 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
         int point1 = rng.nextInt(parent1.size());
         int point2 = rng.nextInt(parent1.size());
 
-        if (point1 > point2)
+        int length = point2 - point1;
+        if (length < 0)
         {
-            int temp = point1;
-            point1 = point2;
-            point2 = temp;
+            length += parent1.size();
         }
 
         Map<Object, Object> mapping1 = new HashMap<Object, Object>(parent1.size());
         Map<Object, Object> mapping2 = new HashMap<Object, Object>(parent1.size());
-        for (int i = point1; i <= point2; i++)
+        for (int i = 0; i < length; i++)
         {
-            Object item1 = offspring1.get(i);
-            Object item2 = offspring2.get(i);
-            offspring1.set(i, item2);
-            offspring2.set(i, item1);
+            int index = (i + point1) % parent1.size();
+            Object item1 = offspring1.get(index);
+            Object item2 = offspring2.get(index);
+            offspring1.set(index, item2);
+            offspring2.set(index, item1);
             mapping1.put(item1, item2);
             mapping2.put(item2, item1);
         }
@@ -88,7 +88,7 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
 
 
     /**
-     * Checks elements that are outside of the parially mapped section to
+     * Checks elements that are outside of the partially mapped section to
      * see if there are any duplicate items in the list.  If there are, they
      * are mapped appropriately.
      */
@@ -97,23 +97,26 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
                                        int mappingStart,
                                        int mappingEnd)
     {
-        for (int i = 0; i < mappingStart; i++)
+        for (int i = 0; i < offspring.size(); i++)
         {
-            Object mapped = offspring.get(i);
-            while (mapping.containsKey(mapped))
+            if (!isInsideMappedRegion(i, mappingStart, mappingEnd))
             {
-                mapped = mapping.get(mapped);
+                Object mapped = offspring.get(i);
+                while (mapping.containsKey(mapped))
+                {
+                    mapped = mapping.get(mapped);
+                }
+                offspring.set(i, mapped);
             }
-            offspring.set(i, mapped);
         }
-        for (int i = mappingEnd + 1; i < offspring.size(); i++)
-        {
-            Object mapped = offspring.get(i);
-            while (mapping.containsKey(mapped))
-            {
-                mapped = mapping.get(mapped);
-            }
-            offspring.set(i, mapped);
-        }
+    }
+
+
+    private boolean isInsideMappedRegion(int position,
+                                         int startPoint,
+                                         int endPoint)
+    {
+        return ((position < endPoint && position >= startPoint)
+                || (startPoint > endPoint && (position >= startPoint || position < endPoint)));
     }
 }
