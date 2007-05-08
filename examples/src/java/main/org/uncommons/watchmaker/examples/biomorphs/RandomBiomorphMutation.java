@@ -43,7 +43,7 @@ public class RandomBiomorphMutation implements EvolutionaryOperator<Biomorph>
     }
 
     
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings("unchecked")
     public <S extends Biomorph> List<S> apply(List<S> selectedCandidates, Random rng)
     {
         List<S> mutatedPopulation = new ArrayList<S>(selectedCandidates.size());

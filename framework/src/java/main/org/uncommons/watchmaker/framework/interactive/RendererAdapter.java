@@ -44,7 +44,7 @@ public class RendererAdapter<T, S> implements Renderer<T, S>
     }
 
     
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings("unchecked")
     public S render(T entity)
     {
         // This reflection charade is necessary because we can't convince the

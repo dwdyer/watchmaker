@@ -198,7 +198,7 @@ final class StrategyPanel extends JPanel
         }
 
 
-        @SuppressWarnings({"unchecked"})
+        @SuppressWarnings("unchecked")
         public TravellingSalesmanStrategy getStrategy()
         {
             return new EvolutionaryTravellingSalesman(distances,

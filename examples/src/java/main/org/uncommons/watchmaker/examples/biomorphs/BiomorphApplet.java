@@ -85,7 +85,7 @@ public class BiomorphApplet extends JApplet
         {
             protected Biomorph performTask()
             {
-                EvolutionaryOperator<Biomorph> mutation = random ? new RandomBiomorphMutation(0.1d)
+                EvolutionaryOperator<Biomorph> mutation = random ? new RandomBiomorphMutation(0.15d)
                                                                  : new DawkinsBiomorphMutation();
                 InteractiveSelection<Biomorph> selection = new InteractiveSelection<Biomorph>(console,
                                                                                               renderer,
