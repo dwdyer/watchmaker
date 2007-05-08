@@ -9,6 +9,11 @@ Changes in version 0.4.0
 * Added new, extremely fast RNG - a Java port of Tony Pasqualoni's cellular
   automaton RNG (http://home.southernct.edu/~pasqualonia1/ca/report.html).
 
+* Added ordered cross-over evolutionary operator for lists.
+
+* Updated Travelling Salesman applet to optionally use cross-over as well as
+  mutation.
+
 
 Changes in version 0.3.0
 ------------------------

@@ -24,6 +24,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -123,6 +124,8 @@ final class StrategyPanel extends JPanel
         private final JSpinner generationsSpinner;
         private final JLabel selectionLabel;
         private final JComboBox selectionCombo;
+        private final JCheckBox crossoverCheckbox;
+        private final JCheckBox mutationCheckbox;
 
         public EvolutionPanel()
         {
@@ -167,7 +170,13 @@ final class StrategyPanel extends JPanel
             selectionCombo.setSelectedIndex(selectionCombo.getItemCount() - 1);
             innerPanel.add(selectionCombo);
 
-            SpringUtilities.makeCompactGrid(innerPanel, 4, 2, 30, 6, 6, 6);
+            crossoverCheckbox = new JCheckBox("Cross-over", true);
+            mutationCheckbox = new JCheckBox("Mutation", true);
+            
+            innerPanel.add(crossoverCheckbox);
+            innerPanel.add(mutationCheckbox);
+
+            SpringUtilities.makeCompactGrid(innerPanel, 5, 2, 30, 6, 6, 6);
             add(innerPanel);
         }
 
@@ -183,6 +192,8 @@ final class StrategyPanel extends JPanel
             generationsSpinner.setEnabled(b);
             selectionLabel.setEnabled(b);
             selectionCombo.setEnabled(b);
+            crossoverCheckbox.setEnabled(b);
+            mutationCheckbox.setEnabled(b);
             super.setEnabled(b);
         }
 
@@ -194,7 +205,9 @@ final class StrategyPanel extends JPanel
                                                       (SelectionStrategy<? super List<String>>) selectionCombo.getSelectedItem(),
                                                       (Integer) populationSpinner.getValue(),
                                                       (Integer) elitismSpinner.getValue(),
-                                                      (Integer) generationsSpinner.getValue());
+                                                      (Integer) generationsSpinner.getValue(),
+                                                      crossoverCheckbox.isSelected(),
+                                                      mutationCheckbox.isSelected());
         }
     }
 }

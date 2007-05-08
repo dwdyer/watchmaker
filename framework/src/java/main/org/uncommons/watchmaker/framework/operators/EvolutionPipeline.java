@@ -43,6 +43,10 @@ public class EvolutionPipeline<T> implements EvolutionaryOperator<T>
      */
     public EvolutionPipeline(List<EvolutionaryOperator<? super T>> pipeline)
     {
+        if (pipeline.isEmpty())
+        {
+            throw new IllegalArgumentException("Pipeline must contain at least one operator.");
+        }
         this.pipeline = new ArrayList<EvolutionaryOperator<? super T>>(pipeline);
     }
 

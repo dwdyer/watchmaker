@@ -46,6 +46,8 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
     private final int populationSize;
     private final int eliteCount;
     private final int generationCount;
+    private final boolean crossover;
+    private final boolean mutation;
 
     /**
      * Creates an evolutionary Travelling Salesman solver with the
@@ -58,22 +60,32 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
      * @param eliteCount The number of candidates to preserve via elitism
      * at each generation.
      * @param generationCount The number of iterations of evolution to perform.
+     * @param crossover Whether or not to use a cross-over operator in the evolution.
+     * @param mutation Whether or not to use a mutation operator in the evolution.
      */
     public EvolutionaryTravellingSalesman(DistanceLookup distances,
                                           SelectionStrategy<? super List<String>> selectionStrategy,
                                           int populationSize,
                                           int eliteCount,
-                                          int generationCount)
+                                          int generationCount,
+                                          boolean crossover,
+                                          boolean mutation)
     {
         if (eliteCount < 0 || eliteCount >= populationSize)
         {
             throw new IllegalArgumentException("Elite count must be non-zero and less than population size.");
+        }
+        if (!crossover && !mutation)
+        {
+            throw new IllegalArgumentException("At least one of cross-over or mutation must be selected.");
         }
         this.distances = distances;
         this.selectionStrategy = selectionStrategy;
         this.populationSize = populationSize;
         this.eliteCount = eliteCount;
         this.generationCount = generationCount;
+        this.crossover = crossover;
+        this.mutation = mutation;
     }
 
 
@@ -105,12 +117,19 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
         Random rng = new MersenneTwisterRNG();
 
         // Set-up evolution pipeline (cross-over followed by mutation).
-        EvolutionaryOperator<List<?>> crossover = new ListOrderCrossover();
-        EvolutionaryOperator<List<?>> mutation = new ListOrderMutation(new PoissonGenerator(1.5, rng),
-                                                                       new PoissonGenerator(1.5, rng));
         List<EvolutionaryOperator<? super List<?>>> operators = new ArrayList<EvolutionaryOperator<? super List<?>>>(2);
-        operators.add(crossover);
-        operators.add(mutation);
+        if (crossover)
+        {
+            EvolutionaryOperator<List<?>> crossoverOperator = new ListOrderCrossover();
+            operators.add(crossoverOperator);
+        }
+        if (mutation)
+        {
+            EvolutionaryOperator<List<?>> mutationOperator = new ListOrderMutation(new PoissonGenerator(1.5, rng),
+                                                                                   new PoissonGenerator(1.5, rng));
+            operators.add(mutationOperator);
+        }
+
         EvolutionaryOperator<List<?>> pipeline = new EvolutionPipeline<List<?>>(operators);
 
         CandidateFactory<List<String>> candidateFactory

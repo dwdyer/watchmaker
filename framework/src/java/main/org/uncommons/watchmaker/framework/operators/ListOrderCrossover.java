@@ -112,6 +112,15 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
     }
 
 
+    /**
+     * Checks whether a given list position is within the partially mapped
+     * region used for cross-over.
+     * @param position The list position to check.
+     * @param startPoint The starting index (inclusive) of the mapped region.
+     * @param endPoint The end index (exclusive) of the mapped region.
+     * @return True if the specified position is in the mapped region, false
+     * otherwise.
+     */
     private boolean isInsideMappedRegion(int position,
                                          int startPoint,
                                          int endPoint)
