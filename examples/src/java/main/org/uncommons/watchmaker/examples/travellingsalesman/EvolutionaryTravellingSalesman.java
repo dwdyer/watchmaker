@@ -120,14 +120,12 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
         List<EvolutionaryOperator<? super List<?>>> operators = new ArrayList<EvolutionaryOperator<? super List<?>>>(2);
         if (crossover)
         {
-            EvolutionaryOperator<List<?>> crossoverOperator = new ListOrderCrossover();
-            operators.add(crossoverOperator);
+            operators.add(new ListOrderCrossover());
         }
         if (mutation)
         {
-            EvolutionaryOperator<List<?>> mutationOperator = new ListOrderMutation(new PoissonGenerator(1.5, rng),
-                                                                                   new PoissonGenerator(1.5, rng));
-            operators.add(mutationOperator);
+            operators.add(new ListOrderMutation(new PoissonGenerator(1.5, rng),
+                                                new PoissonGenerator(1.5, rng)));
         }
 
         EvolutionaryOperator<List<?>> pipeline = new EvolutionPipeline<List<?>>(operators);

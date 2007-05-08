@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 /**
+ * Swing-based console for interactive evolutionary algorithms.
  * @author Daniel Dyer
  */
 public class SwingConsole extends JPanel implements Console<JComponent>
@@ -34,12 +35,21 @@ public class SwingConsole extends JPanel implements Console<JComponent>
     private final Object lock = new Object();
     private int selectedIndex;
 
+    /**
+     * Creates a console that displays candidates arranged in three columns
+     * (and as many rows as required).
+     */
     public SwingConsole()
     {
         this(3);
     }
 
 
+    /**
+     * Creates a console with a configurable number of columns. 
+     * @param columns The number of columns to use when displaying the
+     * candidates for selection.
+     */
     public SwingConsole(int columns)
     {
         super(new GridLayout(0, columns));

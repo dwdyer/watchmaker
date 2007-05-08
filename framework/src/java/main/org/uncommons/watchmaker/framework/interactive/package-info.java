@@ -13,24 +13,9 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.framework.interactive;
-
-import org.uncommons.watchmaker.framework.FitnessEvaluator;
-
 /**
- * Fitness evaluation is not required for interactive selection, so this stub
- * implementation is used to satisfy the framework requirements.
- * @author Daniel Dyer
+ * Classes for implementing interactive evolutionary algorithms.  In interactive
+ * evolutionary algorithms, user-guided selection is used instead of selection based
+ * on automated fitness evaluations.
  */
-public class NullFitnessEvaluator implements FitnessEvaluator<Object>
-{
-    public double getFitness(Object candidate)
-    {
-        return 0;
-    }
-
-    public boolean isNatural()
-    {
-        return true;
-    }
-}
+package org.uncommons.watchmaker.framework.interactive;

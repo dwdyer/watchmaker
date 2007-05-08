@@ -20,6 +20,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.BorderFactory;
 import javax.swing.JApplet;
 import javax.swing.JButton;
@@ -146,7 +148,8 @@ public class BiomorphApplet extends JApplet
         {
             JPanel inputPanel = new JPanel(new SpringLayout());
             JLabel populationLabel = new JLabel("Population Size: ");
-            populationSpinner = new JSpinner(new SpinnerNumberModel(12, 2, 24, 1));
+            populationSpinner = new JSpinner(new SpinnerNumberModel(18, 2, 24, 1));
+            populationSpinner.setEnabled(false);
             populationLabel.setLabelFor(populationSpinner);
             inputPanel.add(populationLabel);
             inputPanel.add(populationSpinner);
@@ -157,6 +160,21 @@ public class BiomorphApplet extends JApplet
             inputPanel.add(generationsSpinner);
             JLabel mutationLabel = new JLabel("Mutation Type: ");
             mutationCombo = new JComboBox(new String[]{"Dawkins (Non-random)", "Random"});
+            mutationCombo.addItemListener(new ItemListener()
+            {
+                public void itemStateChanged(ItemEvent itemEvent)
+                {
+                    if (mutationCombo.getSelectedIndex() == 0)
+                    {
+                        populationSpinner.setValue(18);
+                        populationSpinner.setEnabled(false);
+                    }
+                    else
+                    {
+                        populationSpinner.setEnabled(true);
+                    }
+                }
+            });
             inputPanel.add(mutationLabel);
             inputPanel.add(mutationCombo);
 

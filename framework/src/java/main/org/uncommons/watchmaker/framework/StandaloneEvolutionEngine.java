@@ -95,7 +95,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     {
         this(candidateFactory,
              evolutionScheme,
-             new NullFitnessEvaluator(),
+             new NullFitnessEvaluator(), // No fitness evaluations to perform.
              selectionStrategy,
              rng);
     }
