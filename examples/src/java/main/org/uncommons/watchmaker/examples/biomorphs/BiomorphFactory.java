@@ -31,14 +31,14 @@ public class BiomorphFactory extends AbstractCandidateFactory<Biomorph>
      */
     protected Biomorph generateRandomCandidate(Random rng)
     {
-        int[] genes = new int[9];
-        for (int i = 0; i < 8; i++)
+        int[] genes = new int[Biomorph.GENE_COUNT];
+        for (int i = 0; i < Biomorph.GENE_COUNT - 1; i++)
         {
             // First 8 genes have values between -5 and 5.
             genes[i] = rng.nextInt(11) - 5;
         }
-        // Last genes has a value between 1 and 8.
-        genes[8] = rng.nextInt(8) + 1;
+        // Last genes ha a value between 1 and 7.
+        genes[Biomorph.LENGTH_GENE_INDEX] = rng.nextInt(Biomorph.LENGTH_GENE_MAX) + 1;
         return new Biomorph(genes);
     }
 }

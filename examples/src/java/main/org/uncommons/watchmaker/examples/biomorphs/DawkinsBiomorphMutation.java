@@ -40,7 +40,7 @@ public class DawkinsBiomorphMutation implements EvolutionaryOperator<Biomorph>
             mutation *= -1; // Alternate between incrementing and decrementing.
             if (mutation == 1) // After gene has been both incremented and decremented, move to next one.
             {
-                mutatedGene = (mutatedGene + 1) % 9;
+                mutatedGene = (mutatedGene + 1) % Biomorph.GENE_COUNT;
             }
             genes[mutatedGene] += mutation;
             int min = mutatedGene == Biomorph.LENGTH_GENE_INDEX ? Biomorph.LENGTH_GENE_MIN : Biomorph.GENE_MIN;

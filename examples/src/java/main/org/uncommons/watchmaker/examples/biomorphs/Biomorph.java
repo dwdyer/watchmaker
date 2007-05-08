@@ -41,7 +41,7 @@ public final class Biomorph
     /** The minimum permitted value for the length gene. */
     public static final int LENGTH_GENE_MIN = 1;
     /** The maximum permitted value for the length gene. */
-    public static final int LENGTH_GENE_MAX = 8;
+    public static final int LENGTH_GENE_MAX = 7;
 
     private final int[] genes;
 

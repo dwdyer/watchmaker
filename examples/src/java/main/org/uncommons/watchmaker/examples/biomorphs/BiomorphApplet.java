@@ -54,7 +54,7 @@ import org.uncommons.watchmaker.framework.interactive.SwingConsole;
 public class BiomorphApplet extends JApplet
 {
     private final Renderer<Biomorph, JComponent> renderer = new SwingBiomorphRenderer();
-    private final SwingConsole console = new SwingConsole(4);
+    private final SwingConsole console = new SwingConsole(5);
     private final JDialog selectionDialog = new JDialog((JFrame) null, "Biomorph Selection", true);
     private final JPanel biomorphHolder = new JPanel(new GridLayout(1, 1));
 
@@ -85,7 +85,7 @@ public class BiomorphApplet extends JApplet
         {
             protected Biomorph performTask()
             {
-                EvolutionaryOperator<Biomorph> mutation = random ? new RandomBiomorphMutation(0.15d)
+                EvolutionaryOperator<Biomorph> mutation = random ? new RandomBiomorphMutation(0.12d)
                                                                  : new DawkinsBiomorphMutation();
                 InteractiveSelection<Biomorph> selection = new InteractiveSelection<Biomorph>(console,
                                                                                               renderer,
@@ -148,7 +148,7 @@ public class BiomorphApplet extends JApplet
         {
             JPanel inputPanel = new JPanel(new SpringLayout());
             JLabel populationLabel = new JLabel("Population Size: ");
-            populationSpinner = new JSpinner(new SpinnerNumberModel(18, 2, 24, 1));
+            populationSpinner = new JSpinner(new SpinnerNumberModel(18, 2, 25, 1));
             populationSpinner.setEnabled(false);
             populationLabel.setLabelFor(populationSpinner);
             inputPanel.add(populationLabel);

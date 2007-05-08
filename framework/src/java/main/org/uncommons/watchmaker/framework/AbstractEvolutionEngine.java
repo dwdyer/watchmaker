@@ -116,12 +116,12 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize,
                                                                                          seedCandidates,
                                                                                          rng));
-        // Calculate the fitness scores for each member of the population.
+        // Calculate the fitness scores for each member of the initial population.
         List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
         // Notify observers of the state of the population.
         notifyPopulationChange(getPopulationData(evaluatedPopulation));
 
-        // This loop starts counting at 1, because the initial population counts as generation zero.
+        // This loop starts counting at 1 because the initial population counts as generation zero.
         for (int i = 1; i < generationCount; i++)
         {
             ++currentGenerationIndex;
