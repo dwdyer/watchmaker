@@ -25,7 +25,9 @@ import java.lang.reflect.Method;
  * renderer that converts a Java date into its String representation in a
  * particular locale, we can combine the two to create a Long -> String renderer
  * without having to write a separate implementation of the {@link Renderer}
- * interface. 
+ * interface.
+ * @param <T> The input type for the renderer.
+ * @param <S> The output type for the renderer.
  * @author Daniel Dyer
  */
 public class RendererAdapter<T, S> implements Renderer<T, S>

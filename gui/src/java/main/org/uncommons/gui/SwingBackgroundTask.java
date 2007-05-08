@@ -34,7 +34,7 @@ public abstract class SwingBackgroundTask<V>
 
     protected SwingBackgroundTask()
     {
-        synchronized(SwingBackgroundTask.class)
+        synchronized (SwingBackgroundTask.class)
         {
             this.id = instanceCount;
             ++instanceCount;

@@ -19,6 +19,8 @@ package org.uncommons.watchmaker.framework.interactive;
  * Maps objects of one type to objects of a different type.  For example,
  * this class could be used to render dates as Strings or to render arrays
  * as GUI list components.
+ * @param <T> The input type for the renderer.
+ * @param <S> The output type for the renderer.
  * @author Daniel Dyer
  */
 public interface Renderer<T, S>

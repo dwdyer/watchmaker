@@ -152,7 +152,10 @@ public final class TravellingSalesmanApplet extends JApplet
     }
 
 
-
+    /**
+     * Toggles whether the controls are enabled for input or not.
+     * @param b Enables the controls if this flag is true, disables them otherwise.
+     */
     @Override
     public void setEnabled(boolean b)
     {

@@ -18,6 +18,11 @@ package org.uncommons.watchmaker.framework.interactive;
 import java.util.List;
 
 /**
+ * A console provides users with a mechanism for interacting with an
+ * evolutionary algorithm.
+ * @param <T> The type of entity that can be presented by this console.
+ * Evolutionary algorithms that evolve a different type can work with
+ * a console via a {@link Renderer} that performs the necessary conversions.
  * @author Daniel Dyer
  */
 public interface Console<T>

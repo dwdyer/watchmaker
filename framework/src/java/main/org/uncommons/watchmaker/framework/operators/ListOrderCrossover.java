@@ -28,18 +28,26 @@ import java.util.Random;
  */
 public class ListOrderCrossover extends AbstractCrossover<List<?>>
 {
+    /**
+     * Creates a cross-over operator with a cross-over probability of 1.
+     */
     public ListOrderCrossover()
     {
         super(2); // Requires exactly two cross-over points.
     }
 
 
+    /**
+     * Creates a cross-over operator with the specified cross-over probability.
+     * @param crossoverProbability The probability that cross-over will be performed
+     * for any given pair.
+     */
     public ListOrderCrossover(double crossoverProbability)
     {
         super(2, crossoverProbability);
     }
 
-    
+
     protected List<? extends List<?>> mate(List<?> parent1,
                                            List<?> parent2,
                                            int numberOfCrossoverPoints,
@@ -125,7 +133,8 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
                                          int startPoint,
                                          int endPoint)
     {
-        return ((position < endPoint && position >= startPoint)
-                || (startPoint > endPoint && (position >= startPoint || position < endPoint)));
+        boolean enclosed = (position < endPoint && position >= startPoint);
+        boolean wrapAround = (startPoint > endPoint && (position >= startPoint || position < endPoint)); 
+        return enclosed || wrapAround;
     }
 }

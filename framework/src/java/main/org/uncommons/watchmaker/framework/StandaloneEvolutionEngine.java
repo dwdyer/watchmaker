@@ -24,6 +24,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
+import org.uncommons.watchmaker.framework.interactive.NullFitnessEvaluator;
 
 /**
  * Generic evolutionary algorithm engine for evolution that runs
@@ -71,6 +73,31 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         super(candidateFactory, evolutionScheme, fitnessEvaluator, selectionStrategy, rng);
         int noOfThreads = threadPool.prestartAllCoreThreads();
         System.out.println("Standalone evolution engine initialised with " + noOfThreads + " threads.");
+    }
+
+
+    /**
+     * Creates a new evolution engine for an interactive evolutionary algorithm.  It
+     * is not necessary to specify a fitness evaluator for interactive evolution.
+     * @param candidateFactory Factory used to create the initial population that is
+     * iteratively evolved.
+     * @param evolutionScheme The combination of evolutionary operators used to evolve
+     * the population at each generation.
+     * @param selectionStrategy Interactive selection strategy configured with appropriate
+     * console.
+     * @param rng The source of randomness used by all stochastic processes (including
+     * evolutionary operators and selection strategies).
+     */
+    public StandaloneEvolutionEngine(CandidateFactory<T> candidateFactory,
+                                     EvolutionaryOperator<? super T> evolutionScheme,
+                                     InteractiveSelection<T> selectionStrategy,
+                                     Random rng)
+    {
+        this(candidateFactory,
+             evolutionScheme,
+             new NullFitnessEvaluator(),
+             selectionStrategy,
+             rng);
     }
 
 
@@ -152,6 +179,13 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         private final List<EvaluatedCandidate<T>> evaluatedPopulation;
         private final CountDownLatch latch;
 
+        /**
+         * Creates a task for performing fitness evaluations.
+         * @param candidates The candidates to evaluate.
+         * @param evaluatedPopulation The target list for evaluated candidates.  Must
+         * be a thread-safe implementation.
+         * @param latch Synchronisation control for parallel execution.
+         */
         public FitnessEvalutationTask(List<T> candidates,
                                       List<EvaluatedCandidate<T>> evaluatedPopulation,
                                       CountDownLatch latch)

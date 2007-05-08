@@ -30,11 +30,17 @@ import java.util.Arrays;
  */
 public final class Biomorph
 {
+    /** The total number of genes that make up a biomorph. */
     public static final int GENE_COUNT = 9;
+    /** The minimum permitted value for most genes. */
     public static final int GENE_MIN = -5;
+    /** The maximum permitted value for most genes. */
     public static final int GENE_MAX = 5;
+    /** The index of the gene that controls biomporph size. */
     public static final int LENGTH_GENE_INDEX = 8;
+    /** The minimum permitted value for the length gene. */
     public static final int LENGTH_GENE_MIN = 1;
+    /** The maximum permitted value for the length gene. */
     public static final int LENGTH_GENE_MAX = 8;
 
     private final int[] genes;
@@ -96,7 +102,10 @@ public final class Biomorph
         return phenotype;
     }
 
-    
+
+    /**
+     * @return The value of the gene that controls the size of this biomorph.
+     */
     public int getLengthPhenotype()
     {
         return genes[LENGTH_GENE_INDEX];

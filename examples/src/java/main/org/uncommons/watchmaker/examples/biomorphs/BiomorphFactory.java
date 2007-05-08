@@ -24,6 +24,11 @@ import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
  */
 public class BiomorphFactory extends AbstractCandidateFactory<Biomorph>
 {
+    /**
+     * Generates a random biomorph by providing a random value for each gene.
+     * @param rng The source of randomness used to generate the biomoprh. 
+     * @return A randomly-generated biomorph.
+     */
     protected Biomorph generateRandomCandidate(Random rng)
     {
         int[] genes = new int[9];
