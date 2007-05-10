@@ -49,9 +49,10 @@ public class RouteEvaluator implements FitnessEvaluator<List<String>>
     public double getFitness(List<String> candidate)
     {
         int totalDistance = 0;
-        for (int i = 0; i < candidate.size(); i++)
+        int cityCount = candidate.size();
+        for (int i = 0; i < cityCount; i++)
         {
-            int nextIndex = i < candidate.size() - 1 ? i + 1 : 0;
+            int nextIndex = i < cityCount - 1 ? i + 1 : 0;
             totalDistance += distances.getDistance(candidate.get(i),
                                                    candidate.get(nextIndex));
         }

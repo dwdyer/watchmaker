@@ -33,7 +33,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
     {
         // Distances are in km as the crow flies (from http://www.indo.com/distance/)
 
-        Map<String, Integer> amsterdam = new HashMap<String, Integer>(15);
+        Map<String, Integer> amsterdam = new HashMap<String, Integer>(20);
         amsterdam.put("Amsterdam", 0);
         amsterdam.put("Athens", 2162);
         amsterdam.put("Berlin", 576);
@@ -51,7 +51,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         amsterdam.put("Vienna", 938);
         DISTANCES.put("Amsterdam", amsterdam);
 
-        Map<String, Integer> athens = new HashMap<String, Integer>(15);
+        Map<String, Integer> athens = new HashMap<String, Integer>(20);
         athens.put("Amsterdam", 2162);
         athens.put("Athens", 0);
         athens.put("Berlin", 1801);
@@ -69,7 +69,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         athens.put("Vienna", 1280);
         DISTANCES.put("Athens", athens);
 
-        Map<String, Integer> berlin = new HashMap<String, Integer>(15);
+        Map<String, Integer> berlin = new HashMap<String, Integer>(20);
         berlin.put("Amsterdam", 576);
         berlin.put("Athens", 1801);
         berlin.put("Berlin", 0);
@@ -87,7 +87,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         berlin.put("Vienna", 525);
         DISTANCES.put("Berlin", berlin);
 
-        Map<String, Integer> brussels = new HashMap<String, Integer>(15);
+        Map<String, Integer> brussels = new HashMap<String, Integer>(20);
         brussels.put("Amsterdam", 171);
         brussels.put("Athens", 2089);
         brussels.put("Berlin", 648);
@@ -105,7 +105,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         brussels.put("Vienna", 917);
         DISTANCES.put("Brussels", brussels);
 
-        Map<String, Integer> copenhagen = new HashMap<String, Integer>(15);
+        Map<String, Integer> copenhagen = new HashMap<String, Integer>(20);
         copenhagen.put("Amsterdam", 622);
         copenhagen.put("Athens", 2140);
         copenhagen.put("Berlin", 361);
@@ -123,7 +123,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         copenhagen.put("Vienna", 876);
         DISTANCES.put("Copenhagen", copenhagen);
 
-        Map<String, Integer> dublin = new HashMap<String, Integer>(15);
+        Map<String, Integer> dublin = new HashMap<String, Integer>(20);
         dublin.put("Amsterdam", 757);
         dublin.put("Athens", 2860);
         dublin.put("Berlin", 1315);
@@ -141,7 +141,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         dublin.put("Vienna", 1687);
         DISTANCES.put("Dublin", dublin);
 
-        Map<String, Integer> helsinki = new HashMap<String, Integer>(15);
+        Map<String, Integer> helsinki = new HashMap<String, Integer>(20);
         helsinki.put("Amsterdam", 1506);
         helsinki.put("Athens", 2464);
         helsinki.put("Berlin", 1108);
@@ -159,7 +159,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         helsinki.put("Vienna", 1439);
         DISTANCES.put("Helsinki", helsinki);
 
-        Map<String, Integer> lisbon = new HashMap<String, Integer>(15);
+        Map<String, Integer> lisbon = new HashMap<String, Integer>(20);
         lisbon.put("Amsterdam", 1861);
         lisbon.put("Athens", 2854);
         lisbon.put("Berlin", 2310);
@@ -177,7 +177,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         lisbon.put("Vienna", 2300);
         DISTANCES.put("Lisbon", lisbon);
 
-        Map<String, Integer> london = new HashMap<String, Integer>(15);
+        Map<String, Integer> london = new HashMap<String, Integer>(20);
         london.put("Amsterdam", 356);
         london.put("Athens", 2391);
         london.put("Berlin", 929);
@@ -195,7 +195,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         london.put("Vienna", 1237);
         DISTANCES.put("London", london);
 
-        Map<String, Integer> luxembourg = new HashMap<String, Integer>(15);
+        Map<String, Integer> luxembourg = new HashMap<String, Integer>(20);
         luxembourg.put("Amsterdam", 318);
         luxembourg.put("Athens", 1901);
         luxembourg.put("Berlin", 595);
@@ -213,7 +213,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         luxembourg.put("Vienna", 761);
         DISTANCES.put("Luxembourg", luxembourg);
 
-        Map<String, Integer> madrid = new HashMap<String, Integer>(15);
+        Map<String, Integer> madrid = new HashMap<String, Integer>(20);
         madrid.put("Amsterdam", 1477);
         madrid.put("Athens", 2374);
         madrid.put("Berlin", 1866);
@@ -231,7 +231,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         madrid.put("Vienna", 1812);
         DISTANCES.put("Madrid", madrid);
 
-        Map<String, Integer> paris = new HashMap<String, Integer>(15);
+        Map<String, Integer> paris = new HashMap<String, Integer>(20);
         paris.put("Amsterdam", 429);
         paris.put("Athens", 2097);
         paris.put("Berlin", 877);
@@ -249,7 +249,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         paris.put("Vienna", 1037);
         DISTANCES.put("Paris", paris);
 
-        Map<String, Integer> rome = new HashMap<String, Integer>(15);
+        Map<String, Integer> rome = new HashMap<String, Integer>(20);
         rome.put("Amsterdam", 1304);
         rome.put("Athens", 1040);
         rome.put("Berlin", 1185);
@@ -267,7 +267,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         rome.put("Vienna", 765);
         DISTANCES.put("Rome", rome);
 
-        Map<String, Integer> stockholm = new HashMap<String, Integer>(15);
+        Map<String, Integer> stockholm = new HashMap<String, Integer>(20);
         stockholm.put("Amsterdam", 1132);
         stockholm.put("Athens", 2410);
         stockholm.put("Berlin", 818);
@@ -285,7 +285,7 @@ public final class EuropeanDistanceLookup implements DistanceLookup
         stockholm.put("Vienna", 1247);
         DISTANCES.put("Stockholm", stockholm);
 
-        Map<String, Integer> vienna = new HashMap<String, Integer>(15);
+        Map<String, Integer> vienna = new HashMap<String, Integer>(20);
         vienna.put("Amsterdam", 938);
         vienna.put("Athens", 1280);
         vienna.put("Berlin", 525);
