@@ -28,6 +28,7 @@ import org.uncommons.watchmaker.framework.operators.BitStringCrossover;
 import org.uncommons.watchmaker.framework.operators.BitStringMutation;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
+import org.uncommons.watchmaker.framework.termination.TargetFitness;
 import org.uncommons.watchmaker.framework.types.BitString;
 
 /**
@@ -54,7 +55,9 @@ public class BitsExample
                                                                                      new RouletteWheelSelection(),
                                                                                      new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
-        engine.evolve(100, 0, BITS, 120000);
+        engine.evolve(100, // 100 individuals in each generation.
+                      0, // Don't use elitism.
+                      new TargetFitness(BITS, true)); // Continue until a perfect match is found.
     }
 
 

@@ -46,6 +46,7 @@ import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.interactive.SwingConsole;
+import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
  * Watchmaker Framework implementation of Dawkin's biomorph program. 
@@ -96,7 +97,9 @@ public class BiomorphApplet extends JApplet
                                                                                            selection,
                                                                                            new MersenneTwisterRNG());
                 engine.addEvolutionObserver(new GenerationTracker());
-                return engine.evolve(populationSize, 0, generationCount);
+                return engine.evolve(populationSize,
+                                     0,
+                                     new GenerationCount(generationCount));
             }
 
             protected void postProcessing(Biomorph result)

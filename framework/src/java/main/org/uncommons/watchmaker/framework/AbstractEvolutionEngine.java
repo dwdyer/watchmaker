@@ -86,12 +86,12 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     @SuppressWarnings("unchecked")
     public T evolve(int populationSize,
                     int eliteCount,
-                    int generationCount)
+                    TerminationCondition... conditions)
     {
         return evolve(populationSize,
                       eliteCount,
-                      generationCount,
-                      (Collection<T>) Collections.emptySet());
+                      (Collection<T>) Collections.emptySet(),
+                      conditions);
     }
 
 
@@ -100,8 +100,8 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      */
     public T evolve(int populationSize,
                     int eliteCount,
-                    int generationCount,
-                    Collection<T> seedCandidates)
+                    Collection<T> seedCandidates,
+                    TerminationCondition... conditions)
     {
         if (eliteCount < 0 || eliteCount >= populationSize)
         {
@@ -118,69 +118,11 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                                                                                          rng));
         // Calculate the fitness scores for each member of the initial population.
         List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
-        // Notify observers of the state of the population.
-        notifyPopulationChange(getPopulationData(evaluatedPopulation));
-
-        // This loop starts counting at 1 because the initial population counts as generation zero.
-        for (int i = 1; i < generationCount; i++)
-        {
-            ++currentGenerationIndex;
-            population = createNextGeneration(evaluatedPopulation, eliteCount);
-            evaluatedPopulation = evaluatePopulation(population);
-            // Notify observers of the state of the population.
-            notifyPopulationChange(getPopulationData(evaluatedPopulation));
-        }
-        // Return the fittest candidate from the final generation.
-        return evaluatedPopulation.get(0).getCandidate();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public T evolve(int populationSize,
-                    int eliteCount,
-                    double targetFitness,
-                    long timeout)
-    {
-        return evolve(populationSize,
-                      eliteCount,
-                      targetFitness,
-                      timeout,
-                      (Collection<T>) Collections.emptySet());
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public T evolve(int populationSize,
-                    int eliteCount,
-                    double targetFitness,
-                    long timeout,
-                    Collection<T> seedCandidates)
-    {
-        if (eliteCount < 0 || eliteCount >= populationSize)
-        {
-            throw new IllegalArgumentException("Elite count must be non-zero and less than population size.");
-        }
-
-        currentGenerationIndex = 0;
-        startTime = System.currentTimeMillis();
-        long endTime = startTime + timeout;
-        // Don't use the list returned by the factory, because the type might be too specific.
-        // Instead copy the contents into a list of the desired type.
-        List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize,
-                                                                                         seedCandidates,
-                                                                                         rng));
-        List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
         PopulationData<T> data = getPopulationData(evaluatedPopulation);
         // Notify observers of the state of the population.
         notifyPopulationChange(data);
 
-        // Keep evolving until we match the target fitness or run out of time.
-        while (data.getBestCandidateFitness() < targetFitness && System.currentTimeMillis() < endTime)
+        while (shouldContinue(data, conditions))
         {
             ++currentGenerationIndex;
             population = createNextGeneration(evaluatedPopulation, eliteCount);
@@ -189,9 +131,22 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
             // Notify observers of the state of the population.
             notifyPopulationChange(data);
         }
-
         // Return the fittest candidate from the final generation.
         return evaluatedPopulation.get(0).getCandidate();
+    }
+
+
+    private boolean shouldContinue(PopulationData<T> data,
+                                   TerminationCondition... conditions)
+    {
+        for (TerminationCondition condition : conditions)
+        {
+            if (condition.shouldTerminate(data))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 

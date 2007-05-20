@@ -43,7 +43,8 @@ public final class PopulationData<T>
      * @param fitnessStandardDeviation A measure of the variation in fitness
      * scores.
      * @param populationSize The number of individuals in the population.
-     * @param generationCount The number of generation that have been processed.
+     * @param generationNumber The (zero-based) number of the last generation
+     * that was processed.
      * @param elapsedTime The number of milliseconds since the start of the
      * evolutionary algorithm.
      */
@@ -52,7 +53,7 @@ public final class PopulationData<T>
                           double meanFitness,
                           double fitnessStandardDeviation,
                           int populationSize,
-                          int generationCount,
+                          int generationNumber,
                           long elapsedTime)
     {
         this.bestCandidate = bestCandidate;
@@ -60,7 +61,7 @@ public final class PopulationData<T>
         this.meanFitness = meanFitness;
         this.fitnessStandardDeviation = fitnessStandardDeviation;
         this.populationSize = populationSize;
-        this.generationNumber = generationCount;
+        this.generationNumber = generationNumber;
         this.elapsedTime = elapsedTime;
     }
 

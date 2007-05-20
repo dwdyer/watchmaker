@@ -28,6 +28,7 @@ import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.StringCrossover;
 import org.uncommons.watchmaker.framework.operators.StringMutation;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
+import org.uncommons.watchmaker.framework.termination.TargetFitness;
 
 /**
  * Simple evolutionary algorithm that evolves a population of randomly-generated
@@ -70,8 +71,7 @@ public final class StringsExample
         engine.addEvolutionObserver(new EvolutionLogger());
         engine.evolve(100, // 100 individuals in the population.
                       5, // 5% elitism.
-                      target.length(), // Perfect fitness score.
-                      120000); // Two minute timeout.
+                      new TargetFitness(target.length(), true)); // Perfect fitness score required.
     }
 
 

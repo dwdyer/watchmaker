@@ -14,6 +14,11 @@ Changes in version 0.4.0
 * Updated Travelling Salesman applet to optionally use cross-over as well as
   mutation.
 
+* Introduced TerminationCondition interface and useful default implementations.
+  Changed evolve methods in EvolutionEngine to take one or more conditions
+  instead of explicitly specifying parameters such as number of generations,
+  target fitness and timeout.
+
 
 Changes in version 0.3.0
 ------------------------

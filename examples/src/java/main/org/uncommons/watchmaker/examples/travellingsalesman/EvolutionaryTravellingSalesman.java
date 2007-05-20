@@ -33,6 +33,7 @@ import org.uncommons.watchmaker.framework.factories.ListPermutationFactory;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.ListOrderCrossover;
 import org.uncommons.watchmaker.framework.operators.ListOrderMutation;
+import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
  * Evolutionary algorithm for finding (approximate) solutions to the
@@ -147,6 +148,6 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
         });
         return engine.evolve(populationSize,
                              eliteCount,
-                             generationCount);
+                             new GenerationCount(generationCount));
     }
 }

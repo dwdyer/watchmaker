@@ -22,6 +22,7 @@ import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
+import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
  * Unit-test for the single-node evolution engine.
@@ -59,7 +60,10 @@ public class StandaloneEvolutionEngineTest
         elite.add(7); // This candidate should be discarded by elitism.
         elite.add(11);
         elite.add(13);
-        engine.evolve(10, 2, 2, elite); // Do at least 2 generations because the first is just the initial population.
+        engine.evolve(10,
+                      2,
+                      elite,
+                      new GenerationCount(2)); // Do at least 2 generations because the first is just the initial population.
         // Then when we have run the evolution, if the elite canidates were preserved they will
         // lift the average fitness above zero.  The exact value of the expected average fitness
         // is easy to calculate, it is the aggregate fitness divided by the population size.
