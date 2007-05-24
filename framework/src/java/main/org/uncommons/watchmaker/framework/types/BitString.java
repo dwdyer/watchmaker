@@ -25,7 +25,7 @@ import java.util.Arrays;
  * space than the alternative approach of using an array of booleans.
  * @author Daniel Dyer
  */
-public class BitString implements Cloneable, Serializable
+public final class BitString implements Cloneable, Serializable
 {
     private static final int WORD_LENGTH = 32;
 
@@ -206,6 +206,9 @@ public class BitString implements Cloneable, Serializable
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BitString clone()
     {
@@ -223,6 +226,9 @@ public class BitString implements Cloneable, Serializable
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o)
     {
@@ -241,6 +247,9 @@ public class BitString implements Cloneable, Serializable
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode()
     {

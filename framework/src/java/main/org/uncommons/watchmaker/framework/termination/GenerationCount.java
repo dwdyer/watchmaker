@@ -35,6 +35,9 @@ public class GenerationCount implements TerminationCondition
         this.generationCount = generationCount;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean shouldTerminate(PopulationData<?> populationData)
     {
         return populationData.getGenerationNumber() + 1 >= generationCount;

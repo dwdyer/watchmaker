@@ -22,12 +22,19 @@ package org.uncommons.maths.random;
  */
 public class SeedException extends Exception
 {
+    /**
+     * @param message Details of the problem.
+     */
     public SeedException(String message)
     {
         super(message);
     }
 
 
+    /**
+     * @param message Details of the problem.
+     * @param cause The root cause of the problem.
+     */
     public SeedException(String message, Throwable cause)
     {
         super(message, cause);

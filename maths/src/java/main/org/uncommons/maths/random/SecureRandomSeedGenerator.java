@@ -32,6 +32,9 @@ public class SecureRandomSeedGenerator implements SeedGenerator
 {
     private static final SecureRandom SOURCE = new SecureRandom();
 
+    /**
+     * {@inheritDoc}
+     */
     public byte[] generateSeed(int length) throws SeedException
     {
         return SOURCE.generateSeed(length);

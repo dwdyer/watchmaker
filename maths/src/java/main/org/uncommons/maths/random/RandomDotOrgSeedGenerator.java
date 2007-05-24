@@ -42,6 +42,9 @@ public class RandomDotOrgSeedGenerator implements SeedGenerator
 
     private static int cacheOffset = CACHE_SIZE;
 
+    /**
+     * {@inheritDoc}
+     */    
     public byte[] generateSeed(int length) throws SeedException
     {
         synchronized (CACHE)
@@ -76,9 +79,9 @@ public class RandomDotOrgSeedGenerator implements SeedGenerator
         StreamTokenizer tokenizer = new StreamTokenizer(new InputStreamReader(connection.getInputStream()));
 
         int index = -1;
-        while(tokenizer.nextToken() != StreamTokenizer.TT_EOF)
+        while (tokenizer.nextToken() != StreamTokenizer.TT_EOF)
         {
-            if(tokenizer.ttype != StreamTokenizer.TT_NUMBER)
+            if (tokenizer.ttype != StreamTokenizer.TT_NUMBER)
             {
                 throw new IOException("Received invalid data.");
             }

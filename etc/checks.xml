@@ -10,6 +10,8 @@
 
   <module name="TreeWalker">
 
+    <property name="severity" value="warning"/>
+
     <!-- Documentation. -->
     <module name="Header">
       <property name="headerFile" value="${conf.dir}/java.header"/>
@@ -37,6 +39,7 @@
     <module name="FileLength"/>
     <module name="LineLength">
       <property name="max" value="120"/>
+      <property name="severity" value="warning"/>
     </module>
     <module name="MethodLength"/>
     <module name="ParameterNumber"/>
@@ -92,11 +95,15 @@
 
 
     <!-- Exceptions. -->
-    <module name="IllegalCatch"/>
+    <module name="IllegalCatch">
+      <property name="severity" value="error"/>
+    </module>
 
 
     <!-- Inheritance -->
-    <module name="SuperClone"/>
+    <module name="SuperClone">
+      <property name="severity" value="error"/>
+    </module>
     <module name="SuperFinalize"/>
 
 
@@ -106,7 +113,9 @@
     <module name="DefaultComesLast"/>
     <module name="DoubleCheckedLocking"/>
     <module name="EmptyStatement"/>
-    <module name="EqualsHashCode"/>
+    <module name="EqualsHashCode">
+      <property name="severity" value="error"/>
+    </module>
     <module name="HiddenField">
       <property name="ignoreConstructorParameter" value="true"/>
       <property name="ignoreSetter" value="true"/>
@@ -127,7 +136,9 @@
     <module name="InterfaceIsType">
       <property name="allowMarkerInterfaces" value="false" />
     </module>
-    <module name="PackageDeclaration"/>
+    <module name="PackageDeclaration">
+      <property name="severity" value="error"/>
+    </module>
     <module name="VisibilityModifier"/>
 
 

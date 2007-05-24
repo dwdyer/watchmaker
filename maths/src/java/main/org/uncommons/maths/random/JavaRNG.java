@@ -35,6 +35,9 @@ public class JavaRNG extends Random implements RepeatableRNG
     private final byte[] seed;
 
 
+    /**
+     * Creates a new RNG and seeds it using the default seeding strategy.
+     */
     public JavaRNG()
     {
         this(DefaultSeedGenerator.getInstance().generateSeed(SEED_SIZE_BYTES));
@@ -53,6 +56,10 @@ public class JavaRNG extends Random implements RepeatableRNG
     }
 
 
+    /**
+     * Creates an RNG and seeds it with the specified seed data.
+     * @param seed The seed data used to initialise the RNG.
+     */
     public JavaRNG(byte[] seed)
     {
         super(convertBytesToLong(seed));
@@ -60,6 +67,9 @@ public class JavaRNG extends Random implements RepeatableRNG
     }
 
 
+    /**
+     * {@inheritDoc}
+     */    
     public byte[] getSeed()
     {
         return seed.clone();

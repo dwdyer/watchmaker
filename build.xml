@@ -239,7 +239,7 @@
 
   <!-- Create the release artifacts. -->
   <target name="release"
-          depends="clean, dist, test, docs"
+          depends="clean, dist, test, checkstyle, docs"
           description="Creates the release archives.">
     <mkdir dir="${release.dir}" />
     <!-- Create a GZipped TAR file containing the built binaries and the API
@@ -302,11 +302,24 @@
 
 
   <target name="checkstyle"
+          depends="dist"
           description="Check that coding standard are adhered to.">
     <taskdef resource="checkstyletask.properties" classpathref="base.path"/>
     <mkdir dir="${checkstyle-results.dir}" />
+
+    <!-- Compiled classes must be available on the classpath to work-around this
+         bug (http://jira.codehaus.org/browse/MPCHECKSTYLE-20).  That is why this
+         target depends on the 'dist' target. -->
+    <path id="checkstyle.path">
+      <fileset dir="${dist.dir}">
+        <include name="**/*.jar" />
+      </fileset>
+    </path>
+
     <checkstyle config="${conf.dir}/checks.xml"
-                failonviolation="false">
+                failonviolation="false"
+                failureproperty="style.violation"
+                classpathref="checkstyle.path">
       <fileset dir="." defaultexcludes="yes">
         <include name="**/${java.dir}/main/org/uncommons/**/*.java"/>
       </fileset>
@@ -315,6 +328,8 @@
     <xslt in="${checkstyle-results.dir}/checkstyle_report.xml"
           out="${checkstyle-results.dir}/checkstyle_report.html"
           style="${conf.dir}/checkstyle-noframes-sorted.xsl"/>
+    <!-- Only fail once we have generated the report. -->
+    <fail if="style.violation" message="Failed Checkstyle checks."/>
   </target>
 
 

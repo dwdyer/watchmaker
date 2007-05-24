@@ -41,6 +41,10 @@ public class AESCounterRNG extends Random implements RepeatableRNG
     private int index = 0;
 
 
+    /**
+     * Creates a new RNG and seeds it using the default seeding strategy.
+     * @throws GeneralSecurityException If there is a problem initialising the AES cipher.
+     */
     public AESCounterRNG() throws GeneralSecurityException
     {
         this(DefaultSeedGenerator.getInstance().generateSeed(SEED_SIZE_BYTES));
@@ -61,7 +65,7 @@ public class AESCounterRNG extends Random implements RepeatableRNG
 
 
     /**
-     * Creates the RNG and seeds it with the specified seed data.
+     * Creates an RNG and seeds it with the specified seed data.
      * @param seed The seed data used to initialise the RNG.
      * @throws GeneralSecurityException If there is a problem initialising the AES cipher.
      */
@@ -77,6 +81,9 @@ public class AESCounterRNG extends Random implements RepeatableRNG
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public byte[] getSeed()
     {
         return seed.clone();
@@ -109,6 +116,9 @@ public class AESCounterRNG extends Random implements RepeatableRNG
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final synchronized int next(int bits)
     {

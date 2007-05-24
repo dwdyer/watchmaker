@@ -122,6 +122,9 @@ public final class Biomorph
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj)
     {
@@ -140,6 +143,9 @@ public final class Biomorph
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode()
     {

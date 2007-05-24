@@ -63,6 +63,9 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
     private int mtIndex = 0; // Index into state vector.
 
 
+    /**
+     * Creates a new RNG and seeds it using the default seeding strategy.
+     */
     public MersenneTwisterRNG()
     {
         this(DefaultSeedGenerator.getInstance().generateSeed(SEED_SIZE_BYTES));
@@ -82,6 +85,10 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
 
 
 
+    /**
+     * Creates an RNG and seeds it with the specified seed data.
+     * @param seed The seed data used to initialise the RNG.
+     */
     public MersenneTwisterRNG(byte[] seed)
     {
         this.seed = seed.clone();
@@ -114,7 +121,7 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
                 j = 0;
             }
         }
-        for (int k = N-1; k > 0; k--)
+        for (int k = N - 1; k > 0; k--)
         {
             mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 30)) * SEED_FACTOR2)) - i;
             i++;
@@ -128,12 +135,18 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public byte[] getSeed()
     {
         return seed.clone();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final synchronized int next(int bits)
     {
@@ -146,7 +159,7 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
                 y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
                 mt[kk] = mt[kk + M] ^ (y >>> 1) ^ MAG01[y & 0x1];
             }
-            for (;kk < N - 1; kk++)
+            for (; kk < N - 1; kk++)
             {
                 y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
                 mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ MAG01[y & 0x1];

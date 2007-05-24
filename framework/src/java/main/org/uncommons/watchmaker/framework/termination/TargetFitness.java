@@ -28,12 +28,25 @@ public class TargetFitness implements TerminationCondition
     private final double targetFitness;
     private final boolean natural;
 
+    /**
+     * @param targetFitness The fitness score that must be achieved by at least
+     * one individual in the population in order for this condition to be satisfied.
+     * @param natural Whether fitness scores are natural or non-natural.  If fitness
+     * is natural, the condition will be satisfied if any individual has a fitness
+     * that is greater than or equal to the target fitness.  If fitness is non-natural,
+     * the condition will be satisified in any individual has a fitness that is less
+     * than or equal to the target fitness.
+     * @see org.uncommons.watchmaker.framework.FitnessEvaluator
+     */
     public TargetFitness(double targetFitness, boolean natural)
     {
         this.targetFitness = targetFitness;
         this.natural = natural;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean shouldTerminate(PopulationData<?> populationData)
     {
         if (natural)

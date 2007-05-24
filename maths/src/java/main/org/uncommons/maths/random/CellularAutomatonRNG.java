@@ -73,6 +73,10 @@ public class CellularAutomatonRNG extends Random implements RepeatableRNG
     private final int[] cells = new int[AUTOMATON_LENGTH];
     private int currentCellIndex = AUTOMATON_LENGTH - 1;
 
+    
+    /**
+     * Creates a new RNG and seeds it using the default seeding strategy.
+     */
     public CellularAutomatonRNG()
     {
         this(DefaultSeedGenerator.getInstance().generateSeed(SEED_SIZE_BYTES));
@@ -91,7 +95,10 @@ public class CellularAutomatonRNG extends Random implements RepeatableRNG
     }
 
 
-
+    /**
+     * Creates an RNG and seeds it with the specified seed data.
+     * @param seed The seed data used to initialise the RNG.
+     */
     public CellularAutomatonRNG(byte[] seed)
     {
         this.seed = seed;
@@ -113,52 +120,56 @@ public class CellularAutomatonRNG extends Random implements RepeatableRNG
         }
 
         // Evolve automaton before returning integers.
-        for (int i = 0 ; i < AUTOMATON_LENGTH * AUTOMATON_LENGTH / 4; i++)
+        for (int i = 0; i < AUTOMATON_LENGTH * AUTOMATON_LENGTH / 4; i++)
         {
             next(32);
         }
     }
 
 
-    // Returns a 32-bit unsigned integer produced by the automaton.
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int next(int bits)
     {
-       // Set cell addresses using address of current cell.
-       int cellC = currentCellIndex - 1;
-       int cellB = cellC - 1;
-       int cellA = cellB - 1;
+        // Set cell addresses using address of current cell.
+        int cellC = currentCellIndex - 1;
+        int cellB = cellC - 1;
+        int cellA = cellB - 1;
 
-       // Update cell states using rule table.
-       cells[currentCellIndex] = RNG_RULE[cells[cellC] + cells[currentCellIndex]];
-       cells[cellC] = RNG_RULE[cells[cellB] + cells[cellC]];
-       cells[cellB] = RNG_RULE[cells[cellA] + cells[cellB]];
+        // Update cell states using rule table.
+        cells[currentCellIndex] = RNG_RULE[cells[cellC] + cells[currentCellIndex]];
+        cells[cellC] = RNG_RULE[cells[cellB] + cells[cellC]];
+        cells[cellB] = RNG_RULE[cells[cellA] + cells[cellB]];
 
-       // Update the state of cellA and shift current cell to the left by 4 bytes.
-       if (cellA == 0)
-       {
-          cells[cellA] = RNG_RULE[cells[cellA]];
-          currentCellIndex = AUTOMATON_LENGTH - 1;
-          return convertCellsToInt(cells, cellA) >>> (32 - bits);
-       }
-       else
-       {
-          cells[cellA] = RNG_RULE[cells[cellA - 1] + cells[cellA]];
-          currentCellIndex -= 4;
-          return convertCellsToInt(cells, cellA) >>> (32 - bits);
-       }
+        // Update the state of cellA and shift current cell to the left by 4 bytes.
+        if (cellA == 0)
+        {
+            cells[cellA] = RNG_RULE[cells[cellA]];
+            currentCellIndex = AUTOMATON_LENGTH - 1;
+            return convertCellsToInt(cells, cellA) >>> (32 - bits);
+        }
+        else
+        {
+            cells[cellA] = RNG_RULE[cells[cellA - 1] + cells[cellA]];
+            currentCellIndex -= 4;
+            return convertCellsToInt(cells, cellA) >>> (32 - bits);
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */    
     public byte[] getSeed()
     {
         return seed;
     }
 
 
-    private int convertCellsToInt(int[] cells, int offset)
+    private static int convertCellsToInt(int[] cells, int offset)
     {
         return cells[offset] + (cells[offset + 1] << 8) + (cells[offset + 2] << 16) + (cells[offset + 3] << 24);
     }
-
 }

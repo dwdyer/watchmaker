@@ -72,7 +72,7 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
             length += parent1.size();
         }
 
-        Map<Object, Object> mapping1 = new HashMap<Object, Object>(length * 2); // Make map big enough to avoid re-hashing.
+        Map<Object, Object> mapping1 = new HashMap<Object, Object>(length * 2); // Big enough map to avoid re-hashing.
         Map<Object, Object> mapping2 = new HashMap<Object, Object>(length * 2);
         for (int i = 0; i < length; i++)
         {

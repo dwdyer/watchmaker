@@ -27,5 +27,10 @@ import java.util.List;
  */
 public interface Console<T>
 {
+    /**
+     * @param renderedEntities A list of the suitably transformed entities
+     * that will be presented to the user for selection.
+     * @return The index of the selected entity.
+     */
     int select(List<T> renderedEntities);
 }

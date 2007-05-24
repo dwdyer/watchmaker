@@ -38,8 +38,11 @@ public final class TravellingSalesmanApplet extends JApplet
     private final ExecutionPanel executionPanel;
 
     private final FitnessEvaluator<List<String>> evaluator;
-    
 
+
+    /**
+     * Creates the applet and lays out its GUI.
+     */
     public TravellingSalesmanApplet()
     {
         DistanceLookup distances = new EuropeanDistanceLookup();
@@ -57,7 +60,7 @@ public final class TravellingSalesmanApplet extends JApplet
         {
             public void actionPerformed(ActionEvent actionEvent)
             {
-                final Collection<String> cities = itineraryPanel.getSelectedCities();
+                Collection<String> cities = itineraryPanel.getSelectedCities();
                 if (cities.size() < 4)
                 {
                     JOptionPane.showMessageDialog(TravellingSalesmanApplet.this,

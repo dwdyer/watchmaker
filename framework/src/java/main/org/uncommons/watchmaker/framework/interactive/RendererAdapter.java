@@ -36,6 +36,15 @@ public class RendererAdapter<T, S> implements Renderer<T, S>
     private final Renderer<?, S> renderer2;
 
 
+    /**
+     * Creates an adapter that feeds the output of renderer1 into renderer2.
+     * @param <R> The intermediate type when transforming objects of type T to
+     * objects of type S.
+     * @param renderer1 A renderer that will translate an object of the input type
+     * (T) into an object of the intermediate type (R).
+     * @param renderer2 A renderer that will translate an object of the intermediate type
+     * (R) into an object of the output type (S).     
+     */
     public <R> RendererAdapter(Renderer<T, ? extends R> renderer1,
                                Renderer<R, S> renderer2)
     {
@@ -43,7 +52,10 @@ public class RendererAdapter<T, S> implements Renderer<T, S>
         this.renderer2 = renderer2;
     }
 
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public S render(T entity)
     {

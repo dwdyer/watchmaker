@@ -59,6 +59,9 @@ public class BiomorphApplet extends JApplet
     private final JDialog selectionDialog = new JDialog((JFrame) null, "Biomorph Selection", true);
     private final JPanel biomorphHolder = new JPanel(new GridLayout(1, 1));
 
+    /**
+     * Creates the applet and lays out its GUI.
+     */
     public BiomorphApplet()
     {
         setLayout(new BorderLayout());
@@ -113,6 +116,10 @@ public class BiomorphApplet extends JApplet
     }
 
 
+    /**
+     * Simple observer to update the dialog title every time the evolution advances
+     * to a new generation.
+     */
     private final class GenerationTracker implements EvolutionObserver<Biomorph>
     {
         public void populationUpdate(final PopulationData<Biomorph> populationData)

@@ -28,12 +28,23 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  */
 public class SwingBiomorphRenderer implements Renderer<Biomorph, JComponent>
 {
+    /**
+     * Renders an evolved biomorph as a component that can be displayed
+     * in a Swing GUI.
+     * @param biomorph The biomorph to render.
+     * @return A component that displays a visual representation of the
+     * biomorph.
+     */
     public JComponent render(Biomorph biomorph)
     {
         return new BiomorphView(biomorph);
     }
 
 
+    /**
+     * A Swing component that can display a visual representation of a
+     * biomorph.
+     */
     private static final class BiomorphView extends JComponent
     {
         private final Biomorph biomorph;
