@@ -131,8 +131,49 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
             // Notify observers of the state of the population.
             notifyPopulationChange(data);
         }
-        // Return the fittest candidate from the final generation.
-        return evaluatedPopulation.get(0).getCandidate();
+        // Once we have completed the final generation, we need to pick one of
+        // the individuals in the population to return as the result of the
+        // algorithm.  Usually we would just need to pick the fittest individual
+        // and return that.  However, this doesn't work very well with interactive
+        // evolutionary algorithms because all individuals have a nominal fitness
+        // of zero and the population has been evolved one final time since the
+        // user last expressed a selection prefence.
+        // 
+        // The solution is to always use the selection strategy to pick the candidate
+        // to return.  We only let it select from the set of candidates with the
+        // highest fitness score.  In the case that there is a clear fittest
+        // individual, there will be only one member of this set and the "winner" is
+        // clear.
+        //
+        // In other situations, there may be multiple "best" individuals with equal
+        // fitness scores.  In this case, any other individuals (those with lesser
+        // fitness scores) are discarded and selection is applied to the remainder.
+        // In the case of non-interactive selection, it doesn't really matter which
+        // of these fittest individuals is returned since they are all equivalent
+        // from a fitness perspective.
+        //
+        // This approach works well for interactive evolutionary algorithms.  Because
+        // all fitness scores are equal, no individuals are discared before selection
+        // and the user gets to have the final say over which individual is chosen as
+        // the "best" from the final evolved generation.
+
+        // The evaluated population is sorted in order of fitness, so we can just scan
+        // the list and retain all individuals with a fitness equal to the first
+        // individual.
+        List<EvaluatedCandidate<T>> fittest = new ArrayList<EvaluatedCandidate<T>>(evaluatedPopulation.size());
+        double bestFitness = evaluatedPopulation.get(0).getFitness();
+        for (EvaluatedCandidate<T> candidate : evaluatedPopulation)
+        {
+            if (candidate.getFitness() >= bestFitness)
+            {
+                fittest.add(candidate);
+            }
+            else
+            {
+                break;
+            }
+        }
+        return selectionStrategy.select(fittest, fitnessEvaluator.isNatural(), 1, rng).get(0);
     }
 
 
