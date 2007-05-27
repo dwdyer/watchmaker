@@ -70,7 +70,7 @@ public abstract class AbstractCandidateFactory<T> implements CandidateFactory<T>
     {
         if (seedCandidates.size() > populationSize)
         {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Too many seed candidates for specified population size.");
         }
         List<T> population = new ArrayList<T>(populationSize);
         population.addAll(seedCandidates);

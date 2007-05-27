@@ -161,7 +161,7 @@ public final class BitString implements Cloneable, Serializable
 
 
     /**
-     * @return The number of bits that are 1s rather than 0s.
+     * @return The number of bits that are 0s rather than 1s.
      */
     public int countUnsetBits()
     {

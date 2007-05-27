@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
  * Unit test to validate the operation of the {@link ListOrderCrossover} operator.
@@ -30,7 +31,7 @@ public class ListOrderCrossoverTest
     @Test
     public void testCrossover()
     {
-        ListOrderCrossover operator = new ListOrderCrossover();
+        EvolutionaryOperator<List<?>> operator = new ListOrderCrossover();
         List<Integer> parent1 = new ArrayList<Integer>(8);
         parent1.add(1);
         parent1.add(2);
@@ -51,7 +52,7 @@ public class ListOrderCrossoverTest
         parent2.add(4);
         List<List<Integer>> population = Arrays.asList(parent1, parent2);
 
-        for (int i = 0; i < 20; i++) // Do more than one cross-over to check different cross-over points.
+        for (int i = 0; i < 50; i++) // Do several cross-overs to check different cross-over points.
         {
             population = operator.apply(population, new MersenneTwisterRNG());
             for (List<Integer> offspring : population)
