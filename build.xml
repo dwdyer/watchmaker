@@ -29,10 +29,12 @@
   <property name="dist.dir" location="./dist" />
   <property name="docs.dir" location="./docs" />
   <property name="api.dir" location="${docs.dir}/api" />
+  <property name="coverage.dir" location="${docs.dir}/coverage" />
   <property name="test-results.dir" location="${docs.dir}/test-results" />
-  <property name="checkstyle-results.dir" location="${docs.dir}/checkstyle-results" />
+  <property name="checkstyle-results.dir" location="${docs.dir}/checkstyle" />
   <property name="release.dir" location="./release" />
   <property name="web.dir" location="./www" />
+  <property name="temp.dir" location="./temp" />
 
   <!-- Per-module locations. -->
   <property name="src.dir" value="src" />
@@ -162,6 +164,7 @@
     <delete dir="${docs.dir}" />
     <delete dir="${dist.dir}" />
     <delete dir="${release.dir}" />
+    <delete dir="${temp.dir}" />
     <clean.module module.name="examples" />
     <clean.module module.name="framework" />
     <clean.module module.name="maths" />
@@ -282,22 +285,54 @@
   <target name="test"
           depends="dist"
           description="Run the unit test suite.">
-    <mkdir dir="${test-results.dir}" />
+    <mkdir dir="${temp.dir}" />
+
+    <!-- Bytecode instrumentation to enable collection of test coverage data. -->
+    <taskdef resource="tasks.properties" classpathref="base.path" />
+    <cobertura-instrument todir="${temp.dir}"
+                          datafile="${temp.dir}/cobertura.ser">
+      <fileset dir="${dist.dir}" includes="**/*.jar"/>
+    </cobertura-instrument>
+
+    <!-- Run the unit tests on the instrumented classes. -->
+    <taskdef resource="testngtasks" classpathref="base.path"/>
     <path id="test.path">
       <dirset dir=".">
         <include name="**/${classes.dir}/test" />
       </dirset>
-      <fileset dir="${dist.dir}" includes="*.jar"/>
+      <fileset dir="${temp.dir}" includes="*.jar"/>
       <path refid="base.path" />
     </path>
-    <taskdef resource="testngtasks" classpathref="test.path"/>
+    <mkdir dir="${test-results.dir}" />
     <testng classpathref="test.path"
             outputdir="${test-results.dir}"
             haltonfailure="true"
             useDefaultListeners="false"
             listeners="org.uncommons.reportng.HTMLReporter">
       <xmlfileset dir="${conf.dir}" includes="testng.xml"/>
+      <sysproperty key="net.sourceforge.cobertura.datafile"
+                   file="${temp.dir}/cobertura.ser" />
     </testng>
+
+    <!-- Generate the coverage report. -->
+    <mkdir dir="${coverage.dir}" />
+    <cobertura-report format="html"
+                      destdir="${coverage.dir}"
+                      datafile="${temp.dir}/cobertura.ser">
+      <fileset dir="maths/${java.dir}/main">
+        <include name="**/*.java" />
+      </fileset>
+      <fileset dir="gui/${java.dir}/main">
+        <include name="**/*.java" />
+      </fileset>
+      <fileset dir="framework/${java.dir}/main">
+        <include name="**/*.java" />
+      </fileset>
+      <fileset dir="examples/${java.dir}/main">
+        <include name="**/*.java" />
+      </fileset>      
+    </cobertura-report>
+    
   </target>
 
 
