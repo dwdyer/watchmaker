@@ -69,12 +69,22 @@ public final class DiehardInputGenerator
     public static void generateOutputFile(Random rng,
                                           File outputFile) throws IOException
     {
-        DataOutputStream dataOutput = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
-        for (int i = 0; i < INT_COUNT; i++)
+        DataOutputStream dataOutput = null;
+        try
         {
-            dataOutput.writeInt(rng.nextInt());
+            dataOutput = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
+            for (int i = 0; i < INT_COUNT; i++)
+            {
+                dataOutput.writeInt(rng.nextInt());
+            }
+            dataOutput.flush();
         }
-        dataOutput.flush();
-        dataOutput.close();
+        finally
+        {
+            if (dataOutput != null)
+            {
+                dataOutput.close();
+            }
+        }
     }
 }

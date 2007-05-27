@@ -15,8 +15,7 @@
 // ============================================================================
 package org.uncommons.maths.random;
 
-import java.security.GeneralSecurityException;
-import java.util.Arrays;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
@@ -30,29 +29,27 @@ public class CellularAutomatonRNGTest
      * same sequence of numbers.
      */
     @Test
-    public void testRepeatability() throws GeneralSecurityException
+    public void testRepeatability()
     {
-        CellularAutomatonRNG rng = new CellularAutomatonRNG(); // Use default seeding strategy.
-        byte[] seed = rng.getSeed();
+        // Create an RNG using the default seeding strategy.
+        CellularAutomatonRNG rng = new CellularAutomatonRNG();
+        // Create second RNG using same seed.
+        CellularAutomatonRNG duplicateRNG = new CellularAutomatonRNG(rng.getSeed());
+        assert RNGTestUtils.testEquivalence(rng, duplicateRNG) : "Generated sequences do not match.";
+    }
 
-        int[] originalInts = new int[1000];
-        double[] originalDoubles = new double[1000];
-        for (int i = 0; i < 1000; i++)
-        {
-            originalInts[i] = rng.nextInt();
-            originalDoubles[i] = rng.nextDouble();
-        }
 
-        CellularAutomatonRNG duplicateRNG = new CellularAutomatonRNG(seed);
-        int[] repeatedInts = new int[1000];
-        double[] repeatedDoubles = new double[1000];
-        for (int i = 0; i < 1000; i++)
-        {
-            repeatedInts[i] = duplicateRNG.nextInt();
-            repeatedDoubles[i] = duplicateRNG.nextDouble();
-        }
-
-        assert Arrays.equals(originalInts, repeatedInts) : "Generated int sequences do not match.";
-        assert Arrays.equals(originalDoubles, repeatedDoubles) : "Generated double sequences do not match.";
+    /**
+     * Test to ensure that the output from the RNG is broadly as expected.  This will not
+     * detect the subtle statistical anomalies that would be picked up by Diehard, but it
+     * provides a simple check for major problems with the output.
+     */
+    @Test
+    public void testUniformity()
+    {
+        CellularAutomatonRNG rng = new CellularAutomatonRNG();
+        double pi = RNGTestUtils.calculateMonteCarloValueForPi(rng);
+        Reporter.log("Monte Carlo value for Pi: " + pi);
+        assert pi > 3.11 && pi < 3.17 : "Monte Carlo value for Pi is outside acceptable range.";
     }
 }

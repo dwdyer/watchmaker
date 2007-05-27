@@ -15,8 +15,6 @@
 // ============================================================================
 package org.uncommons.maths.random;
 
-import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import org.testng.annotations.Test;
 
 /**
@@ -30,29 +28,14 @@ public class JavaRNGTest
      * same sequence of numbers.
      */
     @Test
-    public void testRepeatability() throws GeneralSecurityException
+    public void testRepeatability()
     {
-        JavaRNG rng = new JavaRNG(); // Use default seeding strategy.
-        byte[] seed = rng.getSeed();
-
-        int[] originalInts = new int[1000];
-        double[] originalDoubles = new double[1000];
-        for (int i = 0; i < 1000; i++)
-        {
-            originalInts[i] = rng.nextInt();
-            originalDoubles[i] = rng.nextDouble();
-        }
-
-        JavaRNG duplicateRNG = new JavaRNG(seed);
-        int[] repeatedInts = new int[1000];
-        double[] repeatedDoubles = new double[1000];
-        for (int i = 0; i < 1000; i++)
-        {
-            repeatedInts[i] = duplicateRNG.nextInt();
-            repeatedDoubles[i] = duplicateRNG.nextDouble();
-        }
-
-        assert Arrays.equals(originalInts, repeatedInts) : "Generated int sequences do not match.";
-        assert Arrays.equals(originalDoubles, repeatedDoubles) : "Generated double sequences do not match.";
+        // Create an RNG using the default seeding strategy.
+        JavaRNG rng = new JavaRNG();
+        // Create second RNG using same seed.
+        JavaRNG duplicateRNG = new JavaRNG(rng.getSeed());
+        assert RNGTestUtils.testEquivalence(rng, duplicateRNG) : "Generated sequences do not match.";
     }
+
+    // Don't bother testing the uniformity of the output for this RNG, it's beyond our control.
 }
