@@ -43,9 +43,9 @@ public class PoissonGeneratorTest
         {
             data.addValue(generator.nextValue());
         }
-        assert Maths.approxEquals(data.getArithmeticMean(), mean, 0.25)
+        assert Maths.approxEquals(data.getArithmeticMean(), mean, 0.1)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
-        assert Maths.approxEquals(data.getStandardDeviation(), standardDeviation, 0.25)
+        assert Maths.approxEquals(data.getStandardDeviation(), standardDeviation, 0.1)
                 : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();
     }
 }

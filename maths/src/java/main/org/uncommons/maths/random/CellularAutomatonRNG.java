@@ -23,7 +23,6 @@ import org.uncommons.maths.Maths;
  * Tony Pasqualoni
  * (<a href="http://home.southernct.edu/~pasqualonia1/ca/report.html"
  * >http://home.southernct.edu/~pasqualonia1/ca/report.html</a>).
- * values.
  * @author Tony Pasqualoni (original C version).
  * @author Daniel Dyer (Java port).
  */

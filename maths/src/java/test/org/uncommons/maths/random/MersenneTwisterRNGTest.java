@@ -16,6 +16,7 @@
 package org.uncommons.maths.random;
 
 import org.testng.Reporter;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.uncommons.maths.Maths;
 
@@ -25,15 +26,25 @@ import org.uncommons.maths.Maths;
  */
 public class MersenneTwisterRNGTest
 {
+    private MersenneTwisterRNG rng;
+
+    @BeforeTest
+    public void configureRNG()
+    {
+        // Create an RNG using the default seeding strategy.
+        // This RNG is used by all of the test methods.
+        rng = new MersenneTwisterRNG();
+    }
+
     /**
      * Test to ensure that two distinct RNGs with the same seed return the
-     * same sequence of numbers.
+     * same sequence of numbers.  This method must be run before any of the
+     * other tests otherwise the state of the RNG will not be the same in the
+     * duplicate RNG.
      */
     @Test
     public void testRepeatability()
     {
-        // Create an RNG using the default seeding strategy.
-        MersenneTwisterRNG rng = new MersenneTwisterRNG();
         // Create second RNG using same seed.
         MersenneTwisterRNG duplicateRNG = new MersenneTwisterRNG(rng.getSeed());
         assert RNGTestUtils.testEquivalence(rng, duplicateRNG, 1000) : "Generated sequences do not match.";
@@ -45,10 +56,9 @@ public class MersenneTwisterRNGTest
      * detect the subtle statistical anomalies that would be picked up by Diehard, but it
      * provides a simple check for major problems with the output.
      */
-    @Test
+    @Test(dependsOnMethods = "testRepeatability")
     public void testDistribution()
     {
-        MersenneTwisterRNG rng = new MersenneTwisterRNG();
         double pi = RNGTestUtils.calculateMonteCarloValueForPi(rng, 100000);
         Reporter.log("Monte Carlo value for Pi: " + pi);
         assert Maths.approxEquals(pi, Math.PI, 0.02) : "Monte Carlo value for Pi is outside acceptable range: " + pi;
@@ -60,12 +70,11 @@ public class MersenneTwisterRNGTest
      * detect the subtle statistical anomalies that would be picked up by Diehard, but it
      * provides a simple check for major problems with the output.
      */
-    @Test
+    @Test(dependsOnMethods = "testRepeatability")
     public void testStandardDeviation()
     {
         // Expected standard deviation for a uniformly distributed population of values in the range 0..n
         // approaches n/sqrt(12).
-        MersenneTwisterRNG rng = new MersenneTwisterRNG();
         int n = 100;
         double observedSD = RNGTestUtils.calculateSampleStandardDeviation(rng, n, 10000);
         double expectedSD = 100 / Math.sqrt(12);

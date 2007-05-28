@@ -33,7 +33,7 @@ public class BinomialGeneratorTest
     @Test
     public void testDistribution()
     {
-        final int n = 30;
+        final int n = 20;
         final double p = 0.163;
         final double mean = n * p;
         final double standardDeviation = Math.sqrt(n * p * (1 - p));

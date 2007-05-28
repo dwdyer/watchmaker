@@ -17,6 +17,7 @@ package org.uncommons.maths.random;
 
 import java.security.GeneralSecurityException;
 import org.testng.Reporter;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.uncommons.maths.Maths;
 
@@ -26,15 +27,26 @@ import org.uncommons.maths.Maths;
  */
 public class AESCounterRNGTest
 {
+    private AESCounterRNG rng;
+
+    @BeforeTest
+    public void configureRNG() throws GeneralSecurityException
+    {
+        // Create an RNG using the default seeding strategy.
+        // This RNG is used by all of the test methods.
+        rng = new AESCounterRNG();
+    }
+
+
     /**
      * Test to ensure that two distinct RNGs with the same seed return the
-     * same sequence of numbers. 
+     * same sequence of numbers.  This method must be run before any of the
+     * other tests otherwise the state of the RNG will not be the same in the
+     * duplicate RNG.
      */
     @Test
     public void testRepeatability() throws GeneralSecurityException
     {
-        // Create an RNG using the default seeding strategy.
-        AESCounterRNG rng = new AESCounterRNG();
         // Create second RNG using same seed.
         AESCounterRNG duplicateRNG = new AESCounterRNG(rng.getSeed());
         assert RNGTestUtils.testEquivalence(rng, duplicateRNG, 1000) : "Generated sequences do not match.";
@@ -46,10 +58,9 @@ public class AESCounterRNGTest
      * detect the subtle statistical anomalies that would be picked up by Diehard, but it
      * provides a simple check for major problems with the output.
      */
-    @Test
-    public void testDistribution() throws GeneralSecurityException
+    @Test(dependsOnMethods = "testRepeatability")
+    public void testDistribution()
     {
-        AESCounterRNG rng = new AESCounterRNG();
         double pi = RNGTestUtils.calculateMonteCarloValueForPi(rng, 100000);
         Reporter.log("Monte Carlo value for Pi: " + pi);
         assert Maths.approxEquals(pi, Math.PI, 0.02) : "Monte Carlo value for Pi is outside acceptable range:" + pi;
@@ -61,12 +72,11 @@ public class AESCounterRNGTest
      * detect the subtle statistical anomalies that would be picked up by Diehard, but it
      * provides a simple check for major problems with the output.
      */
-    @Test
-    public void testStandardDeviation() throws GeneralSecurityException
+    @Test(dependsOnMethods = "testRepeatability")
+    public void testStandardDeviation()
     {
         // Expected standard deviation for a uniformly distributed population of values in the range 0..n
         // approaches n/sqrt(12).
-        AESCounterRNG rng = new AESCounterRNG();
         int n = 100;
         double observedSD = RNGTestUtils.calculateSampleStandardDeviation(rng, n, 10000);
         double expectedSD = 100 / Math.sqrt(12);
