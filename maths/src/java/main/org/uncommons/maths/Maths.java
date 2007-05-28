@@ -85,13 +85,18 @@ public final class Maths
 
     /**
      * Calculate the first argument raised to the power of the second.
+     * This method only supports non-negative powers.
      * @param value The number to be raised.
-     * @param power The exponent.
+     * @param power The exponent (must be positive).
      * @return {@code value} raised to {@code power}.
      */
     public static long raiseToPower(int value, int power)
     {
-        int result = 1;
+        if (power < 0)
+        {
+            throw new IllegalArgumentException("This method does not support negative powers.");
+        }
+        long result = 1;
         for (int i = 0; i < power; i++)
         {
             result *= value;
@@ -110,6 +115,16 @@ public final class Maths
     {
         // Use natural logarithms and change the base.
         return Math.log(arg) / Math.log(base);
+    }
+
+
+    /**
+     * Checks that two values are approximately equal (plus or minus a specified tolerance).
+     * @return true if the values are approximately equal, false otherwise.
+     */
+    public static boolean approxEquals(double value1, double value2, double tolerance)
+    {
+        return Math.abs(value1 - value2) <= tolerance;
     }
 
 

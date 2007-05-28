@@ -32,6 +32,18 @@ public final class PopulationDataSet extends AbstractDataSet
 
 
     /**
+     * Creates an empty data set with the specified initial capacity.
+     * @param capacity The initial capacity for the data set (this number
+     * of values will be able to be added without needing to resize the
+     * internal data storage).
+     */
+    public PopulationDataSet(int capacity)
+    {
+        super(capacity);
+    }
+
+
+    /**
      * Creates a data set and populates it with the specified values.
      * @param dataSet The values to add to this data set.
      */

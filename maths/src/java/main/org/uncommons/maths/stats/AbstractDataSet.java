@@ -39,7 +39,19 @@ public abstract class AbstractDataSet implements DataSet
      */
     protected AbstractDataSet()
     {
-        this.dataSet = new double[DEFAULT_CAPACITY];
+        this(DEFAULT_CAPACITY);
+    }
+
+
+    /**
+     * Creates an empty data set with the specified initial capacity.
+     * @param capacity The initial capacity for the data set (this number
+     * of values will be able to be added without needing to resize the
+     * internal data storage). 
+     */
+    protected AbstractDataSet(int capacity)
+    {
+        this.dataSet = new double[capacity];
         this.dataSetSize = 0;
     }
 

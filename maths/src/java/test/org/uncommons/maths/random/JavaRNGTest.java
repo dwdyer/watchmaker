@@ -34,8 +34,8 @@ public class JavaRNGTest
         JavaRNG rng = new JavaRNG();
         // Create second RNG using same seed.
         JavaRNG duplicateRNG = new JavaRNG(rng.getSeed());
-        assert RNGTestUtils.testEquivalence(rng, duplicateRNG) : "Generated sequences do not match.";
+        assert RNGTestUtils.testEquivalence(rng, duplicateRNG, 1000) : "Generated sequences do not match.";
     }
 
-    // Don't bother testing the uniformity of the output for this RNG, it's beyond our control.
+    // Don't bother testing the distribution of the output for this RNG, it's beyond our control.
 }

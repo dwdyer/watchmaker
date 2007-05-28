@@ -17,6 +17,7 @@ package org.uncommons.maths.random;
 
 import org.testng.Reporter;
 import org.testng.annotations.Test;
+import org.uncommons.maths.Maths;
 
 /**
  * Unit test for the cellular automaton RNG.
@@ -35,7 +36,7 @@ public class CellularAutomatonRNGTest
         CellularAutomatonRNG rng = new CellularAutomatonRNG();
         // Create second RNG using same seed.
         CellularAutomatonRNG duplicateRNG = new CellularAutomatonRNG(rng.getSeed());
-        assert RNGTestUtils.testEquivalence(rng, duplicateRNG) : "Generated sequences do not match.";
+        assert RNGTestUtils.testEquivalence(rng, duplicateRNG, 1000) : "Generated sequences do not match.";
     }
 
 
@@ -45,11 +46,30 @@ public class CellularAutomatonRNGTest
      * provides a simple check for major problems with the output.
      */
     @Test
-    public void testUniformity()
+    public void testDistribution()
     {
         CellularAutomatonRNG rng = new CellularAutomatonRNG();
-        double pi = RNGTestUtils.calculateMonteCarloValueForPi(rng);
+        double pi = RNGTestUtils.calculateMonteCarloValueForPi(rng, 100000);
         Reporter.log("Monte Carlo value for Pi: " + pi);
-        assert pi > 3.11 && pi < 3.17 : "Monte Carlo value for Pi is outside acceptable range.";
+        assert Maths.approxEquals(pi, Math.PI, 0.02) : "Monte Carlo value for Pi is outside acceptable range:" + pi;
+    }
+
+
+    /**
+     * Test to ensure that the output from the RNG is broadly as expected.  This will not
+     * detect the subtle statistical anomalies that would be picked up by Diehard, but it
+     * provides a simple check for major problems with the output.
+     */
+    @Test
+    public void testStandardDeviation()
+    {
+        // Expected standard deviation for a uniformly distributed population of values in the range 0..n
+        // approaches n/sqrt(12).
+        CellularAutomatonRNG rng = new CellularAutomatonRNG();
+        int n = 100;
+        double observedSD = RNGTestUtils.calculateSampleStandardDeviation(rng, n, 10000);
+        double expectedSD = n / Math.sqrt(12);
+        Reporter.log("Expected SD: " + expectedSD + ", observed SD: " + observedSD);
+        assert Maths.approxEquals(observedSD, expectedSD, 0.3) : "Standard deviation is outside acceptable range: " + observedSD;
     }
 }
