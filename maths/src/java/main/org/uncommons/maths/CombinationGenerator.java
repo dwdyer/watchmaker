@@ -164,7 +164,7 @@ public class CombinationGenerator<T>
      */
     public void nextCombinationAsArray(T[] destination)
     {
-        if (destination.length != elements.length)
+        if (destination.length != combinationIndices.length)
         {
             throw new IllegalArgumentException("Destination array must be the same length as combinations.");
         }

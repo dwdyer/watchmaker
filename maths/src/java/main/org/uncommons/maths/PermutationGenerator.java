@@ -244,7 +244,7 @@ public class PermutationGenerator<T>
                 k--;
             }
 
-            // Interchange permutationIndices[j] and permutationIndices[k]
+            // Interchange permutation indices.
             int temp = permutationIndices[k];
             permutationIndices[k] = permutationIndices[j];
             permutationIndices[j] = temp;

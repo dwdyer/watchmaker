@@ -81,6 +81,6 @@ public class AESCounterRNGTest
         double observedSD = RNGTestUtils.calculateSampleStandardDeviation(rng, n, 10000);
         double expectedSD = 100 / Math.sqrt(12);
         Reporter.log("Expected SD: " + expectedSD + ", observed SD: " + observedSD);
-        assert Maths.approxEquals(observedSD, expectedSD, 0.3) : "Standard deviation is outside acceptable range: " + observedSD;
+        assert Maths.approxEquals(observedSD, expectedSD, 0.5) : "Standard deviation is outside acceptable range: " + observedSD;
     }
 }
