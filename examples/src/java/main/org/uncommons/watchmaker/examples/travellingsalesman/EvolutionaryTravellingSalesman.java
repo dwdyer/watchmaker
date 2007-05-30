@@ -143,7 +143,10 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
         {
             public void populationUpdate(PopulationData<List<String>> data)
             {
-                progressListener.updateProgress(((double) data.getGenerationNumber() + 1) / generationCount * 100);
+                if (progressListener != null)
+                {
+                    progressListener.updateProgress(((double) data.getGenerationNumber() + 1) / generationCount * 100);
+                }
             }
         });
         return engine.evolve(populationSize,
