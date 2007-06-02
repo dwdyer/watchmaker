@@ -1,0 +1,75 @@
+// ============================================================================
+//   Copyright 2006, 2007 Daniel W. Dyer
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// ============================================================================
+package org.uncommons.watchmaker.examples.sudoku;
+
+import java.util.HashSet;
+import java.util.Set;
+import org.uncommons.watchmaker.framework.FitnessEvaluator;
+
+/**
+ * {@link org.uncommons.watchmaker.framework.FitnessEvaluator} for potential Sudoku
+ * solutions.  Counts the number of duplicate values in rows, columns and sub-grids.
+ * The fitness score is the total number of duplicate values.  Therefore, a fitness
+ * score of zero indicates a perfect solution. 
+ * @author Daniel Dyer
+ */
+public class SudokuEvaluator implements FitnessEvaluator<Sudoku>
+{
+    public double getFitness(Sudoku candidate)
+    {
+        // We can assume that there are no duplicates in any rows because
+        // the candidate factory and evolutionary operators that we use do
+        // not permit rows to contain duplicates.
+
+        int fitness = 0;
+
+        // Check columns for duplicates.
+        Set<Integer> values = new HashSet<Integer>();
+        for (int column = 0; column < 9; column++)
+        {
+            for (int row = 0; row < 9; row++)
+            {
+                values.add(candidate.getValue(row, column));
+            }
+            fitness += (9 - values.size());
+            values.clear();
+        }
+
+        // Check sub-grids for duplicates.
+        for (int band = 0; band < 9; band += 3)
+        {
+            for (int stack = 0; stack < 9; stack+= 3)
+            {
+                for (int row = band; row < band + 3; row++)
+                {
+                    for (int column = stack; column < stack + 3; column++)
+                    {
+                        values.add(candidate.getValue(row, column));
+                    }
+                }
+                fitness += (9 - values.size());
+                values.clear();
+            }
+        }
+        return fitness;
+    }
+
+
+    public boolean isNatural()
+    {
+        return false;
+    }
+}
