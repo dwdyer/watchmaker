@@ -91,30 +91,32 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
         {
             newRows[i] = new Sudoku.Cell[9];
             System.arraycopy(sudoku.getRow(i), 0, newRows[i], 0, 9);
+        }
 
-            int mutationCount = Math.abs(mutationCountVariable.nextValue());
-            for (int j = 0; j < mutationCount; j++)
+        int mutationCount = Math.abs(mutationCountVariable.nextValue());
+        while (mutationCount > 0)
+        {
+            int row = rng.nextInt(9);
+            int fromIndex = rng.nextInt(9);
+            int mutationAmount = mutationAmountVariable.nextValue();
+            int toIndex = (fromIndex + mutationAmount) % 9;
+            if (toIndex < 0)
             {
-                int fromIndex = rng.nextInt(9);
-                int mutationAmount = mutationAmountVariable.nextValue();
-                int toIndex = (fromIndex + mutationAmount) % 9;
-                if (toIndex < 0)
-                {
-                    toIndex += 9;
-                }
-
-                // Make sure we're not trying to mutate a 'given'.
-                if (!newRows[i][fromIndex].isFixed() && !newRows[i][toIndex].isFixed())
-                {
-                    // Swap the randomly selected element with the one that is the
-                    // specified displacement distance away.
-                    Sudoku.Cell temp = newRows[i][fromIndex];
-                    newRows[i][fromIndex] = newRows[i][toIndex];
-                    newRows[i][toIndex] = temp;
-                }
+                toIndex += 9;
             }
 
+            // Make sure we're not trying to mutate a 'given'.
+            if (!newRows[row][fromIndex].isFixed() && !newRows[row][toIndex].isFixed())
+            {
+                // Swap the randomly selected element with the one that is the
+                // specified displacement distance away.
+                Sudoku.Cell temp = newRows[row][fromIndex];
+                newRows[row][fromIndex] = newRows[row][toIndex];
+                newRows[row][toIndex] = temp;
+                --mutationCount;
+            }
         }
+
         return new Sudoku(newRows);
     }
 }

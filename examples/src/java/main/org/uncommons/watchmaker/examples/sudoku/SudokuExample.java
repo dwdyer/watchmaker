@@ -47,7 +47,7 @@ public class SudokuExample
         // y rows from parent2).
         operators.add(new SudokuVerticalCrossover());
         // Mutate the order of cells within individual rows.
-        operators.add(new SudokuRowMutation(new PoissonGenerator(0.75d, rng),
+        operators.add(new SudokuRowMutation(new PoissonGenerator(2, rng),
                                             new DiscreteUniformGenerator(1, 8, rng)));
 
         EvolutionaryOperator<Sudoku> pipeline = new EvolutionPipeline<Sudoku>(operators);
