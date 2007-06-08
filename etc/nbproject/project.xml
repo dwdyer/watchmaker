@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.ant.freeform</type>
+    <configuration>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
+            <name>watchmaker</name>
+        </general-data>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
+            <!-- Do not use Project Properties customizer when editing this file manually. -->
+            <name>watchmaker</name>
+            <properties>
+                <property name="project.dir">..</property>
+                <property name="ant.script">${project.dir}/build.xml</property>
+            </properties>
+            <folders>
+                <source-folder>
+                    <label>watchmaker</label>
+                    <location>${project.dir}</location>
+                </source-folder>
+                <source-folder>
+                    <label>framework/src/java/main</label>
+                    <type>java</type>
+                    <location>${project.dir}/framework/src/java/main</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>maths/src/java/main</label>
+                    <type>java</type>
+                    <location>${project.dir}/maths/src/java/main</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>gui/src/java/main</label>
+                    <type>java</type>
+                    <location>${project.dir}/gui/src/java/main</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>examples/src/java/main</label>
+                    <type>java</type>
+                    <location>${project.dir}/examples/src/java/main</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>framework/src/java/test</label>
+                    <type>java</type>
+                    <location>${project.dir}/framework/src/java/test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>maths/src/java/test</label>
+                    <type>java</type>
+                    <location>${project.dir}/maths/src/java/test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>gui/src/java/test</label>
+                    <type>java</type>
+                    <location>${project.dir}/gui/src/java/test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>examples/src/java/test</label>
+                    <type>java</type>
+                    <location>${project.dir}/examples/src/java/test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+            </folders>
+            <ide-actions>
+                <action name="build">
+                    <script>${ant.script}</script>
+                    <target>dist</target>
+                </action>
+                <action name="clean">
+                    <script>${ant.script}</script>
+                    <target>clean</target>
+                </action>
+                <action name="javadoc">
+                    <script>${ant.script}</script>
+                    <target>docs</target>
+                </action>
+                <action name="test">
+                    <script>${ant.script}</script>
+                    <target>test</target>
+                </action>
+                <action name="rebuild">
+                    <script>${ant.script}</script>
+                    <target>clean</target>
+                    <target>dist</target>
+                </action>
+            </ide-actions>
+            <export>
+                <type>jar</type>
+                <location>${project.dir}/framework/build/watchmaker-framework.jar</location>
+                <script>${ant.script}</script>
+                <build-target>dist</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>${project.dir}/maths/build/uncommons-maths.jar</location>
+                <script>${ant.script}</script>
+                <build-target>dist</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>${project.dir}/examples/build/watchmaker-examples.jar</location>
+                <script>${ant.script}</script>
+                <build-target>dist</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>${project.dir}/gui/build/uncommons-gui.jar</location>
+                <script>${ant.script}</script>
+                <build-target>dist</build-target>
+            </export>
+            <export>
+                <type>folder</type>
+                <location>${project.dir}/framework/build/classes/test</location>
+                <script>${ant.script}</script>
+                <build-target>dist</build-target>
+            </export>
+            <export>
+                <type>folder</type>
+                <location>${project.dir}/maths/build/classes/test</location>
+                <script>${ant.script}</script>
+                <build-target>dist</build-target>
+            </export>
+            <export>
+                <type>folder</type>
+                <location>${project.dir}/gui/build/classes/test</location>
+                <script>${ant.script}</script>
+                <build-target>dist</build-target>
+            </export>
+            <export>
+                <type>folder</type>
+                <location>${project.dir}/gui/build/classes/test</location>
+                <script>${ant.script}</script>
+                <build-target>dist</build-target>
+            </export>
+            <view>
+                <items>
+                    <source-folder style="packages">
+                        <label>framework/src/java/main</label>
+                        <location>${project.dir}/framework/src/java/main</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>maths/src/java/main</label>
+                        <location>${project.dir}/maths/src/java/main</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>gui/src/java/main</label>
+                        <location>${project.dir}/gui/src/java/main</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>examples/src/java/main</label>
+                        <location>${project.dir}/examples/src/java/main</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>framework/src/java/test</label>
+                        <location>${project.dir}/framework/src/java/test</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>maths/src/java/test</label>
+                        <location>${project.dir}/maths/src/java/test</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>gui/src/java/test</label>
+                        <location>${project.dir}/gui/src/java/test</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>examples/src/java/test</label>
+                        <location>${project.dir}/examples/src/java/test</location>
+                    </source-folder>
+                    <source-file>
+                        <location>${ant.script}</location>
+                    </source-file>
+                </items>
+                <context-menu>
+                    <ide-action name="build"/>
+                    <ide-action name="clean"/>
+                    <ide-action name="javadoc"/>
+                    <ide-action name="test"/>
+                    <ide-action name="rebuild"/>
+                </context-menu>
+            </view>
+            <subprojects/>
+        </general-data>
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/2">
+            <compilation-unit>
+                <package-root>${project.dir}/framework/src/java/main</package-root>
+                <classpath mode="compile">${project.dir}/maths/build/uncommons-maths.jar:${project.dir}/gui/build/uncommons-gui.jar</classpath>
+                <built-to>${project.dir}/framework/build/watchmaker-framework.jar</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>${project.dir}/maths/src/java/main</package-root>
+                <built-to>${project.dir}/maths/build/uncommons-maths.jar</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>${project.dir}/examples/src/java/main</package-root>
+                <classpath mode="compile">${project.dir}/framework/build/watchmaker-framework.jar:${project.dir}/maths/build/uncommons-maths.jar:${project.dir}/gui/build/uncommons-gui.jar</classpath>
+                <built-to>${project.dir}/examples/build/watchmaker-examples.jar</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>${project.dir}/gui/src/java/main</package-root>
+                <built-to>${project.dir}/gui/build/uncommons-gui.jar</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>${project.dir}/framework/src/java/test</package-root>
+                <unit-tests/>
+                <classpath mode="compile">${project.dir}/lib/compiletime/testng-5.5beta-jdk15.jar:${project.dir}/framework/build/watchmaker-framework.jar:${project.dir}/maths/build/uncommons-maths.jar</classpath>
+                <built-to>${project.dir}/framework/build/classes/test</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>${project.dir}/maths/src/java/test</package-root>
+                <unit-tests/>
+                <classpath mode="compile">${project.dir}/lib/compiletime/testng-5.5beta-jdk15.jar:${project.dir}/maths/build/uncommons-maths.jar</classpath>
+                <built-to>${project.dir}/maths/build/classes/test</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>${project.dir}/gui/src/java/test</package-root>
+                <unit-tests/>
+                <classpath mode="compile">${project.dir}/lib/compiletime/testng-5.5beta-jdk15.jar:${project.dir}/gui/build/uncommons-gui.jar</classpath>
+                <built-to>${project.dir}/gui/build/classes/test</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>${project.dir}/examples/src/java/test</package-root>
+                <unit-tests/>
+                <classpath mode="compile">${project.dir}/lib/compiletime/testng-5.5beta-jdk15.jar:${project.dir}/examples/build/watchmaker-examples.jar:${project.dir}/framework/build/watchmaker-framework.jar:${project.dir}/maths/build/uncommons-maths.jar</classpath>
+                <built-to>${project.dir}/gui/build/classes/test</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+        </java-data>
+    </configuration>
+</project>

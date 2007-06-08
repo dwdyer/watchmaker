@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4" relativePaths="true" type="JAVA_MODULE">
+  <component name="ModuleRootManager" />
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../../examples/build/classes/main" />
+    <exclude-output />
+    <output-test url="file://$MODULE_DIR$/../../examples/build/classes/test" />
+    <content url="file://$MODULE_DIR$/../../examples">
+      <sourceFolder url="file://$MODULE_DIR$/../../examples/src/java/main" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../examples/src/java/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../examples/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="framework" />
+    <orderEntry type="module" module-name="maths" />
+    <orderEntry type="module" module-name="gui" />
+    <orderEntry type="library" name="testng-5.5beta-jdk15" level="project" />
+    <orderEntryProperties />
+  </component>
+</module>
+

@@ -30,7 +30,7 @@ public class SudokuEvaluatorTest
     @Test
     public void testCorrectSolution()
     {
-        Sudoku sudoku = createSudoku(new int[][]
+        Sudoku sudoku = SudokuTestUtils.createSudoku(new int[][]
         {
             {1, 2, 8, 5, 4, 3, 9, 6, 7},
             {7, 6, 4, 9, 2, 8, 5, 1, 3},
@@ -56,7 +56,7 @@ public class SudokuEvaluatorTest
     {
         // This sudoku as 4 invalid columns (0, 1, 3 and 5) and 2 invalid
         // sub-grids (bottom-left and bottom-center).
-        Sudoku sudoku = createSudoku(new int[][]
+        Sudoku sudoku = SudokuTestUtils.createSudoku(new int[][]
         {
             {2, 1, 8, 5, 4, 3, 9, 6, 7},
             {7, 6, 4, 9, 2, 8, 5, 1, 3},
@@ -74,20 +74,4 @@ public class SudokuEvaluatorTest
     }
 
 
-    /**
-     * Convenience method for creating a Sudoku object from a 2D array of ints.
-     * Ignores which cells are fixed and which are not.
-     */
-    private Sudoku createSudoku(int[][] values)
-    {
-        Sudoku.Cell[][] cells = new Sudoku.Cell[9][9];
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                cells[i][j] = new Sudoku.Cell(values[i][j], false);
-            }
-        }
-        return new Sudoku(cells);
-    }
 }

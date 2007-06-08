@@ -50,8 +50,8 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
      */
     public SudokuRowMutation(int mutationCount, int mutationAmount)
     {
-        this.mutationCountVariable =  new ConstantGenerator<Integer>(mutationCount);
-        this.mutationAmountVariable = new ConstantGenerator<Integer>(mutationAmount);
+        this(new ConstantGenerator<Integer>(mutationCount),
+             new ConstantGenerator<Integer>(mutationAmount));
     }
 
 
@@ -83,26 +83,27 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
         return mutatedCandidates;
     }
 
+    
     private Sudoku mutate(Sudoku sudoku, Random rng)
     {
-        Sudoku.Cell[][] newRows = new Sudoku.Cell[9][];
+        Sudoku.Cell[][] newRows = new Sudoku.Cell[Sudoku.SIZE][];
         // Mutate each row in turn.
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < Sudoku.SIZE; i++)
         {
-            newRows[i] = new Sudoku.Cell[9];
-            System.arraycopy(sudoku.getRow(i), 0, newRows[i], 0, 9);
+            newRows[i] = new Sudoku.Cell[Sudoku.SIZE];
+            System.arraycopy(sudoku.getRow(i), 0, newRows[i], 0, Sudoku.SIZE);
         }
 
         int mutationCount = Math.abs(mutationCountVariable.nextValue());
         while (mutationCount > 0)
         {
-            int row = rng.nextInt(9);
-            int fromIndex = rng.nextInt(9);
+            int row = rng.nextInt(Sudoku.SIZE);
+            int fromIndex = rng.nextInt(Sudoku.SIZE);
             int mutationAmount = mutationAmountVariable.nextValue();
-            int toIndex = (fromIndex + mutationAmount) % 9;
+            int toIndex = (fromIndex + mutationAmount) % Sudoku.SIZE;
             if (toIndex < 0)
             {
-                toIndex += 9;
+                toIndex += Sudoku.SIZE;
             }
 
             // Make sure we're not trying to mutate a 'given'.

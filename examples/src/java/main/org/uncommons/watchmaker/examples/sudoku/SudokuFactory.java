@@ -44,13 +44,13 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
 
     protected Sudoku generateRandomCandidate(Random rng)
     {
-        List<List<Integer>> nonFixedValues = new ArrayList<List<Integer>>(9);
-        for (int i = 0; i < 9; i++)
+        List<List<Integer>> nonFixedValues = new ArrayList<List<Integer>>(Sudoku.SIZE);
+        for (int i = 0; i < Sudoku.SIZE; i++)
         {
             nonFixedValues.add(new ArrayList<Integer>(values));
         }
 
-        Sudoku.Cell[][] rows = new Sudoku.Cell[9][9];
+        Sudoku.Cell[][] rows = new Sudoku.Cell[Sudoku.SIZE][Sudoku.SIZE];
         for (Given given : givens)
         {
             rows[given.getRow()][given.getColumn()] = new Sudoku.Cell(given.getValue(), true);

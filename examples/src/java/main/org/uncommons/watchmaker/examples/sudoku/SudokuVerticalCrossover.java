@@ -52,23 +52,22 @@ public class SudokuVerticalCrossover extends AbstractCrossover<Sudoku>
                                           int numberOfCrossoverPoints,
                                           Random rng)
     {
-        // Create the most specific-type arrays possible.
-        Sudoku.Cell[][] offspring1 = new Sudoku.Cell[9][];
-        Sudoku.Cell[][] offspring2 = new Sudoku.Cell[9][];
-        for (int i = 0; i < 9; i++)
+        Sudoku.Cell[][] offspring1 = new Sudoku.Cell[Sudoku.SIZE][];
+        Sudoku.Cell[][] offspring2 = new Sudoku.Cell[Sudoku.SIZE][];
+        for (int i = 0; i < Sudoku.SIZE; i++)
         {
-            offspring1[i] = parent1.getCells()[i].clone();
-            offspring2[i] = parent2.getCells()[i].clone();
+            offspring1[i] = parent1.getRow(i);
+            offspring2[i] = parent2.getRow(i);
         }
         
         // Apply as many cross-overs as required.
-        Sudoku.Cell[][] temp = new Sudoku.Cell[9][];
+        Sudoku.Cell[][] temp = new Sudoku.Cell[Sudoku.SIZE][];
         for (int i = 0; i < numberOfCrossoverPoints; i++)
         {
             // Cross-over index is always greater than zero and less than
             // the length of the parent so that we always pick a point that
             // will result in a meaningful cross-over.
-            int crossoverIndex = (1 + rng.nextInt(8));
+            int crossoverIndex = (1 + rng.nextInt(Sudoku.SIZE - 1));
             System.arraycopy(offspring1, 0, temp, 0, crossoverIndex);
             System.arraycopy(offspring2, 0, offspring1, 0, crossoverIndex);
             System.arraycopy(temp, 0, offspring2, 0, crossoverIndex);

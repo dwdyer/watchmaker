@@ -21,11 +21,27 @@ package org.uncommons.watchmaker.examples.sudoku;
  */
 public final class Sudoku
 {
+    /** The dimensions (in cells) of the puzzle square. */
+    public static final int SIZE = 9;
+    private static final int MIN_VALUE = 1;
+    private static final int MAX_VALUE = SIZE;
+
     private final Cell[][] cells;
 
 
+    /**
+     * Creates a sudoku solution from a 2-dimensional array of cells.
+     */
     public Sudoku(Cell[][] cells)
     {
+        if (cells.length != SIZE)
+        {
+            throw new IllegalArgumentException("Sudoku must have 9 rows.");
+        }
+        if (cells[0].length != SIZE) // Should really check all rows because the array may not be square.
+        {
+            throw new IllegalArgumentException("Sudoku must have 9 columns.");
+        }
         this.cells = cells;
     }
 
@@ -42,18 +58,18 @@ public final class Sudoku
     }
 
 
+    /**
+     * Returns an array of cells that make up a row.  The array
+     * returned is a clone of the underlying data structure and
+     * therefore can be modified without affecting this object.
+     * @return A row of cells from this Sudoku grid.
+     */
     public Cell[] getRow(int row)
     {
-        return cells[row];
+        return cells[row].clone();
     }
 
 
-    public Cell[][] getCells()
-    {
-        return cells;
-    }
-
-    
     @Override
     public String toString()
     {
@@ -82,7 +98,7 @@ public final class Sudoku
 
         public Cell(int value, boolean fixed)
         {
-            if (value < 1 || value > 9)
+            if (value < MIN_VALUE || value > MAX_VALUE)
             {
                 throw new IllegalArgumentException("Value must be between 1 and 9.");
             }
