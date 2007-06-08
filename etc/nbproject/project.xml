@@ -211,28 +211,28 @@
             <compilation-unit>
                 <package-root>${project.dir}/framework/src/java/test</package-root>
                 <unit-tests/>
-                <classpath mode="compile">${project.dir}/lib/compiletime/testng-5.5beta-jdk15.jar:${project.dir}/framework/build/watchmaker-framework.jar:${project.dir}/maths/build/uncommons-maths.jar</classpath>
+                <classpath mode="compile">${project.dir}/lib/compiletime/testng/testng-5.6-jdk15.jar:${project.dir}/framework/build/watchmaker-framework.jar:${project.dir}/maths/build/uncommons-maths.jar</classpath>
                 <built-to>${project.dir}/framework/build/classes/test</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
             <compilation-unit>
                 <package-root>${project.dir}/maths/src/java/test</package-root>
                 <unit-tests/>
-                <classpath mode="compile">${project.dir}/lib/compiletime/testng-5.5beta-jdk15.jar:${project.dir}/maths/build/uncommons-maths.jar</classpath>
+                <classpath mode="compile">${project.dir}/lib/compiletime/testng/testng-5.6-jdk15.jar:${project.dir}/maths/build/uncommons-maths.jar</classpath>
                 <built-to>${project.dir}/maths/build/classes/test</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
             <compilation-unit>
                 <package-root>${project.dir}/gui/src/java/test</package-root>
                 <unit-tests/>
-                <classpath mode="compile">${project.dir}/lib/compiletime/testng-5.5beta-jdk15.jar:${project.dir}/gui/build/uncommons-gui.jar</classpath>
+                <classpath mode="compile">${project.dir}/lib/compiletime/testng/testng-5.6-jdk15.jar:${project.dir}/gui/build/uncommons-gui.jar</classpath>
                 <built-to>${project.dir}/gui/build/classes/test</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
             <compilation-unit>
                 <package-root>${project.dir}/examples/src/java/test</package-root>
                 <unit-tests/>
-                <classpath mode="compile">${project.dir}/lib/compiletime/testng-5.5beta-jdk15.jar:${project.dir}/examples/build/watchmaker-examples.jar:${project.dir}/framework/build/watchmaker-framework.jar:${project.dir}/maths/build/uncommons-maths.jar</classpath>
+                <classpath mode="compile">${project.dir}/lib/compiletime/testng/testng-5.6-jdk15.jar:${project.dir}/examples/build/watchmaker-examples.jar:${project.dir}/framework/build/watchmaker-framework.jar:${project.dir}/maths/build/uncommons-maths.jar</classpath>
                 <built-to>${project.dir}/gui/build/classes/test</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>

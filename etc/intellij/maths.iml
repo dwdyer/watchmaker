@@ -12,7 +12,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="testng-5.5beta-jdk15" level="project" />
+    <orderEntry type="library" name="testng-5.6-jdk15" level="project" />
     <orderEntryProperties />
   </component>
 </module>
