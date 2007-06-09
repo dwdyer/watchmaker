@@ -24,7 +24,7 @@ import org.uncommons.maths.stats.SampleDataSet;
  * Unit test for the normally-distributed number generator.
  * @author Daniel Dyer
  */
-public class GuassianGeneratorTest
+public class GaussianGeneratorTest
 {
     /**
      * Check that the observed mean and standard deviation are consistent
@@ -46,7 +46,7 @@ public class GuassianGeneratorTest
         }
         assert Maths.approxEquals(data.getArithmeticMean(), mean, 0.5)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
-        assert Maths.approxEquals(data.getStandardDeviation(), standardDeviation, 0.25)
+        assert Maths.approxEquals(data.getStandardDeviation(), standardDeviation, 0.5)
                 : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();
     }
 }

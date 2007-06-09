@@ -36,6 +36,11 @@ public class BitStringMutation implements EvolutionaryOperator<BitString>
      */
     public BitStringMutation(double mutationProbability)
     {
+        if (mutationProbability <= 0 || mutationProbability > 1)
+        {
+            throw new IllegalArgumentException("Mutation probability must be greater than "
+                                               + "zero and less than or equal to one.");
+        }
         this.mutationProbability = mutationProbability;
     }
 

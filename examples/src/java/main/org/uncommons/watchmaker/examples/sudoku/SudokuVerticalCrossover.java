@@ -31,7 +31,7 @@ public class SudokuVerticalCrossover extends AbstractCrossover<Sudoku>
 {
     public SudokuVerticalCrossover()
     {
-        super(1);
+        this(1);
     }
 
 

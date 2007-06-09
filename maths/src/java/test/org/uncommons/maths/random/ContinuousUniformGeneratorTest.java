@@ -51,7 +51,7 @@ public class ContinuousUniformGeneratorTest
         }
         assert Maths.approxEquals(data.getArithmeticMean(), mean, 3)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
-        assert Maths.approxEquals(data.getStandardDeviation(), standardDeviation, 1.5)
+        assert Maths.approxEquals(data.getStandardDeviation(), standardDeviation, 2)
                 : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();
     }
 

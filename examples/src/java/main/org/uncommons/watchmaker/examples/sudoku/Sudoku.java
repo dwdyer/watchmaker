@@ -31,6 +31,7 @@ public final class Sudoku
 
     /**
      * Creates a sudoku solution from a 2-dimensional array of cells.
+     * @param cells The cells that make-up this Sudoku grid.
      */
     public Sudoku(Cell[][] cells)
     {
@@ -62,6 +63,7 @@ public final class Sudoku
      * Returns an array of cells that make up a row.  The array
      * returned is a clone of the underlying data structure and
      * therefore can be modified without affecting this object.
+     * @param row The index of the row to return.
      * @return A row of cells from this Sudoku grid.
      */
     public Cell[] getRow(int row)
@@ -106,10 +108,12 @@ public final class Sudoku
             this.fixed = fixed;
         }
 
+
         public int getValue()
         {
             return value;
         }
+
 
         public boolean isFixed()
         {
