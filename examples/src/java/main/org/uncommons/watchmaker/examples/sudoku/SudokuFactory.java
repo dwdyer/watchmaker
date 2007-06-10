@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 
 /**
@@ -34,31 +33,56 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
 {
     private static final List<Integer> values = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-    private final Set<Given> givens;
+    private final Sudoku.Cell[][] template;
+    private final List<List<Integer>> nonFixedValues = new ArrayList<List<Integer>>(Sudoku.SIZE);
 
-    public SudokuFactory(Set<Given> givens)
+    public SudokuFactory(String... pattern)
     {
-        this.givens = givens;
-    }
+        if (pattern.length != Sudoku.SIZE)
+        {
+            throw new IllegalArgumentException("Sudoku layout must have " + Sudoku.SIZE + " rows.");
+        }
+        this.template = new Sudoku.Cell[Sudoku.SIZE][Sudoku.SIZE];
 
-
-    protected Sudoku generateRandomCandidate(Random rng)
-    {
-        List<List<Integer>> nonFixedValues = new ArrayList<List<Integer>>(Sudoku.SIZE);
+        // Keep track of which values in each row are not 'givens'.
         for (int i = 0; i < Sudoku.SIZE; i++)
         {
             nonFixedValues.add(new ArrayList<Integer>(values));
         }
 
-        Sudoku.Cell[][] rows = new Sudoku.Cell[Sudoku.SIZE][Sudoku.SIZE];
-        for (Given given : givens)
+        for (int i = 0; i < pattern.length; i++)
         {
-            rows[given.getRow()][given.getColumn()] = new Sudoku.Cell(given.getValue(), true);
-            List<Integer> rowValues = nonFixedValues.get(given.getRow());
-            int index = Collections.binarySearch(rowValues, given.getValue());
-            rowValues.remove(index);
+            char[] rowPattern = pattern[i].toCharArray();
+            for (int j = 0; j < rowPattern.length; j++)
+            {
+                char c = rowPattern[j];
+                if (c >= '1' && c <= '9') // Cell is a 'given'.
+                {
+                    int value = c - '0'; // Convert char to in that it represents..
+                    template[i][j] = new Sudoku.Cell(value, true);
+                    List<Integer> rowValues = nonFixedValues.get(i);
+                    int index = Collections.binarySearch(rowValues, value);
+                    rowValues.remove(index);
+                }
+                else if (c != '.')
+                {
+                    throw new IllegalArgumentException("Unexpected character at (" + i + ", " + j + "): " + c);
+                }
+            }
+        }
+    }
+
+
+    protected Sudoku generateRandomCandidate(Random rng)
+    {
+        // Clone the template as the basis for this grid.
+        Sudoku.Cell[][] rows = template.clone();
+        for (int i = 0; i < rows.length; i++)
+        {
+            rows[i] = template[i].clone();
         }
 
+        // Fill-in the non-fixed cells.
         for (int i = 0; i < rows.length; i++)
         {
             List<Integer> rowValues = nonFixedValues.get(i);
@@ -74,78 +98,5 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
             }
         }
         return new Sudoku(rows);
-    }
-
-
-    /**
-     * Encapsulates data about a single "given" cell.  A given is one of the
-     * numbers provided at the start from which the solution is derived.
-     */
-    public static final class Given
-    {
-        private final int row;
-        private final int column;
-        private final int value;
-
-        public Given(int row, int column, int value)
-        {
-            if (row < 0 || row > 8)
-            {
-                throw new IllegalArgumentException("Row index must be between 0 and 8.");
-            }
-            else if (column < 0 || column > 8)
-            {
-                throw new IllegalArgumentException("Column index must be between 0 and 8.");
-            }
-            else if (value < 1 || value > 9)
-            {
-                throw new IllegalArgumentException("Value must be between 1 and 9.");
-            }
-            this.row = row;
-            this.column = column;
-            this.value = value;
-        }
-
-        public int getRow()
-        {
-            return row;
-        }
-
-        public int getColumn()
-        {
-            return column;
-        }
-
-        public int getValue()
-        {
-            return value;
-        }
-
-
-        @Override
-        public boolean equals(Object o)
-        {
-            if (this == o)
-            {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass())
-            {
-                return false;
-            }
-
-            Given given = (Given) o;
-            return column == given.column && row == given.row && value == given.value;
-        }
-
-
-        @Override
-        public int hashCode()
-        {
-            int result = row;
-            result = 31 * result + column;
-            result = 31 * result + value;
-            return result;
-        }
     }
 }

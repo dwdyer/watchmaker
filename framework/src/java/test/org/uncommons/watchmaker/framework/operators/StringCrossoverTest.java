@@ -16,38 +16,47 @@
 package org.uncommons.watchmaker.framework.operators;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
- * Unit test to validate the operation of the {@link ListOrderCrossover} operator.
+ * Unit test for cross-over with Strings.
  * @author Daniel Dyer
  */
-public class ListOrderCrossoverTest
+public class StringCrossoverTest
 {
     @Test
     public void testCrossover()
     {
-        EvolutionaryOperator<List<?>> operator = new ListOrderCrossover();
-        List<Integer> parent1 = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
-        List<Integer> parent2 = Arrays.asList(3, 7, 5, 1, 6, 8, 2, 4);
-        List<List<Integer>> population = new ArrayList<List<Integer>>(2);
-        population.add(parent1);
-        population.add(parent2);
-
-        for (int i = 0; i < 50; i++) // Do several cross-overs to check different cross-over points.
+        EvolutionaryOperator<String> crossover = new StringCrossover();
+        List<String> population = new ArrayList<String>(4);
+        population.add("abcde");
+        population.add("fghij");
+        population.add("klmno");
+        population.add("pqrst");
+        Random rng = new MersenneTwisterRNG();
+        Set<Character> values = new HashSet<Character>(20);
+        for (int i = 0; i < 20; i++)
         {
-            population = operator.apply(population, new MersenneTwisterRNG());
-            for (List<Integer> offspring : population)
+            population = crossover.apply(population, rng);
+            assert population.size() == 4 : "Population size changed after cross-over.";
+            for (String individual : population)
             {
-                for (int j = 1; j <= 8; j++)
+                assert individual.length() == 5 : "Invalid candidate length: " + individual.length();
+                for (char value : individual.toCharArray())
                 {
-                    assert offspring.contains(j) : "Evolved candidate missing required element " + j;
+                    values.add(value);
                 }
             }
+            // All of the individual elements should still be present, just jumbled up
+            // between individuals.
+            assert values.size() == 20 : "Information lost during cross-over.";
+            values.clear();
         }
     }
 }

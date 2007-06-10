@@ -208,7 +208,7 @@
 
   <!-- Builds the examples JAR, which depends on each of the other modules. -->
   <target name="examples"
-          depends="framework, gui"
+          depends="framework, maths, gui"
           description="Build the examples.">
     <compile.module module.name="examples">
       <moduleclasspath>

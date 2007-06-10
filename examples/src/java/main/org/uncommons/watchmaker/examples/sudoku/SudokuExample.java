@@ -16,10 +16,8 @@
 package org.uncommons.watchmaker.examples.sudoku;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import org.uncommons.maths.random.DiscreteUniformGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.PoissonGenerator;
@@ -51,49 +49,19 @@ public class SudokuExample
                                             new DiscreteUniformGenerator(1, 8, rng)));
 
         EvolutionaryOperator<Sudoku> pipeline = new EvolutionPipeline<Sudoku>(operators);
-        Set<SudokuFactory.Given> givens = new HashSet<SudokuFactory.Given>(50);
 
-        // An "easy" puzzle.
-        givens.add(new SudokuFactory.Given(0, 0, 4));
-        givens.add(new SudokuFactory.Given(0, 2, 5));
-        givens.add(new SudokuFactory.Given(0, 6, 9));
-        givens.add(new SudokuFactory.Given(0, 8, 7));
-        givens.add(new SudokuFactory.Given(1, 1, 2));
-        givens.add(new SudokuFactory.Given(1, 4, 9));
-        givens.add(new SudokuFactory.Given(1, 7, 6));
-        givens.add(new SudokuFactory.Given(2, 0, 3));
-        givens.add(new SudokuFactory.Given(2, 1, 9));
-        givens.add(new SudokuFactory.Given(2, 3, 6));
-        givens.add(new SudokuFactory.Given(2, 5, 7));
-        givens.add(new SudokuFactory.Given(2, 7, 2));
-        givens.add(new SudokuFactory.Given(2, 8, 8));
-        givens.add(new SudokuFactory.Given(3, 0, 9));
-        givens.add(new SudokuFactory.Given(3, 3, 3));
-        givens.add(new SudokuFactory.Given(3, 5, 2));
-        givens.add(new SudokuFactory.Given(3, 8, 6));
-        givens.add(new SudokuFactory.Given(4, 0, 7));
-        givens.add(new SudokuFactory.Given(4, 3, 9));
-        givens.add(new SudokuFactory.Given(4, 5, 6));
-        givens.add(new SudokuFactory.Given(4, 8, 3));
-        givens.add(new SudokuFactory.Given(5, 0, 5));
-        givens.add(new SudokuFactory.Given(5, 3, 4));
-        givens.add(new SudokuFactory.Given(5, 5, 8));
-        givens.add(new SudokuFactory.Given(5, 8, 1));
-        givens.add(new SudokuFactory.Given(6, 0, 2));
-        givens.add(new SudokuFactory.Given(6, 1, 8));
-        givens.add(new SudokuFactory.Given(6, 3, 1));
-        givens.add(new SudokuFactory.Given(6, 5, 5));
-        givens.add(new SudokuFactory.Given(6, 7, 4));
-        givens.add(new SudokuFactory.Given(6, 8, 9));
-        givens.add(new SudokuFactory.Given(7, 1, 7));
-        givens.add(new SudokuFactory.Given(7, 4, 3));
-        givens.add(new SudokuFactory.Given(7, 7, 8));
-        givens.add(new SudokuFactory.Given(8, 0, 6));
-        givens.add(new SudokuFactory.Given(8, 2, 4));
-        givens.add(new SudokuFactory.Given(8, 6, 3));
-        givens.add(new SudokuFactory.Given(8, 8, 2));
+        // An 'easy' puzzle for the program to solve.
+        String[] pattern = new String[]{"4.5...9.7",
+                                        ".2..9..6.",
+                                        "39.6.7.28",
+                                        "9..3.2..6",
+                                        "7..9.6..3",
+                                        "5..4.8..1",
+                                        "28.1.5.49",
+                                        ".7..3..8.",
+                                        "6.4...3.2"};
 
-        EvolutionEngine<Sudoku> engine = new StandaloneEvolutionEngine<Sudoku>(new SudokuFactory(givens),
+        EvolutionEngine<Sudoku> engine = new StandaloneEvolutionEngine<Sudoku>(new SudokuFactory(pattern),
                                                                                pipeline,
                                                                                new SudokuEvaluator(),
                                                                                new TournamentSelection(0.75d),

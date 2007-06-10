@@ -35,14 +35,15 @@ public class SudokuFactoryTest
     @Test
     public void testValidity()
     {
-        Set<SudokuFactory.Given> givens = new HashSet<SudokuFactory.Given>(5);
-        givens.add(new SudokuFactory.Given(2, 8, 5));
-        givens.add(new SudokuFactory.Given(7, 3, 1));
-        givens.add(new SudokuFactory.Given(3, 4, 2));
-        givens.add(new SudokuFactory.Given(0, 1, 9));
-        givens.add(new SudokuFactory.Given(8, 8, 9));
-
-        CandidateFactory<Sudoku> factory = new SudokuFactory(givens);
+        CandidateFactory<Sudoku> factory = new SudokuFactory(".9.......",
+                                                             ".........",
+                                                             "........5",
+                                                             "....2....",
+                                                             ".........",
+                                                             ".........",
+                                                             ".........",
+                                                             "...1.....",
+                                                             "........9");
 
         List<Sudoku> population = factory.generateInitialPopulation(20, new MersenneTwisterRNG());
         for (Sudoku sudoku : population)
@@ -70,6 +71,7 @@ public class SudokuFactoryTest
                 }
                 if (set.size() < 9)
                 {
+                    System.out.println(sudoku);
                     assert false : "Row " + i + " contains duplicates.";
                 }
             }

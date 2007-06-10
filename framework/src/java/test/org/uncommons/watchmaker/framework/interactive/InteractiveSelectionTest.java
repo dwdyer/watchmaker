@@ -15,6 +15,7 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework.interactive;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.testng.annotations.Test;
@@ -38,11 +39,13 @@ public class InteractiveSelectionTest
         SelectionStrategy<Integer> strategy = new InteractiveSelection<Integer>(console,
                                                                                 groupSize,
                                                                                 1);
-        List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 0),
-                                                                     new EvaluatedCandidate<Integer>(2, 0),
-                                                                     new EvaluatedCandidate<Integer>(3, 0),
-                                                                     new EvaluatedCandidate<Integer>(4, 0),
-                                                                     new EvaluatedCandidate<Integer>(5, 0));
+        List<EvaluatedCandidate<Integer>> population = new ArrayList<EvaluatedCandidate<Integer>>(5);
+        population.add(new EvaluatedCandidate<Integer>(1, 0));
+        population.add(new EvaluatedCandidate<Integer>(2, 0));
+        population.add(new EvaluatedCandidate<Integer>(3, 0));
+        population.add(new EvaluatedCandidate<Integer>(4, 0));
+        population.add(new EvaluatedCandidate<Integer>(5, 0));
+        
         List<Integer> selection = strategy.select(population, true, 3, rng);
         assert selection.size() == 3 : "Incorrect selection size: " + selection.size();
         assert console.getSelectionCount() == 1 : "Wrong number of user selections: " + console.getSelectionCount();
@@ -62,11 +65,13 @@ public class InteractiveSelectionTest
         SelectionStrategy<Integer> strategy = new InteractiveSelection<Integer>(console,
                                                                                 groupSize,
                                                                                 3);
-        List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 0),
-                                                                     new EvaluatedCandidate<Integer>(2, 0),
-                                                                     new EvaluatedCandidate<Integer>(3, 0),
-                                                                     new EvaluatedCandidate<Integer>(4, 0),
-                                                                     new EvaluatedCandidate<Integer>(5, 0));
+        List<EvaluatedCandidate<Integer>> population = new ArrayList<EvaluatedCandidate<Integer>>(5);
+        population.add(new EvaluatedCandidate<Integer>(1, 0));
+        population.add(new EvaluatedCandidate<Integer>(2, 0));
+        population.add(new EvaluatedCandidate<Integer>(3, 0));
+        population.add(new EvaluatedCandidate<Integer>(4, 0));
+        population.add(new EvaluatedCandidate<Integer>(5, 0));
+        
         List<Integer> selection = strategy.select(population, true, 3, rng);
         assert selection.size() == 3 : "Incorrect selection size.";
         assert console.getSelectionCount() == 3 : "Wrong number of user selections: " + console.getSelectionCount();
