@@ -1,10 +1,12 @@
-Changes in version 0.?.?
+Changes in version 0.4.1
 ------------------------
 
-* Several more unit tests for significantly improved coverage.  Fixed a couple
-  of minor bugs detected by these new tests.
+* Several more unit tests for significantly improved coverage.  Fixed 2 minor
+  bugs detected by these new tests.
 
 * Added evolutionary Sudoku solver example application.
+
+* Included source code for the examples in the release archives.
 
 
 Changes in version 0.4.0

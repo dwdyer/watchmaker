@@ -132,7 +132,7 @@
     <sequential>
       <mkdir dir="@{api.dir}"/>
       <javadoc destdir="@{api.dir}"
-               doctitle="The Watchmaker Framework for Evolutionary Algorithms ${version}"
+               doctitle="The Watchmaker Framework for Evolutionary Computation ${version}"
                windowtitle="Watchmaker Framework API">
         <fileset dir="." defaultexcludes="yes">
           <include name="**/${java.dir}/main/org/uncommons/**/*.java"/>
@@ -245,34 +245,40 @@
           depends="clean, dist, test, checkstyle, docs"
           description="Creates the release archives.">
     <mkdir dir="${release.dir}" />
-    <!-- Create a GZipped TAR file containing the built binaries and the API
-         documentation -->
+    <!-- Create a GZipped TAR file containing the built binaries, the API
+         documentation, and source code for the examples. -->
     <tar destfile="${release.dir}/watchmaker-framework-${version}.tgz"
          compression="gzip"
          longfile="gnu">
-      <tarfileset dir="${dist.dir}" prefix="watchmaker-framework-${version}">
-        <include name="**/*" />
-      </tarfileset>
-      <tarfileset dir="${api.dir}" prefix="watchmaker-framework-${version}/docs/api">
-        <include name="**/*" />
-      </tarfileset>
+      <tarfileset dir="${dist.dir}"
+                  prefix="watchmaker-framework-${version}"
+                  includes="**/*" />
+      <tarfileset dir="${api.dir}"
+                  prefix="watchmaker-framework-${version}/docs/api"
+                  includes="**/*" />
+      <tarfileset dir="examples/${java.dir}/main"
+                  prefix="watchmaker-framework-${version}/examples/src"
+                  includes="**/*" />
       <!-- Don't forget to include the licence and other important information. -->
-      <tarfileset dir="." prefix="watchmaker-framework-${version}">
-        <include name="*.txt" />
-      </tarfileset>
+      <tarfileset dir="."
+                  prefix="watchmaker-framework-${version}"
+                  includes="*.txt" />
     </tar>
     <!-- Also create a zip file release for the convenience of Windows users. -->
     <zip destfile="${release.dir}/watchmaker-framework-${version}.zip">
-      <zipfileset dir="${dist.dir}" prefix="watchmaker-framework-${version}">
-        <include name="**/*" />
-      </zipfileset>
-      <zipfileset dir="${api.dir}" prefix="watchmaker-framework-${version}/docs/api">
-        <include name="**/*" />
-      </zipfileset>
+      <zipfileset dir="${dist.dir}"
+                  prefix="watchmaker-framework-${version}"
+                  includes="**/*" />
+      <zipfileset dir="${api.dir}"
+                  prefix="watchmaker-framework-${version}/docs/api"
+                  includes="**/*" />
+      <zipfileset dir="examples/${java.dir}/main"
+                  prefix="watchmaker-framework-${version}/examples/src"
+                  includes="**/*" />
       <!-- Don't forget to include the licence and other important information. -->
-      <zipfileset dir="." prefix="watchmaker-framework-${version}">
-        <include name="*.txt" />
-      </zipfileset>
+      <zipfileset dir="."
+                  prefix="watchmaker-framework-${version}"
+                  includes="*.txt" />
     </zip>
   </target>
 
