@@ -34,6 +34,15 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
     private final NumberGenerator<Integer> mutationCountVariable;
     private final NumberGenerator<Integer> mutationAmountVariable;
 
+    // These look-up tables keep track of which values are fixed in which columns
+    // and sub-grids.  Because the values are fixed, they are the same for all
+    // potential solutions, so we cache the information here to minimise the amount
+    // of processing that needs to be done for each mutation.  There is no need to
+    // worry about rows since the mutation ensures that rows are always valid.
+    private final boolean[][] columnFixedValues = new boolean[Sudoku.SIZE][Sudoku.SIZE];
+    private final boolean[][] subGridFixedValues = new boolean[Sudoku.SIZE][Sudoku.SIZE];
+    private boolean cached = false;
+
     /**
      * Default is one mutation per candidate.
      */
@@ -75,6 +84,11 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
     @SuppressWarnings({"unchecked"})
     public <S extends Sudoku> List<S> apply(List<S> selectedCandidates, Random rng)
     {
+        if (!cached)
+        {
+            buildCache(selectedCandidates.get(0));
+        }
+
         List<S> mutatedCandidates = new ArrayList<S>(selectedCandidates.size());
         for (Sudoku sudoku : selectedCandidates)
         {
@@ -107,7 +121,13 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
             }
 
             // Make sure we're not trying to mutate a 'given'.
-            if (!newRows[row][fromIndex].isFixed() && !newRows[row][toIndex].isFixed())
+            if (!newRows[row][fromIndex].isFixed()
+                && !newRows[row][toIndex].isFixed()
+                // ...or trying to introduce a duplicate of a given value.
+                && !columnFixedValues[fromIndex][sudoku.getValue(row, toIndex) - 1]
+                && !columnFixedValues[toIndex][sudoku.getValue(row, fromIndex) - 1]
+                && !subGridFixedValues[convertToSubGrid(row, fromIndex)][sudoku.getValue(row, toIndex) - 1]
+                && !subGridFixedValues[convertToSubGrid(row, toIndex)][sudoku.getValue(row, fromIndex) - 1])
             {
                 // Swap the randomly selected element with the one that is the
                 // specified displacement distance away.
@@ -119,5 +139,34 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
         }
 
         return new Sudoku(newRows);
+    }
+
+
+    private void buildCache(Sudoku sudoku)
+    {
+        for (int row = 0; row < Sudoku.SIZE; row++)
+        {
+            for (int column = 0; column < Sudoku.SIZE; column++)
+            {
+                if (sudoku.isFixed(row, column))
+                {
+                    columnFixedValues[column][sudoku.getValue(row, column) - 1] = true;
+                    subGridFixedValues[convertToSubGrid(row, column)][sudoku.getValue(row, column) - 1] = true;
+                }
+            }
+        }
+        cached = true;
+    }
+
+
+    /**
+     * Returns the index of the sub-grid that the specified cells belongs to.
+     * @return A number between 0 (top left) and 8 (bottom right).
+     */
+    private int convertToSubGrid(int row, int column)
+    {
+        int band = row / 3;
+        int stack = column / 3;
+        return band * 3 + stack;
     }
 }
