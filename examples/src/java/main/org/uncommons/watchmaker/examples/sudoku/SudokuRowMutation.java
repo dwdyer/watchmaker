@@ -124,11 +124,9 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
             if (!newRows[row][fromIndex].isFixed()
                 && !newRows[row][toIndex].isFixed()
                 // ...or trying to introduce a duplicate of a given value.
-                && !columnFixedValues[fromIndex][sudoku.getValue(row, toIndex) - 1]
-                && !columnFixedValues[toIndex][sudoku.getValue(row, fromIndex) - 1]
-                && !subGridFixedValues[convertToSubGrid(row, fromIndex)][sudoku.getValue(row, toIndex) - 1]
-                && !subGridFixedValues[convertToSubGrid(row, toIndex)][sudoku.getValue(row, fromIndex) - 1])
-            {
+                && (!isIntroducingFixedConflict(sudoku, row, fromIndex, toIndex)
+                    || isRemovingFixedConflict(sudoku, row, fromIndex, toIndex)))
+           {
                 // Swap the randomly selected element with the one that is the
                 // specified displacement distance away.
                 Sudoku.Cell temp = newRows[row][fromIndex];
@@ -157,6 +155,39 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
         }
         cached = true;
     }
+
+
+    /**
+     * Checks whether the proposed mutation would introduce a duplicate of a fixed value
+     * into a column or sub-grid.
+     */
+    private boolean isIntroducingFixedConflict(Sudoku sudoku,
+                                               int row,
+                                               int fromIndex,
+                                               int toIndex)
+    {
+        return columnFixedValues[fromIndex][sudoku.getValue(row, toIndex) - 1]
+               || columnFixedValues[toIndex][sudoku.getValue(row, fromIndex) - 1]
+               || subGridFixedValues[convertToSubGrid(row, fromIndex)][sudoku.getValue(row, toIndex) - 1]
+               || subGridFixedValues[convertToSubGrid(row, toIndex)][sudoku.getValue(row, fromIndex) - 1];
+    }
+
+
+    /**
+     * Checks whether the proposed mutation would remove a duplicate of a fixed value
+     * from a column or sub-grid.
+     */
+    private boolean isRemovingFixedConflict(Sudoku sudoku,
+                                            int row,
+                                            int fromIndex,
+                                            int toIndex)
+    {
+        return columnFixedValues[fromIndex][sudoku.getValue(row, fromIndex) - 1]
+               || columnFixedValues[toIndex][sudoku.getValue(row, toIndex) - 1]
+               || subGridFixedValues[convertToSubGrid(row, fromIndex)][sudoku.getValue(row, fromIndex) - 1]
+               || subGridFixedValues[convertToSubGrid(row, toIndex)][sudoku.getValue(row, toIndex) - 1];
+    }
+
 
 
     /**

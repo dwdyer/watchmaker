@@ -48,8 +48,8 @@ public class SudokuCellRenderer extends DefaultTableCellRenderer
     {
         Component component = super.getTableCellRendererComponent(table,
                                                                   value,
-                                                                  isSelected,
-                                                                  hasFocus,
+                                                                  false,
+                                                                  false,
                                                                   row,
                                                                   column);
         SudokuTableModel model = (SudokuTableModel) table.getModel();

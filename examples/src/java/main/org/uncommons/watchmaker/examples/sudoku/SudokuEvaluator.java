@@ -37,21 +37,21 @@ public class SudokuEvaluator implements FitnessEvaluator<Sudoku>
         int fitness = 0;
 
         // Check columns for duplicates.
-        Set<Integer> values = new HashSet<Integer>();
-        for (int column = 0; column < 9; column++)
+        Set<Integer> values = new HashSet<Integer>(Sudoku.SIZE * 2); // Big enough to avoid re-hashing.
+        for (int column = 0; column < Sudoku.SIZE; column++)
         {
-            for (int row = 0; row < 9; row++)
+            for (int row = 0; row < Sudoku.SIZE; row++)
             {
                 values.add(candidate.getValue(row, column));
             }
-            fitness += (9 - values.size());
+            fitness += (Sudoku.SIZE - values.size());
             values.clear();
         }
 
         // Check sub-grids for duplicates.
-        for (int band = 0; band < 9; band += 3)
+        for (int band = 0; band < Sudoku.SIZE; band += 3)
         {
-            for (int stack = 0; stack < 9; stack+= 3)
+            for (int stack = 0; stack < Sudoku.SIZE; stack+= 3)
             {
                 for (int row = band; row < band + 3; row++)
                 {
@@ -60,7 +60,7 @@ public class SudokuEvaluator implements FitnessEvaluator<Sudoku>
                         values.add(candidate.getValue(row, column));
                     }
                 }
-                fitness += (9 - values.size());
+                fitness += (Sudoku.SIZE - values.size());
                 values.clear();
             }
         }

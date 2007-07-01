@@ -26,13 +26,22 @@ import java.util.List;
 import java.util.Random;
 import javax.swing.JApplet;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.SpringLayout;
+import javax.swing.BorderFactory;
+import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import org.uncommons.gui.SwingBackgroundTask;
+import org.uncommons.gui.SpringUtilities;
 import org.uncommons.maths.random.DiscreteUniformGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.PoissonGenerator;
@@ -62,6 +71,16 @@ public class SudokuApplet extends JApplet
                                                              ".7..3..8.",
                                                              "6.4...3.2"};
 
+    private static final String[] MEDIUM_PUZZLE = new String[]{"....3....",
+                                                               ".....6293",
+                                                               ".2.9.48..",
+                                                               ".754...38",
+                                                               "..46.71..",
+                                                               "91...547.",
+                                                               "..38.9.1.",
+                                                               "1567.....",
+                                                               "....1...."};
+
     private static final String[] HARD_PUZZLE = new String[]{"...891...",
                                                              "....5.8..",
                                                              ".....6.2.",
@@ -72,6 +91,9 @@ public class SudokuApplet extends JApplet
                                                              "..5.4.2.7",
                                                              "...1.3.8."};
 
+    private static final String[][] PUZZLES = new String[][]{EASY_PUZZLE,
+                                                             MEDIUM_PUZZLE,
+                                                             HARD_PUZZLE};
 
     private static final DecimalFormat TIME_FORMAT = new DecimalFormat("#.###s");
     private final SudokuTableModel sudokuTableModel = new SudokuTableModel();
@@ -79,15 +101,38 @@ public class SudokuApplet extends JApplet
     private final JButton abortButton = new JButton("Abort");
     private final JLabel generationsLabel = new JLabel();
     private final JLabel timeLabel = new JLabel();
+    private final JComboBox puzzleCombo = new JComboBox(new String[]{"Easy Puzzle (38 givens)",
+                                                                     "Medium Puzzle (32 givens)",
+                                                                     "Hard Puzzle (28 givens)"});
+    private final JSpinner populationSizeSpinner = new JSpinner(new SpinnerNumberModel(100, 10, 10000, 1));
+    private final JSlider selectionPressureSlider = new JSlider(51, 99, 85);
     private UserAbort abortCondtion;
 
     public SudokuApplet()
     {
-        add(createSudokuView(), BorderLayout.CENTER);
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.add(createButtonPanel(), BorderLayout.CENTER);
-        bottomPanel.add(createStatusBar(), BorderLayout.SOUTH);
-        add(bottomPanel, BorderLayout.SOUTH);
+        Box mainArea = new Box(BoxLayout.X_AXIS);
+        mainArea.add(createControls());
+        mainArea.add(createSudokuView());
+        add(mainArea, BorderLayout.CENTER);
+        add(createStatusBar(), BorderLayout.SOUTH);
+    }
+
+
+    private JComponent createControls()
+    {
+        JPanel controls = new JPanel(new BorderLayout());
+        JPanel innerPanel = new JPanel(new SpringLayout());
+        innerPanel.add(new JLabel("Puzzle: "));
+        innerPanel.add(puzzleCombo);
+        innerPanel.add(new JLabel("Selection Pressure: "));
+        innerPanel.add(selectionPressureSlider);
+        innerPanel.add(new JLabel("Population Size: "));
+        innerPanel.add(populationSizeSpinner);
+        SpringUtilities.makeCompactGrid(innerPanel, 3, 2, 0, 6, 6, 6);
+        innerPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
+        controls.add(innerPanel, BorderLayout.CENTER);
+        controls.add(createButtonPanel(), BorderLayout.SOUTH);
+        return controls;
     }
 
 
@@ -100,7 +145,10 @@ public class SudokuApplet extends JApplet
         {
             columnModel.getColumn(i).setCellRenderer(renderer);
         }
-        return sudokuTable;
+        JPanel wrapper = new JPanel(new BorderLayout());
+        wrapper.add(sudokuTable, BorderLayout.CENTER);
+        wrapper.setBorder(BorderFactory.createTitledBorder("Puzzle/Solution"));
+        return wrapper;
     }
 
 
@@ -111,7 +159,13 @@ public class SudokuApplet extends JApplet
         {
             public void actionPerformed(ActionEvent ev)
             {
-                createTask(100, 5).execute();
+                String[] puzzle = PUZZLES[puzzleCombo.getSelectedIndex()];
+                int populationSize = (Integer) populationSizeSpinner.getValue();
+                double selectionPressure = selectionPressureSlider.getValue() / 100d;
+                createTask(puzzle,
+                           populationSize,
+                           (int) Math.round(populationSize * 0.05), // Elite count is 5%.
+                           selectionPressure).execute();
                 solveButton.setEnabled(false);
                 abortButton.setEnabled(true);
             }
@@ -133,11 +187,10 @@ public class SudokuApplet extends JApplet
 
     private JComponent createStatusBar()
     {
-        JPanel statusBar = new JPanel(new GridLayout(2, 2));
+        JPanel statusBar = new JPanel(new GridLayout(1, 4));
         statusBar.add(new JLabel("Generations: "));
-        generationsLabel.setHorizontalAlignment(JLabel.RIGHT);
         statusBar.add(generationsLabel);
-        statusBar.add(new JLabel("Time: "));
+        statusBar.add(new JLabel("Time: ", JLabel.RIGHT));
         timeLabel.setHorizontalAlignment(JLabel.RIGHT);
         statusBar.add(timeLabel);
         return statusBar;
@@ -150,8 +203,10 @@ public class SudokuApplet extends JApplet
      * @return A Swing task that will execute on a background thread and update
      * the GUI when it is done.
      */
-    private SwingBackgroundTask<Sudoku> createTask(final int populationSize,
-                                                   final int eliteCount)
+    private SwingBackgroundTask<Sudoku> createTask(final String[] puzzle,
+                                                   final int populationSize,
+                                                   final int eliteCount,
+                                                   final double selectionPressure)
     {
         return new SwingBackgroundTask<Sudoku>()
         {
@@ -169,10 +224,10 @@ public class SudokuApplet extends JApplet
 
                 EvolutionaryOperator<Sudoku> pipeline = new EvolutionPipeline<Sudoku>(operators);
 
-                EvolutionEngine<Sudoku> engine = new StandaloneEvolutionEngine<Sudoku>(new SudokuFactory(EASY_PUZZLE),
+                EvolutionEngine<Sudoku> engine = new StandaloneEvolutionEngine<Sudoku>(new SudokuFactory(puzzle),
                                                                                        pipeline,
                                                                                        new SudokuEvaluator(),
-                                                                                       new TournamentSelection(0.85d),
+                                                                                       new TournamentSelection(selectionPressure),
                                                                                        rng);
                 engine.addEvolutionObserver(new EvolutionLogger());
                 abortCondtion = new UserAbort();
