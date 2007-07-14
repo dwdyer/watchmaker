@@ -40,6 +40,7 @@ public class DevRandomSeedGenerator implements SeedGenerator
             {
                 count += file.read(randomSeed, count, length - count);
             }
+            System.out.println(length + " bytes of seed data acquired from /dev/random");
             return randomSeed;
         }
         catch (IOException ex)

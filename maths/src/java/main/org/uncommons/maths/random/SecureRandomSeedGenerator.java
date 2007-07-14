@@ -37,6 +37,8 @@ public class SecureRandomSeedGenerator implements SeedGenerator
      */
     public byte[] generateSeed(int length) throws SeedException
     {
-        return SOURCE.generateSeed(length);
+        byte[] seed = SOURCE.generateSeed(length);
+        System.out.println(length + " bytes of seed data acquired from java.security.SecureRandom");
+        return seed;
     }
 }

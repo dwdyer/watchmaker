@@ -63,7 +63,14 @@ public class JavaRNG extends Random implements RepeatableRNG
     public JavaRNG(byte[] seed)
     {
         super(convertBytesToLong(seed));
+        if (seed == null || seed.length != SEED_SIZE_BYTES)
+        {
+            throw new IllegalArgumentException("Java RNG requires a 64-bit (8-byte) seed.");
+        }
         this.seed = seed.clone();
+
+        // Always log seed so that an indentical RNG can be created later if necessary.
+        System.out.println("Standard Java RNG created with seed " + SeedUtils.convertSeedDataToHexString(seed));
     }
 
 

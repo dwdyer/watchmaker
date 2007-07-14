@@ -15,6 +15,8 @@
 // ============================================================================
 package org.uncommons.maths.random;
 
+import java.util.Random;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.uncommons.maths.Maths;
 import org.uncommons.maths.NumberGenerator;
@@ -26,6 +28,14 @@ import org.uncommons.maths.stats.SampleDataSet;
  */
 public class BinomialGeneratorTest
 {
+    private Random rng;
+
+    @BeforeTest
+    public void configureRNG()
+    {
+        rng = new MersenneTwisterRNG();
+    }
+
     /**
      * Check that the observed mean and standard deviation are consistent
      * with the specified distribution parameters.
@@ -35,20 +45,51 @@ public class BinomialGeneratorTest
     {
         final int n = 20;
         final double p = 0.163;
-        final double mean = n * p;
-        final double standardDeviation = Math.sqrt(n * p * (1 - p));
         NumberGenerator<Integer> generator = new BinomialGenerator(n, // Number of trials.
                                                                    p, // Probability of success in each.
-                                                                   new MersenneTwisterRNG());
+                                                                   rng);
+        checkDistribution(generator, n, p);
+    }
+
+
+    @Test
+    public void testDynamicParameters()
+    {
+        final int initialN = 20;
+        final double initialP = 0.163;
+        AdjustableNumberGenerator<Integer> nGenerator = new AdjustableNumberGenerator<Integer>(initialN);
+        AdjustableNumberGenerator<Double> pGenerator = new AdjustableNumberGenerator<Double>(initialP);
+        NumberGenerator<Integer> generator = new BinomialGenerator(nGenerator,
+                                                                   pGenerator,
+                                                                   rng);
+        checkDistribution(generator, initialN, initialP);
+
+        // Adjust parameters and ensure that the generator output conforms to this new distribution.
+        final int adjustedN = 14;
+        final double adjustedP = 0.32;
+        nGenerator.setValue(adjustedN);
+        pGenerator.setValue(adjustedP);
+
+        checkDistribution(generator, adjustedN, adjustedP);
+    }
+
+
+    private void checkDistribution(NumberGenerator<Integer> generator,
+                                   int n,
+                                   double p)
+    {
+        final double expectedMean = n * p;
+        final double expectedStandardDeviation = Math.sqrt(n * p * (1 - p));
+
         final int iterations = 10000;
         SampleDataSet data = new SampleDataSet(iterations);
         for (int i = 0; i < iterations; i++)
         {
             data.addValue(generator.nextValue());
         }
-        assert Maths.approxEquals(data.getArithmeticMean(), mean, 0.25)
+        assert Maths.approxEquals(data.getArithmeticMean(), expectedMean, 0.25)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
-        assert Maths.approxEquals(data.getStandardDeviation(), standardDeviation, 0.25)
+        assert Maths.approxEquals(data.getStandardDeviation(), expectedStandardDeviation, 0.25)
                 : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();
     }
 }

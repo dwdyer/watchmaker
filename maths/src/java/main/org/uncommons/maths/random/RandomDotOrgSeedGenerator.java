@@ -65,6 +65,7 @@ public class RandomDotOrgSeedGenerator implements SeedGenerator
             byte[] seedData = new byte[length];
             System.arraycopy(CACHE, cacheOffset, seedData, 0, length);
             cacheOffset += length;
+            System.out.println(length + " bytes of seed data acquired from http://www.random.org");
             return seedData;
         }
     }

@@ -15,6 +15,8 @@
 // ============================================================================
 package org.uncommons.maths.random;
 
+import java.util.Random;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.uncommons.maths.Maths;
 import org.uncommons.maths.NumberGenerator;
@@ -26,6 +28,14 @@ import org.uncommons.maths.stats.SampleDataSet;
  */
 public class PoissonGeneratorTest
 {
+    private Random rng;
+
+    @BeforeTest
+    public void configureRNG()
+    {
+        rng = new MersenneTwisterRNG();
+    }
+
     /**
      * Check that the observed mean and standard deviation are consistent
      * with the specified distribution parameters.
@@ -34,18 +44,44 @@ public class PoissonGeneratorTest
     public void testDistribution()
     {
         final double mean = 19;
-        final double standardDeviation = Math.sqrt(mean); // Variance of a Possion distribution equals its mean.
-        NumberGenerator<Integer> generator = new PoissonGenerator(mean,
-                                                                  new MersenneTwisterRNG());
+        NumberGenerator<Integer> generator = new PoissonGenerator(mean, rng);
+        checkDistribution(generator, mean);
+    }
+
+
+    @Test
+    public void testDynamicParameters()
+    {
+        final double initialMean = 19;
+        AdjustableNumberGenerator<Double> meanGenerator = new AdjustableNumberGenerator<Double>(initialMean);
+        NumberGenerator<Integer> generator = new PoissonGenerator(meanGenerator,
+                                                                  rng);
+        checkDistribution(generator, initialMean);
+
+        // Adjust parameters and ensure that the generator output conforms to this new
+        // distribution.
+        final double adjustedMean = 13;
+        meanGenerator.setValue(adjustedMean);
+
+        checkDistribution(generator, adjustedMean);
+    }
+
+
+    private void checkDistribution(NumberGenerator<Integer> generator,
+                                   double expectedMean)
+    {
+        // Variance of a Possion distribution equals its mean.
+        final double expectedStandardDeviation = Math.sqrt(expectedMean);
+
         final int iterations = 10000;
         SampleDataSet data = new SampleDataSet(iterations);
         for (int i = 0; i < iterations; i++)
         {
             data.addValue(generator.nextValue());
         }
-        assert Maths.approxEquals(data.getArithmeticMean(), mean, 0.2)
+        assert Maths.approxEquals(data.getArithmeticMean(), expectedMean, 0.2)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
-        assert Maths.approxEquals(data.getStandardDeviation(), standardDeviation, 0.1)
+        assert Maths.approxEquals(data.getStandardDeviation(), expectedStandardDeviation, 0.1)
                 : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();
     }
 }

@@ -100,7 +100,14 @@ public class CellularAutomatonRNG extends Random implements RepeatableRNG
      */
     public CellularAutomatonRNG(byte[] seed)
     {
-        this.seed = seed;
+        if (seed == null || seed.length != SEED_SIZE_BYTES)
+        {
+            throw new IllegalArgumentException("Cellular Automaton RNG requires a 32-bit (4-byte) seed.");
+        }
+        this.seed = seed.clone();
+
+        // Always log seed so that an indentical RNG can be created later if necessary.
+        System.out.println("Cellular Automaton RNG created with seed " + SeedUtils.convertSeedDataToHexString(seed));
 
         // Set initial cell states using seed.
         cells[AUTOMATON_LENGTH - 1] = seed[0] + 128;

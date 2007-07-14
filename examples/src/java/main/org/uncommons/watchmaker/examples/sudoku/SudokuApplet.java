@@ -24,26 +24,26 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.SpringLayout;
-import javax.swing.BorderFactory;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import javax.swing.SpringLayout;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import org.uncommons.gui.SwingBackgroundTask;
 import org.uncommons.gui.SpringUtilities;
+import org.uncommons.gui.SwingBackgroundTask;
+import org.uncommons.maths.random.CellularAutomatonRNG;
 import org.uncommons.maths.random.DiscreteUniformGenerator;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.PoissonGenerator;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
@@ -212,7 +212,7 @@ public class SudokuApplet extends JApplet
         {
             protected Sudoku performTask()
             {
-                Random rng = new MersenneTwisterRNG();
+                Random rng = new CellularAutomatonRNG();
                 List<EvolutionaryOperator<? super Sudoku>> operators
                     = new ArrayList<EvolutionaryOperator<? super Sudoku>>(2);
                 // Cross-over rows between parents (so offspring is x rows from parent1 and

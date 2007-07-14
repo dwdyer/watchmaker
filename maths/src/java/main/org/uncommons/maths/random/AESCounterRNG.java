@@ -76,6 +76,10 @@ public class AESCounterRNG extends Random implements RepeatableRNG
             throw new IllegalArgumentException("AES RNG requires a 128-bit (16-byte) seed.");
         }
         this.seed = seed.clone();
+
+        // Always log seed so that an indentical RNG can be created later if necessary.
+        System.out.println("AES RNG created with seed " + SeedUtils.convertSeedDataToHexString(seed));
+
         cipher = Cipher.getInstance("AES/ECB/NoPadding");
         cipher.init(Cipher.ENCRYPT_MODE, new AESKey(this.seed));
     }
