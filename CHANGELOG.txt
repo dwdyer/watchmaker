@@ -1,8 +1,14 @@
 Changes in version 0.4.1
 ------------------------
 
+* Added new constructors to NumberGenerator implementations to enable the
+  parameters to be dynamic.
+
 * Several more unit tests for significantly improved coverage.  Fixed 2 minor
   bugs detected by these new tests.
+
+* Added some GUI control components to assist in building Swing GUIs for
+  evolutionary programs.
 
 * Added evolutionary Sudoku solver example application.
 

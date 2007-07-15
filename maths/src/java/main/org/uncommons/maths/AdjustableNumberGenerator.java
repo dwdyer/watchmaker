@@ -1,0 +1,58 @@
+// ============================================================================
+//   Copyright 2006, 2007 Daniel W. Dyer
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// ============================================================================
+package org.uncommons.maths;
+
+/**
+ * Implementation of {@link NumberGenerator} that works similarly to
+ * {@link org.uncommons.maths.ConstantGenerator} but allows the returned
+ * value to be changed after instantiation.
+ * @author Daniel Dyer
+ */
+public class AdjustableNumberGenerator<T extends Number> implements NumberGenerator<T>
+{
+    private final Object lock = new Object();
+    private T value;
+
+    public AdjustableNumberGenerator(T value)
+    {
+        this.value = value;
+    }
+
+
+    /**
+     * Change the value that is returned by this generator.
+     * @param value The new value to return.
+     */
+    public void setValue(T value)
+    {
+        synchronized (lock)
+        {
+            this.value = value;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public T nextValue()
+    {
+        synchronized (lock)
+        {
+            return value;
+        }
+    }
+}

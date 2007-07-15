@@ -13,32 +13,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.maths.random;
-
-import org.uncommons.maths.NumberGenerator;
-
 /**
- * Implementation of {@link NumberGenerator} that works similarly to
- * {@link org.uncommons.maths.ConstantGenerator} but allows the returned
- * value to be changed after instantiation.  Used for unit tests.
- * @author Daniel Dyer
+ * This package includes a number of classes to simplify the development of
+ * Swing GUIs for evolutionary programs by providing common controls.
  */
-class AdjustableNumberGenerator<T extends Number> implements NumberGenerator<T>
-{
-    private T value;
-
-    public AdjustableNumberGenerator(T value)
-    {
-        this.value = value;
-    }
-
-    public void setValue(T value)
-    {
-        this.value = value;
-    }
-
-    public T nextValue()
-    {
-        return value;
-    }
-}
+package org.uncommons.watchmaker.gui;

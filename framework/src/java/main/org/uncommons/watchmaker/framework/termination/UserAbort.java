@@ -15,8 +15,8 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework.termination;
 
-import org.uncommons.watchmaker.framework.TerminationCondition;
 import org.uncommons.watchmaker.framework.PopulationData;
+import org.uncommons.watchmaker.framework.TerminationCondition;
 
 /**
  * {@link TerminationCondition} implementation that allows for user-initiated
@@ -56,5 +56,14 @@ public final class UserAbort implements TerminationCondition
     public boolean isAborted()
     {
         return aborted;
+    }
+
+
+    /**
+     * Resets the abort condition to false so that it may be reused.
+     */
+    public void reset()
+    {
+        aborted = false;
     }
 }

@@ -18,6 +18,7 @@ package org.uncommons.maths.random;
 import java.util.Random;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import org.uncommons.maths.AdjustableNumberGenerator;
 import org.uncommons.maths.Maths;
 import org.uncommons.maths.NumberGenerator;
 import org.uncommons.maths.stats.SampleDataSet;

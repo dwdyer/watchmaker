@@ -53,7 +53,7 @@ import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
-import org.uncommons.watchmaker.framework.termination.UserAbort;
+import org.uncommons.watchmaker.gui.AbortControl;
 
 /**
  * An evolutionary Sudoku solver.
@@ -98,7 +98,6 @@ public class SudokuApplet extends JApplet
     private static final DecimalFormat TIME_FORMAT = new DecimalFormat("#.###s");
     private final SudokuTableModel sudokuTableModel = new SudokuTableModel();
     private final JButton solveButton = new JButton("Solve");
-    private final JButton abortButton = new JButton("Abort");
     private final JLabel generationsLabel = new JLabel();
     private final JLabel timeLabel = new JLabel();
     private final JComboBox puzzleCombo = new JComboBox(new String[]{"Easy Puzzle (38 givens)",
@@ -106,7 +105,7 @@ public class SudokuApplet extends JApplet
                                                                      "Hard Puzzle (28 givens)"});
     private final JSpinner populationSizeSpinner = new JSpinner(new SpinnerNumberModel(100, 10, 10000, 1));
     private final JSlider selectionPressureSlider = new JSlider(51, 99, 85);
-    private UserAbort abortCondtion;
+    private final AbortControl abortControl = new AbortControl();
 
     public SudokuApplet()
     {
@@ -162,25 +161,18 @@ public class SudokuApplet extends JApplet
                 String[] puzzle = PUZZLES[puzzleCombo.getSelectedIndex()];
                 int populationSize = (Integer) populationSizeSpinner.getValue();
                 double selectionPressure = selectionPressureSlider.getValue() / 100d;
+                solveButton.setEnabled(false);
+                abortControl.reset();
                 createTask(puzzle,
                            populationSize,
                            (int) Math.round(populationSize * 0.05), // Elite count is 5%.
                            selectionPressure).execute();
-                solveButton.setEnabled(false);
-                abortButton.setEnabled(true);
             }
         });
 
-        abortButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ev)
-            {
-                abortCondtion.abort();
-            }
-        });
         buttonPanel.add(solveButton);
-        buttonPanel.add(abortButton);
-        abortButton.setEnabled(false);
+        buttonPanel.add(abortControl.getControl());
+        abortControl.getControl().setEnabled(false);
         return buttonPanel;
     }
 
@@ -230,18 +222,17 @@ public class SudokuApplet extends JApplet
                                                                                        new TournamentSelection(selectionPressure),
                                                                                        rng);
                 engine.addEvolutionObserver(new EvolutionLogger());
-                abortCondtion = new UserAbort();
                 return engine.evolve(populationSize,
                                      eliteCount,
                                      new TargetFitness(0, false), // Continue until a perfect solution is found...
-                                     abortCondtion); // ...or the user aborts. 
+                                     abortControl.getTerminationCondition()); // ...or the user aborts.
             }
 
             
             protected void postProcessing(Sudoku result)
             {
                 solveButton.setEnabled(true);
-                abortButton.setEnabled(false);
+                abortControl.getControl().setEnabled(false);
             }
         };
     }
