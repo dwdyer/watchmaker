@@ -81,7 +81,7 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
     }
 
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings("unchecked")
     public <S extends Sudoku> List<S> apply(List<S> selectedCandidates, Random rng)
     {
         if (!cached)
@@ -126,7 +126,7 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
                 // ...or trying to introduce a duplicate of a given value.
                 && (!isIntroducingFixedConflict(sudoku, row, fromIndex, toIndex)
                     || isRemovingFixedConflict(sudoku, row, fromIndex, toIndex)))
-           {
+            {
                 // Swap the randomly selected element with the one that is the
                 // specified displacement distance away.
                 Sudoku.Cell temp = newRows[row][fromIndex];

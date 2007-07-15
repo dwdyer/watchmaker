@@ -43,6 +43,10 @@ public class AbortControl implements EvolutionControl
     }
 
 
+    /**
+     * @return A button that, when pressed, will trigger the abort condition
+     * associated with this control.
+     */
     public JButton getControl()
     {
         return control;
@@ -60,6 +64,11 @@ public class AbortControl implements EvolutionControl
     }
 
 
+    /**
+     * @return A {@link TerminationCondition} that is tied to this control.  It can
+     * be passed to an {@link org.uncommons.watchmaker.framework.EvolutionEngine}
+     * so that the evolution is aborted when this control is invoked.
+     */
     public TerminationCondition getTerminationCondition()
     {
         return abortCondition;

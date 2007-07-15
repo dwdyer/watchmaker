@@ -25,6 +25,7 @@ import org.uncommons.maths.NumberGenerator;
 /**
  * A GUI control that allows the user to set/update the value of a
  * numeric parameter.
+ * @param <T> The numeric type of this control (e.g. Integer, Double).
  * @author Daniel Dyer
  */
 public class NumericParameterControl<T extends Number> implements EvolutionControl
@@ -46,7 +47,7 @@ public class NumericParameterControl<T extends Number> implements EvolutionContr
                                                       stepSize));
         control.addChangeListener(new ChangeListener()
         {
-            @SuppressWarnings({"unchecked"})
+            @SuppressWarnings("unchecked")
             public void stateChanged(ChangeEvent changeEvent)
             {
                 numberGenerator.setValue((T) control.getValue());

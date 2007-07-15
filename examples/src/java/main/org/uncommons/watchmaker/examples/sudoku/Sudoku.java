@@ -47,12 +47,25 @@ public final class Sudoku
     }
 
 
+    /**
+     * Queries the value of a particular cell.
+     * @param row The row index of the cell.
+     * @param column The column index of the cell.
+     * @return The value (1 - 9) of the specified cell.
+     */
     public int getValue(int row, int column)
     {
         return cells[row][column].getValue();
     }
 
 
+    /**
+     * Checks whether a particular cell is a 'given' or not. 
+     * @param row The row index of the cell.
+     * @param column The column index of the cell.
+     * @return True if the value in the identified cell is fixed (a 'given' cell),
+     * false otherwise.
+     */
     public boolean isFixed(int row, int column)
     {
         return cells[row][column].isFixed();

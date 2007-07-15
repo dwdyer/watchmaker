@@ -18,6 +18,8 @@ package org.uncommons.watchmaker.framework.selection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.maths.ConstantGenerator;
+import org.uncommons.maths.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
@@ -26,9 +28,24 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  */
 public class TournamentSelection implements SelectionStrategy<Object>
 {
-    private final double selectionProbability;
+    private final NumberGenerator<Double> selectionProbability;
 
     /**
+     * Creates a tournament selection strategy that is controlled by the
+     * variable selection probability provided by the specified
+     * {@link NumberGenerator}.
+     * @param selectionProbability A number generator that produces values in
+     * the range {@literal 0.5 < p < 1}.  These values are used as the probability
+     * of the fittest candidate being selected in any given tournament.
+     */
+    public TournamentSelection(NumberGenerator<Double> selectionProbability)
+    {
+        this.selectionProbability = selectionProbability;
+    }
+
+    
+    /**
+     * Creates a tournament selection strategy with a fixed probability.
      * @param selectionProbability The probability that the fitter of two randomly
      * chosen candidates will be selected.  Since this is a probability it must be
      * between 0.0 and 1.0.  This implementation adds the further restriction that
@@ -38,11 +55,11 @@ public class TournamentSelection implements SelectionStrategy<Object>
      */
     public TournamentSelection(double selectionProbability)
     {
+        this(new ConstantGenerator<Double>(selectionProbability));
         if (selectionProbability <= 0.5 || selectionProbability >= 1.0)
         {
             throw new IllegalArgumentException("Selection threshold must be greater than 0.5 and less than 1.0.");
         }
-        this.selectionProbability = selectionProbability;
     }
 
 
@@ -60,7 +77,7 @@ public class TournamentSelection implements SelectionStrategy<Object>
 
             // Use a random value to decide wether to select the fitter individual or the weaker one.
             double value = rng.nextDouble();
-            if (value >= selectionProbability ^ naturalFitnessScores)
+            if (value >= selectionProbability.nextValue() ^ naturalFitnessScores)
             {
                 // Select the fitter candidate.
                 if (candidate2.getFitness() > candidate1.getFitness())

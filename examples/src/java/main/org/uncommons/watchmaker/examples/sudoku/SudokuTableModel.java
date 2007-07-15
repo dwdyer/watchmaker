@@ -26,6 +26,10 @@ public class SudokuTableModel extends AbstractTableModel
 {
     private Sudoku sudoku;
 
+
+    /**
+     * Sets the Sudoku grid represented by this table model.
+     */
     public void setSudoku(Sudoku sudoku)
     {
         this.sudoku = sudoku;
@@ -33,6 +37,9 @@ public class SudokuTableModel extends AbstractTableModel
     }
 
 
+    /**
+     * @return The Sudoku grid represented by this table model.
+     */
     public Sudoku getSudoku()
     {
         return sudoku;

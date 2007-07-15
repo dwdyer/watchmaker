@@ -51,7 +51,7 @@ public class SudokuEvaluator implements FitnessEvaluator<Sudoku>
         // Check sub-grids for duplicates.
         for (int band = 0; band < Sudoku.SIZE; band += 3)
         {
-            for (int stack = 0; stack < Sudoku.SIZE; stack+= 3)
+            for (int stack = 0; stack < Sudoku.SIZE; stack += 3)
             {
                 for (int row = band; row < band + 3; row++)
                 {

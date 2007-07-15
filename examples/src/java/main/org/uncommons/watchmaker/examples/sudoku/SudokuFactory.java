@@ -24,14 +24,14 @@ import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 
 /**
  * Factory that generates potential Sudoku solutions from a list of "givens".
- * The rows of the generated solutions will all be valid (i.e. no duplicate values)
+ * The rows of the generated solutions will all be valid (i.e. no duplicate VALUES)
  * but there are no constraints on the columns or sub-grids (these will be refined
  * by the evolutionary algorithm).
  * @author Daniel Dyer
  */
 public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
 {
-    private static final List<Integer> values = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+    private static final List<Integer> VALUES = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     private final Sudoku.Cell[][] template;
     private final List<List<Integer>> nonFixedValues = new ArrayList<List<Integer>>(Sudoku.SIZE);
@@ -47,7 +47,7 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
         // Keep track of which values in each row are not 'givens'.
         for (int i = 0; i < Sudoku.SIZE; i++)
         {
-            nonFixedValues.add(new ArrayList<Integer>(values));
+            nonFixedValues.add(new ArrayList<Integer>(VALUES));
         }
 
         for (int i = 0; i < pattern.length; i++)

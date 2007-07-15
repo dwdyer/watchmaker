@@ -18,6 +18,8 @@ package org.uncommons.watchmaker.framework.selection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.maths.ConstantGenerator;
+import org.uncommons.maths.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
@@ -29,7 +31,22 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  */
 public class TruncationSelection implements SelectionStrategy<Object>
 {
-    private final double selectionRatio;
+    private final NumberGenerator<Double> selectionRatio;
+
+
+    /**
+     * Creates a truncation selection strategy that is controlled by the
+     * variable selection ratio provided by the specified
+     * {@link NumberGenerator}.
+     * @param selectionRatio A number generator that produces values in
+     * the range {@literal 0 < r < 1}.  These values are used to determine
+     * the proportion of the population that is retained in any given selection.
+     */
+    public TruncationSelection(NumberGenerator<Double> selectionRatio)
+    {
+        this.selectionRatio = selectionRatio;
+    }
+
 
     /**
      * @param selectionRatio The proportion of the highest ranked candidates to
@@ -37,7 +54,11 @@ public class TruncationSelection implements SelectionStrategy<Object>
      */
     public TruncationSelection(double selectionRatio)
     {
-        this.selectionRatio = selectionRatio;
+        this(new ConstantGenerator<Double>(selectionRatio));
+        if (selectionRatio <= 0 || selectionRatio >= 1)
+        {
+            throw new IllegalArgumentException("Selection ratio must be greater than 0 and less than 1.");
+        }
     }
 
 
@@ -63,7 +84,7 @@ public class TruncationSelection implements SelectionStrategy<Object>
     {
         List<S> selection = new ArrayList<S>(selectionSize);
 
-        int eligibleCount = (int) Math.round(selectionRatio * population.size());
+        int eligibleCount = (int) Math.round(selectionRatio.nextValue() * population.size());
         eligibleCount = eligibleCount > selectionSize ? selectionSize : eligibleCount;
 
         do

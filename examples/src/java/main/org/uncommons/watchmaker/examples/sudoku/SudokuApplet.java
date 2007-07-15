@@ -33,7 +33,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
@@ -49,11 +48,13 @@ import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
+import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
 import org.uncommons.watchmaker.gui.AbortControl;
+import org.uncommons.watchmaker.gui.NumericParameterControl;
 
 /**
  * An evolutionary Sudoku solver.
@@ -104,7 +105,12 @@ public class SudokuApplet extends JApplet
                                                                      "Medium Puzzle (32 givens)",
                                                                      "Hard Puzzle (28 givens)"});
     private final JSpinner populationSizeSpinner = new JSpinner(new SpinnerNumberModel(100, 10, 10000, 1));
-    private final JSlider selectionPressureSlider = new JSlider(51, 99, 85);
+    private final NumericParameterControl<Double> selectionPressure = new NumericParameterControl<Double>(0.51d,
+                                                                                                          0.99d,
+                                                                                                          0.01d,
+                                                                                                          0.85d);
+    private final SelectionStrategy<Object> selectionStrategy
+        = new TournamentSelection(selectionPressure.getNumberGenerator());
     private final AbortControl abortControl = new AbortControl();
 
     public SudokuApplet()
@@ -124,7 +130,7 @@ public class SudokuApplet extends JApplet
         innerPanel.add(new JLabel("Puzzle: "));
         innerPanel.add(puzzleCombo);
         innerPanel.add(new JLabel("Selection Pressure: "));
-        innerPanel.add(selectionPressureSlider);
+        innerPanel.add(selectionPressure.getControl());
         innerPanel.add(new JLabel("Population Size: "));
         innerPanel.add(populationSizeSpinner);
         SpringUtilities.makeCompactGrid(innerPanel, 3, 2, 0, 6, 6, 6);
@@ -160,13 +166,11 @@ public class SudokuApplet extends JApplet
             {
                 String[] puzzle = PUZZLES[puzzleCombo.getSelectedIndex()];
                 int populationSize = (Integer) populationSizeSpinner.getValue();
-                double selectionPressure = selectionPressureSlider.getValue() / 100d;
                 solveButton.setEnabled(false);
                 abortControl.reset();
                 createTask(puzzle,
                            populationSize,
-                           (int) Math.round(populationSize * 0.05), // Elite count is 5%.
-                           selectionPressure).execute();
+                           (int) Math.round(populationSize * 0.05)).execute(); // Elite count is 5%.
             }
         });
 
@@ -197,8 +201,7 @@ public class SudokuApplet extends JApplet
      */
     private SwingBackgroundTask<Sudoku> createTask(final String[] puzzle,
                                                    final int populationSize,
-                                                   final int eliteCount,
-                                                   final double selectionPressure)
+                                                   final int eliteCount)
     {
         return new SwingBackgroundTask<Sudoku>()
         {
@@ -219,7 +222,7 @@ public class SudokuApplet extends JApplet
                 EvolutionEngine<Sudoku> engine = new StandaloneEvolutionEngine<Sudoku>(new SudokuFactory(puzzle),
                                                                                        pipeline,
                                                                                        new SudokuEvaluator(),
-                                                                                       new TournamentSelection(selectionPressure),
+                                                                                       selectionStrategy,
                                                                                        rng);
                 engine.addEvolutionObserver(new EvolutionLogger());
                 return engine.evolve(populationSize,
