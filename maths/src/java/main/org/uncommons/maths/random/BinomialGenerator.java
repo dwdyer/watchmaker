@@ -78,7 +78,7 @@ public class BinomialGenerator implements NumberGenerator<Integer>
         {
             throw new IllegalArgumentException("n must be a positive integer.");
         }
-        if (p < 0 || p > 1)
+        if (p <= 0 || p >= 1)
         {
             throw new IllegalArgumentException("p must be between 0 and 1.");
         }

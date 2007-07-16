@@ -68,6 +68,20 @@ public class PoissonGeneratorTest
     }
 
 
+
+    /**
+     * The mean must be greater than zero to be useful.  This test ensures
+     * that an appropriate exception is thrown if the mean is not positive.  Not
+     * throwing an exception is an error because it permits undetected bugs in
+     * programs that use {@link PoissonGenerator}.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testMeanTooLow()
+    {
+        new PoissonGenerator(0d, rng);
+    }
+
+
     private void checkDistribution(NumberGenerator<Integer> generator,
                                    double expectedMean)
     {
@@ -80,9 +94,9 @@ public class PoissonGeneratorTest
         {
             data.addValue(generator.nextValue());
         }
-        assert Maths.approxEquals(data.getArithmeticMean(), expectedMean, 0.2)
+        assert Maths.approxEquals(data.getArithmeticMean(), expectedMean, 0.01)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
-        assert Maths.approxEquals(data.getStandardDeviation(), expectedStandardDeviation, 0.1)
+        assert Maths.approxEquals(data.getStandardDeviation(), expectedStandardDeviation, 0.02)
                 : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();
     }
 }

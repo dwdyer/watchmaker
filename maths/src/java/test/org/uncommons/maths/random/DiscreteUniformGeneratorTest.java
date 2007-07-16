@@ -49,9 +49,9 @@ public class DiscreteUniformGeneratorTest
         {
             data.addValue(generator.nextValue());
         }
-        assert Maths.approxEquals(data.getArithmeticMean(), mean, 3)
+        assert Maths.approxEquals(data.getArithmeticMean(), mean, 0.01)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
-        assert Maths.approxEquals(data.getStandardDeviation(), standardDeviation, 2)
+        assert Maths.approxEquals(data.getStandardDeviation(), standardDeviation, 0.02)
                 : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();
     }
 

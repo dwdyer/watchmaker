@@ -75,6 +75,46 @@ public class BinomialGeneratorTest
     }
 
 
+    /**
+     * The probability of succes in any single trial is invalid if it is greater than 1.
+     * Further, it needs to be less than 1 to be useful.  This test ensures that an
+     * appropriate exception is thrown if the probability is greater than or equal to 1.
+     * Not throwing an exception is an error because it permits undetected bugs in
+     * programs that use {@link BinomialGenerator}.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testProbabilityTooHigh()
+    {
+        new BinomialGenerator(5, 1d, rng);
+    }
+
+
+    /**
+     * The probability of succes in any single trial must be greater than zero to
+     * be useful.  This test ensures that an appropriate exception is thrown if the
+     * probability is not positive.  Not throwing an exception is an error because it
+     * permits undetected bugs in programs that use {@link BinomialGenerator}.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testProbabilityTooLow()
+    {
+        new BinomialGenerator(5, 0d, rng);
+    }
+
+
+    /**
+     * The number of trials must be greater than zero to be useful.  This test ensures
+     * that an appropriate exception is thrown if the number is not positive.  Not
+     * throwing an exception is an error because it permits undetected bugs in
+     * programs that use {@link BinomialGenerator}.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testTrialsTooLow()
+    {
+        new BinomialGenerator(0, 0.5d, rng);
+    }
+
+
     private void checkDistribution(NumberGenerator<Integer> generator,
                                    int n,
                                    double p)
@@ -88,9 +128,9 @@ public class BinomialGeneratorTest
         {
             data.addValue(generator.nextValue());
         }
-        assert Maths.approxEquals(data.getArithmeticMean(), expectedMean, 0.25)
+        assert Maths.approxEquals(data.getArithmeticMean(), expectedMean, 0.01)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
-        assert Maths.approxEquals(data.getStandardDeviation(), expectedStandardDeviation, 0.25)
+        assert Maths.approxEquals(data.getStandardDeviation(), expectedStandardDeviation, 0.02)
                 : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();
     }
 }

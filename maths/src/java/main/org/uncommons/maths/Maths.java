@@ -120,11 +120,20 @@ public final class Maths
 
     /**
      * Checks that two values are approximately equal (plus or minus a specified tolerance).
+     * @param tolerance How much (in percentage terms, as a percentage of the first value)
+     * the values are allowed to differ and still be considered equal.  Expressed as a value
+     * between 0 and 1.
      * @return true if the values are approximately equal, false otherwise.
      */
-    public static boolean approxEquals(double value1, double value2, double tolerance)
+    public static boolean approxEquals(double value1,
+                                       double value2,
+                                       double tolerance)
     {
-        return Math.abs(value1 - value2) <= tolerance;
+        if (tolerance < 0 || tolerance > 1)
+        {
+            throw new IllegalArgumentException("Tolerance must be between 0 and 1.");
+        }
+        return Math.abs(value1 - value2) <= value1 * tolerance;
     }
 
 

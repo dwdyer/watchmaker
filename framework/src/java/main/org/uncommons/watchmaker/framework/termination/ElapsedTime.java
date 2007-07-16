@@ -32,6 +32,10 @@ public class ElapsedTime implements TerminationCondition
      */
     public ElapsedTime(long maxDuration)
     {
+        if (maxDuration <= 0)
+        {
+            throw new IllegalArgumentException("Duration must be positive.");
+        }
         this.maxDuration = maxDuration;
     }
 

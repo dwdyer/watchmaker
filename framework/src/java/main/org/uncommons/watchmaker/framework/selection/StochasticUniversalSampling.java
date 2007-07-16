@@ -38,7 +38,8 @@ public class StochasticUniversalSampling implements SelectionStrategy<Object>
         double aggregateFitness = 0;
         for (EvaluatedCandidate<S> candidate : population)
         {
-            aggregateFitness += getAdjustedFitness(candidate.getFitness(), naturalFitnessScores);
+            aggregateFitness += getAdjustedFitness(candidate.getFitness(),
+                                                   naturalFitnessScores);
         }
 
         List<S> selection = new ArrayList<S>(selectionSize);

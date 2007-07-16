@@ -87,9 +87,9 @@ public class GaussianGeneratorTest
         {
             data.addValue(generator.nextValue());
         }
-        assert Maths.approxEquals(data.getArithmeticMean(), expectedMean, 0.5)
+        assert Maths.approxEquals(data.getArithmeticMean(), expectedMean, 0.01)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
-        assert Maths.approxEquals(data.getStandardDeviation(), expectedStandardDeviation, 0.5)
+        assert Maths.approxEquals(data.getStandardDeviation(), expectedStandardDeviation, 0.02)
                 : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();
     }
 }

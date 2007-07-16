@@ -68,4 +68,30 @@ public class TruncationSelectionTest
         assert selection.contains(gary.getCandidate()) : "Best candidate not selected.";
         assert selection.contains(john.getCandidate()) : "Second best candidate not selected.";
     }
+
+
+    /**
+     * The selection ratio must be greater than zero to be useful.  This test
+     * ensures that an appropriate exception is thrown if the ratio is not positive.
+     * Not throwing an exception is an error because it permits undetected bugs in
+     * evolutionary programs.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testZeroRatio()
+    {
+        new TruncationSelection(0d);
+    }
+
+
+    /**
+     * The selection ratio must be less than 1 to be useful.  This test
+     * ensures that an appropriate exception is thrown if the ratio is too high.
+     * Not throwing an exception is an error because it permits undetected bugs in
+     * evolutionary programs.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testRatioTooHigh()
+    {
+        new TruncationSelection(1d);
+    }
 }

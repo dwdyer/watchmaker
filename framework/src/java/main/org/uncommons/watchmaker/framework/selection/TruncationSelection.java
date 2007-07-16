@@ -84,7 +84,10 @@ public class TruncationSelection implements SelectionStrategy<Object>
     {
         List<S> selection = new ArrayList<S>(selectionSize);
 
-        int eligibleCount = (int) Math.round(selectionRatio.nextValue() * population.size());
+        double ratio = selectionRatio.nextValue();
+        assert ratio < 1 && ratio > 0 : "Selection ratio out-of-range: " + ratio;
+        
+        int eligibleCount = (int) Math.round(ratio * population.size());
         eligibleCount = eligibleCount > selectionSize ? selectionSize : eligibleCount;
 
         do

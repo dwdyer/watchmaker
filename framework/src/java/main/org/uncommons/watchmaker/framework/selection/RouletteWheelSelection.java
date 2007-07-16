@@ -52,10 +52,12 @@ public class RouletteWheelSelection implements SelectionStrategy<Object>
         // proportional to the probability of the corresponding candidate in the population
         // being selected.
         double[] cumulativeFitnesses = new double[population.size()];
-        cumulativeFitnesses[0] = getAdjustedFitness(population.get(0).getFitness(), naturalFitnessScores);
+        cumulativeFitnesses[0] = getAdjustedFitness(population.get(0).getFitness(),
+                                                    naturalFitnessScores);
         for (int i = 1; i < population.size(); i++)
         {
-            double fitness = getAdjustedFitness(population.get(i).getFitness(), naturalFitnessScores);
+            double fitness = getAdjustedFitness(population.get(i).getFitness(),
+                                                naturalFitnessScores);
             cumulativeFitnesses[i] = cumulativeFitnesses[i - 1] + fitness;
         }
 
@@ -75,7 +77,8 @@ public class RouletteWheelSelection implements SelectionStrategy<Object>
     }
 
 
-    private double getAdjustedFitness(double rawFitness, boolean naturalFitness)
+    private double getAdjustedFitness(double rawFitness,
+                                      boolean naturalFitness)
     {
         if (naturalFitness)
         {

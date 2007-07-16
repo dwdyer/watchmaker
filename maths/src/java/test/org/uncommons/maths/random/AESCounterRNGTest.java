@@ -63,7 +63,7 @@ public class AESCounterRNGTest
     {
         double pi = RNGTestUtils.calculateMonteCarloValueForPi(rng, 100000);
         Reporter.log("Monte Carlo value for Pi: " + pi);
-        assert Maths.approxEquals(pi, Math.PI, 0.02) : "Monte Carlo value for Pi is outside acceptable range:" + pi;
+        assert Maths.approxEquals(pi, Math.PI, 0.01) : "Monte Carlo value for Pi is outside acceptable range:" + pi;
     }
 
 
@@ -81,6 +81,6 @@ public class AESCounterRNGTest
         double observedSD = RNGTestUtils.calculateSampleStandardDeviation(rng, n, 10000);
         double expectedSD = 100 / Math.sqrt(12);
         Reporter.log("Expected SD: " + expectedSD + ", observed SD: " + observedSD);
-        assert Maths.approxEquals(observedSD, expectedSD, 0.5) : "Standard deviation is outside acceptable range: " + observedSD;
+        assert Maths.approxEquals(observedSD, expectedSD, 0.02) : "Standard deviation is outside acceptable range: " + observedSD;
     }
 }

@@ -75,7 +75,9 @@ public class RankSelection implements SelectionStrategy<Object>
         while (iterator.hasNext())
         {
             S candidate = iterator.next().getCandidate();
-            rankedPopulation.add(new EvaluatedCandidate<S>(candidate, mapRankToScore(++index, population.size())));
+            rankedPopulation.add(new EvaluatedCandidate<S>(candidate,
+                                                           mapRankToScore(++index,
+                                                                          population.size())));
         }
         return delegate.select(rankedPopulation, true, selectionSize, rng);
     }

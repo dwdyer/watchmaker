@@ -47,7 +47,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
      */
     protected AbstractCrossover(int crossoverPoints)
     {
-        this(new ConstantGenerator<Integer>(crossoverPoints));
+        this(crossoverPoints, 1d);
     }
 
 
@@ -67,6 +67,10 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
                                 double crossoverProbability)
     {
         this(new ConstantGenerator<Integer>(crossoverPoints), crossoverProbability);
+        if (crossoverPoints <= 0)
+        {
+            throw new IllegalArgumentException("Number of cross-over points must be positive.");
+        }
     }
 
 

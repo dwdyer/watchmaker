@@ -32,6 +32,10 @@ public class GenerationCount implements TerminationCondition
      */
     public GenerationCount(int generationCount)
     {
+        if (generationCount <= 0)
+        {
+            throw new IllegalArgumentException("Generation count must be positive.");
+        }
         this.generationCount = generationCount;
     }
 

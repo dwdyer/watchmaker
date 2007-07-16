@@ -65,4 +65,33 @@ public class TournamentSelectionTest
         List<String> selection = selector.select(population, false, 2, new Random());
         assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
     }
+
+
+
+    /**
+     * The probability of selecting the fitter of two candidates must be greater than 0.5 to be
+     * useful (if it is not, there is no selection pressure, or the pressure is in favour of weaker
+     * candidates, which is counter-productive) .  This test ensures that an appropriate exception
+     * is thrown if the probability is 0.5 or less.  Not throwing an exception is an error because
+     * it permits undetected bugs in evolutionary programs.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testProbabilityTooLow()
+    {
+        new TournamentSelection(0.5d);
+    }
+
+
+    /**
+     * The probability of selecting the fitter of two candidates must be less than 1.  A probability
+     * greater than 1 is invalid and a probability equal to 1 removes any chance of weaker candidates
+     * surviving.  This test ensures that an appropriate exception is thrown if the probability is
+     * 1 or more.  Not throwing an exception is an error because it permits undetected bugs in
+     * evolutionary programs.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testProbabilityTooHigh()
+    {
+        new TournamentSelection(1d);
+    }
 }

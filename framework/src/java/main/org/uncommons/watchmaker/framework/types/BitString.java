@@ -45,6 +45,10 @@ public final class BitString implements Cloneable, Serializable
      */
     public BitString(int length)
     {
+        if (length < 0)
+        {
+            throw new IllegalArgumentException("Length must be non-negative.");
+        }
         this.length = length;
         this.data = new int[(length + WORD_LENGTH - 1) / WORD_LENGTH];
     }

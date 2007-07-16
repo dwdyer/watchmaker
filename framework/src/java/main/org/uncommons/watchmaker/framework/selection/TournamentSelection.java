@@ -75,6 +75,9 @@ public class TournamentSelection implements SelectionStrategy<Object>
             EvaluatedCandidate<S> candidate1 = population.get(rng.nextInt(population.size()));
             EvaluatedCandidate<S> candidate2 = population.get(rng.nextInt(population.size()));
 
+            double probalitity = selectionProbability.nextValue();
+            assert probalitity > 0.5 && probalitity < 1 : "Selection probability out-of-range: " + probalitity;
+
             // Use a random value to decide wether to select the fitter individual or the weaker one.
             double value = rng.nextDouble();
             if (value >= selectionProbability.nextValue() ^ naturalFitnessScores)
