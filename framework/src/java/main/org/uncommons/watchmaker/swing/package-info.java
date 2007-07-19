@@ -13,23 +13,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.gui;
-
-import javax.swing.JComponent;
-
 /**
- * Common interface for GUI controls for evolutionary programs.
- * @author Daniel Dyer
+ * This package includes a number of classes to simplify the development of
+ * Swing GUIs for evolutionary programs by providing common controls.
  */
-public interface EvolutionControl
-{
-    /**
-     * @return The GUI component used by this control.
-     */
-    JComponent getControl();
-
-    /**
-     * Resets the control to its initial configuration.
-     */
-    void reset();
-}
+package org.uncommons.watchmaker.swing;

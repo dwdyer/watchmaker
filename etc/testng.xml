@@ -16,7 +16,7 @@
 
   <test name="GUI Components" >
     <packages>
-      <package name="org.uncommons.watchmaker.gui.*" />
+      <package name="org.uncommons.watchmaker.swing.*" />
       <package name="org.uncommons.gui.*" />
     </packages>
   </test>

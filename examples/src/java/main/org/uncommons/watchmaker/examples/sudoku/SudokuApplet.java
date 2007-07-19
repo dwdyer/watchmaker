@@ -53,8 +53,8 @@ import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
-import org.uncommons.watchmaker.gui.AbortControl;
-import org.uncommons.watchmaker.gui.NumericParameterControl;
+import org.uncommons.watchmaker.swing.AbortControl;
+import org.uncommons.watchmaker.swing.NumericParameterControl;
 
 /**
  * An evolutionary Sudoku solver.

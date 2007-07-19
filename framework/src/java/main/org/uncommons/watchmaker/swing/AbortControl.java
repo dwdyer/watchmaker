@@ -13,7 +13,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.gui;
+package org.uncommons.watchmaker.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

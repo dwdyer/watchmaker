@@ -45,8 +45,8 @@ import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
-import org.uncommons.watchmaker.framework.interactive.SwingConsole;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
+import org.uncommons.watchmaker.swing.SwingConsole;
 
 /**
  * Watchmaker Framework implementation of Dawkin's biomorph program. 

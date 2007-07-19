@@ -143,7 +143,7 @@
         <fileset dir="." defaultexcludes="yes">
           <include name="**/${java.dir}/main/org/uncommons/**/*.java"/>
         </fileset>
-        <group title="Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
+        <group title="Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*:org.uncommons.watchmaker.swing"/>
         <group title="Example Evolutionary Algorithms" packages="org.uncommons.watchmaker.examples.*"/>
         <group title="Uncommons Maths" packages="org.uncommons.maths:org.uncommons.maths.*"/>
         <group title="Uncommons GUI" packages="org.uncommons.gui:org.uncommons.gui.*"/>

@@ -10,6 +10,10 @@ Changes in version 0.4.1
 * Added some GUI control components to assist in building Swing GUIs for
   evolutionary programs.
 
+* Moved the SwingConsole class into the new Swing components package
+  (org.uncommons.watchmaker.swing) so that the core framework does not contain
+  any dependencies on a particular presentation layer.
+
 * Added evolutionary Sudoku solver example application.
 
 * Included source code for the examples in the release archives.

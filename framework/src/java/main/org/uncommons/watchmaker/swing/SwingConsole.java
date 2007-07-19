@@ -13,7 +13,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.framework.interactive;
+package org.uncommons.watchmaker.swing;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -25,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import org.uncommons.watchmaker.framework.interactive.Console;
 
 /**
  * Swing-based console for interactive evolutionary algorithms.
