@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.testng.annotations.Test;
+import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
@@ -31,6 +32,8 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  */
 public class TournamentSelectionTest
 {
+    private final Random rng = new MersenneTwisterRNG();
+
     @Test
     public void testNaturalFitnessSelection()
     {
@@ -44,8 +47,11 @@ public class TournamentSelectionTest
         population.add(mary);
         population.add(john);
         population.add(gary);
-        List<String> selection = selector.select(population, true, 2, new Random());
-        assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
+        for (int i = 0; i < 20; i++) // Run several iterations so that we get different tournament outcomes.
+        {
+            List<String> selection = selector.select(population, true, 2, rng);
+            assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
+        }
     }
 
 
@@ -62,8 +68,11 @@ public class TournamentSelectionTest
         population.add(john);
         population.add(mary);
         population.add(steve);
-        List<String> selection = selector.select(population, false, 2, new Random());
-        assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
+        for (int i = 0; i < 20; i++) // Run several iterations so that we get different tournament outcomes.
+        {
+            List<String> selection = selector.select(population, false, 2, rng);
+            assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
+        }
     }
 
 

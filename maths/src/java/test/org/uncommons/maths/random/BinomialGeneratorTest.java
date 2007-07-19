@@ -67,8 +67,8 @@ public class BinomialGeneratorTest
 
         // Adjust parameters and ensure that the generator output conforms to this new distribution.
         final int adjustedN = 14;
-        final double adjustedP = 0.32;
         nGenerator.setValue(adjustedN);
+        final double adjustedP = 0.32;
         pGenerator.setValue(adjustedP);
 
         checkDistribution(generator, adjustedN, adjustedP);

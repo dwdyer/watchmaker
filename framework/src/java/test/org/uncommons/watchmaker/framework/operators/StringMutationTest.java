@@ -27,10 +27,11 @@ import org.uncommons.maths.random.MersenneTwisterRNG;
  */
 public class StringMutationTest
 {
+    private final char[] alphabet = new char[]{'a', 'b', 'c', 'd'};
+
     @Test
     public void testMutation()
-    {
-        char[] alphabet = new char[]{'a', 'b', 'c', 'd'};
+    {        
         StringMutation mutation = new StringMutation(alphabet, 0.5d);
         String individual1 = "abcd";
         String individual2 = "abab";
@@ -51,4 +52,32 @@ public class StringMutationTest
             }
         }
     }
+
+
+    /**
+     * The probability of mutation must be greater than 0 to be useful (less than zero
+     * is invalid and equal to zero removes all uncertainty).  This test ensures that an
+     * appropriate exception is thrown if the probability is not positive.  Not throwing
+     * an exception is an error because it permits undetected bugs in evolutionary
+     * programs.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testProbabilityTooLow()
+    {
+        new StringMutation(alphabet, 0d);
+    }
+
+
+    /**
+     * The probability of mutation must be less than or equal to 1 to be valid.
+     * This test ensures that an appropriate exception is thrown if the probability is
+     * greater than or equal to one.  Not throwing an exception is an error because it
+     * permits undetected bugs in evolutionary programs.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testProbabilityTooHigh()
+    {
+        new StringMutation(alphabet, 1.001d);
+    }
+
 }

@@ -50,12 +50,7 @@ public class SampleDataSetTest
     @Test
     public void testAggregateStats()
     {
-        DataSet data = new SampleDataSet();
-        data.addValue(1);
-        data.addValue(2);
-        data.addValue(3);
-        data.addValue(4);
-        data.addValue(5);
+        DataSet data = new SampleDataSet(new double[]{1d, 2d, 3d, 4d, 5d});
         long product = Maths.factorial(5);
         assert data.getAggregate() == 15d : "Incorrect aggregate: " + data.getAggregate();
         assert data.getProduct() == product : "Incorrect product: " + data.getProduct();

@@ -187,7 +187,35 @@ public class BitStringTest
         bitString.setBit(9, true);
         BitString clone = bitString.clone();
         assert clone.equals(bitString) : "Equals comparison failed on equivalent bit strings.";
+        // Equivalent objects must have the same hash code.
+        assert bitString.hashCode() == clone.hashCode() : "Hash codes do not match.";
+        // Changing one of the objects should result in them no longer being considered equal.
         clone.flipBit(0);
         assert !clone.equals(bitString) : "Equals comparison failed on different bit strings.";
+    }
+
+
+    /**
+     * The length of a bit string must be non-negative.  If an attempt is made
+     * to create a bit string with a negative length, an appropriate exception
+     * must be thrown.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testInvalidLength()
+    {
+        new BitString(-1);
+    }
+
+
+    /**
+     * Checks to ensure that invalid characters in a String used to construct
+     * the bit string results in an appropriate exception.  Not throwing an
+     * exception is an error since bugs in programs that use bit strings will
+     * be hard to detect.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testInvalidChars()
+    {
+        new BitString("0010201"); // Invalid.
     }
 }

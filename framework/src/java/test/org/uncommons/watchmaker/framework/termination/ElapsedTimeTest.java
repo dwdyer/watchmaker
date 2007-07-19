@@ -36,4 +36,17 @@ public class ElapsedTimeTest
         assert condition.shouldTerminate(data) : "Should terminate after timeout.";
     }
 
+
+    /**
+     * The duration must be greater than zero to be useful.  This test
+     * ensures that an appropriate exception is thrown if the duration is not positive.
+     * Not throwing an exception is an error because it permits undetected bugs in
+     * evolutionary programs.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testZeroRatio()
+    {
+        new ElapsedTime(0L);
+    }
+
 }

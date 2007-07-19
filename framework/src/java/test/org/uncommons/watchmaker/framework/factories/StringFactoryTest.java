@@ -74,6 +74,25 @@ public class StringFactoryTest
     }
 
 
+    /**
+     * It is an error if the number of seed candidates is greater than the
+     * population size.  In this case an exception should be thrown.  Not
+     * throwing an exception is wrong because it would permit undetected bugs
+     * in programs that use the factory.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testTooManySeedCandidates()
+    {
+        CandidateFactory<String> factory = new StringFactory(alphabet, candidateLength);
+        // The following call should cause an exception since the 3 seed candidates
+        // won't fit into a population of size 2.
+        factory.generateInitialPopulation(2,
+                                          Arrays.asList("abcdefgh", "ijklmnop", "qrstuvwx"),
+                                          rng);
+    }
+
+
+
 
     /**
      * Make sure each candidate is valid (is the right length and contains only

@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.framework.factories;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -83,6 +84,24 @@ public class ListPermutationFactoryTest
         assert population.contains(seed2) : "Population does not contain seed candidate 2.";
 
         validatePopulation(population);
+    }
+
+
+    /**
+     * It is an error if the number of seed candidates is greater than the
+     * population size.  In this case an exception should be thrown.  Not
+     * throwing an exception is wrong because it would permit undetected bugs
+     * in programs that use the factory.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testTooManySeedCandidates()
+    {
+        CandidateFactory<List<Integer>> factory = new ListPermutationFactory<Integer>(elements);
+        // The following call should cause an exception since the 3 seed candidates
+        // won't fit into a population of size 2.
+        factory.generateInitialPopulation(2,
+                                          Arrays.asList(elements, elements, elements),
+                                          rng);
     }
 
 

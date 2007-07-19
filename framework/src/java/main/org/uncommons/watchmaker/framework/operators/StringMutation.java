@@ -37,9 +37,10 @@ public class StringMutation implements EvolutionaryOperator<String>
      */
     public StringMutation(char[] alphabet, double mutationProbability)
     {
-        if (mutationProbability < 0 || mutationProbability > 1)
+        if (mutationProbability <= 0 || mutationProbability > 1)
         {
-            throw new IllegalArgumentException("Mutation probability must be between 0 and 1.");
+            throw new IllegalArgumentException("Mutation probability must be greater than "
+                                               + "zero and less than or equal to one.");
         }
         this.alphabet = alphabet.clone();
         this.mutationProbability = mutationProbability;

@@ -62,6 +62,28 @@ public class MathsTest
     }
 
 
+    /**
+     * Factorials of negative integers are not supported.  This method
+     * checks that an appropriate exception is thrown.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testNegativeFactorial()
+    {
+        Maths.factorial(-1); // Should throw an exception.
+    }
+
+
+    /**
+     * Factorials of negative integers are not supported.  This method
+     * checks that an appropriate exception is thrown.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testNegativeBigFactorial()
+    {
+        Maths.bigFactorial(-1); // Should throw an exception.
+    }
+
+
     @Test
     public void testRaiseToPower()
     {

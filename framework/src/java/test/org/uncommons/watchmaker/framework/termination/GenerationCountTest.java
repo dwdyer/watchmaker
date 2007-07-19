@@ -36,4 +36,17 @@ public class GenerationCountTest
         // Generation number 4 is the 5th generation (generation numbers are zero-based).
         assert condition.shouldTerminate(data) : "Should terminate after 5th generation.";
     }
+
+
+    /**
+     * The generation count must be greater than zero to be useful.  This test
+     * ensures that an appropriate exception is thrown if the count is not positive.
+     * Not throwing an exception is an error because it permits undetected bugs in
+     * evolutionary programs.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testZeroRatio()
+    {
+        new GenerationCount(0);
+    }
 }

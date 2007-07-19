@@ -24,10 +24,16 @@ import org.testng.annotations.Test;
  */
 public class PermutationGeneratorTest
 {
+    private final String[] elements = new String[]{"1", "2", "3"};
+
+
+    /**
+     * This is the main test case and ensures that the permutation generator
+     * produces the correct output.
+     */
     @Test
-    public void testPermutationGenerator()
+    public void testPermutations()
     {
-        String[] elements = new String[]{"1", "2", "3"};
         PermutationGenerator<String> generator = new PermutationGenerator<String>(elements);
         assert generator.getTotalPermutations() == 6 : "Possible permutations should be 6.";
         assert generator.hasMore() : "Generator should have more permutations available.";
@@ -53,5 +59,31 @@ public class PermutationGeneratorTest
         String perm1String = permutation1[0] + permutation1[1] + permutation1[2];
         String perm2String = permutation2.get(0) + permutation2.get(1) + permutation2.get(2);
         assert !(perm1String).equals(perm2String) : "Permutation should be different from previous one.";
+    }
+
+
+    /**
+     * When generating a permutation into an existing array, that
+     * array must be big enough to hold the permutation.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDestinationArrayTooShort()
+    {
+        PermutationGenerator<String> generator = new PermutationGenerator<String>(elements);
+        generator.nextPermutationAsArray(new String[2]); // Should throw an exception.
+    }
+
+
+    /**
+     * When generating a permutation into an existing array, that array should
+     * not be bigger than required.  Otherwise subtle bugs may occur in programs
+     * that use the permutation generator when the end of the array contains nulls
+     * or zeros.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDestinationArrayTooLong()
+    {
+        PermutationGenerator<String> generator = new PermutationGenerator<String>(elements);
+        generator.nextPermutationAsArray(new String[4]); // Should throw an exception.
     }
 }
