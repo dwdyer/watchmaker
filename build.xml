@@ -51,6 +51,12 @@
 
   <property name="version" value="0.4.0"/>
 
+  <!-- This is the minimum coverage percentage (for both lines and
+       branches) that will be tolerated.  This is used to prevent
+       regressions in coverage.  The threshold will be raised as
+       test coverage improves. -->
+  <property name="minimum.coverage" value="65" />
+
 
 <!-- ==================================================================
      MACROS
@@ -338,6 +344,11 @@
         <include name="**/*.java" />
       </fileset>      
     </cobertura-report>
+
+    <!-- If the coverage is poor, fail. -->
+    <cobertura-check totallinerate="${minimum.coverage}"
+                     totalbranchrate="${minimum.coverage}"
+                     datafile="${temp.dir}/cobertura.ser"/>
     
   </target>
 
