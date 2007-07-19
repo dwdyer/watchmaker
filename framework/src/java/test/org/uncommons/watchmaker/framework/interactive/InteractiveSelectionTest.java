@@ -77,6 +77,42 @@ public class InteractiveSelectionTest
         assert console.getSelectionCount() == 3 : "Wrong number of user selections: " + console.getSelectionCount();
     }
 
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testInvalidMaxSelections()
+    {
+        final int groupSize = 5;
+        RandomConsole<Integer> console = new RandomConsole<Integer>(groupSize);
+        // This should throw an exception because max selections must be at least 1.
+        new InteractiveSelection<Integer>(console, groupSize, 0);
+    }
+
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testInvalidGroupSize()
+    {
+        final int groupSize = 1;
+        RandomConsole<Integer> console = new RandomConsole<Integer>(groupSize);
+        // This should throw an exception because group size must be at least 2.
+        new InteractiveSelection<Integer>(console, groupSize, 1);
+    }
+
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testGroupSizeTooBigForPopulation()
+    {
+        final int groupSize = 5;
+        RandomConsole<Integer> console = new RandomConsole<Integer>(groupSize);
+        SelectionStrategy<Integer> strategy = new InteractiveSelection<Integer>(console,
+                                                                                groupSize,
+                                                                                1);
+        List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 1.0),
+                                                                     new EvaluatedCandidate<Integer>(1, 2.0));
+        // This should fail because a population of 2 is not big enough with a
+        // group size of 5.
+        strategy.select(population, true, 2, rng);
+    }
+
     
     /**
      * Automated test console implementation that simply selects an

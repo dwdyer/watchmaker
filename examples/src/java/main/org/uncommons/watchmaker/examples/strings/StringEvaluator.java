@@ -19,7 +19,7 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
  * Evaluates strings and assigns a fitness score based on how many characters
- * match the equivalent positions in a given target string.
+ * differ from the equivalent positions in a given target string.
  * @author Daniel Dyer
  */
 public class StringEvaluator implements FitnessEvaluator<String>
@@ -39,10 +39,11 @@ public class StringEvaluator implements FitnessEvaluator<String>
 
 
     /**
-     * Assigns one "fitness point" for every character in the candidate
-     * string that matches the corresponding position in the target string.
+     * Assigns one "penalty point" for every character in the candidate
+     * string that differs from the corresponding position in the target
+     * string.
      * @param candidate The evolved string to evaluate.
-     * @return The fitness score (how many characters are correct) of the
+     * @return The fitness score (how many characters are wrong) of the
      * specified string.
      */
     public double getFitness(String candidate)
@@ -50,7 +51,7 @@ public class StringEvaluator implements FitnessEvaluator<String>
         int matches = 0;
         for (int i = 0; i < candidate.length(); i++)
         {
-            if (candidate.charAt(i) == targetString.charAt(i))
+            if (candidate.charAt(i) != targetString.charAt(i))
             {
                 ++matches;
             }
@@ -64,6 +65,6 @@ public class StringEvaluator implements FitnessEvaluator<String>
      */
     public boolean isNatural()
     {
-        return true;
+        return false;
     }
 }

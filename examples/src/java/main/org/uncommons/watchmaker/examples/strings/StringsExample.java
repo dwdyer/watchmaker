@@ -71,7 +71,7 @@ public final class StringsExample
         engine.addEvolutionObserver(new EvolutionLogger());
         engine.evolve(100, // 100 individuals in the population.
                       5, // 5% elitism.
-                      new TargetFitness(target.length(), true)); // Perfect fitness score required.
+                      new TargetFitness(0, false)); // Perfect fitness score required.
     }
 
 
