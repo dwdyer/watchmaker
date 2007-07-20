@@ -77,4 +77,66 @@ public class SudokuFactoryTest
             }
         }
     }
+
+
+    /**
+     * If the pattern used to create a Sudoku factory contains any characters
+     * other than the values 1 - 9 or dots (which represent empty cells), then
+     * an appropriate exception should be thrown.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testInvalidPatternChars()
+    {
+        // This pattern is the right size but contains an invalid character.
+        String[] pattern = new String[]{"....9....",
+                                        "2..3.....",
+                                        "........1",
+                                        "....a....", // Invalid character on this line.
+                                        "....4....",
+                                        ".........",
+                                        ".........",
+                                        ".........",
+                                        "........."};
+        new SudokuFactory(pattern);
+    }
+
+
+    /**
+     * If the pattern used to create a Sudoku factory contains the wrong number
+     * of rows then an appropriate exception should be thrown.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testWrongNumberOfRows()
+    {
+        // This pattern contains only valid characters and has the right number
+        // of columns but doesn't have enough rows.
+        String[] pattern = new String[]{"....9....",
+                                        "2..3.....",
+                                        "........1",
+                                        ".........",
+                                        "........."};
+        new SudokuFactory(pattern);
+    }
+
+
+    /**
+     * If the pattern used to create a Sudoku factory contains the wrong number
+     * of columns then an appropriate exception should be thrown.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testWrongNumberOfColumns()
+    {
+        // This pattern contains only valid characters and has the right number
+        // of rows but has too many columns in some
+        String[] pattern = new String[]{"....9....",
+                                        "2..3.....",
+                                        "........1",
+                                        ".........",
+                                        ".........7",
+                                        ".........",
+                                        ".4.......6",
+                                        "..1.3....",
+                                        "........8"};
+        new SudokuFactory(pattern);
+    }
 }

@@ -42,6 +42,7 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
         {
             throw new IllegalArgumentException("Sudoku layout must have " + Sudoku.SIZE + " rows.");
         }
+
         this.template = new Sudoku.Cell[Sudoku.SIZE][Sudoku.SIZE];
 
         // Keep track of which values in each row are not 'givens'.
@@ -53,6 +54,10 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
         for (int i = 0; i < pattern.length; i++)
         {
             char[] rowPattern = pattern[i].toCharArray();
+            if (rowPattern.length != Sudoku.SIZE)
+            {
+                throw new IllegalArgumentException("Sudoku layout must have " + Sudoku.SIZE + " cells in each row.");
+            }
             for (int j = 0; j < rowPattern.length; j++)
             {
                 char c = rowPattern[j];

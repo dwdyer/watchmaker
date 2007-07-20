@@ -20,13 +20,13 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -34,11 +34,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import org.uncommons.gui.SpringUtilities;
 import org.uncommons.gui.SwingBackgroundTask;
 import org.uncommons.maths.random.CellularAutomatonRNG;
@@ -62,6 +59,16 @@ import org.uncommons.watchmaker.swing.NumericParameterControl;
  */
 public class SudokuApplet extends JApplet
 {
+    private static final String[] BLANK_PUZZLE = new String[]{".........",
+                                                              ".........",
+                                                              ".........",
+                                                              ".........",
+                                                              ".........",
+                                                              ".........",
+                                                              ".........",
+                                                              ".........",
+                                                              "........."};
+
     private static final String[] EASY_PUZZLE = new String[]{"4.5...9.7",
                                                              ".2..9..6.",
                                                              "39.6.7.28",
@@ -94,17 +101,20 @@ public class SudokuApplet extends JApplet
 
     private static final String[][] PUZZLES = new String[][]{EASY_PUZZLE,
                                                              MEDIUM_PUZZLE,
-                                                             HARD_PUZZLE};
+                                                             HARD_PUZZLE,
+                                                             BLANK_PUZZLE};
 
     private static final DecimalFormat TIME_FORMAT = new DecimalFormat("#.###s");
-    private final SudokuTableModel sudokuTableModel = new SudokuTableModel();
+
+    private final SudokuView sudokuView = new SudokuView();
     private final JButton solveButton = new JButton("Solve");
     private final JLabel generationsLabel = new JLabel();
     private final JLabel timeLabel = new JLabel();
-    private final JComboBox puzzleCombo = new JComboBox(new String[]{"Easy Puzzle (38 givens)",
-                                                                     "Medium Puzzle (32 givens)",
-                                                                     "Hard Puzzle (28 givens)"});
-    private final JSpinner populationSizeSpinner = new JSpinner(new SpinnerNumberModel(100, 10, 10000, 1));
+    private final JComboBox puzzleCombo = new JComboBox(new String[]{"Easy Demo (38 givens)",
+                                                                     "Medium Demo (32 givens)",
+                                                                     "Hard Demo (28 givens)",
+                                                                     "Custom"});
+    private final JSpinner populationSizeSpinner = new JSpinner(new SpinnerNumberModel(300, 10, 10000, 1));
     private final NumericParameterControl<Double> selectionPressure = new NumericParameterControl<Double>(0.51d,
                                                                                                           0.99d,
                                                                                                           0.01d,
@@ -115,11 +125,10 @@ public class SudokuApplet extends JApplet
 
     public SudokuApplet()
     {
-        Box mainArea = new Box(BoxLayout.X_AXIS);
-        mainArea.add(createControls());
-        mainArea.add(createSudokuView());
-        add(mainArea, BorderLayout.CENTER);
+        add(createControls(), BorderLayout.NORTH);
+        add(sudokuView, BorderLayout.CENTER);
         add(createStatusBar(), BorderLayout.SOUTH);
+        sudokuView.setPuzzle(EASY_PUZZLE);
     }
 
 
@@ -129,6 +138,13 @@ public class SudokuApplet extends JApplet
         JPanel innerPanel = new JPanel(new SpringLayout());
         innerPanel.add(new JLabel("Puzzle: "));
         innerPanel.add(puzzleCombo);
+        puzzleCombo.addItemListener(new ItemListener()
+        {
+            public void itemStateChanged(ItemEvent ev)
+            {
+                sudokuView.setPuzzle(PUZZLES[puzzleCombo.getSelectedIndex()]);
+            }
+        });
         innerPanel.add(new JLabel("Selection Pressure: "));
         innerPanel.add(selectionPressure.getControl());
         innerPanel.add(new JLabel("Population Size: "));
@@ -141,34 +157,17 @@ public class SudokuApplet extends JApplet
     }
 
 
-    private JComponent createSudokuView()
-    {
-        JTable sudokuTable = new JTable(sudokuTableModel);
-        TableColumnModel columnModel = sudokuTable.getColumnModel();
-        TableCellRenderer renderer = new SudokuCellRenderer();
-        for (int i = 0; i < columnModel.getColumnCount(); i++)
-        {
-            columnModel.getColumn(i).setCellRenderer(renderer);
-        }
-        JPanel wrapper = new JPanel(new BorderLayout());
-        wrapper.add(sudokuTable, BorderLayout.CENTER);
-        wrapper.setBorder(BorderFactory.createTitledBorder("Puzzle/Solution"));
-        return wrapper;
-    }
-
-
     private JComponent createButtonPanel()
     {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         solveButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
-            {
-                String[] puzzle = PUZZLES[puzzleCombo.getSelectedIndex()];
+            {                
                 int populationSize = (Integer) populationSizeSpinner.getValue();
                 solveButton.setEnabled(false);
                 abortControl.reset();
-                createTask(puzzle,
+                createTask(sudokuView.getPuzzle(),
                            populationSize,
                            (int) Math.round(populationSize * 0.05)).execute(); // Elite count is 5%.
             }
@@ -250,7 +249,7 @@ public class SudokuApplet extends JApplet
     {
         public void populationUpdate(PopulationData<Sudoku> data)
         {
-            sudokuTableModel.setSudoku(data.getBestCandidate());
+            sudokuView.setSolution(data.getBestCandidate());
             generationsLabel.setText(String.valueOf(data.getGenerationNumber() + 1));
             timeLabel.setText(TIME_FORMAT.format(((double) data.getElapsedTime()) / 1000));
         }

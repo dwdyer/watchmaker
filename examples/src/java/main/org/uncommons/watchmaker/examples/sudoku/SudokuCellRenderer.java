@@ -27,8 +27,10 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class SudokuCellRenderer extends DefaultTableCellRenderer
 {
-    private static final Font VARIABLE_CELL_FONT = new Font("Monospaced", Font.PLAIN, 14);
-    private static final Font FIXED_CELL_FONT = new Font("Monospaced", Font.BOLD, 14);
+    private static final Font VARIABLE_CELL_FONT = new Font("Monospaced", Font.PLAIN, 32);
+    private static final Font FIXED_CELL_FONT = new Font("Monospaced", Font.BOLD, 34);
+    private static final Color VARIABLE_TEXT_COLOUR = Color.DARK_GRAY;
+    private static final Color FIXED_TEXT_COLOUR = Color.BLACK;
 
     private static final Color[] CONFLICT_COLOURS = new Color[]{Color.WHITE, Color.YELLOW, Color.ORANGE, Color.RED};
 
@@ -56,14 +58,23 @@ public class SudokuCellRenderer extends DefaultTableCellRenderer
         Sudoku sudoku = model.getSudoku();
         if (sudoku != null)
         {
-            component.setFont(sudoku.isFixed(row, column) ? FIXED_CELL_FONT : VARIABLE_CELL_FONT);
+            if (sudoku.isFixed(row, column))
+            {
+                component.setFont(FIXED_CELL_FONT);
+                component.setForeground(FIXED_TEXT_COLOUR);
+            }
+            else
+            {
+                component.setFont(VARIABLE_CELL_FONT);
+                component.setForeground(VARIABLE_TEXT_COLOUR);
+            }
 
             int conflicts = 0;
             // Calculate conflicts in columns (there should be no conflicts in rows
             // because of the constraints enforced by the evolutionary operators).
             for (int i = 0; i < Sudoku.SIZE; i++)
             {
-                if (i != row && sudoku.getValue(i, column) == (Integer) value)
+                if (i != row && model.getValueAt(i, column).equals(value))
                 {
                     ++conflicts;
                 }
@@ -77,7 +88,7 @@ public class SudokuCellRenderer extends DefaultTableCellRenderer
             {
                 for (int j = stackStart; j < stackStart + 3; j++)
                 {
-                    if (i != row && j != column && sudoku.getValue(i, j) == (Integer) value)
+                    if (i != row && j != column && model.getValueAt(i, j).equals(value))
                     {
                         ++conflicts;
                     }
@@ -86,6 +97,12 @@ public class SudokuCellRenderer extends DefaultTableCellRenderer
 
             // Color the cell based on how "wrong" it is.
             component.setBackground(CONFLICT_COLOURS[Math.min(conflicts, CONFLICT_COLOURS.length - 1)]);
+        }
+        else
+        {
+            // If the model is in puzzle mode, then all non-null cells are 'givens'.
+            component.setFont(FIXED_CELL_FONT);
+            component.setForeground(FIXED_TEXT_COLOUR);
         }
         return component;
     }
