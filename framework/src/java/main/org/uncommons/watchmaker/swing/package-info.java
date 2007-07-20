@@ -14,7 +14,10 @@
 //   limitations under the License.
 // ============================================================================
 /**
- * This package includes a number of classes to simplify the development of
- * Swing GUIs for evolutionary programs by providing common controls.
+ * This package provides a number of classes to simplify the development of
+ * Swing GUIs for evolutionary programs.  As well as common controls for
+ * modifying evolution parameters, it includes a Swing implementation of the
+ * {@link org.uncommons.watchmaker.framework.interactive.Console} interface
+ * for interactive evolutionary algorithms.
  */
 package org.uncommons.watchmaker.swing;
