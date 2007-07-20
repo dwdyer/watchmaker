@@ -18,9 +18,12 @@ package org.uncommons.watchmaker.examples.sudoku;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
+import org.uncommons.gui.ConfigurableLineBorder;
 
 /**
  * @author Daniel Dyer
@@ -33,6 +36,16 @@ public class SudokuCellRenderer extends DefaultTableCellRenderer
     private static final Color FIXED_TEXT_COLOUR = Color.BLACK;
 
     private static final Color[] CONFLICT_COLOURS = new Color[]{Color.WHITE, Color.YELLOW, Color.ORANGE, Color.RED};
+
+    private static final ConfigurableLineBorder topBorder = new ConfigurableLineBorder(true, false, false, false, 1);
+    private static final ConfigurableLineBorder bottomBorder = new ConfigurableLineBorder(false, false, true, false, 1);
+    private static final ConfigurableLineBorder leftBorder = new ConfigurableLineBorder(false, true, false, false, 1);
+    private static final ConfigurableLineBorder rightBorder = new ConfigurableLineBorder(false, false, false, true, 1);
+    private static final ConfigurableLineBorder topLeftBorder = new ConfigurableLineBorder(true, true, false, false, 1);
+    private static final ConfigurableLineBorder topRightBorder = new ConfigurableLineBorder(true, false, false, true, 1);
+    private static final ConfigurableLineBorder bottomLeftBorder = new ConfigurableLineBorder(false, true, true, false, 1);
+    private static final ConfigurableLineBorder bottomRightBorder = new ConfigurableLineBorder(false, false, true, true, 1);
+
 
     public SudokuCellRenderer()
     {
@@ -104,6 +117,45 @@ public class SudokuCellRenderer extends DefaultTableCellRenderer
             component.setFont(FIXED_CELL_FONT);
             component.setForeground(FIXED_TEXT_COLOUR);
         }
+
+        ((JComponent) component).setBorder(getBorder(row, column));
+
+
         return component;
     }
+
+
+    /**
+     * Get appropriate border for cell based on its position in the grid.
+     */
+    private Border getBorder(int row, int column)
+    {
+        if (row % 3 == 2)
+        {
+            switch (column % 3)
+            {
+                case 2: return bottomRightBorder;
+                case 0: return bottomLeftBorder;
+                default: return bottomBorder;
+            }
+        }
+        else if (row % 3 == 0)
+        {
+            switch (column % 3)
+            {
+                case 2: return topRightBorder;
+                case 0: return topLeftBorder;                
+                default: return topBorder;
+            }
+        }
+
+        switch (column % 3)
+        {
+            case 2: return rightBorder;
+            case 0: return leftBorder;
+            default: return null;
+        }
+    }
+
+
 }

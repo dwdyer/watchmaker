@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.examples.sudoku;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -38,6 +39,7 @@ public class SudokuView extends JPanel
         super(new BorderLayout());
         JTable sudokuTable = new JTable(sudokuTableModel);
         sudokuTable.setRowHeight(40);
+        sudokuTable.setGridColor(Color.GRAY);
         sudokuTable.setShowGrid(true);
         TableColumnModel columnModel = sudokuTable.getColumnModel();
         TableCellRenderer renderer = new SudokuCellRenderer();

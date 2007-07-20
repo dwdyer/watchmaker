@@ -114,7 +114,7 @@ public class SudokuApplet extends JApplet
                                                                      "Medium Demo (32 givens)",
                                                                      "Hard Demo (28 givens)",
                                                                      "Custom"});
-    private final JSpinner populationSizeSpinner = new JSpinner(new SpinnerNumberModel(300, 10, 10000, 1));
+    private final JSpinner populationSizeSpinner = new JSpinner(new SpinnerNumberModel(500, 10, 10000, 1));
     private final NumericParameterControl<Double> selectionPressure = new NumericParameterControl<Double>(0.51d,
                                                                                                           0.99d,
                                                                                                           0.01d,
