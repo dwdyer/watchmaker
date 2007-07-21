@@ -116,7 +116,7 @@ public final class TravellingSalesmanApplet extends JApplet
             {
                 executionPanel.appendOutput(createResultString(strategy.getDescription(),
                                                                result,
-                                                               evaluator.getFitness(result),
+                                                               evaluator.getFitness(result, null),
                                                                elapsedTime));
                 setEnabled(true);
             }

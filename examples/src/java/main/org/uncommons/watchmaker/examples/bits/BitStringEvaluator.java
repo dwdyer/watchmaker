@@ -15,6 +15,7 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.bits;
 
+import java.util.List;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 import org.uncommons.watchmaker.framework.types.BitString;
 
@@ -28,9 +29,11 @@ public class BitStringEvaluator implements FitnessEvaluator<BitString>
     /**
      * Calculates a fitness score for the candidate bit string.
      * @param candidate The evolved bit string to evaluate.
+     * @param population {@inheritDoc}
      * @return How many bits in the string are set to 1.
      */
-    public double getFitness(BitString candidate)
+    public double getFitness(BitString candidate,
+                             List<? extends BitString> population)
     {
         return candidate.countSetBits();
     }

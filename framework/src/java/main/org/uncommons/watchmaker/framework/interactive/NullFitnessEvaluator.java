@@ -15,6 +15,7 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework.interactive;
 
+import java.util.List;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
@@ -27,9 +28,11 @@ public class NullFitnessEvaluator implements FitnessEvaluator<Object>
     /**
      * Returns a score of zero, regardless of the candidate being evaluated.
      * @param candidate The individual to evaluate.
+     * @param population {@inheritDoc}
      * @return Zero.
      */
-    public double getFitness(Object candidate)
+    public double getFitness(Object candidate,
+                             List<? extends Object> population)
     {
         return 0;
     }

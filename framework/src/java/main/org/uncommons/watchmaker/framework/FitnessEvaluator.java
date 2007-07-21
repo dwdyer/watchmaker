@@ -15,6 +15,8 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework;
 
+import java.util.List;
+
 /**
  * Calculates the fitness score of a given candidate of the appropriate type.
  * Fitness evaluations may be executed concurrently and therefore any access
@@ -29,9 +31,19 @@ public interface FitnessEvaluator<T>
      * a higher score indicates a fitter candidate or not depends on
      * whether the fitness scores are natural (see {@link #isNatural}).
      * @param candidate The candidate solution to calculate fitness for.
+     * @param population The entire population.  This will include the
+     * specified candidate.  This is provided for fitness evaluators that
+     * evaluate individuals in the context of the population that they are
+     * part of (e.g. a program that evolves game-playing strategies may wish
+     * to play each strategy against each of the others).  This parameter
+     * can be ignored by simple fitness evaluators.  When iterating
+     * over the population, a simple reference equality check (==) can be
+     * used to identify which member of the population is the specified
+     * candidate.
      * @return The fitness score for the specified candidate.
      */
-    double getFitness(T candidate);
+    double getFitness(T candidate,
+                      List<? extends T> population);
 
     /**
      * <p>Specifies whether this evaluator generates <i>natural</i> fitness

@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.examples.sudoku;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
@@ -28,7 +29,8 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
  */
 public class SudokuEvaluator implements FitnessEvaluator<Sudoku>
 {
-    public double getFitness(Sudoku candidate)
+    public double getFitness(Sudoku candidate,
+                             List<? extends Sudoku> population)
     {
         // We can assume that there are no duplicates in any rows because
         // the candidate factory and evolutionary operators that we use do

@@ -30,7 +30,7 @@ public class StringEvaluatorTest
         String target = "abcdefgh";
         String candidate = "abcdefgh";
         FitnessEvaluator<String> evaluator = new StringEvaluator(target);
-        int score = (int) evaluator.getFitness(candidate);
+        int score = (int) evaluator.getFitness(candidate, null);
         assert score == 0 : "Fitness should be zero for identical strings, is " + score;
     }
 
@@ -41,7 +41,7 @@ public class StringEvaluatorTest
         String target = "abcdefgh";
         String candidate = "ijklmnop";
         FitnessEvaluator<String> evaluator = new StringEvaluator(target);
-        int score = (int) evaluator.getFitness(candidate);
+        int score = (int) evaluator.getFitness(candidate, null);
         assert score == target.length() : "Fitness should be " + target.length() + ", is " + score;
     }
 
@@ -52,7 +52,7 @@ public class StringEvaluatorTest
         String target = "abcdefgh";
         String candidate = "abcdxxxx";
         FitnessEvaluator<String> evaluator = new StringEvaluator(target);
-        int score = (int) evaluator.getFitness(candidate);
+        int score = (int) evaluator.getFitness(candidate, null);
         assert score == 4 : "Fitness score should be 4, is " + score;
     }
 }

@@ -43,7 +43,7 @@ public class SudokuEvaluatorTest
             {2, 3, 7, 1, 9, 4, 6, 8, 5}
         });
         FitnessEvaluator<Sudoku> evaluator = new SudokuEvaluator();
-        int fitness = (int) evaluator.getFitness(sudoku);
+        int fitness = (int) evaluator.getFitness(sudoku, null);
         assert fitness == 0 : "Fitness should be zero for correct solution, is " + fitness; 
     }
 
@@ -69,7 +69,7 @@ public class SudokuEvaluatorTest
             {2, 3, 7, 1, 9, 4, 6, 8, 5}
         });
         FitnessEvaluator<Sudoku> evaluator = new SudokuEvaluator();
-        int fitness = (int) evaluator.getFitness(sudoku);
+        int fitness = (int) evaluator.getFitness(sudoku, null);
         assert fitness == 6 : "Fitness should be 6, is " + fitness;
     }
 

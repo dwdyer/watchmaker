@@ -125,13 +125,17 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
             int threadUtilisation = Math.min(threadCount, population.size());
 
             CountDownLatch latch = new CountDownLatch(threadUtilisation);
-            int subListSize = population.size() / threadUtilisation;
+            int subListSize = (int) Math.round((double) population.size() / threadUtilisation);
+            List<T> unmodifiablePopulation = Collections.unmodifiableList(population);
             for (int i = 0; i < threadUtilisation; i++)
             {
                 int fromIndex = i * subListSize;
                 int toIndex = i < threadUtilisation - 1 ? fromIndex + subListSize : population.size();
                 List<T> subList = population.subList(fromIndex, toIndex);
-                threadPool.execute(new FitnessEvalutationTask(subList, evaluatedPopulation, latch));
+                threadPool.execute(new FitnessEvalutationTask(subList,
+                                                              unmodifiablePopulation,
+                                                              evaluatedPopulation,
+                                                              latch));
             }
             latch.await(); // Wait until all threads have finished fitness evaluations.
         }
@@ -176,21 +180,28 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     private final class FitnessEvalutationTask implements Runnable
     {
         private final List<T> candidates;
+        private final List<T> population;
         private final List<EvaluatedCandidate<T>> evaluatedPopulation;
         private final CountDownLatch latch;
 
         /**
          * Creates a task for performing fitness evaluations.
-         * @param candidates The candidates to evaluate.
+         * @param candidates The candidates to evaluate.  This is a subset of
+         * {@code population}.
+         * @param population The entire current population.  This will include all
+         * of the candidates to evaluate along with any other individuals that are
+         * not being evaluated by this task.
          * @param evaluatedPopulation The target list for evaluated candidates.  Must
          * be a thread-safe implementation.
          * @param latch Synchronisation control for parallel execution.
          */
         public FitnessEvalutationTask(List<T> candidates,
+                                      List<T> population,
                                       List<EvaluatedCandidate<T>> evaluatedPopulation,
                                       CountDownLatch latch)
         {
             this.candidates = candidates;
+            this.population = population;
             this.evaluatedPopulation = evaluatedPopulation;
             this.latch = latch;
         }
@@ -206,7 +217,8 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
             for (T candidate : candidates)
             {
                 evaluatedCandidates.add(new EvaluatedCandidate<T>(candidate,
-                                                                  getFitnessEvaluator().getFitness(candidate)));
+                                                                  getFitnessEvaluator().getFitness(candidate,
+                                                                                                   population)));
             }
             evaluatedPopulation.addAll(evaluatedCandidates);
             latch.countDown();

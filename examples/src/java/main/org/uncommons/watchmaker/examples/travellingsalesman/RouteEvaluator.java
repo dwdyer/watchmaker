@@ -43,10 +43,12 @@ public class RouteEvaluator implements FitnessEvaluator<List<String>>
     /**
      * Calculates the length of an evolved route. 
      * @param candidate The route to evaluate.
+     * @param population {@inheritDoc}
      * @return The total distance (in kilometres) of a journey that visits
      * each city in order and returns to the starting point.
      */
-    public double getFitness(List<String> candidate)
+    public double getFitness(List<String> candidate,
+                             List<? extends List<String>> population)
     {
         int totalDistance = 0;
         int cityCount = candidate.size();

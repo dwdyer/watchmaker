@@ -15,6 +15,7 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.strings;
 
+import java.util.List;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
@@ -43,10 +44,12 @@ public class StringEvaluator implements FitnessEvaluator<String>
      * string that differs from the corresponding position in the target
      * string.
      * @param candidate The evolved string to evaluate.
+     * @param population {@inheritDoc}
      * @return The fitness score (how many characters are wrong) of the
      * specified string.
      */
-    public double getFitness(String candidate)
+    public double getFitness(String candidate,
+                             List<? extends String> population)
     {
         int matches = 0;
         for (int i = 0; i < candidate.length(); i++)

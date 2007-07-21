@@ -1,3 +1,14 @@
+Changes in version 0.?.?
+------------------------
+
+* Added a second parameter to the FitnessEvaluator interface to enable fitness
+  calculations to take into account an individual's environment (the remainder
+  of the population) when assigning a score.
+
+* Minor tweak to improve the distribution of fitness evaluations between
+  threads on multi-processor machines.
+
+
 Changes in version 0.4.1
 ------------------------
 

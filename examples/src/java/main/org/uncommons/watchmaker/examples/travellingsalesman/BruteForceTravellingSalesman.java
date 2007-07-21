@@ -86,7 +86,7 @@ public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
         {
             List<String> route = generator.nextPermutationAsList(currentRoute);
             route.add(0, startCity);
-            double distance = evaluator.getFitness(route);
+            double distance = evaluator.getFitness(route, null);
             if (distance < shortestDistance)
             {
                 shortestDistance = distance;

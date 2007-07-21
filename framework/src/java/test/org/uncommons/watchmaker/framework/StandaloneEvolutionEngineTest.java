@@ -89,7 +89,8 @@ public class StandaloneEvolutionEngineTest
     private static final class IntegerEvaluator implements FitnessEvaluator<Integer>
     {
 
-        public double getFitness(Integer candidate)
+        public double getFitness(Integer candidate,
+                                 List<? extends Integer> population)
         {
             return candidate;
         }
