@@ -28,9 +28,10 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 /**
+ * A component for displaying Sudoku puzzles and solutions.
  * @author Daniel Dyer
  */
-public class SudokuView extends JPanel
+class SudokuView extends JPanel
 {
     private final SudokuTableModel sudokuTableModel = new SudokuTableModel();
 

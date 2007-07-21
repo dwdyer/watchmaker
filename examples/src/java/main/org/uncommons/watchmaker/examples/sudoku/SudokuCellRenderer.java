@@ -26,9 +26,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.uncommons.gui.ConfigurableLineBorder;
 
 /**
+ * Renders Sudoku cells in a JTable.  As well as displaying the cell value,
+ * grid lines are drawn to conform to normal Sudoku conventions and incorrect
+ * solutions have their invalid cells colour-coded.
  * @author Daniel Dyer
  */
-public class SudokuCellRenderer extends DefaultTableCellRenderer
+class SudokuCellRenderer extends DefaultTableCellRenderer
 {
     private static final Font VARIABLE_CELL_FONT = new Font("Monospaced", Font.PLAIN, 32);
     private static final Font FIXED_CELL_FONT = new Font("Monospaced", Font.BOLD, 34);
@@ -37,14 +40,14 @@ public class SudokuCellRenderer extends DefaultTableCellRenderer
 
     private static final Color[] CONFLICT_COLOURS = new Color[]{Color.WHITE, Color.YELLOW, Color.ORANGE, Color.RED};
 
-    private static final ConfigurableLineBorder topBorder = new ConfigurableLineBorder(true, false, false, false, 1);
-    private static final ConfigurableLineBorder bottomBorder = new ConfigurableLineBorder(false, false, true, false, 1);
-    private static final ConfigurableLineBorder leftBorder = new ConfigurableLineBorder(false, true, false, false, 1);
-    private static final ConfigurableLineBorder rightBorder = new ConfigurableLineBorder(false, false, false, true, 1);
-    private static final ConfigurableLineBorder topLeftBorder = new ConfigurableLineBorder(true, true, false, false, 1);
-    private static final ConfigurableLineBorder topRightBorder = new ConfigurableLineBorder(true, false, false, true, 1);
-    private static final ConfigurableLineBorder bottomLeftBorder = new ConfigurableLineBorder(false, true, true, false, 1);
-    private static final ConfigurableLineBorder bottomRightBorder = new ConfigurableLineBorder(false, false, true, true, 1);
+    private static final Border topBorder = new ConfigurableLineBorder(true, false, false, false, 1);
+    private static final Border bottomBorder = new ConfigurableLineBorder(false, false, true, false, 1);
+    private static final Border leftBorder = new ConfigurableLineBorder(false, true, false, false, 1);
+    private static final Border rightBorder = new ConfigurableLineBorder(false, false, false, true, 1);
+    private static final Border topLeftBorder = new ConfigurableLineBorder(true, true, false, false, 1);
+    private static final Border topRightBorder = new ConfigurableLineBorder(true, false, false, true, 1);
+    private static final Border bottomLeftBorder = new ConfigurableLineBorder(false, true, true, false, 1);
+    private static final Border bottomRightBorder = new ConfigurableLineBorder(false, false, true, true, 1);
 
 
     public SudokuCellRenderer()

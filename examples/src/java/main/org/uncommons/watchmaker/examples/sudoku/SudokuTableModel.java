@@ -22,7 +22,7 @@ import javax.swing.table.AbstractTableModel;
  * grid in a {@link javax.swing.JTable}.
  * @author Daniel Dyer
  */
-public class SudokuTableModel extends AbstractTableModel
+class SudokuTableModel extends AbstractTableModel
 {
     // In puzzle mode, the user can edit the given cells and all other
     // cells are blank.  In solution mode, all cells have values and are
