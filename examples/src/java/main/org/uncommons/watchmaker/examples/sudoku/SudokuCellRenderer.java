@@ -40,14 +40,14 @@ class SudokuCellRenderer extends DefaultTableCellRenderer
 
     private static final Color[] CONFLICT_COLOURS = new Color[]{Color.WHITE, Color.YELLOW, Color.ORANGE, Color.RED};
 
-    private static final Border topBorder = new ConfigurableLineBorder(true, false, false, false, 1);
-    private static final Border bottomBorder = new ConfigurableLineBorder(false, false, true, false, 1);
-    private static final Border leftBorder = new ConfigurableLineBorder(false, true, false, false, 1);
-    private static final Border rightBorder = new ConfigurableLineBorder(false, false, false, true, 1);
-    private static final Border topLeftBorder = new ConfigurableLineBorder(true, true, false, false, 1);
-    private static final Border topRightBorder = new ConfigurableLineBorder(true, false, false, true, 1);
-    private static final Border bottomLeftBorder = new ConfigurableLineBorder(false, true, true, false, 1);
-    private static final Border bottomRightBorder = new ConfigurableLineBorder(false, false, true, true, 1);
+    private static final Border TOP_BORDER = new ConfigurableLineBorder(true, false, false, false, 1);
+    private static final Border BOTTOM_BORDER = new ConfigurableLineBorder(false, false, true, false, 1);
+    private static final Border LEFT_BORDER = new ConfigurableLineBorder(false, true, false, false, 1);
+    private static final Border RIGHT_BORDER = new ConfigurableLineBorder(false, false, false, true, 1);
+    private static final Border TOP_LEFT_BORDER = new ConfigurableLineBorder(true, true, false, false, 1);
+    private static final Border TOP_RIGHT_BORDER = new ConfigurableLineBorder(true, false, false, true, 1);
+    private static final Border BOTTOM_LEFT_BORDER = new ConfigurableLineBorder(false, true, true, false, 1);
+    private static final Border BOTTOM_RIGHT_BORDER = new ConfigurableLineBorder(false, false, true, true, 1);
 
 
     public SudokuCellRenderer()
@@ -137,25 +137,25 @@ class SudokuCellRenderer extends DefaultTableCellRenderer
         {
             switch (column % 3)
             {
-                case 2: return bottomRightBorder;
-                case 0: return bottomLeftBorder;
-                default: return bottomBorder;
+                case 2: return BOTTOM_RIGHT_BORDER;
+                case 0: return BOTTOM_LEFT_BORDER;
+                default: return BOTTOM_BORDER;
             }
         }
         else if (row % 3 == 0)
         {
             switch (column % 3)
             {
-                case 2: return topRightBorder;
-                case 0: return topLeftBorder;                
-                default: return topBorder;
+                case 2: return TOP_RIGHT_BORDER;
+                case 0: return TOP_LEFT_BORDER;
+                default: return TOP_BORDER;
             }
         }
 
         switch (column % 3)
         {
-            case 2: return rightBorder;
-            case 0: return leftBorder;
+            case 2: return RIGHT_BORDER;
+            case 0: return LEFT_BORDER;
             default: return null;
         }
     }

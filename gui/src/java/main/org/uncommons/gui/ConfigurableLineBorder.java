@@ -61,7 +61,8 @@ public class ConfigurableLineBorder implements Border
 
 
     /**
-     * {@inheritDoc}
+     * Renders borders for the specified component based on the configuration
+     * of this border object.
      */
     public void paintBorder(Component component,
                             Graphics graphics,
@@ -90,7 +91,7 @@ public class ConfigurableLineBorder implements Border
 
 
     /**
-     * {@inheritDoc}
+     * @return Insets for the current border configuration.
      */
     public Insets getBorderInsets(Component component)
     {
@@ -99,7 +100,7 @@ public class ConfigurableLineBorder implements Border
 
 
     /**
-     * {@inheritDoc}
+     * @return false
      */
     public boolean isBorderOpaque()
     {

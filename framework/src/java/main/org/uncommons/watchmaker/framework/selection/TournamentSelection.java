@@ -24,6 +24,10 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
+ * Selection strategy that picks a pair of candidates at random and then
+ * selects the fitter of the two candidates with probability p, where p
+ * is the configured selection probability (therefore the probability of
+ * the less fit candidate being selected is 1 - p).
  * @author Daniel Dyer
  */
 public class TournamentSelection implements SelectionStrategy<Object>

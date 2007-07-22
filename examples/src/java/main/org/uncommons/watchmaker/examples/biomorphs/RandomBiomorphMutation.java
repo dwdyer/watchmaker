@@ -42,7 +42,13 @@ public class RandomBiomorphMutation implements EvolutionaryOperator<Biomorph>
         this.mutationProbability = mutationProbability;
     }
 
-    
+
+    /**
+     * Randomly mutate each selected candidate.
+     * @param selectedCandidates {@inheritDoc}
+     * @param rng {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public <S extends Biomorph> List<S> apply(List<S> selectedCandidates, Random rng)
     {

@@ -29,6 +29,15 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
  */
 public class SudokuEvaluator implements FitnessEvaluator<Sudoku>
 {
+    /**
+     * The fitness score for a potential Sudoku solution is the number of
+     * cells that conflict with other cells in the grid (i.e. if there are
+     * two 7s in the same column, both of these cells are conflicting).  A
+     * lower score indicates a fitter individual.
+     * @param candidate The Sudoku grid to evaluate.
+     * @param population {@inheritDoc}
+     * @return The fitness score for the specified individual.
+     */
     public double getFitness(Sudoku candidate,
                              List<? extends Sudoku> population)
     {
@@ -70,6 +79,9 @@ public class SudokuEvaluator implements FitnessEvaluator<Sudoku>
     }
 
 
+    /**
+     * @return false
+     */
     public boolean isNatural()
     {
         return false;

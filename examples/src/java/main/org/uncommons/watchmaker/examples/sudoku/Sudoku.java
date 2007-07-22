@@ -85,6 +85,10 @@ public final class Sudoku
     }
 
 
+    /**
+     * Renders the Sudoku grid as a multi-line String.
+     * @return The String representation of this grid.
+     */
     @Override
     public String toString()
     {
@@ -111,6 +115,10 @@ public final class Sudoku
         private final int value;
         private final boolean fixed;
 
+        /**
+         * @param value The value (1 - 9) contained in this cell.
+         * @param fixed Whether or not this cell's value is fixed (a 'given').
+         */
         public Cell(int value, boolean fixed)
         {
             if (value < MIN_VALUE || value > MAX_VALUE)
@@ -122,12 +130,18 @@ public final class Sudoku
         }
 
 
+        /**
+         * @return The value contained in this cell.
+         */
         public int getValue()
         {
             return value;
         }
 
 
+        /**
+         * @return True if this cell is a 'given', false otherwise.
+         */
         public boolean isFixed()
         {
             return fixed;

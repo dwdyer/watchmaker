@@ -23,6 +23,8 @@ import java.util.Random;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 
 /**
+ * Convenient base class for implementations of
+ * {@link org.uncommons.watchmaker.framework.CandidateFactory}.
  * @param <T> The type of entity evolved by this engine.
  * @author Daniel Dyer
  */

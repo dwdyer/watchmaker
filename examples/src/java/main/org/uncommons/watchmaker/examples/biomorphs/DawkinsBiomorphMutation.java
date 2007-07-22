@@ -27,6 +27,13 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public class DawkinsBiomorphMutation implements EvolutionaryOperator<Biomorph>
 {
+    /**
+     * Mutate a population of biomorphs non-randomly, ensuring that each selected
+     * candidate is mutated differently. 
+     * @param selectedCandidates {@inheritDoc}
+     * @param rng A source of randomness (not used since this mutation is non-random).
+     * @return {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public <S extends Biomorph> List<S> apply(List<S> selectedCandidates, Random rng)
     {

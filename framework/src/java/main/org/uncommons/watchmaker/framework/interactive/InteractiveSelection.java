@@ -96,8 +96,11 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
     {
         this(console, new NoOpRenderer<T>(), groupSize, maxSelectionsPerGeneration);
     }
-    
 
+
+    /**
+     * {@inheritDoc}
+     */
     public <S extends T> List<S> select(List<EvaluatedCandidate<S>> population,
                                         boolean naturalFitnessScores,
                                         int selectionSize,

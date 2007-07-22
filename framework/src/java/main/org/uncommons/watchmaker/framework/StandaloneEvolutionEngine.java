@@ -31,8 +31,12 @@ import org.uncommons.watchmaker.framework.interactive.NullFitnessEvaluator;
  * Generic evolutionary algorithm engine for evolution that runs
  * on a single host.  Includes support for parallel fitness evaluations
  * on multi-processor and multi-core machines.
- * @author Daniel Dyer
  * @param <T> The type of entity that is to be evolved.
+ * @author Daniel Dyer
+ * @see CandidateFactory
+ * @see FitnessEvaluator
+ * @see SelectionStrategy
+ * @see EvolutionaryOperator
  */
 public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {

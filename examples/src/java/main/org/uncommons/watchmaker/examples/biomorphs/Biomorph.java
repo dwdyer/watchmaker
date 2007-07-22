@@ -123,7 +123,9 @@ public final class Biomorph
 
 
     /**
-     * {@inheritDoc}
+     * @param obj The object to compare with this one.
+     * @return True if the argument is a Biomoprh instance and the 2
+     * biomorphs have the same genes, false otherwise.
      */
     @Override
     public boolean equals(Object obj)
@@ -144,7 +146,9 @@ public final class Biomorph
 
 
     /**
-     * {@inheritDoc}
+     * Over-ridden to be consistent with {@link #equals(Object)}.  Biomorphs
+     * with identical genes return identical hash codes.
+     * @return This object's hash code.
      */
     @Override
     public int hashCode()

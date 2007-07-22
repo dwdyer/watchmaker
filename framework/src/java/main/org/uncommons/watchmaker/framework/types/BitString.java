@@ -211,7 +211,7 @@ public final class BitString implements Cloneable, Serializable
 
 
     /**
-     * {@inheritDoc}
+     * @return An identical copy of this bit string.
      */
     @Override
     public BitString clone()
@@ -231,7 +231,8 @@ public final class BitString implements Cloneable, Serializable
 
 
     /**
-     * {@inheritDoc}
+     * @return True if the argument is a BitString instance and both bit
+     * strings are the same length with identical bits set/unset.
      */
     @Override
     public boolean equals(Object o)
@@ -252,7 +253,7 @@ public final class BitString implements Cloneable, Serializable
 
 
     /**
-     * {@inheritDoc}
+     * Over-ridden to be consistent with {@link #equals(Object)}.
      */
     @Override
     public int hashCode()

@@ -28,6 +28,10 @@ import org.uncommons.maths.stats.PopulationDataSet;
  * Base class for {@link EvolutionEngine} implementations.
  * @param <T> The type of entity evolved by the evolution engine.
  * @author Daniel Dyer
+ * @see CandidateFactory
+ * @see FitnessEvaluator
+ * @see SelectionStrategy
+ * @see EvolutionaryOperator 
  */
 public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 {
