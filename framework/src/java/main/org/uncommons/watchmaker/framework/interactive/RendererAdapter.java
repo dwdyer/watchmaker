@@ -81,9 +81,17 @@ public class RendererAdapter<T, S> implements Renderer<T, S>
         }
         catch (InvocationTargetException ex)
         {
-            // The render method is not declared to throw any exceptions so the
-            // worst that can happen is a RuntimeException - we can re-throw that.
-            throw (RuntimeException) ex.getCause();
+            // The select method is not declared to throw any checked exceptions so
+            // the worst that can happen is a RuntimeException or an Error (we can,
+            // and shoud, re-throw both).
+            if (ex.getCause() instanceof Error)
+            {
+                throw (Error) ex.getCause();
+            }
+            else
+            {
+                throw (RuntimeException) ex.getCause();
+            }
         }
     }
 }
