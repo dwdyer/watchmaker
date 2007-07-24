@@ -139,16 +139,17 @@ public final class Maths
 
     /**
      * Take four bytes from the specified position in the specified
-     * block and convert them into a 32-bit int.
+     * block and convert them into a 32-bit int, using the big-endian
+     * convention.
      * @param bytes The data to read from.
      * @param offset The position to start reading the 4-byte int from.
      * @return The 32-bit integer represented by the four bytes.
      */
     public static int convertBytesToInt(byte[] bytes, int offset)
     {
-        return (BITWISE_BYTE_TO_INT & bytes[offset])
-                | ((BITWISE_BYTE_TO_INT & bytes[offset + 1]) << 8)
-                | ((BITWISE_BYTE_TO_INT & bytes[offset + 2]) << 16)
-                | ((BITWISE_BYTE_TO_INT & bytes[offset + 3]) << 24);
+        return (BITWISE_BYTE_TO_INT & bytes[offset + 3])
+                | ((BITWISE_BYTE_TO_INT & bytes[offset + 2]) << 8)
+                | ((BITWISE_BYTE_TO_INT & bytes[offset + 1]) << 16)
+                | ((BITWISE_BYTE_TO_INT & bytes[offset]) << 24);
     }
 }

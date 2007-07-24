@@ -95,4 +95,21 @@ public class MathsTest
         // Check values that generate a result outside of the range of an int.
         assert Maths.raiseToPower(2, 34) == 17179869184L : "2^34 incorrectly calculated.";
     }
+
+
+    /**
+     * Make sure that the conversion method correctly converts 4 bytes to an
+     * integer assuming big-endian convention.
+     */
+    @Test(dependsOnMethods = "testRaiseToPower")
+    public void testConvertBytesToInt()
+    {
+        byte[] bytes = new byte[]{8, 4, 2, 1};
+        int expected = (int) (Maths.raiseToPower(2, 27)
+                              + Maths.raiseToPower(2, 18)
+                              + Maths.raiseToPower(2, 9)
+                              + Maths.raiseToPower(2, 0));
+        int result = Maths.convertBytesToInt(bytes, 0);
+        assert expected == result : "Expected " + expected + ", was " + result;
+    }
 }
