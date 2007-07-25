@@ -24,9 +24,9 @@ import org.testng.annotations.Test;
  */
 public class MathsTest
 {
-    private final long SIX_FACTORIAL = 720;
-    private final long TWENTY_FACTORIAL = 2432902008176640000L;
-    private final BigInteger TWENTY_FIVE_FACTORIAL
+    private static final long SIX_FACTORIAL = 720;
+    private static final long TWENTY_FACTORIAL = 2432902008176640000L;
+    private static final BigInteger TWENTY_FIVE_FACTORIAL
         = BigInteger.valueOf(TWENTY_FACTORIAL).multiply(BigInteger.valueOf(6375600));
 
     @Test
