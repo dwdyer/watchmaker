@@ -86,6 +86,13 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
     /**
      * {@inheritDoc}
+     *
+     * <em>If you interrupt the request thread before this method returns, the
+     * method will return prematurely (with the best individual found so far).
+     * After returning in this way, the current thread's interrupted flag
+     * will be set.  It is preferable to use an appropritate
+     * {@link TerminationCondition} rather than interrupting the evolution in
+     * this way.</em>
      */
     @SuppressWarnings("unchecked")
     public T evolve(int populationSize,
@@ -101,6 +108,13 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
     /**
      * {@inheritDoc}
+     *
+     * <em>If you interrupt the request thread before this method returns, the
+     * method will return prematurely (with the best individual found so far).
+     * After returning in this way, the current thread's interrupted flag
+     * will be set.  It is preferable to use an appropritate
+     * {@link TerminationCondition} rather than interrupting the evolution in
+     * this way.</em>
      */
     public T evolve(int populationSize,
                     int eliteCount,
@@ -184,6 +198,13 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     private boolean shouldContinue(PopulationData<T> data,
                                    TerminationCondition... conditions)
     {
+        // If the thread has been interrupted, we should abort and return whatever
+        // result we currently have.
+        if (Thread.currentThread().isInterrupted())
+        {
+            return false;
+        }
+        // Otherwise check the termination conditions for the evolution.
         for (TerminationCondition condition : conditions)
         {
             if (condition.shouldTerminate(data))

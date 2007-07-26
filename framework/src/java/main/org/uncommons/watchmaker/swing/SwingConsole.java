@@ -20,6 +20,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -33,8 +37,9 @@ import org.uncommons.watchmaker.framework.interactive.Console;
  */
 public class SwingConsole extends JPanel implements Console<JComponent>
 {
-    private final Object lock = new Object();
-    private int selectedIndex;
+    private final Lock lock = new ReentrantLock();
+    private final Condition selected = lock.newCondition();
+    private final AtomicInteger selectedIndex = new AtomicInteger(-1);
 
     /**
      * Creates a console that displays candidates arranged in three columns
@@ -62,7 +67,7 @@ public class SwingConsole extends JPanel implements Console<JComponent>
      */
     public int select(final List<JComponent> renderedEntities)
     {
-        selectedIndex = -1;
+        selectedIndex.set(-1);
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()
@@ -76,31 +81,28 @@ public class SwingConsole extends JPanel implements Console<JComponent>
                 revalidate();
             }
         });
-        return waitForSelection();
+        waitForSelection();
+        return selectedIndex.get();
     }
 
 
     /**
      * Wait until the user has made a selection.
-     * @return The index of the selected item.
      */
-    private int waitForSelection()
+    private void waitForSelection()
     {
-        synchronized (lock)
+        try
         {
-            while (selectedIndex < 0)
+            lock.lock();
+            while (selectedIndex.get() < 0)
             {
-                try
-                {
-                    lock.wait();
-                }
-                catch (InterruptedException ex)
-                {
-                    // Ignore.
-                }
+                selected.awaitUninterruptibly();
             }
         }
-        return selectedIndex;
+        finally
+        {
+            lock.unlock();
+        }
     }
 
 
@@ -120,10 +122,15 @@ public class SwingConsole extends JPanel implements Console<JComponent>
             {
                 public void actionPerformed(ActionEvent actionEvent)
                 {
-                    synchronized (lock)
+                    try
                     {
-                        selectedIndex = index;
-                        lock.notifyAll();
+                        lock.lock();
+                        selectedIndex.set(index);
+                        selected.signalAll();
+                    }
+                    finally
+                    {
+                        lock.unlock();
                     }
                 }
             });

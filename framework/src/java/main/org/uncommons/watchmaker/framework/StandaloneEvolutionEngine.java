@@ -40,18 +40,13 @@ import org.uncommons.watchmaker.framework.interactive.NullFitnessEvaluator;
  */
 public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
-    private final int threadCount = Runtime.getRuntime().availableProcessors();
+    private static final int PROCESSOR_COUNT = Runtime.getRuntime().availableProcessors();
 
     /**
      * This thread pool performs concurrent fitness evaluations (on hosts that
      * have more than one processor).
      */
-    private final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(threadCount,
-                                                                         threadCount,
-                                                                         60,
-                                                                         TimeUnit.SECONDS,
-                                                                         new LinkedBlockingQueue<Runnable>(),
-                                                                         new DaemonThreadFactory());
+    private final ThreadPoolExecutor threadPool;
 
 
     /**
@@ -74,10 +69,55 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                      SelectionStrategy<? super T> selectionStrategy,
                                      Random rng)
     {
+        this(candidateFactory,
+             evolutionScheme,
+             fitnessEvaluator,
+             selectionStrategy,
+             rng,
+             new DaemonThreadFactory());
+    }
+
+
+    /**
+     * Creates a new evolution engine by specifying the various components required by
+     * an evolutionary algorithm and a thread factory.  Most users will not need a
+     * custom thread factory and should instead use the
+     * {@link #StandaloneEvolutionEngine(CandidateFactory, EvolutionaryOperator,
+     *  FitnessEvaluator, SelectionStrategy, Random)} constructor, which provides a
+     * sensible default.
+     * @param candidateFactory Factory used to create the initial population that is
+     * iteratively evolved.
+     * @param evolutionScheme The combination of evolutionary operators used to evolve
+     * the population at each generation.
+     * @param fitnessEvaluator A function for assigning fitness scores to candidate
+     * solutions.
+     * @param selectionStrategy A strategy for selecting which candidates survive to
+     * be evolved.
+     * @param rng The source of randomness used by all stochastic processes (including
+     * evolutionary operators and selection strategies).
+     * @param threadFactory The factory used to create worker threads for this evolution
+     * engine.  This allows clients control over priorities and other characteristics.
+     * This is particularly useful for fine-tuning resource usage when running embedded
+     * inside another application such as a servlet container.
+     */
+    public StandaloneEvolutionEngine(CandidateFactory<T> candidateFactory,
+                                     EvolutionaryOperator<? super T> evolutionScheme,
+                                     FitnessEvaluator<? super T> fitnessEvaluator,
+                                     SelectionStrategy<? super T> selectionStrategy,
+                                     Random rng,
+                                     ThreadFactory threadFactory)
+    {
         super(candidateFactory, evolutionScheme, fitnessEvaluator, selectionStrategy, rng);
+        threadPool = new ThreadPoolExecutor(PROCESSOR_COUNT,
+                                            PROCESSOR_COUNT,
+                                            60,
+                                            TimeUnit.SECONDS,
+                                            new LinkedBlockingQueue<Runnable>(),
+                                            threadFactory);
         int noOfThreads = threadPool.prestartAllCoreThreads();
         System.out.println("Standalone evolution engine initialised with " + noOfThreads + " threads.");
     }
+
 
 
     /**
@@ -126,7 +166,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         try
         {
             // Make sure that we don't try to use more threads than we have candidates.
-            int threadUtilisation = Math.min(threadCount, population.size());
+            int threadUtilisation = Math.min(PROCESSOR_COUNT, population.size());
 
             CountDownLatch latch = new CountDownLatch(threadUtilisation);
             int subListSize = (int) Math.round((double) population.size() / threadUtilisation);
@@ -142,12 +182,14 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                                               latch));
             }
             latch.await(); // Wait until all threads have finished fitness evaluations.
+            assert evaluatedPopulation.size() == population.size() : "Wrong number of evaluated candidates.";
         }
         catch (InterruptedException ex)
         {
-            throw new IllegalStateException("Evolution aborted - concurrency failure.", ex);
+            // Restore the interrupted status, allows methods further up the call-stack
+            // to abort processing if appropriate.
+            Thread.currentThread().interrupt();
         }
-        assert evaluatedPopulation.size() == population.size() : "Wrong number of evaluated candidates.";
 
         // Sort candidates in descending order according to fitness.
         if (getFitnessEvaluator().isNatural()) // Descending values for natural fitness.
