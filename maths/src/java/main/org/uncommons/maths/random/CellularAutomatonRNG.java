@@ -70,6 +70,10 @@ public class CellularAutomatonRNG extends Random implements RepeatableRNG
 
     private final byte[] seed;
     private final int[] cells = new int[AUTOMATON_LENGTH];
+
+    // Lock to prevent concurrent modification of the RNG's internal state.
+    private final Object lock = new Object();
+
     private int currentCellIndex = AUTOMATON_LENGTH - 1;
 
     
@@ -139,29 +143,33 @@ public class CellularAutomatonRNG extends Random implements RepeatableRNG
     @Override
     public int next(int bits)
     {
-        // Set cell addresses using address of current cell.
-        int cellC = currentCellIndex - 1;
-        int cellB = cellC - 1;
-        int cellA = cellB - 1;
-
-        // Update cell states using rule table.
-        cells[currentCellIndex] = RNG_RULE[cells[cellC] + cells[currentCellIndex]];
-        cells[cellC] = RNG_RULE[cells[cellB] + cells[cellC]];
-        cells[cellB] = RNG_RULE[cells[cellA] + cells[cellB]];
-
-        // Update the state of cellA and shift current cell to the left by 4 bytes.
-        if (cellA == 0)
+        int result;
+        synchronized (lock)
         {
-            cells[cellA] = RNG_RULE[cells[cellA]];
-            currentCellIndex = AUTOMATON_LENGTH - 1;
-            return convertCellsToInt(cells, cellA) >>> (32 - bits);
+            // Set cell addresses using address of current cell.
+            int cellC = currentCellIndex - 1;
+            int cellB = cellC - 1;
+            int cellA = cellB - 1;
+
+            // Update cell states using rule table.
+            cells[currentCellIndex] = RNG_RULE[cells[cellC] + cells[currentCellIndex]];
+            cells[cellC] = RNG_RULE[cells[cellB] + cells[cellC]];
+            cells[cellB] = RNG_RULE[cells[cellA] + cells[cellB]];
+
+            // Update the state of cellA and shift current cell to the left by 4 bytes.
+            if (cellA == 0)
+            {
+                cells[cellA] = RNG_RULE[cells[cellA]];
+                currentCellIndex = AUTOMATON_LENGTH - 1;
+            }
+            else
+            {
+                cells[cellA] = RNG_RULE[cells[cellA - 1] + cells[cellA]];
+                currentCellIndex -= 4;
+            }
+            result = convertCellsToInt(cells, cellA);
         }
-        else
-        {
-            cells[cellA] = RNG_RULE[cells[cellA - 1] + cells[cellA]];
-            currentCellIndex -= 4;
-            return convertCellsToInt(cells, cellA) >>> (32 - bits);
-        }
+        return result >>> (32 - bits);
     }
 
 
@@ -176,6 +184,9 @@ public class CellularAutomatonRNG extends Random implements RepeatableRNG
 
     private static int convertCellsToInt(int[] cells, int offset)
     {
-        return cells[offset] + (cells[offset + 1] << 8) + (cells[offset + 2] << 16) + (cells[offset + 3] << 24);
+        return cells[offset]
+               + (cells[offset + 1] << 8)
+               + (cells[offset + 2] << 16)
+               + (cells[offset + 3] << 24);
     }
 }

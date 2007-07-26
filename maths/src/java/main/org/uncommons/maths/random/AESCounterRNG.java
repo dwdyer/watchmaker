@@ -37,6 +37,9 @@ public class AESCounterRNG extends Random implements RepeatableRNG
     private final Cipher cipher; // TO DO: This field is not Serializable.
     private final byte[] counter = new byte[16]; // 128-bit counter.
 
+    // Lock to prevent concurrent modification of the RNG's internal state.
+    private final Object lock = new Object();
+
     private byte[] currentBlock = null;
     private int index = 0;
 
@@ -124,24 +127,28 @@ public class AESCounterRNG extends Random implements RepeatableRNG
      * {@inheritDoc}
      */
     @Override
-    protected final synchronized int next(int bits)
+    protected final int next(int bits)
     {
-        if (currentBlock == null || currentBlock.length - index < 4)
+        int result;
+        synchronized (lock)
         {
-            try
+            if (currentBlock == null || currentBlock.length - index < 4)
             {
-                currentBlock = nextBlock();
-                index = 0;
+                try
+                {
+                    currentBlock = nextBlock();
+                    index = 0;
+                }
+                catch (GeneralSecurityException ex)
+                {
+                    // Should never happen.  If initialisation succeeds without exceptions
+                    // we should be able to proceed indefinitely without exceptions.
+                    throw new IllegalStateException("Failed creating next random block.", ex);
+                }
             }
-            catch (GeneralSecurityException ex)
-            {
-                // Should never happen.  If initialisation succeeds without exceptions
-                // we should be able to proceed indefinitely without exceptions.
-                throw new IllegalStateException("Failed creating next random block.", ex);
-            }
+            result = Maths.convertBytesToInt(currentBlock, index);
+            index += 4;
         }
-        int result = Maths.convertBytesToInt(currentBlock, index);
-        index += 4;
         return result >>> (32 - bits);
     }
 

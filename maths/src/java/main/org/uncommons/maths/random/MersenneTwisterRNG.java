@@ -59,6 +59,9 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
 
     private final byte[] seed;
 
+    // Lock to prevent concurrent modification of the RNG's internal state.
+    private final Object lock = new Object();
+
     private final int[] mt = new int[N]; // State vector.
     private int mtIndex = 0; // Index into state vector.
 
@@ -156,30 +159,32 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
      * {@inheritDoc}
      */
     @Override
-    protected final synchronized int next(int bits)
+    protected final int next(int bits)
     {
         int y;
-        if (mtIndex >= N) // Generate N ints at a time.
+        synchronized (lock)
         {
-            int kk;
-            for (kk = 0; kk < N - M; kk++)
+            if (mtIndex >= N) // Generate N ints at a time.
             {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
-                mt[kk] = mt[kk + M] ^ (y >>> 1) ^ MAG01[y & 0x1];
-            }
-            for (; kk < N - 1; kk++)
-            {
-                y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
-                mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ MAG01[y & 0x1];
-            }
-            y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-            mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ MAG01[y & 0x1];
+                int kk;
+                for (kk = 0; kk < N - M; kk++)
+                {
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + M] ^ (y >>> 1) ^ MAG01[y & 0x1];
+                }
+                for (; kk < N - 1; kk++)
+                {
+                    y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+                    mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ MAG01[y & 0x1];
+                }
+                y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+                mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ MAG01[y & 0x1];
 
-            mtIndex = 0;
+                mtIndex = 0;
+            }
+
+            y = mt[mtIndex++];
         }
-
-        y = mt[mtIndex++];
-
         // Tempering
         y ^= (y >>> 11);
         y ^= (y << 7) & GENERATE_MASK1;
