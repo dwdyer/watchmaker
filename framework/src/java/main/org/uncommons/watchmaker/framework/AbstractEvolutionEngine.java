@@ -182,7 +182,8 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         double bestFitness = evaluatedPopulation.get(0).getFitness();
         for (EvaluatedCandidate<T> candidate : evaluatedPopulation)
         {
-            if (candidate.getFitness() >= bestFitness)
+            if ((fitnessEvaluator.isNatural() && candidate.getFitness() >= bestFitness)
+                || (!fitnessEvaluator.isNatural() && candidate.getFitness() <= bestFitness))
             {
                 fittest.add(candidate);
             }

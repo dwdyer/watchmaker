@@ -16,7 +16,6 @@
 package org.uncommons.maths.random;
 
 import java.util.Random;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.uncommons.maths.AdjustableNumberGenerator;
 import org.uncommons.maths.Maths;
@@ -29,13 +28,8 @@ import org.uncommons.maths.stats.SampleDataSet;
  */
 public class PoissonGeneratorTest
 {
-    private Random rng;
+    private final Random rng = new MersenneTwisterRNG();
 
-    @BeforeTest
-    public void configureRNG()
-    {
-        rng = new MersenneTwisterRNG();
-    }
 
     /**
      * Check that the observed mean and standard deviation are consistent

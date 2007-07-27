@@ -16,7 +16,6 @@
 package org.uncommons.maths.random;
 
 import org.testng.Reporter;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.uncommons.maths.Maths;
 
@@ -26,15 +25,11 @@ import org.uncommons.maths.Maths;
  */
 public class CellularAutomatonRNGTest
 {
-    private CellularAutomatonRNG rng;
-
-    @BeforeTest
-    public void configureRNG()
-    {
-        // Create an RNG using the default seeding strategy.
-        // This RNG is used by all of the test methods.
-        rng = new CellularAutomatonRNG();
-    }
+    /**
+     * Create an RNG using the default seeding strategy.
+     * This RNG is used by all of the test methods.
+     */
+    private CellularAutomatonRNG rng = new CellularAutomatonRNG();
 
 
     /**

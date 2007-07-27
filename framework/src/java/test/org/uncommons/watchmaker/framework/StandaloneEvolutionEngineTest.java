@@ -18,10 +18,12 @@ package org.uncommons.watchmaker.framework;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
+import org.uncommons.watchmaker.framework.termination.ElapsedTime;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
@@ -30,14 +32,23 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
  */
 public class StandaloneEvolutionEngineTest
 {
+    private final Random rng = new MersenneTwisterRNG();
+    private EvolutionEngine<Integer> engine;
+
+    @BeforeMethod
+    public void prepareEngine()
+    {
+        engine = new StandaloneEvolutionEngine<Integer>(new IntegerFactory(),
+                                                        new IntegerZeroMaker(),
+                                                        new IntegerEvaluator(),
+                                                        new RouletteWheelSelection(),
+                                                        rng);        
+    }
+
+
     @Test
     public void testElitism()
     {
-        EvolutionEngine<Integer> engine = new StandaloneEvolutionEngine<Integer>(new IntegerFactory(),
-                                                                                 new IntegerZeroMaker(),
-                                                                                 new IntegerEvaluator(),
-                                                                                 new RouletteWheelSelection(),
-                                                                                 new MersenneTwisterRNG());
         class ElitismObserver implements EvolutionObserver<Integer>
         {
             private PopulationData<Integer> data;
@@ -68,6 +79,29 @@ public class StandaloneEvolutionEngineTest
         // lift the average fitness above zero.  The exact value of the expected average fitness
         // is easy to calculate, it is the aggregate fitness divided by the population size.
         assert observer.getAverageFitness() == 24d / 10 : "Elite candidates not preserved correctly: " + observer.getAverageFitness();
+    }
+
+
+    @Test
+    public void testInterrupt()
+    {
+        final long timeout = 1000L;
+        final Thread requestThread = Thread.currentThread();
+        engine.addEvolutionObserver(new EvolutionObserver<Integer>()
+        {
+            public void populationUpdate(PopulationData<Integer> populationData)
+            {
+                if (populationData.getElapsedTime() > timeout / 2)
+                {
+                    requestThread.interrupt();
+                }
+            }
+        });
+        long startTime = System.currentTimeMillis();
+        engine.evolve(10, 0, new ElapsedTime(timeout));
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        assert Thread.interrupted() : "Thread was not interrupted before timeout.";
+        assert elapsedTime < timeout : "Engine did not respond to interrupt before timeout.";
     }
 
 

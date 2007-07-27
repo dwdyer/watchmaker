@@ -16,7 +16,6 @@
 package org.uncommons.maths.random;
 
 import org.testng.Reporter;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.uncommons.maths.Maths;
 
@@ -26,15 +25,12 @@ import org.uncommons.maths.Maths;
  */
 public class MersenneTwisterRNGTest
 {
-    private MersenneTwisterRNG rng;
+    /**
+     * Create an RNG using the default seeding strategy.
+     * This RNG is used by all of the test methods.
+     */ 
+    private final MersenneTwisterRNG rng = new MersenneTwisterRNG();
 
-    @BeforeTest
-    public void configureRNG()
-    {
-        // Create an RNG using the default seeding strategy.
-        // This RNG is used by all of the test methods.
-        rng = new MersenneTwisterRNG();
-    }
 
     /**
      * Test to ensure that two distinct RNGs with the same seed return the

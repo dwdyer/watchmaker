@@ -51,15 +51,15 @@ public class StringEvaluator implements FitnessEvaluator<String>
     public double getFitness(String candidate,
                              List<? extends String> population)
     {
-        int matches = 0;
+        int errors = 0;
         for (int i = 0; i < candidate.length(); i++)
         {
             if (candidate.charAt(i) != targetString.charAt(i))
             {
-                ++matches;
+                ++errors;
             }
         }
-        return matches;
+        return errors;
     }
 
 

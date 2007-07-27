@@ -57,7 +57,13 @@ public final class StringsExample
     public static void main(String[] args)
     {
         String target = args.length == 0 ? "HELLO WORLD" : convertArgs(args);
-        
+        String result = evolveString(target);
+        System.out.println("Evolution result: " + result);
+    }
+
+
+    public static String evolveString(String target)
+    {
         List<EvolutionaryOperator<? super String>> operators = new ArrayList<EvolutionaryOperator<? super String>>(2);
         operators.add(new StringMutation(ALPHABET, 0.02d));
         operators.add(new StringCrossover());
@@ -69,9 +75,9 @@ public final class StringsExample
                                                                                new RouletteWheelSelection(),
                                                                                new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
-        engine.evolve(100, // 100 individuals in the population.
-                      5, // 5% elitism.
-                      new TargetFitness(0, false)); // Perfect fitness score required.
+        return engine.evolve(100, // 100 individuals in the population.
+                             5, // 5% elitism.
+                             new TargetFitness(0, false));
     }
 
 

@@ -1,4 +1,4 @@
-Changes in version 0.?.?
+Changes in version 0.4.2
 ------------------------
 
 * Added a second parameter to the FitnessEvaluator interface to enable fitness
@@ -10,6 +10,13 @@ Changes in version 0.?.?
 
 * Fix for ISSUE#3 (bad Throwable handling in InteractiveSelection and
   RendererAdapter)
+
+* Made AbstractEvolutionEngine interruptible.
+
+* Added new constructor to StandaloneEvolutionEngine to allow users to provide
+  a custom ThreadFactory.
+
+* Fix for ISSUE#4 (unreliable final result with non-natural fitness function).
 
 
 Changes in version 0.4.1

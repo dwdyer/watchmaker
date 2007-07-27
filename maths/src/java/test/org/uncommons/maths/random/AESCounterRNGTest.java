@@ -17,7 +17,7 @@ package org.uncommons.maths.random;
 
 import java.security.GeneralSecurityException;
 import org.testng.Reporter;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.uncommons.maths.Maths;
 
@@ -29,7 +29,7 @@ public class AESCounterRNGTest
 {
     private AESCounterRNG rng;
 
-    @BeforeTest
+    @BeforeClass
     public void configureRNG() throws GeneralSecurityException
     {
         // Create an RNG using the default seeding strategy.
