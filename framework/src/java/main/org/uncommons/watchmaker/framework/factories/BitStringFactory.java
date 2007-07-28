@@ -21,6 +21,7 @@ import org.uncommons.watchmaker.framework.types.BitString;
 /**
  * General purpose candidate factory for generating bit strings for
  * genetic algorithms.
+ * @see BitString
  * @author Daniel Dyer
  */
 public class BitStringFactory extends AbstractCandidateFactory<BitString>

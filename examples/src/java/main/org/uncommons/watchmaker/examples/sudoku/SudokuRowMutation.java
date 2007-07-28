@@ -61,6 +61,14 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
     {
         this(new ConstantGenerator<Integer>(mutationCount),
              new ConstantGenerator<Integer>(mutationAmount));
+        if (mutationCount < 1)
+        {
+            throw new IllegalArgumentException("Mutation count must be at least 1.");
+        }
+        else if (mutationAmount < 1)
+        {
+            throw new IllegalArgumentException("Mutation amount must be at least 1.");
+        }
     }
 
 
@@ -115,10 +123,6 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
             int fromIndex = rng.nextInt(Sudoku.SIZE);
             int mutationAmount = mutationAmountVariable.nextValue();
             int toIndex = (fromIndex + mutationAmount) % Sudoku.SIZE;
-            if (toIndex < 0)
-            {
-                toIndex += Sudoku.SIZE;
-            }
 
             // Make sure we're not trying to mutate a 'given'.
             if (!newRows[row][fromIndex].isFixed()

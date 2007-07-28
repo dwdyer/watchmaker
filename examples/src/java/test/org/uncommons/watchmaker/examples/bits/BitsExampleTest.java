@@ -15,37 +15,20 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.bits;
 
-import java.util.List;
-import org.uncommons.watchmaker.framework.FitnessEvaluator;
+import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.types.BitString;
 
 /**
- * A fitness evaluator that simply counts the number of ones in a bit
- * string.
- * @see BitString
+ * Simple unit test for the bits example.  Makes sure that the evolution engine
+ * eventually returns the expected result.
  * @author Daniel Dyer
  */
-public class BitStringEvaluator implements FitnessEvaluator<BitString>
+public class BitsExampleTest
 {
-    /**
-     * Calculates a fitness score for the candidate bit string.
-     * @param candidate The evolved bit string to evaluate.
-     * @param population {@inheritDoc}
-     * @return How many bits in the string are set to 1.
-     */
-    public double getFitness(BitString candidate,
-                             List<? extends BitString> population)
+    @Test
+    public void testEvolution()
     {
-        return candidate.countSetBits();
-    }
-
-
-    /**
-     * Always returns true.  A higher score indicates a fitter individual.
-     * @return True.
-     */
-    public boolean isNatural()
-    {
-        return true;
+        BitString result = BitsExample.evolveBits(8);
+        assert result.toString().equals("11111111") : "Wrong result returned: " + result.toString();
     }
 }

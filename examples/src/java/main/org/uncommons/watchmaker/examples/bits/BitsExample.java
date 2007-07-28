@@ -44,20 +44,26 @@ public class BitsExample
 
     public static void main(String[] args)
     {
+        evolveBits(BITS);
+    }
+
+
+    public static BitString evolveBits(int length)
+    {
         List<EvolutionaryOperator<? super BitString>> operators
             = new ArrayList<EvolutionaryOperator<? super BitString>>(2);
         operators.add(new BitStringCrossover(1, 0.7d));
         operators.add(new BitStringMutation(0.001d));
         EvolutionaryOperator<BitString> pipeline = new EvolutionPipeline<BitString>(operators);
-        EvolutionEngine<BitString> engine = new StandaloneEvolutionEngine<BitString>(new BitStringFactory(BITS),
+        EvolutionEngine<BitString> engine = new StandaloneEvolutionEngine<BitString>(new BitStringFactory(length),
                                                                                      pipeline,
                                                                                      new BitStringEvaluator(),
                                                                                      new RouletteWheelSelection(),
                                                                                      new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
-        engine.evolve(100, // 100 individuals in each generation.
-                      0, // Don't use elitism.
-                      new TargetFitness(BITS, true)); // Continue until a perfect match is found.
+        return engine.evolve(100, // 100 individuals in each generation.
+                             0, // Don't use elitism.
+                             new TargetFitness(length, true)); // Continue until a perfect match is found.        
     }
 
 

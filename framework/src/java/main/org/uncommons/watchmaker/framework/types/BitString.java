@@ -22,7 +22,7 @@ import java.util.Arrays;
 /**
  * Implementation of a fixed-length bit-string, useful for implementing
  * genetic algorithms.  This implementation makes more efficient use of
- * space than the alternative approach of using an array of booleans.
+ * space than the alternative approach of using an array of booleans. 
  * @author Daniel Dyer
  */
 public final class BitString implements Cloneable, Serializable
@@ -89,6 +89,8 @@ public final class BitString implements Cloneable, Serializable
      * Returns the bit at the specified index.
      * @param index The index of the bit to look-up.
      * @return A boolean indicating whether the bit is set or not.
+     * @throws IndexOutOfBoundsException If the specified index is not a bit
+     * position in this bit string.
      */
     public boolean getBit(int index)
     {
@@ -103,6 +105,8 @@ public final class BitString implements Cloneable, Serializable
      * Sets the bit at the specified index.
      * @param index The index of the bit to set.
      * @param set A boolean indicating whether the bit should be set or not.
+     * @throws IndexOutOfBoundsException If the specified index is not a bit
+     * position in this bit string.
      */
     public void setBit(int index, boolean set)
     {
@@ -123,6 +127,8 @@ public final class BitString implements Cloneable, Serializable
     /**
      * Inverts the value of the bit at the specified index.
      * @param index The bit to flip.
+     * @throws IndexOutOfBoundsException If the specified index is not a bit
+     * position in this bit string.     
      */
     public void flipBit(int index)
     {
@@ -225,7 +231,7 @@ public final class BitString implements Cloneable, Serializable
         catch (CloneNotSupportedException ex)
         {
             // Not possible.
-            throw new InternalError("Cloning failed.");
+            throw (Error) new InternalError("Cloning failed.").initCause(ex);
         }
     }
 

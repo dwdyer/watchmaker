@@ -184,7 +184,7 @@ public class BitStringTest
         BitString bitString = new BitString(10);
         bitString.setBit(2, true);
         bitString.setBit(5, true);
-        bitString.setBit(9, true);
+        bitString.setBit(8, true);
         BitString clone = bitString.clone();
         assert clone.equals(bitString) : "Equals comparison failed on equivalent bit strings.";
         // Equivalent objects must have the same hash code.
@@ -192,6 +192,13 @@ public class BitStringTest
         // Changing one of the objects should result in them no longer being considered equal.
         clone.flipBit(0);
         assert !clone.equals(bitString) : "Equals comparison failed on different bit strings.";
+        // Bit strings of different lengths but with the same bits set should not be
+        // considered equal.
+        BitString shortBitString = new BitString(9);
+        shortBitString.setBit(2, true);
+        shortBitString.setBit(5, true);
+        shortBitString.setBit(8, true);
+        assert !shortBitString.equals(bitString) : "Equals comparison failed on different length bit strings.";
     }
 
 
@@ -218,4 +225,30 @@ public class BitStringTest
     {
         new BitString("0010201"); // Invalid.
     }
+
+
+    /**
+     * The index of an individual bit must be non-negative.  If an attempt is made
+     * to set a negative bit position, an appropriate exception must be thrown.
+     */
+    @Test(expectedExceptions = IndexOutOfBoundsException.class)
+    public void testNegativeIndex()
+    {
+        BitString bitString = new BitString(1);
+        bitString.setBit(-1, false);
+    }
+
+
+    /**
+     * The index of an individual bit must be within the range 0 to length-1.
+     * If an attempt is made to set a negative bit position, an appropriate
+     * exception must be thrown.
+     */
+    @Test(expectedExceptions = IndexOutOfBoundsException.class)
+    public void testIndexTooHigh()
+    {
+        BitString bitString = new BitString(1);
+        bitString.setBit(1, false);
+    }
+
 }

@@ -24,6 +24,7 @@ import org.uncommons.watchmaker.framework.types.BitString;
 /**
  * Mutation of individual bits in a {@link BitString} according to some
  * probability.
+ * @see BitString
  * @author Daniel Dyer
  */
 public class BitStringMutation implements EvolutionaryOperator<BitString>

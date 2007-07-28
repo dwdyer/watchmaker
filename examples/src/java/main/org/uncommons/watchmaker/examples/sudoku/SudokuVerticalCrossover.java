@@ -22,7 +22,7 @@ import org.uncommons.maths.NumberGenerator;
 import org.uncommons.watchmaker.framework.operators.AbstractCrossover;
 
 /**
- * Performs cross-over between Sudoku grids by re-combing rows from parents
+ * Performs cross-over between Sudoku grids by re-combining rows from parents
  * to form new offspring.  Rows are copied intact, only columns are disrupted
  * by this cross-over.
  * @author Daniel Dyer

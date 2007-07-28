@@ -25,6 +25,7 @@ import org.uncommons.watchmaker.framework.TerminationCondition;
  * application should retain a reference to the instance after passing it to
  * the evolution engine and should invoke the {@link #abort()} method to make
  * the evolution terminate at the end of the current generation.
+ * @see org.uncommons.watchmaker.swing.AbortControl
  * @author Daniel Dyer
  */
 public final class UserAbort implements TerminationCondition

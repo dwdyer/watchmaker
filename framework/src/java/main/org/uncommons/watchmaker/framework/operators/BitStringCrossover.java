@@ -23,7 +23,8 @@ import org.uncommons.watchmaker.framework.types.BitString;
 
 /**
  * Cross-over with a configurable number of points (fixed or random) for
- * bit sets.
+ * bit strings.
+ * @see BitString
  * @author Daniel Dyer
  */
 public class BitStringCrossover extends AbstractCrossover<BitString>
