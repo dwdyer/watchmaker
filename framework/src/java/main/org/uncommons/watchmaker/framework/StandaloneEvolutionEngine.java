@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -157,8 +159,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      */
     protected List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population)
     {
-        List<EvaluatedCandidate<T>> evaluatedPopulation
-            = Collections.synchronizedList(new ArrayList<EvaluatedCandidate<T>>(population.size()));
+        List<EvaluatedCandidate<T>> evaluatedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());
 
         // Divide the required number of fitness evaluations equally among the
         // available processors and coordinate the threads so that we do not
@@ -168,21 +169,29 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
             // Make sure that we don't try to use more threads than we have candidates.
             int threadUtilisation = Math.min(PROCESSOR_COUNT, population.size());
 
-            CountDownLatch latch = new CountDownLatch(threadUtilisation);
             int subListSize = (int) Math.round((double) population.size() / threadUtilisation);
             List<T> unmodifiablePopulation = Collections.unmodifiableList(population);
+            List<Callable<List<EvaluatedCandidate<T>>>> tasks
+                = new ArrayList<Callable<List<EvaluatedCandidate<T>>>>(threadUtilisation);
             for (int i = 0; i < threadUtilisation; i++)
             {
                 int fromIndex = i * subListSize;
                 int toIndex = i < threadUtilisation - 1 ? fromIndex + subListSize : population.size();
                 List<T> subList = population.subList(fromIndex, toIndex);
-                threadPool.execute(new FitnessEvalutationTask(subList,
-                                                              unmodifiablePopulation,
-                                                              evaluatedPopulation,
-                                                              latch));
+                tasks.add(new FitnessEvalutationTask(subList,
+                                                     unmodifiablePopulation));
             }
-            latch.await(); // Wait until all threads have finished fitness evaluations.
+            // Submit tasks for execution and wait until all threads have finished fitness evaluations.
+            List<Future<List<EvaluatedCandidate<T>>>> results = threadPool.invokeAll(tasks);
+            for (Future<List<EvaluatedCandidate<T>>> result : results)
+            {
+                evaluatedPopulation.addAll(result.get());
+            }
             assert evaluatedPopulation.size() == population.size() : "Wrong number of evaluated candidates.";
+        }
+        catch (ExecutionException ex)
+        {
+            throw (Error) new InternalError("Fitness evaluation task execution failed.").initCause(ex);
         }
         catch (InterruptedException ex)
         {
@@ -221,14 +230,12 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 
 
     /**
-     * Runnable task for performing parallel fitness evaluations.
+     * Callable task for performing parallel fitness evaluations.
      */
-    private final class FitnessEvalutationTask implements Runnable
+    private final class FitnessEvalutationTask implements Callable<List<EvaluatedCandidate<T>>>
     {
         private final List<T> candidates;
         private final List<T> population;
-        private final List<EvaluatedCandidate<T>> evaluatedPopulation;
-        private final CountDownLatch latch;
 
         /**
          * Creates a task for performing fitness evaluations.
@@ -237,28 +244,17 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
          * @param population The entire current population.  This will include all
          * of the candidates to evaluate along with any other individuals that are
          * not being evaluated by this task.
-         * @param evaluatedPopulation The target list for evaluated candidates.  Must
-         * be a thread-safe implementation.
-         * @param latch Synchronisation control for parallel execution.
          */
         public FitnessEvalutationTask(List<T> candidates,
-                                      List<T> population,
-                                      List<EvaluatedCandidate<T>> evaluatedPopulation,
-                                      CountDownLatch latch)
+                                      List<T> population)
         {
             this.candidates = candidates;
             this.population = population;
-            this.evaluatedPopulation = evaluatedPopulation;
-            this.latch = latch;
         }
 
 
-        public void run()
+        public List<EvaluatedCandidate<T>> call()
         {
-            // Use a temporary unsynchronised list to store evaluated candidates and then
-            // add them to the synchronised result list in one go at the end.  This avoids
-            // contention when there are several threads trying repeatedly to add items to
-            // the result list.
             List<EvaluatedCandidate<T>> evaluatedCandidates = new ArrayList<EvaluatedCandidate<T>>(candidates.size());
             for (T candidate : candidates)
             {
@@ -266,8 +262,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                                                   getFitnessEvaluator().getFitness(candidate,
                                                                                                    population)));
             }
-            evaluatedPopulation.addAll(evaluatedCandidates);
-            latch.countDown();
+            return evaluatedCandidates;
         }
     }
 }
