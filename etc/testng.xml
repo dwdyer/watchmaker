@@ -14,6 +14,12 @@
     </packages>
   </test>
 
+  <test name="Grid Module" >
+    <packages>
+      <package name="org.uncommons.grid.*" />
+    </packages>
+  </test>
+
   <test name="GUI Components" >
     <packages>
       <package name="org.uncommons.watchmaker.swing.*" />

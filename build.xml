@@ -173,8 +173,10 @@
     <delete dir="${temp.dir}" />
     <clean.module module.name="examples" />
     <clean.module module.name="framework" />
+    <clean.module module.name="grid" />
+    <clean.module module.name="gui" />
     <clean.module module.name="maths" />
-  </target>    
+  </target>
   
 
   <!-- Builds the maths module. -->
@@ -201,6 +203,14 @@
         </manifest>
       </additionalcontents>
     </jar.module>
+  </target>
+
+
+  <!-- Builds the grid module. -->
+  <target name="grid"
+          description="Build the grid module.">
+    <compile.module module.name="grid" />
+    <jar.module module.name="grid" jar.name="uncommons-grid.jar"/>
   </target>
 
 
@@ -235,7 +245,7 @@
 
   <!-- Copy all necessary files to distribution directory. -->
   <target name="dist"
-          depends="maths, framework, gui, examples"
+          depends="maths, framework, grid, gui, examples"
           description="Generate the project distribution." >
     <mkdir dir="${dist.dir}" />
     <!-- Copy all application JARs and 3rd party libraries. -->
@@ -332,6 +342,9 @@
                       destdir="${coverage.dir}"
                       datafile="${temp.dir}/cobertura.ser">
       <fileset dir="maths/${java.dir}/main">
+        <include name="**/*.java" />
+      </fileset>
+      <fileset dir="grid/${java.dir}/main">
         <include name="**/*.java" />
       </fileset>
       <fileset dir="gui/${java.dir}/main">
