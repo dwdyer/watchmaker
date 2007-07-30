@@ -186,7 +186,7 @@ public class DistributedExecutorService implements ExecutorService
             {
                 futures.add(submit(callable));
             }
-            // Block until each task is done.
+            // Block until each task is done (or time runs out).
             for (Future<T> future : futures)
             {
                 if (!future.isDone())

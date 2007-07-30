@@ -146,6 +146,8 @@
         <group title="Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*:org.uncommons.watchmaker.swing"/>
         <group title="Example Evolutionary Algorithms" packages="org.uncommons.watchmaker.examples.*"/>
         <group title="Uncommons Maths" packages="org.uncommons.maths:org.uncommons.maths.*"/>
+        <group title="Uncommons Utilities" packages="org.uncommons.util:org.uncommons.util.*"/>
+        <group title="Uncommons Grid" packages="org.uncommons.grid:org.uncommons.grid.*"/>
         <group title="Uncommons GUI" packages="org.uncommons.gui:org.uncommons.gui.*"/>
         <header><![CDATA[Watchmaker Framework API<br><small>(Version ${version})</small>]]></header>
         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
@@ -176,6 +178,7 @@
     <clean.module module.name="grid" />
     <clean.module module.name="gui" />
     <clean.module module.name="maths" />
+    <clean.module module.name="util" />
   </target>
   
 
@@ -189,17 +192,18 @@
 
   <!-- Builds the framework JAR, which depends on the maths module. -->
   <target name="framework"
-          depends="maths"
+          depends="maths, util"
           description="Build the framework module.">
     <compile.module module.name="framework">
       <moduleclasspath>
         <path location="./maths/${build.dir}/uncommons-maths.jar" />
+        <path location="./util/${build.dir}/uncommons-util.jar" />
       </moduleclasspath>
     </compile.module>
     <jar.module module.name="framework" jar.name="watchmaker-framework.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="uncommons-maths.jar"/>
+          <attribute name="Class-Path" value="uncommons-maths.jar uncommons-util.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -207,10 +211,29 @@
 
 
   <!-- Builds the grid module. -->
+  <target name="util"
+          description="Build the utilities module.">
+    <compile.module module.name="util" />
+    <jar.module module.name="util" jar.name="uncommons-util.jar"/>
+  </target>
+
+
+  <!-- Builds the grid module. -->
   <target name="grid"
+          depends="util"
           description="Build the grid module.">
-    <compile.module module.name="grid" />
-    <jar.module module.name="grid" jar.name="uncommons-grid.jar"/>
+    <compile.module module.name="grid">
+      <moduleclasspath>
+        <path location="./util/${build.dir}/uncommons-util.jar" />
+      </moduleclasspath>
+    </compile.module>
+    <jar.module module.name="grid" jar.name="uncommons-grid.jar">
+      <additionalcontents>
+        <manifest>
+          <attribute name="Class-Path" value="uncommons-util.jar"/>
+        </manifest>
+      </additionalcontents>
+    </jar.module>
   </target>
 
 
@@ -245,7 +268,7 @@
 
   <!-- Copy all necessary files to distribution directory. -->
   <target name="dist"
-          depends="maths, framework, grid, gui, examples"
+          depends="maths, util, framework, grid, gui, examples"
           description="Generate the project distribution." >
     <mkdir dir="${dist.dir}" />
     <!-- Copy all application JARs and 3rd party libraries. -->
@@ -341,7 +364,10 @@
     <cobertura-report format="html"
                       destdir="${coverage.dir}"
                       datafile="${temp.dir}/cobertura.ser">
-      <fileset dir="maths/${java.dir}/main">
+      <fileset dir="examples/${java.dir}/main">
+        <include name="**/*.java" />
+      </fileset>
+      <fileset dir="framework/${java.dir}/main">
         <include name="**/*.java" />
       </fileset>
       <fileset dir="grid/${java.dir}/main">
@@ -350,12 +376,12 @@
       <fileset dir="gui/${java.dir}/main">
         <include name="**/*.java" />
       </fileset>
-      <fileset dir="framework/${java.dir}/main">
+      <fileset dir="maths/${java.dir}/main">
         <include name="**/*.java" />
       </fileset>
-      <fileset dir="examples/${java.dir}/main">
+      <fileset dir="util/${java.dir}/main">
         <include name="**/*.java" />
-      </fileset>      
+      </fileset>
     </cobertura-report>
 
     <!-- If the coverage is poor, fail. -->

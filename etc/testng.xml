@@ -14,6 +14,12 @@
     </packages>
   </test>
 
+  <test name="Utilities Module" >
+    <packages>
+      <package name="org.uncommons.util.*" />
+    </packages>
+  </test>
+
   <test name="Grid Module" >
     <packages>
       <package name="org.uncommons.grid.*" />

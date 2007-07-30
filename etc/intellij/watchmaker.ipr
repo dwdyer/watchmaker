@@ -407,6 +407,7 @@
       <module fileurl="file://$PROJECT_DIR$/grid.iml" filepath="$PROJECT_DIR$/grid.iml" group="modules" />
       <module fileurl="file://$PROJECT_DIR$/gui.iml" filepath="$PROJECT_DIR$/gui.iml" group="modules" />
       <module fileurl="file://$PROJECT_DIR$/maths.iml" filepath="$PROJECT_DIR$/maths.iml" group="modules" />
+      <module fileurl="file://$PROJECT_DIR$/util.iml" filepath="$PROJECT_DIR$/util.iml" group="modules" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">

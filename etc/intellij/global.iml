@@ -12,6 +12,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../gui" />
       <excludeFolder url="file://$MODULE_DIR$/../../maths" />
       <excludeFolder url="file://$MODULE_DIR$/../../temp" />
+      <excludeFolder url="file://$MODULE_DIR$/../../util" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -26,6 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import org.uncommons.util.concurrent.ConfigurableThreadFactory;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.NullFitnessEvaluator;
 
@@ -76,7 +77,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
              fitnessEvaluator,
              selectionStrategy,
              rng,
-             new DaemonThreadFactory());
+             new ConfigurableThreadFactory("EvolutionEngine", Thread.NORM_PRIORITY, true));
     }
 
 
@@ -210,22 +211,6 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
             Collections.sort(evaluatedPopulation);
         }
         return evaluatedPopulation;
-    }
-
-
-    /**
-     * Thread factory that creates daemon threads for use by the thread pool.
-     */
-    private static final class DaemonThreadFactory implements ThreadFactory
-    {
-        private static int threadCount = 0;
-
-        public Thread newThread(Runnable runnable)
-        {
-            Thread thread = new Thread(runnable, "EvolutionEngine-" + threadCount++);
-            thread.setDaemon(true);
-            return thread;
-        }
     }
 
 

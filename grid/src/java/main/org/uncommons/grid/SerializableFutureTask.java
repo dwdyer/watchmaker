@@ -24,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+import org.uncommons.util.id.IDSource;
+import org.uncommons.util.id.LongSequenceIDSource;
 
 /**
  * This class is a {@link Serializable} replacement for {@link java.util.concurrent.FutureTask}.
@@ -34,6 +36,9 @@ class SerializableFutureTask<V> implements Future<V>,
                                            Runnable,
                                            Serializable
 {
+    private static final IDSource<Long> idSource = new LongSequenceIDSource();
+
+    private final long id;
     private final Callable<V> callable;
     private final ReentrantLock lock = new ReentrantLock();
     private final Condition accessible = lock.newCondition();
@@ -54,6 +59,7 @@ class SerializableFutureTask<V> implements Future<V>,
         {
             throw new IllegalArgumentException("Callable parameter must be Serializable");
         }
+        this.id = idSource.nextID();
         this.callable = callable;
     }
 
@@ -71,6 +77,22 @@ class SerializableFutureTask<V> implements Future<V>,
     }
 
 
+    /**
+     * Each task created by the same JVM is given a unique identifier.
+     * @return The unique identifier for this task.
+     */
+    public long getID()
+    {
+        return id;
+    }
+
+
+    /**
+     * Cancel the task if it has not already completed or been cancelled. 
+     * @param mayInterrupt Whether the task may be interrupted if it is
+     * currently being executed.
+     * @return True if the task was successfully cancelled, false otherwise.
+     */
     public boolean cancel(boolean mayInterrupt)
     {
         try

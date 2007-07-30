@@ -13,18 +13,24 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.grid;
+package org.uncommons.util.id;
 
-import java.io.Serializable;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+import org.testng.annotations.Test;
 
 /**
+ * Unit test for composite ID source.
  * @author Daniel Dyer
  */
-public interface WorkManager extends Remote
+public class CompositeIDSourceTest
 {
-    SerializableFutureTask<?> getNextWorkUnit() throws RemoteException;
-
-    void submitResult(Serializable result) throws RemoteException;
+    @Test
+    public void testCombination()
+    {
+        int topPart = 15;
+        IDSource<Long> idSource = new CompositeIDSource(topPart);
+        long firstID = idSource.nextID();
+        long secondID = idSource.nextID();
+        assert 64424509440L == firstID : "First ID should be 2^36 - 2^32 (or 15 shifted left 32 places).";
+        assert secondID == firstID + 1 : "Second ID should be first ID plus 1.";
+    }
 }

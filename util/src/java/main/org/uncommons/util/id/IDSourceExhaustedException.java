@@ -13,18 +13,21 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.grid;
-
-import java.io.Serializable;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+package org.uncommons.util.id;
 
 /**
+ * Unchecked exception thrown if an {@link IDSource} runs out of unique IDs.
  * @author Daniel Dyer
  */
-public interface WorkManager extends Remote
+public class IDSourceExhaustedException extends RuntimeException
 {
-    SerializableFutureTask<?> getNextWorkUnit() throws RemoteException;
+    public IDSourceExhaustedException(String string)
+    {
+        super(string);
+    }
 
-    void submitResult(Serializable result) throws RemoteException;
+    public IDSourceExhaustedException(String string, Throwable throwable)
+    {
+        super(string, throwable);
+    }
 }

@@ -13,18 +13,23 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.grid;
+package org.uncommons.util.id;
 
-import java.io.Serializable;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+import org.testng.annotations.Test;
 
 /**
+ * Unit test for prefixed ID source.
  * @author Daniel Dyer
  */
-public interface WorkManager extends Remote
+public class StringPrefixIDSourceTest
 {
-    SerializableFutureTask<?> getNextWorkUnit() throws RemoteException;
-
-    void submitResult(Serializable result) throws RemoteException;
+    @Test
+    public void testPrefix()
+    {
+        IDSource<String> idSource = new StringPrefixIDSource("Watchmaker", new IntSequenceIDSource());
+        String id1 = idSource.nextID();
+        assert id1.equals("Watchmaker0") : "Wrong ID: " + id1;
+        String id2 = idSource.nextID();
+        assert id2.equals("Watchmaker1") : "Wrong ID: " + id2;
+    }
 }

@@ -49,7 +49,7 @@ public class ContinuousUniformGeneratorTest
         {
             data.addValue(generator.nextValue());
         }
-        assert Maths.approxEquals(data.getArithmeticMean(), mean, 0.01)
+        assert Maths.approxEquals(data.getArithmeticMean(), mean, 0.02)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
         assert Maths.approxEquals(data.getStandardDeviation(), standardDeviation, 0.02)
                 : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();

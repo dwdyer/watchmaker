@@ -46,7 +46,8 @@ public class SerializableFutureTaskTest
                                            InterruptedException
     {
         SerializableFutureTask<String> task
-            = new SerializableFutureTask<String>(new SerializableRunnable(), "Hello");
+            = new SerializableFutureTask<String>(new SerializableRunnable(), "Watchmaker");
+        long taskID = task.getID();
 
         // Serialize the task to ensure that it is actually serializable (an exception
         // will be thrown if it isn't).
@@ -63,9 +64,12 @@ public class SerializableFutureTaskTest
         ObjectInputStream inputStream = new ObjectInputStream(byteInputStream);
         SerializableFutureTask<String> task2 = (SerializableFutureTask<String>) inputStream.readObject();
 
+        // Check that the deserialized task as the same ID as the original.
+        assert task2.getID() == taskID : "Deserialized task has wrong ID: " + task2.getID();
+
         // Execute the deserialized task to ensure that we get the expected result.
         task2.run();
-        assert task2.get().equals("Hello") : "Deserialized task is not correct.";
+        assert task2.get().equals("Watchmaker") : "Deserialized task is not correct.";
     }
 
 
@@ -81,7 +85,7 @@ public class SerializableFutureTaskTest
     public void testTimeout() throws TimeoutException, ExecutionException, InterruptedException
     {
         SerializableFutureTask<String> task
-            = new SerializableFutureTask<String>(new SerializableRunnable(), "Hello");
+            = new SerializableFutureTask<String>(new SerializableRunnable(), "Watchmaker");
         task.get(50, TimeUnit.MILLISECONDS);
     }
 
@@ -90,7 +94,7 @@ public class SerializableFutureTaskTest
     public void testCancellationOfUnstartedTask() throws ExecutionException, InterruptedException
     {
         SerializableFutureTask<String> task
-            = new SerializableFutureTask<String>(new SerializableRunnable(), "Hello");
+            = new SerializableFutureTask<String>(new SerializableRunnable(), "Watchmaker");
         assert !task.isCancelled() : "Task should not be cancelled initially.";
         assert !task.isDone() : "Task should not be completed initially.";
         boolean cancelled = task.cancel(true);
@@ -126,7 +130,7 @@ public class SerializableFutureTaskTest
                     // Ignore we expect this to happen.
                 }
             }
-        }, "Hello");
+        }, "Watchmaker");
         new Thread(task, "CancellationTest").start();
         latch.await(); // Wait for the task thread to start. 
         boolean cancelled = task.cancel(true);
@@ -182,6 +186,25 @@ public class SerializableFutureTaskTest
                 return "I am not Serializable";
             }
         });
+    }
+
+
+    /**
+     * Attempting to create a SerializableFutureTask with a non-Serializable
+     * {@link Runnable} should result in an appropriate exception.  It is an
+     * error for the constructor to accept the argument without failing since
+     * this will just lead to problems later on.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testNonSerializableRunnable()
+    {
+        new SerializableFutureTask<String>(new Runnable()
+        {
+            public void run()
+            {
+                // Do nothing.
+            }
+        }, "Watchmaker");
     }
 
 
