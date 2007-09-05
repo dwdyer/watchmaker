@@ -60,7 +60,7 @@ public class ConfigurableThreadFactory implements ThreadFactory
                                      boolean daemon,
                                      Thread.UncaughtExceptionHandler uncaughtExceptionHandler)
     {
-        this.nameGenerator = new StringPrefixIDSource(namePrefix + '_', new IntSequenceIDSource());
+        this.nameGenerator = new StringPrefixIDSource(namePrefix + '-', new IntSequenceIDSource());
         this.priority = priority;
         this.daemon = daemon;
         this.uncaughtExceptionHandler = uncaughtExceptionHandler;

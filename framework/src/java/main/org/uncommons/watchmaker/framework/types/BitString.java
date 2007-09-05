@@ -175,15 +175,7 @@ public final class BitString implements Cloneable, Serializable
      */
     public int countUnsetBits()
     {
-        int count = 0;
-        for (int i = 0; i < length; i++)
-        {
-            if (!getBit(i))
-            {
-                ++count;
-            }
-        }
-        return count;
+        return length - countSetBits();
     }
 
 
