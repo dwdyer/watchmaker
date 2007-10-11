@@ -17,6 +17,7 @@ package org.uncommons.watchmaker.framework.types;
 
 import java.math.BigInteger;
 import org.testng.annotations.Test;
+import org.uncommons.maths.random.MersenneTwisterRNG;
 
 /**
  * Unit test for the {@link BitString} type.
@@ -37,6 +38,17 @@ public class BitStringTest
         {
             assert !bitString.getBit(i) : "Bit " + i + " should not be set."; 
         }
+    }
+
+
+    /**
+     * Check that a random bit string of the correct length is constructed.
+     */
+    @Test(dependsOnMethods = "testCreateBitString")
+    public void testCreateRandomBitString()
+    {
+        BitString bitString = new BitString(100, new MersenneTwisterRNG());
+        assert bitString.getLength() == 100 : "BitString created with wrong length: " + bitString.getLength();
     }
 
 

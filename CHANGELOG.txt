@@ -1,3 +1,13 @@
+Changes in version 0.?.?
+------------------------
+
+* Added new constructor to BitString to simplify the creation of random bit
+  strings.
+
+* Improved algorithm for countSetBits() in BitString.  New version is
+  significantly faster (10-15 times faster).
+
+
 Changes in version 0.4.2
 ------------------------
 

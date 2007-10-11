@@ -74,8 +74,9 @@ final class RNGTestUtils
         // and the area of the quadrant is (pi * r^2) / 4.
         int totalInsideQuadrant = 0;
         // Generate the specified number of random points and count how many fall
-        // within the quadrant and how many do not.  We expect the ratio of points
-        // in the quadrant be pi/4.  Therefore pi = 4 * ratio.
+        // within the quadrant and how many do not.  We expect the number of points
+        // in the quadrant (expressed as a fraction of the total number of points)
+        // to be pi/4.  Therefore pi = 4 * ratio.
         for (int i = 0; i < iterations; i++)
         {
             double x = rng.nextDouble();

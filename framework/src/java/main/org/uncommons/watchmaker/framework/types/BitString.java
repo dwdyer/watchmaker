@@ -18,6 +18,7 @@ package org.uncommons.watchmaker.framework.types;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Implementation of a fixed-length bit-string, useful for implementing
@@ -51,6 +52,37 @@ public final class BitString implements Cloneable, Serializable
         }
         this.length = length;
         this.data = new int[(length + WORD_LENGTH - 1) / WORD_LENGTH];
+    }
+
+
+    /**
+     * Creates a bit string of the specified length with each bit set
+     * randomly (the distribution of bits is uniform so long as the output
+     * from the provided RNG is also uniform).  Using this constructor is
+     * more efficient than creating a bit string and then randomly setting
+     * each bit individually.
+     * @param length The number of bits.
+     * @param rng A source of randomness.
+     */
+    public BitString(int length, Random rng)
+    {
+        this(length);
+        // We can set bits 32 at a time rather than calling rng.nextBoolean()
+        // and setting each one individually.
+        for (int i = 0; i < data.length; i++)
+        {
+            data[i] = rng.nextInt();
+        }
+        // If the last word is not fully utilised, zero any out-of-bounds bits.
+        // This is necessary to because the countSetBits() will count out-of-bounds
+        // bits.
+        int bitsUsed = length % WORD_LENGTH;
+        if (bitsUsed < WORD_LENGTH)
+        {
+            int unusedBits = WORD_LENGTH - bitsUsed;
+            int mask = 0xFFFFFFFF >>> unusedBits;
+            data[data.length - 1] &= mask;
+        }
     }
 
 
@@ -159,11 +191,12 @@ public final class BitString implements Cloneable, Serializable
     public int countSetBits()
     {
         int count = 0;
-        for (int i = 0; i < length; i++)
+        for (int x : data)
         {
-            if (getBit(i))
+            while (x != 0)
             {
-                ++count;
+                x &= (x - 1); // Unsets the least significant on bit.
+                ++count; // Count how many times we have to unset a bit before x equals zero.
             }
         }
         return count;

@@ -48,11 +48,6 @@ public class BitStringFactory extends AbstractCandidateFactory<BitString>
      */
     protected BitString generateRandomCandidate(Random rng)
     {
-        BitString bitString = new BitString(length);
-        for (int i = 0; i < length; i++)
-        {
-            bitString.setBit(i, rng.nextBoolean());
-        }
-        return bitString;
+        return new BitString(length, rng);
     }
 }

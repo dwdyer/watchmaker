@@ -147,7 +147,6 @@
         <group title="Example Evolutionary Algorithms" packages="org.uncommons.watchmaker.examples.*"/>
         <group title="Uncommons Maths" packages="org.uncommons.maths:org.uncommons.maths.*"/>
         <group title="Uncommons Utilities" packages="org.uncommons.util:org.uncommons.util.*"/>
-        <group title="Uncommons Grid" packages="org.uncommons.grid:org.uncommons.grid.*"/>
         <group title="Uncommons GUI" packages="org.uncommons.gui:org.uncommons.gui.*"/>
         <header><![CDATA[Watchmaker Framework API<br><small>(Version ${version})</small>]]></header>
         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
@@ -175,7 +174,6 @@
     <delete dir="${temp.dir}" />
     <clean.module module.name="examples" />
     <clean.module module.name="framework" />
-    <clean.module module.name="grid" />
     <clean.module module.name="gui" />
     <clean.module module.name="maths" />
     <clean.module module.name="util" />
@@ -210,30 +208,11 @@
   </target>
 
 
-  <!-- Builds the grid module. -->
+  <!-- Builds the util module. -->
   <target name="util"
           description="Build the utilities module.">
     <compile.module module.name="util" />
     <jar.module module.name="util" jar.name="uncommons-util.jar"/>
-  </target>
-
-
-  <!-- Builds the grid module. -->
-  <target name="grid"
-          depends="util"
-          description="Build the grid module.">
-    <compile.module module.name="grid">
-      <moduleclasspath>
-        <path location="./util/${build.dir}/uncommons-util.jar" />
-      </moduleclasspath>
-    </compile.module>
-    <jar.module module.name="grid" jar.name="uncommons-grid.jar">
-      <additionalcontents>
-        <manifest>
-          <attribute name="Class-Path" value="uncommons-util.jar"/>
-        </manifest>
-      </additionalcontents>
-    </jar.module>
   </target>
 
 
@@ -268,7 +247,7 @@
 
   <!-- Copy all necessary files to distribution directory. -->
   <target name="dist"
-          depends="maths, util, framework, grid, gui, examples"
+          depends="maths, util, framework, gui, examples"
           description="Generate the project distribution." >
     <mkdir dir="${dist.dir}" />
     <!-- Copy all application JARs and 3rd party libraries. -->
@@ -368,9 +347,6 @@
         <include name="**/*.java" />
       </fileset>
       <fileset dir="framework/${java.dir}/main">
-        <include name="**/*.java" />
-      </fileset>
-      <fileset dir="grid/${java.dir}/main">
         <include name="**/*.java" />
       </fileset>
       <fileset dir="gui/${java.dir}/main">
