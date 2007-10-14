@@ -13,22 +13,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.examples.bits;
-
-import org.testng.annotations.Test;
-import org.uncommons.util.binary.BitString;
-
 /**
- * Simple unit test for the bits example.  Makes sure that the evolution engine
- * eventually returns the expected result.
+ * Concurrency utility classes.
  * @author Daniel Dyer
  */
-public class BitsExampleTest
-{
-    @Test
-    public void testEvolution()
-    {
-        BitString result = BitsExample.evolveBits(8);
-        assert result.toString().equals("11111111") : "Wrong result returned: " + result.toString();
-    }
-}
+package org.uncommons.util.concurrent;

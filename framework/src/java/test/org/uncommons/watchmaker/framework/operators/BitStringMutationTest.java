@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Random;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.util.binary.BitString;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.watchmaker.framework.types.BitString;
 
 /**
  * Unit test for mutation of bit strings.

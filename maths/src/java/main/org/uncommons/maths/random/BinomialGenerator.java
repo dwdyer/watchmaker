@@ -18,6 +18,8 @@ package org.uncommons.maths.random;
 import java.util.Random;
 import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.maths.NumberGenerator;
+import org.uncommons.util.binary.BinaryUtils;
+import org.uncommons.util.binary.BitString;
 
 /**
  * Discrete random sequence that follows a binomial distribution.
@@ -28,6 +30,12 @@ public class BinomialGenerator implements NumberGenerator<Integer>
     private final Random rng;
     private final NumberGenerator<Integer> n;
     private final NumberGenerator<Double> p;
+
+    // Cache the fixed-point representation of p to avoid having to
+    // recalculate it for each value generated.  Only calculate it
+    // if and when p changes.
+    private transient BitString pBits;
+    private transient double lastP;
 
 
     /**
@@ -86,21 +94,51 @@ public class BinomialGenerator implements NumberGenerator<Integer>
 
 
     /**
-     * {@inheritDoc}
+     * Generate the next binomial value from the current values of
+     * {@literal n} and {@literal p}.  The algorithm used is from
+     * The Art of Computer Programming Volume 2 (Seminumerical Algorithms)
+     * by Donald Knuth (page 589 in the Third Edition) where it is
+     * credited to J.H. Ahrens. 
      */
     public Integer nextValue()
     {
-        // TO DO: When n is large, apply an approximation using the normal distribution
-        // to improve performance.
-        int x = 0;
-        for (int i = 0; i < n.nextValue(); i++)
+        // Regenerate the fixed point representation of p if it has changed.
+        double newP = p.nextValue();
+        if (pBits == null || newP != lastP)
         {
-            double d = rng.nextDouble();
-            if (d < p.nextValue())
-            {
-                ++x;
-            }
+            lastP = newP;
+            pBits = BinaryUtils.convertDoubleToFixedPointBits(newP);
         }
-        return x;
+
+        int trials = n.nextValue();
+        int totalSuccesses = 0;
+        int pIndex = pBits.getLength() - 1;
+
+        while (trials > 0 && pIndex >= 0)
+        {
+            int successes = binomialWithEvenProbability(trials);
+            trials -= successes;
+            if (pBits.getBit(pIndex))
+            {
+                totalSuccesses += successes;
+            }
+            --pIndex;
+        }
+
+        return totalSuccesses;
+    }
+
+
+    /**
+     * Generating binomial values when {@literal p = 0.5} is straightforward.
+     * It simply a case of generating {@literal n} random bits and
+     * counting how many are 1s.
+     * @param n The number of trials.
+     * @return The number of successful outcomes from {@literal n} trials.
+     */
+    private int binomialWithEvenProbability(int n)
+    {
+        BitString bits = new BitString(n, rng);
+        return bits.countSetBits();
     }
 }

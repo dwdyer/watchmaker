@@ -16,6 +16,7 @@
 package org.uncommons.maths.random;
 
 import java.util.Random;
+import org.uncommons.util.binary.BinaryUtils;
 
 /**
  * <p>Random number generator based on the Mersenne Twister algorithm developed
@@ -36,7 +37,7 @@ import java.util.Random;
  * will always seed from an array of bytes.  I don't pretend to know the
  * meanings of the magic numbers or how it works, it just does.</p>
  *
- * @author Makoto Matsumoto and Takuji Nishimura (original C version).
+ * @author Makoto Matsumoto and Takuji Nishimura (original C version)
  * @author Daniel Dyer (Java port)
  */
 public class MersenneTwisterRNG extends Random implements RepeatableRNG
@@ -101,7 +102,7 @@ public class MersenneTwisterRNG extends Random implements RepeatableRNG
         this.seed = seed.clone();
 
         // Always log seed so that an indentical RNG can be created later if necessary.
-        System.out.println("Mersenne Twister RNG created with seed " + SeedUtils.convertSeedDataToHexString(seed));
+        System.out.println("Mersenne Twister RNG created with seed " + BinaryUtils.convertBytesToHexString(seed));
 
         int[] seedInts = convertBytesToInts(this.seed);
 

@@ -14,8 +14,7 @@
 //   limitations under the License.
 // ============================================================================
 /**
- * Implementations of data types that should prove useful for implementing
- * evolutionary algorithms but are not available in the core Java API.
+ * Classes for manipulating binary data.
  * @author Daniel Dyer
  */
-package org.uncommons.watchmaker.framework.types;
+package org.uncommons.util.BINARY;

@@ -23,14 +23,14 @@ import java.util.List;
 /**
  * Permutation generator for generating all permutations for all sets up to
  * 20 elements in size.  While 20 may seem a low limit, bear in mind that
- * the number of permutations of a set of size n is n!.  For a set of 21
+ * the number of permutations of a set of size n is n!  For a set of 21
  * items, the number of permutations is bigger than can be stored in Java's
  * 64-bit long integer data type.  Therefore it seems unlikely that you
  * could ever generate, let alone process, all of the permutations in a
  * reasonable time frame.  For this reason the implementation is optimised for
  * sets of size 20 or less (this affords better performance by allowing primitive
  * numeric types to be used for calculations rather than
- * {@link java.math.BigInteger}.
+ * {@link java.math.BigInteger}).
  * @param <T> The type of element that the permutation will consist of.
  * @author Daniel Dyer (modified from the original version written by Michael
  * Gilleland of Merriam Park Software -

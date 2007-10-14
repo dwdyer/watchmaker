@@ -26,10 +26,6 @@ public final class Maths
     // The biggest factorial that can be calculated using 64-bit signed longs.
     private static final int MAX_LONG_FACTORIAL = 20;
 
-    // Mask for casting a byte to an int, bit-by-bit (with
-    // bitwise AND) with no special consideration for the sign bit.
-    private static final int BITWISE_BYTE_TO_INT = 0x000000FF;
-
     private Maths()
     {
         // Prevent instantiation.
@@ -109,7 +105,7 @@ public final class Maths
      * Calculate logarithms for arbitrary bases.
      * @param base The base for the logarithm.
      * @param arg The value to calculate the logarithm for.
-     * @return The log of {code arg} in the specified {@code base}.
+     * @return The log of {@code arg} in the specified {@code base}.
      */
     public static double log(double base, double arg)
     {
@@ -120,6 +116,8 @@ public final class Maths
 
     /**
      * Checks that two values are approximately equal (plus or minus a specified tolerance).
+     * @param value1 The first value to compare.
+     * @param value2 The second value to compare.
      * @param tolerance How much (in percentage terms, as a percentage of the first value)
      * the values are allowed to differ and still be considered equal.  Expressed as a value
      * between 0 and 1.
@@ -136,20 +134,4 @@ public final class Maths
         return Math.abs(value1 - value2) <= value1 * tolerance;
     }
 
-
-    /**
-     * Take four bytes from the specified position in the specified
-     * block and convert them into a 32-bit int, using the big-endian
-     * convention.
-     * @param bytes The data to read from.
-     * @param offset The position to start reading the 4-byte int from.
-     * @return The 32-bit integer represented by the four bytes.
-     */
-    public static int convertBytesToInt(byte[] bytes, int offset)
-    {
-        return (BITWISE_BYTE_TO_INT & bytes[offset + 3])
-                | ((BITWISE_BYTE_TO_INT & bytes[offset + 2]) << 8)
-                | ((BITWISE_BYTE_TO_INT & bytes[offset + 1]) << 16)
-                | ((BITWISE_BYTE_TO_INT & bytes[offset]) << 24);
-    }
 }

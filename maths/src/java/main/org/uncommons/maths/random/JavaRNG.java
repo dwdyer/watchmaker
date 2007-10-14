@@ -16,6 +16,7 @@
 package org.uncommons.maths.random;
 
 import java.util.Random;
+import org.uncommons.util.binary.BinaryUtils;
 
 /**
  * <p>This is the default {@link Random JDK RNG} extended
@@ -70,7 +71,7 @@ public class JavaRNG extends Random implements RepeatableRNG
         this.seed = seed.clone();
 
         // Always log seed so that an indentical RNG can be created later if necessary.
-        System.out.println("Standard Java RNG created with seed " + SeedUtils.convertSeedDataToHexString(seed));
+        System.out.println("Standard Java RNG created with seed " + BinaryUtils.convertBytesToHexString(seed));
     }
 
 

@@ -16,15 +16,15 @@
 package org.uncommons.maths.random;
 
 import java.util.Random;
-import org.uncommons.maths.Maths;
+import org.uncommons.util.binary.BinaryUtils;
 
 /**
  * Java port of the cellular automaton pseudorandom number generator developed by
  * Tony Pasqualoni
  * (<a href="http://home.southernct.edu/~pasqualonia1/ca/report.html"
  * >http://home.southernct.edu/~pasqualonia1/ca/report.html</a>).
- * @author Tony Pasqualoni (original C version).
- * @author Daniel Dyer (Java port).
+ * @author Tony Pasqualoni (original C version)
+ * @author Daniel Dyer (Java port)
  */
 public class CellularAutomatonRNG extends Random implements RepeatableRNG
 {
@@ -111,7 +111,7 @@ public class CellularAutomatonRNG extends Random implements RepeatableRNG
         this.seed = seed.clone();
 
         // Always log seed so that an indentical RNG can be created later if necessary.
-        System.out.println("Cellular Automaton RNG created with seed " + SeedUtils.convertSeedDataToHexString(seed));
+        System.out.println("Cellular Automaton RNG created with seed " + BinaryUtils.convertBytesToHexString(seed));
 
         // Set initial cell states using seed.
         cells[AUTOMATON_LENGTH - 1] = seed[0] + 128;
@@ -119,7 +119,7 @@ public class CellularAutomatonRNG extends Random implements RepeatableRNG
         cells[AUTOMATON_LENGTH - 3] = seed[2] + 128;
         cells[AUTOMATON_LENGTH - 4] = seed[3] + 128;
 
-        int seedAsInt = Maths.convertBytesToInt(seed, 0);
+        int seedAsInt = BinaryUtils.convertBytesToInt(seed, 0);
         if (seedAsInt != 0xFFFFFFFF)
         {
             seedAsInt++;

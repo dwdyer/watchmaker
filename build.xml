@@ -178,34 +178,6 @@
     <clean.module module.name="maths" />
     <clean.module module.name="util" />
   </target>
-  
-
-  <!-- Builds the maths module. -->
-  <target name="maths"
-          description="Build the maths module.">
-    <compile.module module.name="maths" />
-    <jar.module module.name="maths" jar.name="uncommons-maths.jar"/>
-  </target>
-
-
-  <!-- Builds the framework JAR, which depends on the maths module. -->
-  <target name="framework"
-          depends="maths, util"
-          description="Build the framework module.">
-    <compile.module module.name="framework">
-      <moduleclasspath>
-        <path location="./maths/${build.dir}/uncommons-maths.jar" />
-        <path location="./util/${build.dir}/uncommons-util.jar" />
-      </moduleclasspath>
-    </compile.module>
-    <jar.module module.name="framework" jar.name="watchmaker-framework.jar">
-      <additionalcontents>
-        <manifest>
-          <attribute name="Class-Path" value="uncommons-maths.jar uncommons-util.jar"/>
-        </manifest>
-      </additionalcontents>
-    </jar.module>
-  </target>
 
 
   <!-- Builds the util module. -->
@@ -213,6 +185,45 @@
           description="Build the utilities module.">
     <compile.module module.name="util" />
     <jar.module module.name="util" jar.name="uncommons-util.jar"/>
+  </target>
+
+
+  <!-- Builds the maths module. -->
+  <target name="maths"
+          depends="util"
+          description="Build the maths module.">
+    <compile.module module.name="maths">
+      <moduleclasspath>
+        <path location="./util/${build.dir}/uncommons-util.jar" />
+      </moduleclasspath>
+    </compile.module>
+    <jar.module module.name="maths" jar.name="uncommons-maths.jar">
+      <additionalcontents>
+        <manifest>
+          <attribute name="Class-Path" value="uncommons-util.jar"/>
+        </manifest>
+      </additionalcontents>
+    </jar.module>
+  </target>
+
+
+  <!-- Builds the framework JAR, which depends on the maths module. -->
+  <target name="framework"
+          depends="util, maths"
+          description="Build the framework module.">
+    <compile.module module.name="framework">
+      <moduleclasspath>
+        <path location="./util/${build.dir}/uncommons-util.jar" />
+        <path location="./maths/${build.dir}/uncommons-maths.jar" />
+      </moduleclasspath>
+    </compile.module>
+    <jar.module module.name="framework" jar.name="watchmaker-framework.jar">
+      <additionalcontents>
+        <manifest>
+          <attribute name="Class-Path" value="uncommons-util.jar uncommons-maths.jar"/>
+        </manifest>
+      </additionalcontents>
+    </jar.module>
   </target>
 
 
@@ -226,11 +237,12 @@
 
   <!-- Builds the examples JAR, which depends on each of the other modules. -->
   <target name="examples"
-          depends="framework, maths, gui"
+          depends="framework, util, maths, gui"
           description="Build the examples.">
     <compile.module module.name="examples">
       <moduleclasspath>
         <path location="./framework/${build.dir}/watchmaker-framework.jar" />
+        <path location="./util/${build.dir}/uncommons-util.jar" />
         <path location="./maths/${build.dir}/uncommons-maths.jar" />
         <path location="./gui/${build.dir}/uncommons-gui.jar" />
       </moduleclasspath>
@@ -238,7 +250,7 @@
     <jar.module module.name="examples" jar.name="watchmaker-examples.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-maths.jar uncommons-gui.jar"/>
+          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-util.jar uncommons-maths.jar uncommons-gui.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>

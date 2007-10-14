@@ -18,13 +18,13 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.util.binary.BitString;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.watchmaker.framework.types.BitString;
 
 /**
  * Mutation of individual bits in a {@link BitString} according to some
  * probability.
- * @see BitString
+ * @see org.uncommons.util.binary.BitString
  * @author Daniel Dyer
  */
 public class BitStringMutation implements EvolutionaryOperator<BitString>

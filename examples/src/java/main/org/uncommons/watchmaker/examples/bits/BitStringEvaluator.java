@@ -16,8 +16,8 @@
 package org.uncommons.watchmaker.examples.bits;
 
 import java.util.List;
+import org.uncommons.util.binary.BitString;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
-import org.uncommons.watchmaker.framework.types.BitString;
 
 /**
  * A fitness evaluator that simply counts the number of ones in a bit

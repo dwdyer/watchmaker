@@ -38,7 +38,7 @@ public class BinomialGeneratorTest
     public void testDistribution()
     {
         final int n = 20;
-        final double p = 0.163;
+        final double p = 0.163d;
         NumberGenerator<Integer> generator = new BinomialGenerator(n, // Number of trials.
                                                                    p, // Probability of success in each.
                                                                    rng);
@@ -50,7 +50,7 @@ public class BinomialGeneratorTest
     public void testDynamicParameters()
     {
         final int initialN = 20;
-        final double initialP = 0.163;
+        final double initialP = 0.163d;
         AdjustableNumberGenerator<Integer> nGenerator = new AdjustableNumberGenerator<Integer>(initialN);
         AdjustableNumberGenerator<Double> pGenerator = new AdjustableNumberGenerator<Double>(initialP);
         NumberGenerator<Integer> generator = new BinomialGenerator(nGenerator,
@@ -61,7 +61,7 @@ public class BinomialGeneratorTest
         // Adjust parameters and ensure that the generator output conforms to this new distribution.
         final int adjustedN = 14;
         nGenerator.setValue(adjustedN);
-        final double adjustedP = 0.32;
+        final double adjustedP = 0.32d;
         pGenerator.setValue(adjustedP);
 
         checkDistribution(generator, adjustedN, adjustedP);
@@ -121,7 +121,7 @@ public class BinomialGeneratorTest
         {
             data.addValue(generator.nextValue());
         }
-        assert Maths.approxEquals(data.getArithmeticMean(), expectedMean, 0.02)
+        assert Maths.approxEquals(data.getArithmeticMean(), expectedMean, 0.02d)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
         assert Maths.approxEquals(data.getStandardDeviation(), expectedStandardDeviation, 0.02)
                 : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();

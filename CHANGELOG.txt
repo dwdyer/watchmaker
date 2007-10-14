@@ -1,11 +1,24 @@
 Changes in version 0.?.?
 ------------------------
 
+* Introduced Utilities module.
+
+* Moved BitString class from Framework module into util module because it is
+  useful outside of the framework (it is now used internally in the Maths
+  module).
+
+* Introduced BinaryUtils class for manipulating binary data.
+
+* Moved methods from SeedUtils into BinaryUtils and removed SeedUtils.
+
 * Added new constructor to BitString to simplify the creation of random bit
   strings.
 
 * Improved algorithm for countSetBits() in BitString.  New version is
   significantly faster (10-15 times faster).
+
+* Changed the algorithm used to implement BinomialGenerator for better
+  performance.
 
 
 Changes in version 0.4.2

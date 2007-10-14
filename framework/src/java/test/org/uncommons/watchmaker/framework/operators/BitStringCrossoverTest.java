@@ -18,10 +18,10 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.List;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.util.binary.BitString;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.factories.BitStringFactory;
-import org.uncommons.watchmaker.framework.types.BitString;
 
 /**
  * Unit test for cross-over applied to bit strings.

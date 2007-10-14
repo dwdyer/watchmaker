@@ -13,7 +13,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.framework.types;
+package org.uncommons.util.binary;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -21,9 +21,9 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Implementation of a fixed-length bit-string, useful for implementing
- * genetic algorithms.  This implementation makes more efficient use of
- * space than the alternative approach of using an array of booleans. 
+ * Implementation of a fixed-length bit-string.  This implementation makes
+ * more efficient use of space than the alternative approach of using an
+ * array of booleans. 
  * @author Daniel Dyer
  */
 public final class BitString implements Cloneable, Serializable
@@ -74,8 +74,8 @@ public final class BitString implements Cloneable, Serializable
             data[i] = rng.nextInt();
         }
         // If the last word is not fully utilised, zero any out-of-bounds bits.
-        // This is necessary to because the countSetBits() will count out-of-bounds
-        // bits.
+        // This is necessary because the countSetBits() methods will count
+        // out-of-bounds bits.
         int bitsUsed = length % WORD_LENGTH;
         if (bitsUsed < WORD_LENGTH)
         {
@@ -119,7 +119,7 @@ public final class BitString implements Cloneable, Serializable
 
     /**
      * Returns the bit at the specified index.
-     * @param index The index of the bit to look-up.
+     * @param index The index of the bit to look-up (0 is the least-significant bit).
      * @return A boolean indicating whether the bit is set or not.
      * @throws IndexOutOfBoundsException If the specified index is not a bit
      * position in this bit string.
@@ -135,7 +135,7 @@ public final class BitString implements Cloneable, Serializable
 
     /**
      * Sets the bit at the specified index.
-     * @param index The index of the bit to set.
+     * @param index The index of the bit to set (0 is the least-significant bit).
      * @param set A boolean indicating whether the bit should be set or not.
      * @throws IndexOutOfBoundsException If the specified index is not a bit
      * position in this bit string.
@@ -158,7 +158,7 @@ public final class BitString implements Cloneable, Serializable
 
     /**
      * Inverts the value of the bit at the specified index.
-     * @param index The bit to flip.
+     * @param index The bit to flip (0 is the least-significant bit).
      * @throws IndexOutOfBoundsException If the specified index is not a bit
      * position in this bit string.     
      */

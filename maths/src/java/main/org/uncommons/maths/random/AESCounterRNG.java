@@ -19,7 +19,7 @@ import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.util.Random;
 import javax.crypto.Cipher;
-import org.uncommons.maths.Maths;
+import org.uncommons.util.binary.BinaryUtils;
 
 /**
  * Non-linear random number generator based on the AES block cipher in counter mode.
@@ -81,7 +81,7 @@ public class AESCounterRNG extends Random implements RepeatableRNG
         this.seed = seed.clone();
 
         // Always log seed so that an indentical RNG can be created later if necessary.
-        System.out.println("AES RNG created with seed " + SeedUtils.convertSeedDataToHexString(seed));
+        System.out.println("AES RNG created with seed " + BinaryUtils.convertBytesToHexString(seed));
 
         cipher = Cipher.getInstance("AES/ECB/NoPadding");
         cipher.init(Cipher.ENCRYPT_MODE, new AESKey(this.seed));
@@ -146,7 +146,7 @@ public class AESCounterRNG extends Random implements RepeatableRNG
                     throw new IllegalStateException("Failed creating next random block.", ex);
                 }
             }
-            result = Maths.convertBytesToInt(currentBlock, index);
+            result = BinaryUtils.convertBytesToInt(currentBlock, index);
             index += 4;
         }
         return result >>> (32 - bits);

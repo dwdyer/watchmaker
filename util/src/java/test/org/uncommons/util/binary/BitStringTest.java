@@ -13,11 +13,11 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.framework.types;
+package org.uncommons.util.binary;
 
 import java.math.BigInteger;
+import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 
 /**
  * Unit test for the {@link BitString} type.
@@ -47,7 +47,7 @@ public class BitStringTest
     @Test(dependsOnMethods = "testCreateBitString")
     public void testCreateRandomBitString()
     {
-        BitString bitString = new BitString(100, new MersenneTwisterRNG());
+        BitString bitString = new BitString(100, new Random());
         assert bitString.getLength() == 100 : "BitString created with wrong length: " + bitString.getLength();
     }
 
