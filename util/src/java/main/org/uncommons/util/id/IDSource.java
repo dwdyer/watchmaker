@@ -22,6 +22,7 @@ import java.io.Serializable;
  * be of a {@link java.io.Serializable} type.  The strategy used will vary between
  * implementations.  It may be a straightforward sequence or a more complex, less predictable
  * algorithm.
+ * @param <T> The type of ID returned by this source.
  * @author Daniel Dyer
  */
 public interface IDSource<T extends Serializable>

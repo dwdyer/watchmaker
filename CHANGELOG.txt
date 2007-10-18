@@ -20,6 +20,9 @@ Changes in version 0.?.?
 * Changed the algorithm used to implement BinomialGenerator for better
   performance.
 
+* Added new termination condition to detect when the evolution has stagnated
+  (i.e. the fitness has not improved for a certain number of generations).
+
 
 Changes in version 0.4.2
 ------------------------

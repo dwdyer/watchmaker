@@ -17,4 +17,4 @@
  * Classes for manipulating binary data.
  * @author Daniel Dyer
  */
-package org.uncommons.util.BINARY;
+package org.uncommons.util.binary;

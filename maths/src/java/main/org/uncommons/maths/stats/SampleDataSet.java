@@ -32,8 +32,7 @@ public class SampleDataSet extends AbstractDataSet
      * Creates an empty data set with a default initial capacity.
      */
     public SampleDataSet()
-    {
-        super();
+    {        
     }
 
 

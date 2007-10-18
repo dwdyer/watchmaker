@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class contains data about cities in EuropeanDistanceLookup and the distances
+ * This class contains data about cities in Europe and the distances
  * between them.
  * @author Daniel Dyer
  */

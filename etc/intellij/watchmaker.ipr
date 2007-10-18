@@ -430,7 +430,7 @@
     </option>
   </component>
   <component name="com.sixrr.metrics.MetricsReloaded">
-    <option name="selectedProfile" value="Default" />
+    <option name="selectedProfile" value="Lines of code metrics" />
     <option name="autoscroll" value="false" />
     <option name="calculateMetrics" value="true" />
     <option name="includeTestClasses" value="false" />
