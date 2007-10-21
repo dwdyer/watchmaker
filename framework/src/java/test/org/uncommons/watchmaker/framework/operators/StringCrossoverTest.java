@@ -30,6 +30,8 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public class StringCrossoverTest
 {
+    private final Random rng = new MersenneTwisterRNG();
+
     @Test
     public void testCrossover()
     {
@@ -39,7 +41,6 @@ public class StringCrossoverTest
         population.add("fghij");
         population.add("klmno");
         population.add("pqrst");
-        Random rng = new MersenneTwisterRNG();
         Set<Character> values = new HashSet<Character>(20);
         for (int i = 0; i < 20; i++)
         {
@@ -58,5 +59,24 @@ public class StringCrossoverTest
             assert values.size() == 20 : "Information lost during cross-over.";
             values.clear();
         }
+    }
+
+
+    /**
+     * The {@link StringCrossover} operator is only defined to work on populations
+     * containing Strings of equal lengths.  Any attempt to apply the operation to
+     * populations that contain different length Strings should throw an exception.
+     * Not throwing an exception should be considered a bug since it could lead to
+     * hard to trace bugs elsewhere.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDifferentLengthParents()
+    {
+        EvolutionaryOperator<String> crossover = new StringCrossover(1, 1d);
+        List<String> population = new ArrayList<String>(2);
+        population.add("abcde");
+        population.add("fghijklm");
+        // This should cause an exception since the parents are different lengths.
+        crossover.apply(population, rng);
     }
 }

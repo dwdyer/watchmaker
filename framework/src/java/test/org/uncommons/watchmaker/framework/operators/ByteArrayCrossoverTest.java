@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.ConstantGenerator;
+import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
@@ -31,6 +31,8 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public class ByteArrayCrossoverTest
 {
+    private final Random rng = new MersenneTwisterRNG();
+
     @Test
     public void testCrossover()
     {
@@ -40,7 +42,6 @@ public class ByteArrayCrossoverTest
         population.add(new byte[]{6, 7, 8, 9, 10});
         population.add(new byte[]{11, 12, 13, 14, 15});
         population.add(new byte[]{16, 17, 18, 19, 20});
-        Random rng = new MersenneTwisterRNG();
         Set<Byte> values = new HashSet<Byte>(20);
         for (int i = 0; i < 20; i++)
         {
@@ -59,5 +60,24 @@ public class ByteArrayCrossoverTest
             assert values.size() == 20 : "Information lost during cross-over.";
             values.clear();
         }
+    }
+
+
+    /**
+     * The {@link ByteArrayCrossover} operator is only defined to work on populations
+     * containing arrays of equal lengths.  Any attempt to apply the operation to
+     * populations that contain different length arrays should throw an exception.
+     * Not throwing an exception should be considered a bug since it could lead to
+     * hard to trace bugs elsewhere.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDifferentLengthParents()
+    {
+        EvolutionaryOperator<byte[]> crossover = new ByteArrayCrossover(1, 1d);
+        List<byte[]> population = new ArrayList<byte[]>(2);
+        population.add(new byte[]{1, 2, 3, 4, 5});
+        population.add(new byte[]{2, 4, 8, 10, 12, 14, 16});
+        // This should cause an exception since the parents are different lengths.
+        crossover.apply(population, rng);
     }
 }

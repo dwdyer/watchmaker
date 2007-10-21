@@ -36,9 +36,14 @@ public class DevRandomSeedGenerator implements SeedGenerator
             file = new FileInputStream(DEV_RANDOM);
             byte[] randomSeed = new byte[length];
             int count = 0;
-            while (count < length && count != -1)
+            while (count < length)
             {
-                count += file.read(randomSeed, count, length - count);
+                int bytesRead = file.read(randomSeed, count, length - count);
+                if (bytesRead == -1)
+                {
+                    throw new SeedException("EOF encountered reading random data.");
+                }
+                count += bytesRead;
             }
             System.out.println(length + " bytes of seed data acquired from /dev/random");
             return randomSeed;

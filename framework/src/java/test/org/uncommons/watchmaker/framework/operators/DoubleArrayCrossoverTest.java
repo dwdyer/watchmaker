@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.ConstantGenerator;
+import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
@@ -31,6 +31,8 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public class DoubleArrayCrossoverTest
 {
+    private final Random rng = new MersenneTwisterRNG();
+
     @Test
     public void testCrossover()
     {
@@ -41,7 +43,6 @@ public class DoubleArrayCrossoverTest
         population.add(new double[]{6.6d, 7.7d, 8.8d, 9.9d, 10});
         population.add(new double[]{11, 12, 13, 14, 15});
         population.add(new double[]{16, 17, 18, 19, 20});
-        Random rng = new MersenneTwisterRNG();
         Set<Double> values = new HashSet<Double>(20);
         for (int i = 0; i < 20; i++)
         {
@@ -60,5 +61,24 @@ public class DoubleArrayCrossoverTest
             assert values.size() == 20 : "Information lost during cross-over.";
             values.clear();
         }
+    }
+
+
+    /**
+     * The {@link DoubleArrayCrossover} operator is only defined to work on populations
+     * containing arrays of equal lengths.  Any attempt to apply the operation to
+     * populations that contain different length arrays should throw an exception.
+     * Not throwing an exception should be considered a bug since it could lead to
+     * hard to trace bugs elsewhere.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDifferentLengthParents()
+    {
+        EvolutionaryOperator<double[]> crossover = new DoubleArrayCrossover(1, 1d);
+        List<double[]> population = new ArrayList<double[]>(2);
+        population.add(new double[]{1.1d, 2.2d, 3.3d, 4.4d, 5.5d});
+        population.add(new double[]{6.6d, 7.7d, 8.8d});
+        // This should cause an exception since the parents are different lengths.
+        crossover.apply(population, rng);
     }
 }

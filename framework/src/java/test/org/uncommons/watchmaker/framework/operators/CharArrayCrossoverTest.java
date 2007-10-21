@@ -30,16 +30,17 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public class CharArrayCrossoverTest
 {
+    private final Random rng = new MersenneTwisterRNG();
+
     @Test
     public void testCrossover()
     {
-        EvolutionaryOperator<char[]> crossover = new CharArrayCrossover(1, 1d);
+        EvolutionaryOperator<char[]> crossover = new CharArrayCrossover(1);
         List<char[]> population = new ArrayList<char[]>(4);
         population.add(new char[]{'a', 'b', 'c', 'd', 'e'});
         population.add(new char[]{'f', 'g', 'h', 'i', 'j'});
         population.add(new char[]{'k', 'l', 'm', 'n', 'o'});
         population.add(new char[]{'p', 'q', 'r', 's', 't'});
-        Random rng = new MersenneTwisterRNG();
         Set<Character> values = new HashSet<Character>(20);
         for (int i = 0; i < 20; i++)
         {
@@ -58,5 +59,24 @@ public class CharArrayCrossoverTest
             assert values.size() == 20 : "Information lost during cross-over.";
             values.clear();
         }
+    }
+
+
+    /**
+     * The {@link CharArrayCrossover} operator is only defined to work on populations
+     * containing arrays of equal lengths.  Any attempt to apply the operation to
+     * populations that contain different length arrays should throw an exception.
+     * Not throwing an exception should be considered a bug since it could lead to
+     * hard to trace bugs elsewhere.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDifferentLengthParents()
+    {
+        EvolutionaryOperator<char[]> crossover = new CharArrayCrossover(1, 1d);
+        List<char[]> population = new ArrayList<char[]>(2);
+        population.add(new char[]{'a', 'b', 'c', 'd', 'e'});
+        population.add(new char[]{'f', 'g', 'h', 'i', 'j', 'k'});
+        // This should cause an exception since the parents are different lengths.
+        crossover.apply(population, rng);
     }
 }

@@ -101,7 +101,7 @@ public class BinaryUtils
      */
     public static BitString convertDoubleToFixedPointBits(double value)
     {
-        if (value < 0.0d || value > 1.0d)
+        if (value < 0.0d || value >= 1.0d)
         {
             throw new IllegalArgumentException("Value must be between 0 and 1.");
         }

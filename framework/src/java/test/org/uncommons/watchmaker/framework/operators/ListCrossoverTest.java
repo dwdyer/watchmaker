@@ -15,15 +15,15 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework.operators;
 
-import org.testng.annotations.Test;
-import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.maths.random.MersenneTwisterRNG;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import org.testng.annotations.Test;
+import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
  * Unit test for cross-over with arbitrary lists.
@@ -31,6 +31,8 @@ import java.util.Random;
  */
 public class ListCrossoverTest
 {
+    private final Random rng = new MersenneTwisterRNG();
+
     @Test
     public void testCrossover()
     {
@@ -40,7 +42,6 @@ public class ListCrossoverTest
         population.add(Arrays.asList(6, 7, 8, 9, 10));
         population.add(Arrays.asList(11, 12, 13, 14, 15));
         population.add(Arrays.asList(16, 17, 18, 19, 20));
-        Random rng = new MersenneTwisterRNG();
         Set<Integer> values = new HashSet<Integer>(20);
         for (int i = 0; i < 20; i++)
         {
@@ -56,5 +57,24 @@ public class ListCrossoverTest
             assert values.size() == 20 : "Information lost during cross-over.";
             values.clear();
         }
+    }
+
+
+    /**
+     * The {@link ListCrossover} operator is only defined to work on populations
+     * containing lists of equal lengths.  Any attempt to apply the operation to
+     * populations that contain different length lists should throw an exception.
+     * Not throwing an exception should be considered a bug since it could lead to
+     * hard to trace bugs elsewhere.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDifferentLengthParents()
+    {
+        EvolutionaryOperator<List<?>> crossover = new ListCrossover(1, 1d);
+        List<List<Integer>> population = new ArrayList<List<Integer>>(2);
+        population.add(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
+        population.add(Arrays.asList(9, 10, 11));
+        // This should cause an exception since the parents are different lengths.
+        crossover.apply(population, rng);
     }
 }

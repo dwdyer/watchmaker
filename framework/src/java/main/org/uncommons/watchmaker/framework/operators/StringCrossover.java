@@ -22,6 +22,8 @@ import org.uncommons.maths.NumberGenerator;
 
 /**
  * Variable-point (fixed or random) cross-over for String candidates.
+ * This implementation assumes that all candidate Strings are the same
+ * length.  If they are not, an exception will be thrown at runtime.
  * @author Daniel Dyer
  */
 public class StringCrossover extends AbstractCrossover<String>

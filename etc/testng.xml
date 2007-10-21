@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Watchmaker Framework" verbose="1" >
+<suite name="Unit Tests" verbose="1" >
 
   <test name="Evolution Framework" >
     <packages>
@@ -34,3 +34,4 @@
   </test>
 
 </suite>
+        

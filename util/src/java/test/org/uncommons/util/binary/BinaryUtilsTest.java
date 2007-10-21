@@ -74,4 +74,43 @@ public class BinaryUtilsTest
         BitString bits = BinaryUtils.convertDoubleToFixedPointBits(value);
         assert bits.toString().equals("1011") : "Binary representation should be 1011, is " + bits.toString(); 
     }
+
+
+    /**
+     * Makes sure that zero is dealt with correctly by the fixed point conversion
+     * method.
+     */
+    @Test(dependsOnMethods = "testConvertFixedPoint")
+    public void testConvertFixedPointZero()
+    {
+        BitString bits = BinaryUtils.convertDoubleToFixedPointBits(0d);
+        assert bits.countSetBits() == 0 : "Binary representation should be 0";
+    }
+
+
+    /**
+     * An attempt to convert a value of 1 or greater should result in an exception
+     * since there is no way to represent these values in our fixed point scheme
+     * (which has no places to the left of the decimal point).  Not throwing an
+     * exception would be a bug.
+     */
+    @Test(dependsOnMethods = "testConvertFixedPoint",
+          expectedExceptions = IllegalArgumentException.class)
+    public void testConvertFixedPointTooHigh()
+    {
+        BinaryUtils.convertDoubleToFixedPointBits(1d);
+    }
+
+
+    /**
+     * An attempt to convert a negative value should result in an exception
+     * since there is no way to represent these values in our fixed point scheme
+     * (there is no sign bit).  Not throwing an exception would be a bug.
+     */
+    @Test(dependsOnMethods = "testConvertFixedPoint",
+          expectedExceptions = IllegalArgumentException.class)
+    public void testConvertFixedPointNegative()
+    {
+        BinaryUtils.convertDoubleToFixedPointBits(-0.5d);
+    }
 }

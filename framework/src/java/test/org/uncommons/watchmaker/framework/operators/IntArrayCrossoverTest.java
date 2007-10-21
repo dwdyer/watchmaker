@@ -30,6 +30,8 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public class IntArrayCrossoverTest
 {
+    private final Random rng = new MersenneTwisterRNG();
+
     @Test
     public void testCrossover()
     {
@@ -39,7 +41,6 @@ public class IntArrayCrossoverTest
         population.add(new int[]{6, 7, 8, 9, 10});
         population.add(new int[]{11, 12, 13, 14, 15});
         population.add(new int[]{16, 17, 18, 19, 20});
-        Random rng = new MersenneTwisterRNG();
         Set<Integer> values = new HashSet<Integer>(20);
         for (int i = 0; i < 20; i++)
         {
@@ -58,5 +59,24 @@ public class IntArrayCrossoverTest
             assert values.size() == 20 : "Information lost during cross-over.";
             values.clear();
         }
+    }
+
+
+    /**
+     * The {@link IntArrayCrossover} operator is only defined to work on populations
+     * containing arrays of equal lengths.  Any attempt to apply the operation to
+     * populations that contain different length arrays should throw an exception.
+     * Not throwing an exception should be considered a bug since it could lead to
+     * hard to trace bugs elsewhere.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDifferentLengthParents()
+    {
+        EvolutionaryOperator<int[]> crossover = new IntArrayCrossover(1, 1d);
+        List<int[]> population = new ArrayList<int[]>(2);
+        population.add(new int[]{1, 2, 3, 4, 5});
+        population.add(new int[]{2});
+        // This should cause an exception since the parents are different lengths.
+        crossover.apply(population, rng);
     }
 }

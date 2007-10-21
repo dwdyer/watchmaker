@@ -30,6 +30,8 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public class ObjectArrayCrossoverTest
 {
+    private final Random rng = new MersenneTwisterRNG();
+
     @Test
     public void testCrossover()
     {
@@ -39,7 +41,6 @@ public class ObjectArrayCrossoverTest
         population.add(new String[]{"6", "7", "8", "9", "10"});
         population.add(new String[]{"11", "12", "13", "14", "15"});
         population.add(new String[]{"16", "17", "18", "19", "20"});
-        Random rng = new MersenneTwisterRNG();
         Set<String> values = new HashSet<String>(20);
         for (int i = 0; i < 20; i++)
         {
@@ -59,4 +60,24 @@ public class ObjectArrayCrossoverTest
             values.clear();
         }
     }
+
+
+    /**
+     * The {@link ObjectArrayCrossover} operator is only defined to work on populations
+     * containing arrays of equal lengths.  Any attempt to apply the operation to
+     * populations that contain different length arrays should throw an exception.
+     * Not throwing an exception should be considered a bug since it could lead to
+     * hard to trace bugs elsewhere.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDifferentLengthParents()
+    {
+        EvolutionaryOperator<String[]> crossover = new ObjectArrayCrossover<String>(1, 1d);
+        List<String[]> population = new ArrayList<String[]>(2);
+        population.add(new String[]{"1", "2", "3", "4", "5"});
+        population.add(new String[]{"6", "7", "8", "9", "10", "11", "12"});
+        // This should cause an exception since the parents are different lengths.
+        crossover.apply(population, rng);
+    }
+
 }

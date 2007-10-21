@@ -15,8 +15,10 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework.operators;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.testng.annotations.Test;
+import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.util.binary.BitString;
 import org.uncommons.watchmaker.framework.CandidateFactory;
@@ -29,12 +31,13 @@ import org.uncommons.watchmaker.framework.factories.BitStringFactory;
  */
 public class BitStringCrossoverTest
 {
+    private final MersenneTwisterRNG rng = new MersenneTwisterRNG();
+
     @Test
     public void testCrossover()
     {
         EvolutionaryOperator<BitString> operator = new BitStringCrossover();
         CandidateFactory<BitString> factory = new BitStringFactory(50);
-        MersenneTwisterRNG rng = new MersenneTwisterRNG();
         List<BitString> population = factory.generateInitialPopulation(2, rng);
         // Test to make sure that cross-over correctly preserves all genetic material
         // originally present in the population and does not introduce anything new.
@@ -46,4 +49,24 @@ public class BitStringCrossoverTest
             assert setBits == totalSetBits : "Total number of set bits in population changed during cross-over.";
         }
     }
+
+
+    /**
+     * The {@link BitStringCrossover} operator is only defined to work on populations
+     * containing Strings of equal lengths.  Any attempt to apply the operation to
+     * populations that contain different length Strings should throw an exception.
+     * Not throwing an exception should be considered a bug since it could lead to
+     * hard to trace bugs elsewhere.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDifferentLengthParents()
+    {
+        EvolutionaryOperator<BitString> crossover = new BitStringCrossover(new ConstantGenerator<Integer>(1));
+        List<BitString> population = new ArrayList<BitString>(2);
+        population.add(new BitString(32, rng));
+        population.add(new BitString(33, rng));
+        // This should cause an exception since the parents are different lengths.
+        crossover.apply(population, rng);
+    }
+
 }
