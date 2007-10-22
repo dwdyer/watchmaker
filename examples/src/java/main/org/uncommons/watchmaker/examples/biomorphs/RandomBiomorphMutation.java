@@ -47,6 +47,7 @@ public class RandomBiomorphMutation implements EvolutionaryOperator<Biomorph>
      * Randomly mutate each selected candidate.
      * @param selectedCandidates {@inheritDoc}
      * @param rng {@inheritDoc}
+     * @param <S> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @SuppressWarnings("unchecked")

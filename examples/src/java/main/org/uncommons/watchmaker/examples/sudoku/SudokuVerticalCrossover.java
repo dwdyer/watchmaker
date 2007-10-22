@@ -29,24 +29,47 @@ import org.uncommons.watchmaker.framework.operators.AbstractCrossover;
  */
 public class SudokuVerticalCrossover extends AbstractCrossover<Sudoku>
 {
+    /**
+     * Single-point cross-over.
+     */
     public SudokuVerticalCrossover()
     {
         this(1);
     }
 
 
+    /**
+     * Multiple-point cross-over (fixed number of points).
+     * @param crossoverPoints The fixed number of cross-overs applied to each
+     * pair of parents.
+     */
     public SudokuVerticalCrossover(int crossoverPoints)
     {
         super(crossoverPoints);
     }
 
 
+    /**
+     * Multiple-point cross-over (variable number of points).
+     * @param crossoverPointsVariable Provides the (possibly variable) number of
+     * cross-overs applied to each pair of parents.
+     */
     public SudokuVerticalCrossover(NumberGenerator<Integer> crossoverPointsVariable)
     {
         super(crossoverPointsVariable);
     }
 
 
+    /**
+     * Applies cross-over to a pair of parents.  Cross-over is performed vertically
+     * (each offspring consists of some rows from {@literal parent1} and some rows
+     * from {@literal parent2}).
+     * @param parent1 The first parent.
+     * @param parent2 The second parent.
+     * @param numberOfCrossoverPoints The number of cross-overs to perform.
+     * @param rng The RNG used to select the cross-over points.
+     * @return A list containing a pair of offspring.
+     */
     protected List<? extends Sudoku> mate(Sudoku parent1,
                                           Sudoku parent2,
                                           int numberOfCrossoverPoints,

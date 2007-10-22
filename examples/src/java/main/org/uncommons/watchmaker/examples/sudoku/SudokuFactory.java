@@ -36,6 +36,19 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
     private final Sudoku.Cell[][] template;
     private final List<List<Integer>> nonFixedValues = new ArrayList<List<Integer>>(Sudoku.SIZE);
 
+
+    /**
+     * Creates a factory for generating random candidate solutions
+     * for a specified Sudoku puzzle.
+     * @param pattern An array of Strings.  Each element represents
+     * one row in the puzzle.  Each character represents a single
+     * cells.  Permitted characters are the digits '1' to '9' (each
+     * of which represents a fixed cell in the pattern) or the '.'
+     * character, which represents an empty cell.
+     * @throws IllegalArgumentException If {@literal pattern} does not
+     * consist of nine Strings with nine characters ('0' to '9', or '.')
+     * in each.
+     */
     public SudokuFactory(String... pattern)
     {
         if (pattern.length != Sudoku.SIZE)
@@ -78,6 +91,11 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
     }
 
 
+    /**
+     * {@inheritDoc}
+     * The generated potential solution is guaranteed to have no
+     * duplicates in any row but could have duplicates in a column or sub-grid.
+     */
     protected Sudoku generateRandomCandidate(Random rng)
     {
         // Clone the template as the basis for this grid.

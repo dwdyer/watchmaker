@@ -19,7 +19,7 @@ package org.uncommons.util.binary;
  * Utility methods for working with binary and hex data.
  * @author Daniel Dyer
  */
-public class BinaryUtils
+public final class BinaryUtils
 {
     // Mask for casting a byte to an int, bit-by-bit (with
     // bitwise AND) with no special consideration for the sign bit.

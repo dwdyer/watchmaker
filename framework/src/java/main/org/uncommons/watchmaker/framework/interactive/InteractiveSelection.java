@@ -175,7 +175,7 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
         {
             // The select method is not declared to throw any checked exceptions so
             // the worst that can happen is a RuntimeException or an Error (we can,
-            // and shoud, re-throw both).
+            // and should, re-throw both).
             if (ex.getCause() instanceof Error)
             {
                 throw (Error) ex.getCause();

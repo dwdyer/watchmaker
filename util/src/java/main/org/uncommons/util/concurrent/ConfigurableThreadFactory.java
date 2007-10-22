@@ -69,6 +69,8 @@ public class ConfigurableThreadFactory implements ThreadFactory
 
     /**
      * Creates a new thread configured according to this factory's parameters.
+     * @param runnable The runnable to be executed by the new thread.
+     * @return The created thread.
      */
     public Thread newThread(Runnable runnable)
     {
