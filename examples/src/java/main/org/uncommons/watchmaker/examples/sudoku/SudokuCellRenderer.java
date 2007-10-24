@@ -23,7 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
-import org.uncommons.gui.ConfigurableLineBorder;
+import org.uncommons.swing.ConfigurableLineBorder;
 
 /**
  * Renders Sudoku cells in a JTable.  As well as displaying the cell value,

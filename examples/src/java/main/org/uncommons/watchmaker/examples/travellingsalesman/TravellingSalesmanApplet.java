@@ -23,7 +23,7 @@ import java.util.List;
 import javax.swing.JApplet;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import org.uncommons.gui.SwingBackgroundTask;
+import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**

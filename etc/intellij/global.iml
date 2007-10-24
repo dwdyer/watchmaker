@@ -9,8 +9,8 @@
       <excludeFolder url="file://$MODULE_DIR$/../../examples" />
       <excludeFolder url="file://$MODULE_DIR$/../../framework" />
       <excludeFolder url="file://$MODULE_DIR$/../../grid" />
-      <excludeFolder url="file://$MODULE_DIR$/../../gui" />
       <excludeFolder url="file://$MODULE_DIR$/../../maths" />
+      <excludeFolder url="file://$MODULE_DIR$/../../swing" />
       <excludeFolder url="file://$MODULE_DIR$/../../temp" />
       <excludeFolder url="file://$MODULE_DIR$/../../util" />
     </content>

@@ -8,6 +8,19 @@
     </packages>
   </test>
 
+  <test name="Swing Module" >
+    <packages>
+      <package name="org.uncommons.swing.*" />
+      <package name="org.uncommons.watchmaker.swing.*" />
+    </packages>
+  </test>
+
+  <test name="Examples" >
+    <packages>
+      <package name="org.uncommons.watchmaker.examples.*" />
+    </packages>
+  </test>
+
   <test name="Maths Module" >
     <packages>
       <package name="org.uncommons.maths.*" />
@@ -17,19 +30,6 @@
   <test name="Utilities Module" >
     <packages>
       <package name="org.uncommons.util.*" />
-    </packages>
-  </test>
-
-  <test name="GUI Components" >
-    <packages>
-      <package name="org.uncommons.watchmaker.swing.*" />
-      <package name="org.uncommons.gui.*" />
-    </packages>
-  </test>
-
-  <test name="Examples" >
-    <packages>
-      <package name="org.uncommons.watchmaker.examples.*" />
     </packages>
   </test>
 

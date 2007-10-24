@@ -15,7 +15,7 @@
     <orderEntry type="module" module-name="framework" />
     <orderEntry type="module" module-name="util" />
     <orderEntry type="module" module-name="maths" />
-    <orderEntry type="module" module-name="gui" />
+    <orderEntry type="module" module-name="swing" />
     <orderEntry type="library" name="testng-5.6-jdk15" level="project" />
     <orderEntryProperties />
   </component>

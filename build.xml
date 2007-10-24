@@ -143,11 +143,11 @@
         <fileset dir="." defaultexcludes="yes">
           <include name="**/${java.dir}/main/org/uncommons/**/*.java"/>
         </fileset>
-        <group title="Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*:org.uncommons.watchmaker.swing"/>
-        <group title="Example Evolutionary Algorithms" packages="org.uncommons.watchmaker.examples.*"/>
+        <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
+        <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
+        <group title="Watchmaker Example Programs" packages="org.uncommons.watchmaker.examples.*"/>
         <group title="Uncommons Maths" packages="org.uncommons.maths:org.uncommons.maths.*"/>
         <group title="Uncommons Utilities" packages="org.uncommons.util:org.uncommons.util.*"/>
-        <group title="Uncommons GUI" packages="org.uncommons.gui:org.uncommons.gui.*"/>
         <header><![CDATA[Watchmaker Framework API<br><small>(Version ${version})</small>]]></header>
         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
       </javadoc>
@@ -174,7 +174,7 @@
     <delete dir="${temp.dir}" />
     <clean.module module.name="examples" />
     <clean.module module.name="framework" />
-    <clean.module module.name="gui" />
+    <clean.module module.name="swing" />
     <clean.module module.name="maths" />
     <clean.module module.name="util" />
   </target>
@@ -228,29 +228,41 @@
 
 
   <!-- Builds the GUI module. -->
-  <target name="gui"
+  <target name="swing"
+          depends="framework, maths"
           description="Build the GUI module.">
-    <compile.module module.name="gui" />
-    <jar.module module.name="gui" jar.name="uncommons-gui.jar"/>
+    <compile.module module.name="swing">
+      <moduleclasspath>
+        <path location="./framework/${build.dir}/watchmaker-framework.jar" />
+        <path location="./maths/${build.dir}/uncommons-maths.jar" />
+      </moduleclasspath>
+    </compile.module>
+    <jar.module module.name="swing" jar.name="watchmaker-swing.jar">
+      <additionalcontents>
+        <manifest>
+          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-maths.jar"/>
+        </manifest>
+      </additionalcontents>
+    </jar.module>
   </target>
 
 
   <!-- Builds the examples JAR, which depends on each of the other modules. -->
   <target name="examples"
-          depends="framework, util, maths, gui"
+          depends="framework, util, maths, swing"
           description="Build the examples.">
     <compile.module module.name="examples">
       <moduleclasspath>
         <path location="./framework/${build.dir}/watchmaker-framework.jar" />
         <path location="./util/${build.dir}/uncommons-util.jar" />
         <path location="./maths/${build.dir}/uncommons-maths.jar" />
-        <path location="./gui/${build.dir}/uncommons-gui.jar" />
+        <path location="./swing/${build.dir}/watchmaker-swing.jar" />
       </moduleclasspath>
     </compile.module>
     <jar.module module.name="examples" jar.name="watchmaker-examples.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-util.jar uncommons-maths.jar uncommons-gui.jar"/>
+          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-util.jar uncommons-maths.jar watchmaker-swing.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -259,7 +271,7 @@
 
   <!-- Copy all necessary files to distribution directory. -->
   <target name="dist"
-          depends="maths, util, framework, gui, examples"
+          depends="maths, util, framework, swing, examples"
           description="Generate the project distribution." >
     <mkdir dir="${dist.dir}" />
     <!-- Copy all application JARs and 3rd party libraries. -->
@@ -365,7 +377,7 @@
       <fileset dir="framework/${java.dir}/main">
         <include name="**/*.java" />
       </fileset>
-      <fileset dir="gui/${java.dir}/main">
+      <fileset dir="swing/${java.dir}/main">
         <include name="**/*.java" />
       </fileset>
       <fileset dir="maths/${java.dir}/main">

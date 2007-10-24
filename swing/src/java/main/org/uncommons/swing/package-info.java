@@ -18,4 +18,4 @@
  * user interfaces.
  * @author Daniel Dyer
  */
-package org.uncommons.gui;
+package org.uncommons.swing;
