@@ -446,6 +446,20 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="jfreechart-1.0.6">
+      <CLASSES>
+        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/jfreechart-1.0.6.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="jcommon-1.0.10">
+      <CLASSES>
+        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/jcommon-1.0.10.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
   </component>
   <component name="uidesigner-configuration">
     <option name="INSTRUMENT_CLASSES" value="true" />

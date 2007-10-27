@@ -14,3 +14,9 @@ number generator developed by Makoto Matsumoto and Takuji Nishimura
 This software also includes modified versions of the PermutationGenerator and
 CombinationGenerator Java classes written by Michael Gilleland
 (http://www.mgilleland.com/).
+
+The Swing GUI library of the Watchmaker Framework depends on David Gilbert's
+JFreeChart library (http://www.jfree.org/jfreechart/).  JFreeChart and the
+JCommon library are licensed under the terms of the GNU Lesser General Public
+License (a copy of this licence can be found in the jfreechart-LICENCE.txt file
+included with this distribution).

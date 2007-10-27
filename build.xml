@@ -240,7 +240,7 @@
     <jar.module module.name="swing" jar.name="watchmaker-swing.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-maths.jar"/>
+          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-maths.jar jfreechart-1.0.6.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>

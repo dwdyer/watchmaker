@@ -223,7 +223,7 @@ public class SudokuApplet extends JApplet
                                                                                        new SudokuEvaluator(),
                                                                                        selectionStrategy,
                                                                                        rng);
-                engine.addEvolutionObserver(new EvolutionLogger());
+                engine.addEvolutionObserver(new GridViewUpdater());
                 return engine.evolve(populationSize,
                                      eliteCount,
                                      new TargetFitness(0, false), // Continue until a perfect solution is found...
@@ -242,10 +242,10 @@ public class SudokuApplet extends JApplet
 
 
     /**
-     * Trivial evolution observer for displaying information at the end
-     * of each generation.
+     * Evolution observer for displaying information at the end of
+     * each generation.
      */
-    private class EvolutionLogger implements EvolutionObserver<Sudoku>
+    private class GridViewUpdater implements EvolutionObserver<Sudoku>
     {
         public void populationUpdate(PopulationData<Sudoku> data)
         {

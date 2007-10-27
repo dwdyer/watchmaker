@@ -8,13 +8,15 @@
     <content url="file://$MODULE_DIR$/../../swing">
       <sourceFolder url="file://$MODULE_DIR$/../../swing/src/java/main" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../swing/src/java/test" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../gui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../swing/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="framework" />
     <orderEntry type="module" module-name="maths" />
     <orderEntry type="library" name="testng-5.6-jdk15" level="project" />
+    <orderEntry type="library" name="jfreechart-1.0.6" level="project" />
+    <orderEntry type="library" name="jcommon-1.0.10" level="project" />
     <orderEntryProperties />
   </component>
 </module>
