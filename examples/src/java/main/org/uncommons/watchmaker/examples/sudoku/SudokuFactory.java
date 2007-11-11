@@ -24,7 +24,7 @@ import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 
 /**
  * Factory that generates potential Sudoku solutions from a list of "givens".
- * The rows of the generated solutions will all be valid (i.e. no duplicate VALUES)
+ * The rows of the generated solutions will all be valid (i.e. no duplicate values)
  * but there are no constraints on the columns or sub-grids (these will be refined
  * by the evolutionary algorithm).
  * @author Daniel Dyer

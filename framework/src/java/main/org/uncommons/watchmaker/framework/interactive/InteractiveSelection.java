@@ -146,7 +146,6 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
     }
 
 
-    @SuppressWarnings("unchecked")
     private <S extends T> S select(List<S> candidates)
     {
         List<Object> renderedCandidates = new ArrayList<Object>(candidates.size());

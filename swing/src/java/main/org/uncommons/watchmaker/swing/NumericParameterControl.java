@@ -34,16 +34,16 @@ public class NumericParameterControl<T extends Number> implements EvolutionContr
     private final JSpinner control;
     private final AdjustableNumberGenerator<T> numberGenerator;
 
-    public NumericParameterControl(T minimum,
-                                   T maximum,
+    public NumericParameterControl(Comparable<T> minimum,
+                                   Comparable<T> maximum,
                                    T stepSize,
                                    T initialValue)
     {
         this.initialValue = initialValue;
         this.numberGenerator = new AdjustableNumberGenerator<T>(this.initialValue);
         control = new JSpinner(new SpinnerNumberModel(initialValue,
-                                                      (Comparable) minimum,
-                                                      (Comparable) maximum,
+                                                      minimum,
+                                                      maximum,
                                                       stepSize));
         control.addChangeListener(new ChangeListener()
         {

@@ -94,14 +94,13 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      * {@link TerminationCondition} rather than interrupting the evolution in
      * this way.</em>
      */
-    @SuppressWarnings("unchecked")
     public T evolve(int populationSize,
                     int eliteCount,
                     TerminationCondition... conditions)
     {
         return evolve(populationSize,
                       eliteCount,
-                      (Collection<T>) Collections.emptySet(),
+                      Collections.<T>emptySet(),
                       conditions);
     }
 

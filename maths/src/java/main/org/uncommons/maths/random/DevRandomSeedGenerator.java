@@ -20,8 +20,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
- * RNG seed strategy that gets data from /dev/random on systems that
- * provide it (e.g. Solaris/Linux).
+ * RNG seed strategy that gets data from {@literal /dev/random} on systems
+ * that provide it (e.g. Solaris/Linux).
  * @author Daniel Dyer
  */
 public class DevRandomSeedGenerator implements SeedGenerator
