@@ -13,7 +13,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.util.binary;
+package org.uncommons.maths.binary;
 
 /**
  * Utility methods for working with binary and hex data.

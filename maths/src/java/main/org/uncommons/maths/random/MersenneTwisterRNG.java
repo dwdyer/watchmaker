@@ -16,7 +16,7 @@
 package org.uncommons.maths.random;
 
 import java.util.Random;
-import org.uncommons.util.binary.BinaryUtils;
+import org.uncommons.maths.binary.BinaryUtils;
 
 /**
  * <p>Random number generator based on the Mersenne Twister algorithm developed

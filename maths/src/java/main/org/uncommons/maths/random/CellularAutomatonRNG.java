@@ -16,7 +16,7 @@
 package org.uncommons.maths.random;
 
 import java.util.Random;
-import org.uncommons.util.binary.BinaryUtils;
+import org.uncommons.maths.binary.BinaryUtils;
 
 /**
  * Java port of the cellular automaton pseudorandom number generator developed by

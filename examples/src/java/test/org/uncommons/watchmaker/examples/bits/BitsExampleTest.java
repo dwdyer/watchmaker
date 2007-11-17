@@ -16,7 +16,7 @@
 package org.uncommons.watchmaker.examples.bits;
 
 import org.testng.annotations.Test;
-import org.uncommons.util.binary.BitString;
+import org.uncommons.maths.binary.BitString;
 
 /**
  * Simple unit test for the bits example.  Makes sure that the evolution engine

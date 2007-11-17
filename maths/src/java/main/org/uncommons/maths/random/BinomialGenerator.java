@@ -18,8 +18,8 @@ package org.uncommons.maths.random;
 import java.util.Random;
 import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.maths.NumberGenerator;
-import org.uncommons.util.binary.BinaryUtils;
-import org.uncommons.util.binary.BitString;
+import org.uncommons.maths.binary.BinaryUtils;
+import org.uncommons.maths.binary.BitString;
 
 /**
  * Discrete random sequence that follows a binomial distribution.

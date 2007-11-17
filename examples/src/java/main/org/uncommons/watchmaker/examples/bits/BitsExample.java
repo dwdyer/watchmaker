@@ -17,8 +17,8 @@ package org.uncommons.watchmaker.examples.bits;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.uncommons.maths.binary.BitString;
 import org.uncommons.maths.random.MersenneTwisterRNG;
-import org.uncommons.util.binary.BitString;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;

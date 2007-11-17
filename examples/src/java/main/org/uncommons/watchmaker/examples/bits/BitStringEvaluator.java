@@ -16,7 +16,7 @@
 package org.uncommons.watchmaker.examples.bits;
 
 import java.util.List;
-import org.uncommons.util.binary.BitString;
+import org.uncommons.maths.binary.BitString;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**

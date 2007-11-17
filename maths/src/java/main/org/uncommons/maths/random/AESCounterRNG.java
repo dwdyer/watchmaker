@@ -19,7 +19,7 @@ import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.util.Random;
 import javax.crypto.Cipher;
-import org.uncommons.util.binary.BinaryUtils;
+import org.uncommons.maths.binary.BinaryUtils;
 
 /**
  * Non-linear random number generator based on the AES block cipher in counter mode.

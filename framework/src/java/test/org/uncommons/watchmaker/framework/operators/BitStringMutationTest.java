@@ -19,8 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import org.testng.annotations.Test;
+import org.uncommons.maths.binary.BitString;
 import org.uncommons.maths.random.MersenneTwisterRNG;
-import org.uncommons.util.binary.BitString;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**

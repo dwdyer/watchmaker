@@ -16,7 +16,7 @@
 package org.uncommons.watchmaker.framework.factories;
 
 import java.util.Random;
-import org.uncommons.util.binary.BitString;
+import org.uncommons.maths.binary.BitString;
 
 /**
  * General purpose candidate factory for generating bit strings for

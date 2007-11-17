@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.maths.NumberGenerator;
-import org.uncommons.util.binary.BitString;
+import org.uncommons.maths.binary.BitString;
 
 /**
  * Cross-over with a configurable number of points (fixed or random) for
  * bit strings.
- * @see org.uncommons.util.binary.BitString
+ * @see org.uncommons.maths.binary.BitString
  * @author Daniel Dyer
  */
 public class BitStringCrossover extends AbstractCrossover<BitString>
