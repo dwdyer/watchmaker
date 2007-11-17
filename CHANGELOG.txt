@@ -26,6 +26,9 @@ Changes in version 0.?.?
 * Moved the the Swing-specific classes from the framework module into what was
   the Uncommons GUI module, which is now the Watchmaker Swing module.
 
+* Replaced PopulationDataSet and SampleDataSet with a single DataSet class that
+  calculates both population and sample statistical measures.
+
 
 Changes in version 0.4.2
 ------------------------

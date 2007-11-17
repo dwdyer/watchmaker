@@ -42,7 +42,7 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
      * for a specified Sudoku puzzle.
      * @param pattern An array of Strings.  Each element represents
      * one row in the puzzle.  Each character represents a single
-     * cells.  Permitted characters are the digits '1' to '9' (each
+     * cell.  Permitted characters are the digits '1' to '9' (each
      * of which represents a fixed cell in the pattern) or the '.'
      * character, which represents an empty cell.
      * @throws IllegalArgumentException If {@literal pattern} does not

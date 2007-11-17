@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.stats.PopulationDataSet;
+import org.uncommons.maths.stats.DataSet;
 
 /**
  * Base class for {@link EvolutionEngine} implementations.
@@ -310,7 +310,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         {
             fitnesses[++index] = candidate.getFitness();
         }
-        PopulationDataSet stats = new PopulationDataSet(fitnesses);
+        DataSet stats = new DataSet(fitnesses);
         return new PopulationData<T>(evaluatedPopulation.get(0).getCandidate(),
                                      evaluatedPopulation.get(0).getFitness(),
                                      stats.getArithmeticMean(),

@@ -16,7 +16,7 @@
 package org.uncommons.maths.random;
 
 import java.util.Random;
-import org.uncommons.maths.stats.SampleDataSet;
+import org.uncommons.maths.stats.DataSet;
 
 /**
  * Provides methods used for testing the operation of RNG implementations.
@@ -120,11 +120,11 @@ final class RNGTestUtils
                                                           int maxValue,
                                                           int iterations)
     {
-        SampleDataSet dataSet = new SampleDataSet(iterations);
+        DataSet dataSet = new DataSet(iterations);
         for (int i = 0; i < iterations; i++)
         {
             dataSet.addValue(rng.nextInt(maxValue));
         }
-        return dataSet.getStandardDeviation();
+        return dataSet.getSampleStandardDeviation();
     }
 }

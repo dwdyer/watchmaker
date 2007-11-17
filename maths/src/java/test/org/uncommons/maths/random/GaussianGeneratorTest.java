@@ -20,7 +20,7 @@ import org.testng.annotations.Test;
 import org.uncommons.maths.AdjustableNumberGenerator;
 import org.uncommons.maths.Maths;
 import org.uncommons.maths.NumberGenerator;
-import org.uncommons.maths.stats.SampleDataSet;
+import org.uncommons.maths.stats.DataSet;
 
 /**
  * Unit test for the normally-distributed number generator.
@@ -75,14 +75,14 @@ public class GaussianGeneratorTest
                                    double expectedStandardDeviation)
     {
         final int iterations = 10000;
-        SampleDataSet data = new SampleDataSet(iterations);
+        DataSet data = new DataSet(iterations);
         for (int i = 0; i < iterations; i++)
         {
             data.addValue(generator.nextValue());
         }
         assert Maths.approxEquals(data.getArithmeticMean(), expectedMean, 0.02)
                 : "Observed mean outside acceptable range: " + data.getArithmeticMean();
-        assert Maths.approxEquals(data.getStandardDeviation(), expectedStandardDeviation, 0.02)
-                : "Observed standard deviation outside acceptable range: " + data.getStandardDeviation();
+        assert Maths.approxEquals(data.getSampleStandardDeviation(), expectedStandardDeviation, 0.02)
+                : "Observed standard deviation outside acceptable range: " + data.getSampleStandardDeviation();
     }
 }
