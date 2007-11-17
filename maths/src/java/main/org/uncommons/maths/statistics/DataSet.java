@@ -13,7 +13,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.maths.stats;
+package org.uncommons.maths.statistics;
 
 /**
  * Utility class for calculating statistics for a finite data set.
@@ -107,21 +107,6 @@ public class DataSet
 
 
     /**
-     * Retrieves a single value from the data set.
-     * @param index The index of the value to retrieve.
-     * @return The value at {@code index}.
-     */
-    private double getValue(int index)
-    {
-        if (index < 0 || index >= dataSetSize)
-        {
-            throw new IndexOutOfBoundsException("Invalid data set index: " + index);
-        }
-        return dataSet[index];
-    }
-
-
-    /**
      * @return The sum of all values.
      */
     public final double getAggregate()
@@ -200,14 +185,25 @@ public class DataSet
      */
     public double getVariance()
     {
+        return sumSquaredDiffs() / getSize();
+    }
+
+
+    /**
+     * Helper method for variance calculations.
+     * @return The sum of the squares of the differences between
+     * each value and the arithmetic mean.
+     */
+    private double sumSquaredDiffs()
+    {
         double mean = getArithmeticMean();
         double squaredDiffs = 0;
         for (int i = 0; i < getSize(); i++)
         {
-            double diff = mean - getValue(i);
+            double diff = mean - dataSet[i];
             squaredDiffs += (diff * diff);
         }
-        return squaredDiffs / getSize();
+        return squaredDiffs;
     }
 
 
@@ -241,14 +237,7 @@ public class DataSet
      */
     public double getSampleVariance()
     {
-        double mean = getArithmeticMean();
-        double squaredDiffs = 0;
-        for (int i = 0; i < getSize(); i++)
-        {
-            double diff = mean - getValue(i);
-            squaredDiffs += (diff * diff);
-        }
-        return squaredDiffs / (getSize() - 1);
+        return sumSquaredDiffs() / (getSize() - 1);
     }
 
 

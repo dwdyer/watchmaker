@@ -15,6 +15,11 @@
 // ============================================================================
 package org.uncommons.util.binary;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.util.Random;
 import org.testng.annotations.Test;
@@ -263,4 +268,18 @@ public class BitStringTest
         bitString.setBit(1, false);
     }
 
+
+    @Test(dependsOnMethods = "testEquals")
+    public void testSerialisation() throws IOException, ClassNotFoundException
+    {
+        BitString bitString = new BitString("0101010");
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
+        objectStream.writeObject(bitString);
+        objectStream.flush();
+        byte[] bytes = byteStream.toByteArray();
+        ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(bytes));
+        BitString bitString2 = (BitString) inputStream.readObject();
+        assert bitString2.equals(bitString) : "Deserialized object is not the same as original.";
+    }
 }

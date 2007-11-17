@@ -18,7 +18,7 @@ package org.uncommons.maths.random;
 import org.testng.annotations.Test;
 import org.uncommons.maths.Maths;
 import org.uncommons.maths.NumberGenerator;
-import org.uncommons.maths.stats.DataSet;
+import org.uncommons.maths.statistics.DataSet;
 
 /**
  * Unit test for the uniform floating point number generator.

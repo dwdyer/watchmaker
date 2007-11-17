@@ -63,7 +63,7 @@ public class MathsTest
 
 
     /**
-     * Factorials of negative integers are not supported.  This method
+     * Factorials of negative integers are not supported.  This test
      * checks that an appropriate exception is thrown.
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -74,7 +74,7 @@ public class MathsTest
 
 
     /**
-     * Factorials of negative integers are not supported.  This method
+     * Factorials of negative integers are not supported.  This test
      * checks that an appropriate exception is thrown.
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -94,5 +94,25 @@ public class MathsTest
         assert Maths.raiseToPower(2, 10) == 1024 : "2^10 incorrectly calculated.";
         // Check values that generate a result outside of the range of an int.
         assert Maths.raiseToPower(2, 34) == 17179869184L : "2^34 incorrectly calculated.";
+    }
+
+
+    /**
+     * Negative powers are not supported by the raiseToPower method.  This
+     * test checks that an appropriate exception is thrown.
+     */
+    @Test(dependsOnMethods = "testRaiseToPower",
+          expectedExceptions = IllegalArgumentException.class)
+    public void testNegativePower()
+    {
+        Maths.raiseToPower(1, -2); // Should throw an exception.
+    }
+
+
+    @Test
+    public void testLog()
+    {
+        double log = Maths.log(2, 8);
+        assert Math.round(log) == 3 : "Base-2 logarithm of 8 should be 3, is " + log;
     }
 }

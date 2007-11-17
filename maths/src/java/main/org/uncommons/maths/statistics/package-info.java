@@ -14,7 +14,7 @@
 //   limitations under the License.
 // ============================================================================
 /**
- * A set of utility classes for statistical analyis.
+ * Utility classes for statistical analysis.
  * @author Daniel Dyer
  */
-package org.uncommons.maths.stats;
+package org.uncommons.maths.statistics;

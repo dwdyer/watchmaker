@@ -13,7 +13,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.maths.stats;
+package org.uncommons.maths.statistics;
 
 import org.testng.annotations.Test;
 import org.uncommons.maths.Maths;

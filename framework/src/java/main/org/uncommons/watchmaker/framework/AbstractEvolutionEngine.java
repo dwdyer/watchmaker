@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.stats.DataSet;
+import org.uncommons.maths.statistics.DataSet;
 
 /**
  * Base class for {@link EvolutionEngine} implementations.

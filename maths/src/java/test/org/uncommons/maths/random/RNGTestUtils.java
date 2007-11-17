@@ -16,7 +16,7 @@
 package org.uncommons.maths.random;
 
 import java.util.Random;
-import org.uncommons.maths.stats.DataSet;
+import org.uncommons.maths.statistics.DataSet;
 
 /**
  * Provides methods used for testing the operation of RNG implementations.
