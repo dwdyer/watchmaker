@@ -50,6 +50,7 @@
   </path>
 
   <property name="version" value="0.4.2"/>
+  <property name="artifact-identifier" value="watchmaker-framework-${version}"/>
 
   <!-- This is the minimum coverage percentage (for both lines and
        branches) that will be tolerated.  This is used to prevent
@@ -149,6 +150,7 @@
         <group title="Uncommons Utilities" packages="org.uncommons.util:org.uncommons.util.*"/>
         <header><![CDATA[Watchmaker Framework API<br><small>(Version ${version})</small>]]></header>
         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
+        <link href="https://uncommons-maths.dev.java.net/nonav/api/"/>
       </javadoc>
     </sequential>
   </macrodef>
@@ -195,7 +197,7 @@
         <path location="./util/${build.dir}/uncommons-util.jar" />
       </moduleclasspath>
     </compile.module>
-    <jar.module module.name="framework" jar.name="watchmaker-framework.jar">
+    <jar.module module.name="framework" jar.name="${artifact-identifier}.jar">
       <additionalcontents>
         <manifest>
           <attribute name="Class-Path" value="uncommons-util.jar uncommons-maths-1.0.jar"/>
@@ -211,13 +213,13 @@
           description="Build the GUI module.">
     <compile.module module.name="swing">
       <moduleclasspath>
-        <path location="./framework/${build.dir}/watchmaker-framework.jar" />
+        <path location="./framework/${build.dir}/${artifact-identifier}.jar" />
       </moduleclasspath>
     </compile.module>
-    <jar.module module.name="swing" jar.name="watchmaker-swing.jar">
+    <jar.module module.name="swing" jar.name="watchmaker-swing-${version}.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-maths-1.0.jar jfreechart-1.0.6.jar"/>
+          <attribute name="Class-Path" value="${artifact-identifier}.jar uncommons-maths-1.0.jar jfreechart-1.0.6.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -230,15 +232,15 @@
           description="Build the examples.">
     <compile.module module.name="examples">
       <moduleclasspath>
-        <path location="./framework/${build.dir}/watchmaker-framework.jar" />
+        <path location="./framework/${build.dir}/${artifact-identifier}.jar" />
         <path location="./util/${build.dir}/uncommons-util.jar" />
-        <path location="./swing/${build.dir}/watchmaker-swing.jar" />
+        <path location="./swing/${build.dir}/watchmaker-swing-${version}.jar" />
       </moduleclasspath>
     </compile.module>
-    <jar.module module.name="examples" jar.name="watchmaker-examples.jar">
+    <jar.module module.name="examples" jar.name="watchmaker-examples-${version}.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-util.jar uncommons-maths-1.0.jar watchmaker-swing.jar"/>
+          <attribute name="Class-Path" value="${artifact-identifier}.jar uncommons-util.jar uncommons-maths-1.0.jar watchmaker-swing-${version}.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -265,37 +267,37 @@
     <mkdir dir="${release.dir}" />
     <!-- Create a GZipped TAR file containing the built binaries, the API
          documentation, and source code for the examples. -->
-    <tar destfile="${release.dir}/watchmaker-framework-${version}.tgz"
+    <tar destfile="${release.dir}/${artifact.identifier}.tgz"
          compression="gzip"
          longfile="gnu">
       <tarfileset dir="${dist.dir}"
-                  prefix="watchmaker-framework-${version}"
+                  prefix="${artifact.identifier}"
                   includes="**/*" />
       <tarfileset dir="${api.dir}"
-                  prefix="watchmaker-framework-${version}/docs/api"
+                  prefix="${artifact.identifier}/docs/api"
                   includes="**/*" />
       <tarfileset dir="examples/${java.dir}/main"
-                  prefix="watchmaker-framework-${version}/examples/src"
+                  prefix="${artifact.identifier}/examples/src"
                   includes="**/*" />
       <!-- Don't forget to include the licence and other important information. -->
       <tarfileset dir="."
-                  prefix="watchmaker-framework-${version}"
+                  prefix="${artifact.identifier}"
                   includes="*.txt" />
     </tar>
     <!-- Also create a zip file release for the convenience of Windows users. -->
-    <zip destfile="${release.dir}/watchmaker-framework-${version}.zip">
+    <zip destfile="${release.dir}/${artifact.identifier}.zip">
       <zipfileset dir="${dist.dir}"
-                  prefix="watchmaker-framework-${version}"
+                  prefix="${artifact.identifier}"
                   includes="**/*" />
       <zipfileset dir="${api.dir}"
-                  prefix="watchmaker-framework-${version}/docs/api"
+                  prefix="${artifact.identifier}/docs/api"
                   includes="**/*" />
       <zipfileset dir="examples/${java.dir}/main"
-                  prefix="watchmaker-framework-${version}/examples/src"
+                  prefix="${artifact.identifier}/examples/src"
                   includes="**/*" />
       <!-- Don't forget to include the licence and other important information. -->
       <zipfileset dir="."
-                  prefix="watchmaker-framework-${version}"
+                  prefix="${artifact.identifier}"
                   includes="*.txt" />
     </zip>
   </target>
