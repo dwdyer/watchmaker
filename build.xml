@@ -55,7 +55,7 @@
        branches) that will be tolerated.  This is used to prevent
        regressions in coverage.  The threshold will be raised as
        test coverage improves. -->
-  <property name="minimum.coverage" value="67" />
+  <property name="minimum.coverage" value="61" />
 
 
 <!-- ==================================================================
@@ -146,7 +146,6 @@
         <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
         <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
         <group title="Watchmaker Example Programs" packages="org.uncommons.watchmaker.examples.*"/>
-        <group title="Uncommons Maths" packages="org.uncommons.maths:org.uncommons.maths.*"/>
         <group title="Uncommons Utilities" packages="org.uncommons.util:org.uncommons.util.*"/>
         <header><![CDATA[Watchmaker Framework API<br><small>(Version ${version})</small>]]></header>
         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
@@ -175,7 +174,6 @@
     <clean.module module.name="examples" />
     <clean.module module.name="framework" />
     <clean.module module.name="swing" />
-    <clean.module module.name="maths" />
     <clean.module module.name="util" />
   </target>
 
@@ -188,39 +186,19 @@
   </target>
 
 
-  <!-- Builds the maths module. -->
-  <target name="maths"
-          depends="util"
-          description="Build the maths module.">
-    <compile.module module.name="maths">
-      <moduleclasspath>
-        <path location="./util/${build.dir}/uncommons-util.jar" />
-      </moduleclasspath>
-    </compile.module>
-    <jar.module module.name="maths" jar.name="uncommons-maths.jar">
-      <additionalcontents>
-        <manifest>
-          <attribute name="Class-Path" value="uncommons-util.jar"/>
-        </manifest>
-      </additionalcontents>
-    </jar.module>
-  </target>
-
-
   <!-- Builds the framework JAR, which depends on the maths module. -->
   <target name="framework"
-          depends="util, maths"
+          depends="util"
           description="Build the framework module.">
     <compile.module module.name="framework">
       <moduleclasspath>
         <path location="./util/${build.dir}/uncommons-util.jar" />
-        <path location="./maths/${build.dir}/uncommons-maths.jar" />
       </moduleclasspath>
     </compile.module>
     <jar.module module.name="framework" jar.name="watchmaker-framework.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="uncommons-util.jar uncommons-maths.jar"/>
+          <attribute name="Class-Path" value="uncommons-util.jar uncommons-maths-1.0.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -229,18 +207,17 @@
 
   <!-- Builds the GUI module. -->
   <target name="swing"
-          depends="framework, maths"
+          depends="framework"
           description="Build the GUI module.">
     <compile.module module.name="swing">
       <moduleclasspath>
         <path location="./framework/${build.dir}/watchmaker-framework.jar" />
-        <path location="./maths/${build.dir}/uncommons-maths.jar" />
       </moduleclasspath>
     </compile.module>
     <jar.module module.name="swing" jar.name="watchmaker-swing.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-maths.jar jfreechart-1.0.6.jar"/>
+          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-maths-1.0.jar jfreechart-1.0.6.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -249,20 +226,19 @@
 
   <!-- Builds the examples JAR, which depends on each of the other modules. -->
   <target name="examples"
-          depends="framework, util, maths, swing"
+          depends="framework, util, swing"
           description="Build the examples.">
     <compile.module module.name="examples">
       <moduleclasspath>
         <path location="./framework/${build.dir}/watchmaker-framework.jar" />
         <path location="./util/${build.dir}/uncommons-util.jar" />
-        <path location="./maths/${build.dir}/uncommons-maths.jar" />
         <path location="./swing/${build.dir}/watchmaker-swing.jar" />
       </moduleclasspath>
     </compile.module>
     <jar.module module.name="examples" jar.name="watchmaker-examples.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-util.jar uncommons-maths.jar watchmaker-swing.jar"/>
+          <attribute name="Class-Path" value="watchmaker-framework.jar uncommons-util.jar uncommons-maths-1.0.jar watchmaker-swing.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -271,7 +247,7 @@
 
   <!-- Copy all necessary files to distribution directory. -->
   <target name="dist"
-          depends="maths, util, framework, swing, examples"
+          depends="util, framework, swing, examples"
           description="Generate the project distribution." >
     <mkdir dir="${dist.dir}" />
     <!-- Copy all application JARs and 3rd party libraries. -->
@@ -378,9 +354,6 @@
         <include name="**/*.java" />
       </fileset>
       <fileset dir="swing/${java.dir}/main">
-        <include name="**/*.java" />
-      </fileset>
-      <fileset dir="maths/${java.dir}/main">
         <include name="**/*.java" />
       </fileset>
       <fileset dir="util/${java.dir}/main">

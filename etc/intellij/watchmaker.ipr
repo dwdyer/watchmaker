@@ -430,7 +430,6 @@
       <module fileurl="file://$PROJECT_DIR$/examples.iml" filepath="$PROJECT_DIR$/examples.iml" group="modules" />
       <module fileurl="file://$PROJECT_DIR$/framework.iml" filepath="$PROJECT_DIR$/framework.iml" group="modules" />
       <module fileurl="file://$PROJECT_DIR$/global.iml" filepath="$PROJECT_DIR$/global.iml" />
-      <module fileurl="file://$PROJECT_DIR$/maths.iml" filepath="$PROJECT_DIR$/maths.iml" group="modules" />
       <module fileurl="file://$PROJECT_DIR$/swing.iml" filepath="$PROJECT_DIR$/swing.iml" group="modules" />
       <module fileurl="file://$PROJECT_DIR$/util.iml" filepath="$PROJECT_DIR$/util.iml" group="modules" />
     </modules>
@@ -482,6 +481,13 @@
     <library name="jcommon-1.0.10">
       <CLASSES>
         <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/jcommon-1.0.10.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="uncommons-maths-1.0">
+      <CLASSES>
+        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/uncommons-maths-1.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

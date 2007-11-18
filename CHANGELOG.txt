@@ -3,13 +3,8 @@ Changes in version 0.?.?
 
 * Introduced Utilities module.
 
-* Moved BitString class from Framework module into util module because it is
-  useful outside of the framework (it is now used internally in the Maths
-  module).
-
-* Introduced BinaryUtils class for manipulating binary data.
-
-* Moved methods from SeedUtils into BinaryUtils and removed SeedUtils.
+* Extracted Uncommons Maths module into separate project
+  (see https://uncommons-maths.dev.java.net).
 
 * Added new constructor to BitString to simplify the creation of random bit
   strings.
@@ -17,17 +12,13 @@ Changes in version 0.?.?
 * Improved algorithm for countSetBits() in BitString.  New version is
   significantly faster (10-15 times faster).
 
-* Changed the algorithm used to implement BinomialGenerator for better
-  performance.
+* Moved BitString class from Framework module into Uncommons Maths.
 
 * Added new termination condition to detect when the evolution has stagnated
   (i.e. the fitness has not improved for a certain number of generations).
 
 * Moved the the Swing-specific classes from the framework module into what was
   the Uncommons GUI module, which is now the Watchmaker Swing module.
-
-* Replaced PopulationDataSet and SampleDataSet with a single DataSet class that
-  calculates both population and sample statistical measures.
 
 
 Changes in version 0.4.2

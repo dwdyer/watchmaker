@@ -21,12 +21,6 @@
     </packages>
   </test>
 
-  <test name="Maths Module" >
-    <packages>
-      <package name="org.uncommons.maths.*" />
-    </packages>
-  </test>
-
   <test name="Utilities Module" >
     <packages>
       <package name="org.uncommons.util.*" />
