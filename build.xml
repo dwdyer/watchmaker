@@ -200,7 +200,7 @@
     <jar.module module.name="framework" jar.name="${artifact-identifier}.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="uncommons-util.jar uncommons-maths-1.0.jar"/>
+          <attribute name="Class-Path" value="uncommons-util.jar uncommons-maths-1.0.2.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -219,7 +219,7 @@
     <jar.module module.name="swing" jar.name="watchmaker-swing-${version}.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="${artifact-identifier}.jar uncommons-maths-1.0.jar jfreechart-1.0.6.jar"/>
+          <attribute name="Class-Path" value="${artifact-identifier}.jar uncommons-maths-1.0.2.jar jfreechart-1.0.6.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -240,7 +240,7 @@
     <jar.module module.name="examples" jar.name="watchmaker-examples-${version}.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="${artifact-identifier}.jar uncommons-util.jar uncommons-maths-1.0.jar watchmaker-swing-${version}.jar"/>
+          <attribute name="Class-Path" value="${artifact-identifier}.jar uncommons-util.jar uncommons-maths-1.0.2.jar watchmaker-swing-${version}.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
