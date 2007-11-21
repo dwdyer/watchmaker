@@ -485,9 +485,9 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="uncommons-maths-1.0">
+    <library name="uncommons-maths-1.0.2">
       <CLASSES>
-        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/uncommons-maths-1.0.jar!/" />
+        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/uncommons-maths-1.0.2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

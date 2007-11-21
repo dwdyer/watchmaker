@@ -16,8 +16,8 @@
 package org.uncommons.watchmaker.framework.factories;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import org.testng.annotations.Test;
@@ -97,11 +97,14 @@ public class ListPermutationFactoryTest
     public void testTooManySeedCandidates()
     {
         CandidateFactory<List<Integer>> factory = new ListPermutationFactory<Integer>(elements);
+
+        List<List<Integer>> seeds = new LinkedList<List<Integer>>();
+        seeds.add(elements);
+        seeds.add(elements);
+        seeds.add(elements);
         // The following call should cause an exception since the 3 seed candidates
         // won't fit into a population of size 2.
-        factory.generateInitialPopulation(2,
-                                          Arrays.asList(elements, elements, elements),
-                                          rng);
+        factory.generateInitialPopulation(2, seeds, rng);
     }
 
 

@@ -16,7 +16,7 @@
 package org.uncommons.watchmaker.framework.interactive;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
@@ -106,8 +106,9 @@ public class InteractiveSelectionTest
         SelectionStrategy<Integer> strategy = new InteractiveSelection<Integer>(console,
                                                                                 groupSize,
                                                                                 1);
-        List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 1.0),
-                                                                     new EvaluatedCandidate<Integer>(1, 2.0));
+        List<EvaluatedCandidate<Integer>> population = new LinkedList<EvaluatedCandidate<Integer>>();
+        population.add(new EvaluatedCandidate<Integer>(1, 1.0));
+        population.add(new EvaluatedCandidate<Integer>(1, 2.0));
         // This should fail because a population of 2 is not big enough with a
         // group size of 5.
         strategy.select(population, true, 2, rng);
