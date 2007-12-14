@@ -49,8 +49,8 @@
     </fileset>
   </path>
 
-  <property name="version" value="0.4.2"/>
-  <property name="artifact-identifier" value="watchmaker-framework-${version}"/>
+  <property name="version" value="0.4.3"/>
+  <property name="artifact.identifier" value="watchmaker-framework-${version}"/>
 
   <!-- This is the minimum coverage percentage (for both lines and
        branches) that will be tolerated.  This is used to prevent
@@ -140,7 +140,8 @@
       <mkdir dir="@{api.dir}"/>
       <javadoc destdir="@{api.dir}"
                doctitle="The Watchmaker Framework for Evolutionary Computation ${version}"
-               windowtitle="Watchmaker Framework API">
+               windowtitle="Watchmaker Framework API"
+               classpathref="base.path">
         <fileset dir="." defaultexcludes="yes">
           <include name="**/${java.dir}/main/org/uncommons/**/*.java"/>
         </fileset>
@@ -197,7 +198,7 @@
         <path location="./util/${build.dir}/uncommons-util.jar" />
       </moduleclasspath>
     </compile.module>
-    <jar.module module.name="framework" jar.name="${artifact-identifier}.jar">
+    <jar.module module.name="framework" jar.name="${artifact.identifier}.jar">
       <additionalcontents>
         <manifest>
           <attribute name="Class-Path" value="uncommons-util.jar uncommons-maths-1.0.2.jar"/>
@@ -213,13 +214,13 @@
           description="Build the GUI module.">
     <compile.module module.name="swing">
       <moduleclasspath>
-        <path location="./framework/${build.dir}/${artifact-identifier}.jar" />
+        <path location="./framework/${build.dir}/${artifact.identifier}.jar" />
       </moduleclasspath>
     </compile.module>
     <jar.module module.name="swing" jar.name="watchmaker-swing-${version}.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="${artifact-identifier}.jar uncommons-maths-1.0.2.jar jfreechart-1.0.6.jar"/>
+          <attribute name="Class-Path" value="${artifact.identifier}.jar uncommons-maths-1.0.2.jar jfreechart-1.0.6.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -232,7 +233,7 @@
           description="Build the examples.">
     <compile.module module.name="examples">
       <moduleclasspath>
-        <path location="./framework/${build.dir}/${artifact-identifier}.jar" />
+        <path location="./framework/${build.dir}/${artifact.identifier}.jar" />
         <path location="./util/${build.dir}/uncommons-util.jar" />
         <path location="./swing/${build.dir}/watchmaker-swing-${version}.jar" />
       </moduleclasspath>
@@ -240,7 +241,7 @@
     <jar.module module.name="examples" jar.name="watchmaker-examples-${version}.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="${artifact-identifier}.jar uncommons-util.jar uncommons-maths-1.0.2.jar watchmaker-swing-${version}.jar"/>
+          <attribute name="Class-Path" value="${artifact.identifier}.jar uncommons-util.jar uncommons-maths-1.0.2.jar watchmaker-swing-${version}.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
@@ -255,7 +256,7 @@
     <!-- Copy all application JARs and 3rd party libraries. -->
     <copy todir="${dist.dir}" flatten="true">
       <fileset dir="." includes="**/${build.dir}/*.jar" />
-      <fileset dir="." includes="${lib.runtime}/*.jar" />
+      <fileset dir="${lib.runtime}" includes="*.jar" />
     </copy>
   </target>
 
@@ -283,6 +284,9 @@
       <tarfileset dir="."
                   prefix="${artifact.identifier}"
                   includes="*.txt" />
+      <tarfileset dir="${lib.runtime}"
+                  prefix="${artifact.identifier}"
+                  includes="*.txt" />
     </tar>
     <!-- Also create a zip file release for the convenience of Windows users. -->
     <zip destfile="${release.dir}/${artifact.identifier}.zip">
@@ -297,6 +301,9 @@
                   includes="**/*" />
       <!-- Don't forget to include the licence and other important information. -->
       <zipfileset dir="."
+                  prefix="${artifact.identifier}"
+                  includes="*.txt" />
+      <zipfileset dir="${lib.runtime}"
                   prefix="${artifact.identifier}"
                   includes="*.txt" />
     </zip>
@@ -317,7 +324,7 @@
     <taskdef resource="tasks.properties" classpathref="base.path" />
     <cobertura-instrument todir="${temp.dir}"
                           datafile="${temp.dir}/cobertura.ser">
-      <fileset dir="${dist.dir}" includes="**/*.jar"/>
+      <fileset dir="${dist.dir}" includes="watchmaker*.jar,uncommons-util.jar"/>
     </cobertura-instrument>
 
     <!-- Run the unit tests on the instrumented classes. -->

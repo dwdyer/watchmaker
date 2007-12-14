@@ -1,4 +1,4 @@
-Changes in version 0.?.?
+Changes in version 0.4.3
 ------------------------
 
 * Introduced Utilities module.
@@ -19,6 +19,8 @@ Changes in version 0.?.?
 
 * Moved the the Swing-specific classes from the framework module into what was
   the Uncommons GUI module, which is now the Watchmaker Swing module.
+
+* Introduced experimental Evolution Monitor swing component.
 
 
 Changes in version 0.4.2
