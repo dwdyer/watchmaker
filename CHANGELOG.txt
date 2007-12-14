@@ -20,7 +20,7 @@ Changes in version 0.4.3
 * Moved the the Swing-specific classes from the framework module into what was
   the Uncommons GUI module, which is now the Watchmaker Swing module.
 
-* Introduced experimental Evolution Monitor swing component.
+* Introduced experimental Evolution Monitor Swing component.
 
 
 Changes in version 0.4.2
