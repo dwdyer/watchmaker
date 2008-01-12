@@ -163,7 +163,7 @@
 
   <!-- Builds everything from scratch. -->
   <target name="all"
-          depends="clean, test"
+          depends="clean, dist, test, docs"
           description="Builds everything, excluding docs, from scratch."/>
   
   
