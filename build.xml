@@ -49,7 +49,7 @@
     </fileset>
   </path>
 
-  <property name="version" value="0.4.3"/>
+  <property name="version" value="0.4.4pre"/>
   <property name="artifact.identifier" value="watchmaker-framework-${version}"/>
 
   <!-- This is the minimum coverage percentage (for both lines and
