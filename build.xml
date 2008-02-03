@@ -341,14 +341,14 @@
             outputdir="${test-results.dir}"
             haltonfailure="true"
             useDefaultListeners="false"
-            listeners="org.uncommons.reportng.HTMLReporter">
+            listeners="org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter">
       <xmlfileset dir="${conf.dir}" includes="testng.xml"/>
       <sysproperty key="net.sourceforge.cobertura.datafile"
                    file="${temp.dir}/cobertura.ser" />
       <sysproperty key="org.uncommons.reportng.title"
                    value="Watchmaker Framework Unit Test Report" />
       <sysproperty key="org.uncommons.reportng.coverage-report"
-                   value="../coverage/index.html" />
+                   value="../../coverage/index.html" />
     </testng>
 
     <!-- Generate the HTML coverage report. -->

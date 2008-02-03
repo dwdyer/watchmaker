@@ -154,7 +154,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         // and return that.  However, this doesn't work very well with interactive
         // evolutionary algorithms because all individuals have a nominal fitness
         // of zero and the population has been evolved one final time since the
-        // user last expressed a selection prefence.
+        // user last expressed a selection preference.
         // 
         // The solution is to always use the selection strategy to pick the candidate
         // to return.  We only let it select from the set of candidates with the
