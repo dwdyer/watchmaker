@@ -32,5 +32,5 @@ public interface Console<T>
      * that will be presented to the user for selection.
      * @return The index of the selected entity.
      */
-    int select(List<T> renderedEntities);
+    int select(List<? extends T> renderedEntities);
 }

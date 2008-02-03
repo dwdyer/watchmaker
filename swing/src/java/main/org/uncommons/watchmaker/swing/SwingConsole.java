@@ -65,7 +65,7 @@ public class SwingConsole extends JPanel implements Console<JComponent>
     /**
      * {@inheritDoc}
      */
-    public int select(final List<JComponent> renderedEntities)
+    public int select(final List<? extends JComponent> renderedEntities)
     {
         selectedIndex.set(-1);
         SwingUtilities.invokeLater(new Runnable()
@@ -118,6 +118,7 @@ public class SwingConsole extends JPanel implements Console<JComponent>
             super(new BorderLayout());
             add(entityComponent, BorderLayout.CENTER);
             JButton selectButton = new JButton("Select");
+            selectButton.setName("Selection-" + index); // This helps to find the button from a unit test.
             selectButton.addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent actionEvent)

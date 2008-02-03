@@ -132,7 +132,7 @@ public class InteractiveSelectionTest
         }
 
 
-        public int select(List<T> renderedEntities)
+        public int select(List<? extends T> renderedEntities)
         {
             assert renderedEntities.size() == expectedGroupSize : "Wrong selection group size.";
             ++selectionCount;

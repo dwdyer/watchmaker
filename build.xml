@@ -339,7 +339,7 @@
     <mkdir dir="${test-results.dir}" />
     <testng classpathref="test.path"
             outputdir="${test-results.dir}"
-            haltonfailure="true"
+            haltonfailure="false"
             useDefaultListeners="false"
             listeners="org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter">
       <xmlfileset dir="${conf.dir}" includes="testng.xml"/>
