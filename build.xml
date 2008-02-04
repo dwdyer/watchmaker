@@ -337,12 +337,16 @@
       <path refid="base.path" />
     </path>
     <mkdir dir="${test-results.dir}" />
+    <!-- Don't run FEST tests in a headless environment (they will fail) -->
+    <condition property="tests.file" value="testng-headless.xml" else="testng.xml">
+      <isset property="headless" />
+    </condition>
     <testng classpathref="test.path"
             outputdir="${test-results.dir}"
             haltonfailure="false"
             useDefaultListeners="false"
             listeners="org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter">
-      <xmlfileset dir="${conf.dir}" includes="testng.xml"/>
+      <xmlfileset dir="${conf.dir}" includes="${tests.file}"/>
       <sysproperty key="net.sourceforge.cobertura.datafile"
                    file="${temp.dir}/cobertura.ser" />
       <sysproperty key="org.uncommons.reportng.title"

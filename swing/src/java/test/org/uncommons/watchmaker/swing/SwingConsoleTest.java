@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
  */
 public class SwingConsoleTest
 {
-    @Test
+    @Test(groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
     public void testUserSelection() throws InterruptedException
     {
         RobotFixture robot = RobotFixture.robotWithNewAwtHierarchy();
