@@ -49,6 +49,7 @@ final class ItineraryPanel extends JPanel
         for (String city : cities)
         {
             JCheckBox checkBox = new JCheckBox(city, false);
+            checkBox.setName(city); // Helps to find the checkbox from a unit test.
             checkBoxes.add(checkBox);
             checkBoxPanel.add(checkBox);
         }
@@ -56,8 +57,10 @@ final class ItineraryPanel extends JPanel
 
         JPanel buttonPanel = new JPanel(new GridLayout(2, 1));
         selectAllButton = new JButton("Select All");
+        selectAllButton.setName("All");
         buttonPanel.add(selectAllButton);
         clearButton = new JButton("Clear Selection");
+        clearButton.setName("None");
         buttonPanel.add(clearButton);
         ActionListener buttonListener = new ActionListener()
         {

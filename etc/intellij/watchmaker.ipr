@@ -492,6 +492,13 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="fest-swing-0.8">
+      <CLASSES>
+        <root url="jar:///Users/dan/Projects/watchmaker/lib/compiletime/fest/fest-swing-0.8.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
   </component>
   <component name="uidesigner-configuration">
     <option name="INSTRUMENT_CLASSES" value="true" />

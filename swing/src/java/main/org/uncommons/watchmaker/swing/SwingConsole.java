@@ -63,6 +63,8 @@ public class SwingConsole extends JPanel implements Console<JComponent>
 
 
     /**
+     * This method blocks and therefore must not be invoked from the Event
+     * Dispatch Thread.
      * {@inheritDoc}
      */
     public int select(final List<? extends JComponent> renderedEntities)

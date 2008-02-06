@@ -17,6 +17,7 @@
     <orderEntry type="module" module-name="swing" />
     <orderEntry type="library" name="testng-5.6-jdk15" level="project" />
     <orderEntry type="library" name="uncommons-maths-1.0.2" level="project" />
+    <orderEntry type="library" name="fest-swing-0.8" level="project" />
     <orderEntryProperties />
   </component>
 </module>

@@ -20,7 +20,6 @@ public class SwingConsoleTest
     {
         RobotFixture robot = RobotFixture.robotWithNewAwtHierarchy();
         final SwingConsole swingConsole = new SwingConsole();
-        swingConsole.setName("SwingConsole");
         JFrame frame = new JFrame();
         frame.add(swingConsole, BorderLayout.CENTER);
         FrameFixture frameFixture = new FrameFixture(robot, frame);
@@ -37,11 +36,12 @@ public class SwingConsoleTest
         {
             public void run()
             {
+                // This method blocks so we can't run it on the test thread.
                 selection[0] = swingConsole.select(labels);
             }
         }).start();
-        // Is this a race condition?  Probably.
-        frameFixture.panel("SwingConsole").button("Selection-1").click();
+        Thread.sleep(250);  // TO DO: Come up with a proper solution to this race condition.
+        frameFixture.button("Selection-1").click();
 
         assert selection[0] == 1
                 : "Second item (index 1) should have been selected, selection index was " + selection[0];
