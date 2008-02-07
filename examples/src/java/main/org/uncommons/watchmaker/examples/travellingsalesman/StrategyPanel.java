@@ -46,7 +46,9 @@ final class StrategyPanel extends JPanel
         super(new BorderLayout());
         this.distances = distances;
         evolutionOption = new JRadioButton("Evolution", true);
+        evolutionOption.setName("Evolution"); // Helps to find the radio button from a unit test.
         bruteForceOption = new JRadioButton("Brute Force", false);
+        bruteForceOption.setName("BruteForce"); // Helps to find the radio button from a unit test.
         evolutionOption.addItemListener(new ItemListener()
         {
             public void itemStateChanged(ItemEvent itemEvent)

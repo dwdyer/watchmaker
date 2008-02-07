@@ -16,6 +16,7 @@
 package org.uncommons.swing;
 
 import javax.swing.SwingUtilities;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
@@ -29,6 +30,7 @@ public class SwingBackgroundTaskTest
     private boolean taskOnEDT;
     private boolean postProcessingExecuted;
     private boolean postProcessingOnEDT;
+    private boolean exceptionHandled;
 
     @Test
     public void testExecutionThreads() throws InterruptedException
@@ -42,8 +44,10 @@ public class SwingBackgroundTaskTest
                 return null;
             }
 
+            @Override
             protected void postProcessing(Object result)
             {
+                super.postProcessing(result);
                 postProcessingExecuted = true;
                 postProcessingOnEDT = SwingUtilities.isEventDispatchThread();
             }
@@ -54,5 +58,42 @@ public class SwingBackgroundTaskTest
         assert postProcessingExecuted : "Post-processing was not executed.";
         assert !taskOnEDT : "Task was executed on EDT.";
         assert postProcessingOnEDT : "Post-processing was not executed on EDT.";
+    }
+
+
+    /**
+     * Exceptions in the {@link SwingBackgroundTask#performTask()} method should
+     * not be swallowed, they must be passed to the
+     * {@link SwingBackgroundTask#onError(Throwable)} method.
+     */
+    @Test
+    public void testExceptionInTask() throws InterruptedException
+    {
+        SwingBackgroundTask<Object> testTask = new SwingBackgroundTask<Object>()
+        {
+            protected Object performTask()
+            {
+                throw new UnsupportedOperationException("Task failed.");
+            }
+
+
+            @Override
+            protected void onError(Throwable throwable)
+            {
+                super.onError(throwable);
+                // Make sure we've been passed the right exception.
+                if (throwable.getClass().equals(UnsupportedOperationException.class))
+                {
+                    exceptionHandled = true;
+                }
+                else
+                {
+                    Reporter.log("Wrong exception class: " + throwable.getClass());
+                }
+            }
+        };
+        testTask.execute();
+        testTask.waitForCompletion();
+        assert exceptionHandled : "Exception was not handled.";
     }
 }

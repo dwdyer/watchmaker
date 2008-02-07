@@ -44,7 +44,16 @@ public abstract class SwingBackgroundTask<V>
 
     /**
      * Asynchronous call that begins execution of the task
-     * and returns immediately.
+     * and returns immediately.  The {@link #performTask()} will be
+     * invoked on a background thread and, when it has completed,
+     * {@link #postProcessing(Object)} will be invoked on the Event
+     * Dispatch Thread (or, if there is an exception,
+     * {@link #onError(Throwable)} will be invoked instead - also on
+     * the EDT).
+     * @see #performTask()
+     * @see #postProcessing(Object)
+     * @see #onError(Throwable)
+     * @see #waitForCompletion()
      */
     public void execute()
     {
@@ -52,15 +61,31 @@ public abstract class SwingBackgroundTask<V>
         {
             public void run()
             {
-                final V result = performTask();
-                SwingUtilities.invokeLater(new Runnable()
+                try
                 {
-                    public void run()
+                    final V result = performTask();
+                    SwingUtilities.invokeLater(new Runnable()
                     {
-                        postProcessing(result);
-                        latch.countDown();
-                    }
-                });
+                        public void run()
+                        {
+                            postProcessing(result);
+                            latch.countDown();
+                        }
+                    });
+                }
+                // If an exception occurs performing the task, we need
+                // to handle it.
+                catch (final Throwable throwable)
+                {
+                    SwingUtilities.invokeLater(new Runnable()
+                    {
+                        public void run()
+                        {
+                            onError(throwable);
+                            latch.countDown();
+                        }
+                    });
+                }
             }
         };
         new Thread(task, "SwingBackgroundTask-" + id).start();
@@ -85,16 +110,37 @@ public abstract class SwingBackgroundTask<V>
      * run on a background thread and not on the Event Dispatch Thread and
      * therefore should not manipulate any Swing components.
      * @return The result of executing this task.
+     * @throws Exception The task may throw an exception, in which case
+     * the {@link #onError(Throwable)} method will be invoked instead of
+     * {@link #postProcessing(Object)}.
      */
-    protected abstract V performTask();
+    protected abstract V performTask() throws Exception;
 
 
     /**
      * This method is invoked, on the Event Dispatch Thread, after the task
      * has been executed.
-     * This should be implemented in sub-classes in order to provide GUI
-     * updates that should occur following task completion.
+     * This empty default implementation should be over-ridden in sub-classes
+     * in order to provide GUI updates that should occur following successful
+     * task completion.
      * @param result The result from the {@link #performTask()} method.
      */
-    protected abstract void postProcessing(V result);
+    protected void postProcessing(V result)
+    {
+        // Over-ride in sub-class.
+    }
+
+
+    /**
+     * This method is invoked, on the Event Dispatch Thread, if there is an
+     * exception or error executing the {@link #performTask()} method.
+     * This empty default implementation may be over-ridden in sub-classes
+     * in order to update the GUI with error information.
+     * @param throwable The exception or error that was thrown while executing
+     * the task.
+     */
+    protected void onError(Throwable throwable)
+    {
+        // Over-ride in sub-class.
+    }
 }

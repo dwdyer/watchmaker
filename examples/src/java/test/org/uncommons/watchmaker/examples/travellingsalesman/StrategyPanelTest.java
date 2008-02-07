@@ -16,7 +16,6 @@
 package org.uncommons.watchmaker.examples.travellingsalesman;
 
 import java.awt.BorderLayout;
-import java.util.Collection;
 import javax.swing.JFrame;
 import org.fest.swing.core.RobotFixture;
 import org.fest.swing.fixture.FrameFixture;
@@ -25,14 +24,15 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
- * Basic unit test for the {@link ItineraryPanel} class.  Makes sure that the
- * buttons operate as expected so that the right cities are returned.
+ * Basic unit test for the {@link StrategyPanel} used by the Travelling
+ * Salesman example applet.  Makes sure that it returns the correct type
+ * of solver strategy depending on the radio button settings.
  * @author Daniel Dyer
  */
-public class ItineraryPanelTest
+public class StrategyPanelTest
 {
     private static final TestDistances CITIES = new TestDistances();
-
+    
     private RobotFixture robot;
 
     @BeforeMethod
@@ -48,43 +48,36 @@ public class ItineraryPanelTest
         robot.cleanUp();
         robot = null;
     }
-    
 
-    @Test(groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
-    public void testSelectAll()
+    
+    @Test(groups = "display-required")
+    public void testBruteForceOption()
     {
-        ItineraryPanel itineraryPanel = new ItineraryPanel(CITIES.getKnownCities());
+        StrategyPanel strategyPanel = new StrategyPanel(CITIES);
         JFrame frame = new JFrame();
-        frame.add(itineraryPanel, BorderLayout.CENTER);
+        frame.add(strategyPanel, BorderLayout.CENTER);
         FrameFixture frameFixture = new FrameFixture(robot, frame);
-        frame.setSize(100, 300);
+        frame.setSize(400, 300);
         frame.validate();
         frame.setVisible(true);
-        assert itineraryPanel.getSelectedCities().isEmpty() : "Should be no cities selected initially.";
-        frameFixture.button("All").click();
-        Collection<String> selectedCities = itineraryPanel.getSelectedCities();
-        assert selectedCities.size() == CITIES.getKnownCities().size()
-            : "All cities should be selected after button click.";
+        frameFixture.radioButton("BruteForce").click();
+        TravellingSalesmanStrategy strategy = strategyPanel.getStrategy();
+        assert strategy instanceof BruteForceTravellingSalesman : "Wrong strategy class: " + strategy.getClass();
     }
 
 
-    @Test(groups = "display-required", // Will fail if run in a headless environment (such as hudson.uncommons.org).
-          dependsOnMethods = "testSelectAll")
-    public void testSelectNone()
+    @Test(groups = "display-required")
+    public void testEvolutionOption()
     {
-        ItineraryPanel itineraryPanel = new ItineraryPanel(CITIES.getKnownCities());
+        StrategyPanel strategyPanel = new StrategyPanel(CITIES);
         JFrame frame = new JFrame();
-        frame.add(itineraryPanel, BorderLayout.CENTER);
+        frame.add(strategyPanel, BorderLayout.CENTER);
         FrameFixture frameFixture = new FrameFixture(robot, frame);
-        frame.setSize(100, 300);
+        frame.setSize(400, 300);
         frame.validate();
         frame.setVisible(true);
-        frameFixture.button("All").click();
-        Collection<String> selectedCities = itineraryPanel.getSelectedCities();
-        assert selectedCities.size() == CITIES.getKnownCities().size()
-            : "All cities should be selected after all button click.";
-        frameFixture.button("None").click();
-        assert itineraryPanel.getSelectedCities().isEmpty()
-            : "No cities should be selected after clear button is clicked.";
+        frameFixture.radioButton("Evolution").click();
+        TravellingSalesmanStrategy strategy = strategyPanel.getStrategy();
+        assert strategy instanceof EvolutionaryTravellingSalesman : "Wrong strategy class: " + strategy.getClass();
     }
 }

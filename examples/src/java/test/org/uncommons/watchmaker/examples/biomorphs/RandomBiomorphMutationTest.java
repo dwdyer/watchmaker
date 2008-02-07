@@ -15,12 +15,12 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.biomorphs;
 
-import org.testng.annotations.Test;
-import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.maths.random.MersenneTwisterRNG;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import org.testng.annotations.Test;
+import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
  * Unit test for random mutation operator for biomorphs.
@@ -54,5 +54,25 @@ public class RandomBiomorphMutationTest
                     : "Length gene is out of range: " + length;
             }
         }
+    }
+
+
+    /**
+     * Mutation probability must be less than or equal to 1.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testProbabilityTooHigh()
+    {
+        new RandomBiomorphMutation(1.1d); // Should throw an exception.
+    }
+
+
+    /**
+     * Mutation probability must be greater than or equal to zero.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testNegativeProbability()
+    {
+        new RandomBiomorphMutation(-0.2d); // Should throw an exception.
     }
 }
