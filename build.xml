@@ -347,6 +347,7 @@
             useDefaultListeners="false"
             listeners="org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter">
       <xmlfileset dir="${conf.dir}" includes="${tests.file}"/>
+      <sysproperty key="java.awt.headless" value="${headless}" />
       <sysproperty key="net.sourceforge.cobertura.datafile"
                    file="${temp.dir}/cobertura.ser" />
       <sysproperty key="org.uncommons.reportng.title"
