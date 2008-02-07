@@ -21,7 +21,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * <p>Thread-safe source for partitioned unique IDs.  A single instance of this class
  * represents a single 'partition' in the space of possible IDs.  By creating
- * multiple instance with different discriminators, multiple entities may generate
+ * multiple instances with different discriminators, multiple entities may generate
  * globally unique IDs independently.</p>
  * <p>Any given instance of this class may generate a maximum of 2^31 unique values
  * (the most significant 4 bytes are fixed and the least significant 4 bytes vary

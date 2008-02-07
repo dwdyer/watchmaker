@@ -27,7 +27,7 @@ public interface SelectionStrategy<T>
 {
     /**
      * <p>Select the specified number of candidates from the population.
-     * Implementations can assume that the population is sorted in descending
+     * Implementations may assume that the population is sorted in descending
      * order according to fitness (so the fittest individual is the first item
      * in the list).</p>
      * <p>It is an error to call this method with an empty or null population.</p>

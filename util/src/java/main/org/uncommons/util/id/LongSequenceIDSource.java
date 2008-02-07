@@ -19,11 +19,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Thread-safe source for unique(*) IDs.  This particular implementation restricts
+ * Thread-safe source for unique IDs.  This particular implementation restricts
  * values to those positive integer values that can be represented by the long data type.
  * Provides sequenced 64-bit IDs.
- * (*)Will repeat, but only after 2^63 IDs have been generated
- * (that is enough for one ID every second for the next 292 trillion years).
  * @author Daniel Dyer
  */
 public final class LongSequenceIDSource implements IDSource<Long>

@@ -27,7 +27,7 @@ public interface EvolutionEngine<T>
     /**
      * @param populationSize The number of candidate solutions present in the population
      * at any point in time.
-     * @param eliteCount The number of candidates preserved via elitism..  In elitism, a
+     * @param eliteCount The number of candidates preserved via elitism.  In elitism, a
      * sub-set of the population with the best fitness scores are preserved unchanged in
      * the subsequent generation.  Candidate solutions that are preserved unchanged through
      * elitism remain eligible for selection for breeding the remainder of the next generation.
