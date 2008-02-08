@@ -96,7 +96,7 @@
 
     <!-- Exceptions. -->
     <module name="IllegalCatch">
-      <property name="severity" value="error"/>
+      <property name="severity" value="warning"/>
     </module>
 
 
