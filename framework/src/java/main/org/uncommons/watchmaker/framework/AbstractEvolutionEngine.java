@@ -122,7 +122,11 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     {
         if (eliteCount < 0 || eliteCount >= populationSize)
         {
-            throw new IllegalArgumentException("Elite count must be non-zero and less than population size.");
+            throw new IllegalArgumentException("Elite count must be non-negative and less than population size.");
+        }
+        if (conditions.length == 0)
+        {
+            throw new IllegalArgumentException("At least one TerminationCondition must be specified.");
         }
 
         currentGenerationIndex = 0;

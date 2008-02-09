@@ -79,6 +79,25 @@ public class StandaloneEvolutionEngineTest
         // lift the average fitness above zero.  The exact value of the expected average fitness
         // is easy to calculate, it is the aggregate fitness divided by the population size.
         assert observer.getAverageFitness() == 24d / 10 : "Elite candidates not preserved correctly: " + observer.getAverageFitness();
+        engine.removeEvolutionObserver(observer);
+    }
+
+
+    /**
+     * The number of candidates preserved by elitism must be less than the total
+     * population size.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testEliteCountTooHigh()
+    {
+        engine.evolve(10, 10, new GenerationCount(10)); // Should throw exception because elite is too big.
+    }
+
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testNoTerminationConditions()
+    {
+        engine.evolve(10, 0); // Should throw exception because there are no termination conditions.
     }
 
 

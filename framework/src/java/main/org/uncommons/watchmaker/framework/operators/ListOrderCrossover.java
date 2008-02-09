@@ -33,7 +33,7 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
      */
     public ListOrderCrossover()
     {
-        super(2); // Requires exactly two cross-over points.
+        this(1.0d);
     }
 
 
@@ -44,7 +44,8 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
      */
     public ListOrderCrossover(double crossoverProbability)
     {
-        super(2, crossoverProbability);
+        super(2, // Requires exactly two cross-over points.
+              crossoverProbability);
     }
 
 

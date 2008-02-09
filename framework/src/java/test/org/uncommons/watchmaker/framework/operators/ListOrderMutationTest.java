@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Random;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
-import org.uncommons.maths.ConstantGenerator;
-import org.uncommons.maths.NumberGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 
 /**
@@ -36,8 +34,7 @@ public class ListOrderMutationTest
     @Test
     public void testMutation()
     {
-        NumberGenerator<Integer> constant = new ConstantGenerator<Integer>(1);
-        ListOrderMutation operator = new ListOrderMutation(constant, constant);
+        ListOrderMutation operator = new ListOrderMutation();
         List<Character> candidate = new ArrayList<Character>(5);
         candidate.add('a');
         candidate.add('b');

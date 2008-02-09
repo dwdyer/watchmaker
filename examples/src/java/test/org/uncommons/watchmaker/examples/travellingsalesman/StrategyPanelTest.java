@@ -57,7 +57,7 @@ public class StrategyPanelTest
         JFrame frame = new JFrame();
         frame.add(strategyPanel, BorderLayout.CENTER);
         FrameFixture frameFixture = new FrameFixture(robot, frame);
-        frame.setSize(400, 300);
+        frame.setSize(500, 300);
         frame.validate();
         frame.setVisible(true);
         frameFixture.radioButton("BruteForce").click();
@@ -73,7 +73,7 @@ public class StrategyPanelTest
         JFrame frame = new JFrame();
         frame.add(strategyPanel, BorderLayout.CENTER);
         FrameFixture frameFixture = new FrameFixture(robot, frame);
-        frame.setSize(400, 300);
+        frame.setSize(500, 300);
         frame.validate();
         frame.setVisible(true);
         frameFixture.radioButton("Evolution").click();

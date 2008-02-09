@@ -55,8 +55,8 @@ public class ListOrderMutation implements EvolutionaryOperator<List<?>>
      */
     public ListOrderMutation(int mutationCount, int mutationAmount)
     {
-        this.mutationCountVariable =  new ConstantGenerator<Integer>(mutationCount);
-        this.mutationAmountVariable = new ConstantGenerator<Integer>(mutationAmount);
+        this(new ConstantGenerator<Integer>(mutationCount),
+             new ConstantGenerator<Integer>(mutationAmount));
     }
 
 
