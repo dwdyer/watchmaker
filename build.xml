@@ -229,19 +229,18 @@
 
   <!-- Builds the examples JAR, which depends on each of the other modules. -->
   <target name="examples"
-          depends="framework, util, swing"
+          depends="framework, swing"
           description="Build the examples.">
     <compile.module module.name="examples">
       <moduleclasspath>
         <path location="./framework/${build.dir}/${artifact.identifier}.jar" />
-        <path location="./util/${build.dir}/uncommons-util.jar" />
         <path location="./swing/${build.dir}/watchmaker-swing-${version}.jar" />
       </moduleclasspath>
     </compile.module>
     <jar.module module.name="examples" jar.name="watchmaker-examples-${version}.jar">
       <additionalcontents>
         <manifest>
-          <attribute name="Class-Path" value="${artifact.identifier}.jar uncommons-util.jar uncommons-maths-1.0.2.jar watchmaker-swing-${version}.jar"/>
+          <attribute name="Class-Path" value="${artifact.identifier}.jar uncommons-maths-1.0.2.jar watchmaker-swing-${version}.jar"/>
         </manifest>
       </additionalcontents>
     </jar.module>
