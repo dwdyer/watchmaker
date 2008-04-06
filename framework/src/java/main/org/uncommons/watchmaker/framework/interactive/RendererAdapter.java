@@ -15,8 +15,8 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework.interactive;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import org.uncommons.util.reflection.ReflectionUtils;
 
 /**
  * Adapter class for chaining together two renderers in series to provide
@@ -56,7 +56,6 @@ public class RendererAdapter<T, S> implements Renderer<T, S>
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public S render(T entity)
     {
         // This reflection charade is necessary because we can't convince the
@@ -64,34 +63,11 @@ public class RendererAdapter<T, S> implements Renderer<T, S>
         // of renderer2 without exposing a redundant "intermediate" type parameter
         // in the class definition.  I don't what to do that, I'd rather have
         // the ugliness encapsulated here than complicate code that uses this class.
-        try
-        {
-            Method renderMethod = renderer2.getClass().getMethod("render", Object.class);
-            return (S) renderMethod.invoke(renderer2, renderer1.render(entity));
-        }
-        catch (IllegalAccessException ex)
-        {
-            // This cannot happen - the render method is public.
-            throw new IllegalStateException(ex);
-        }
-        catch (NoSuchMethodException ex)
-        {
-            // This cannot happen - the render method is explicitly identified.
-            throw new IllegalStateException(ex);
-        }
-        catch (InvocationTargetException ex)
-        {
-            // The select method is not declared to throw any checked exceptions so
-            // the worst that can happen is a RuntimeException or an Error (we can,
-            // and should, re-throw both).
-            if (ex.getCause() instanceof Error)
-            {
-                throw (Error) ex.getCause();
-            }
-            else
-            {
-                throw (RuntimeException) ex.getCause();
-            }
-        }
+        Method renderMethod = ReflectionUtils.findKnownMethod(Renderer.class,
+                                                              "render",
+                                                              Object.class);
+        return ReflectionUtils.<S>invokeUnchecked(renderMethod,
+                                                  renderer2,
+                                                  renderer1.render(entity));
     }
 }

@@ -15,12 +15,12 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework.interactive;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.util.reflection.ReflectionUtils;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
@@ -153,37 +153,13 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
         {
             renderedCandidates.add(renderer.render(candidate));
         }
-        try
-        {
-            Method consoleSelectMethod = console.getClass().getMethod("select", List.class);
-            int selection = (Integer) consoleSelectMethod.invoke(console,
-                                                                 renderedCandidates);
-            return candidates.get(selection);
-        }
-        catch (IllegalAccessException ex)
-        {
-            // This cannot happen - the select method is public.
-            throw new IllegalStateException(ex);
-        }
-        catch (NoSuchMethodException ex)
-        {
-            // This cannot happen - the select method is explicitly identified.
-            throw new IllegalStateException(ex);
-        }
-        catch (InvocationTargetException ex)
-        {
-            // The select method is not declared to throw any checked exceptions so
-            // the worst that can happen is a RuntimeException or an Error (we can,
-            // and should, re-throw both).
-            if (ex.getCause() instanceof Error)
-            {
-                throw (Error) ex.getCause();
-            }
-            else
-            {
-                throw (RuntimeException) ex.getCause();
-            }
-        }
+        Method consoleSelectMethod = ReflectionUtils.findKnownMethod(Console.class,
+                                                                     "select",
+                                                                     List.class);
+        Integer selection = ReflectionUtils.invokeUnchecked(consoleSelectMethod,
+                                                            console,
+                                                            renderedCandidates);
+        return candidates.get(selection);
     }
 
 
