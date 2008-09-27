@@ -27,6 +27,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
+ * Basic unit test for the {@link EvolutionMonitor} component.
  * @author Daniel Dyer
  */
 public class EvolutionMonitorTest
@@ -70,12 +71,36 @@ public class EvolutionMonitorTest
         EvolutionMonitor<String> monitor = new EvolutionMonitor<String>();
         monitor.showInDialog(null, "MonitorDialog", false);
         robot.waitForIdle();
-        // There ought to be a visible frame containing the evolution monitor.
+        // There ought to be a visible dialog containing the evolution monitor.
         Dialog dialog = robot.finder().find(DialogByTitleMatcher.withTitleAndShowing("MonitorDialog"));
         assert monitor.getGUIComponent().isShowing() : "Evolution monitor should be showing.";
         DialogFixture dialogFixture = new DialogFixture(robot, dialog);
         dialogFixture.close();
         robot.waitForIdle();
         assert !monitor.getGUIComponent().isShowing() : "Evolution monitor should not be showing.";
+    }
+
+
+    /**
+     * If the evolution monitor is already displayed in a window, a subsequent call to one of
+     * the show methods should result in that window being replaced. 
+     */
+    @Test(dependsOnMethods = {"testShowInFrame", "testShowInDialog"},
+          groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
+    public void testShowInFrameThenShowInDialog()
+    {
+        EvolutionMonitor<String> monitor = new EvolutionMonitor<String>();
+        monitor.showInFrame("MonitorFrame");
+        robot.waitForIdle();
+        // There ought to be a visible frame containing the evolution monitor.
+        Frame frame = robot.finder().find(FrameByTitleMatcher.withTitleAndShowing("MonitorFrame"));
+
+        monitor.showInDialog(null, "MonitorDialog", false);
+        robot.waitForIdle();
+        // There ought to be a visible dialog containing the evolution monitor.
+        robot.finder().find(DialogByTitleMatcher.withTitleAndShowing("MonitorDialog"));
+        assert monitor.getGUIComponent().isShowing() : "Evolution monitor should be showing.";
+
+        assert !frame.isShowing() : "Frame should have been replaced by dialog.";
     }
 }

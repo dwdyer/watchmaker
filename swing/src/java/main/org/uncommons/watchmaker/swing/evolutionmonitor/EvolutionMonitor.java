@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.awt.BorderLayout;
+import java.awt.Window;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JComponent;
@@ -38,8 +39,7 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
     private final List<EvolutionObserver<T>> views = new LinkedList<EvolutionObserver<T>>();
     private final JComponent monitorComponent = new JTabbedPane();
 
-    private JDialog dialog = null;
-    private JFrame frame = null;
+    private Window window = null;
 
 
     public EvolutionMonitor()
@@ -68,61 +68,62 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
     }
 
 
+    /**
+     * Displays the evolution monitor component in a new {@link JFrame}.
+     * @param title The title for the new frame.
+     */
     public void showInFrame(final String title)
-    {
-        disposeViews();
+    {        
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()
             {
-                frame = new JFrame(title);
+                JFrame frame = new JFrame(title);
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.add(getGUIComponent(), BorderLayout.CENTER);
-                frame.pack();
-                frame.setVisible(true);
-            }
-        });
-    }
-
-
-    public void showInDialog(final JFrame owner,
-                             final String title,
-                             final boolean modal)
-    {
-        disposeViews();
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                dialog = new JDialog(owner, title, modal);
-                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                dialog.add(getGUIComponent(), BorderLayout.CENTER);
-                dialog.pack();
-                dialog.setVisible(true);
+                showWindow(frame);
             }
         });
     }
 
 
     /**
-     * Disposes of any frame or dialog that currently owns the monitor
-     * component.
+     * Displays the evolution monitor component in a new {@link JDialog}.
+     * @param owner The owning frame for the new dialog.
+     * @param title The title for the new dialog.
+     * @param modal Whether the 
      */
-    private void disposeViews()
+    public void showInDialog(final JFrame owner,
+                             final String title,
+                             final boolean modal)
     {
-        if (dialog != null)
+        SwingUtilities.invokeLater(new Runnable()
         {
-            dialog.remove(getGUIComponent());
-            dialog.setVisible(false);
-            dialog.dispose();
-            dialog = null;
-        }
-        if (frame != null)
+            public void run()
+            {
+                JDialog dialog = new JDialog(owner, title, modal);
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                showWindow(dialog);
+            }
+        });
+    }
+
+
+    /**
+     * Helper method for showing the evolution monitor in a frame or dialog.
+     * @param newWindow The frame or dialog used to show the evolution monitor.
+     */
+    private void showWindow(Window newWindow)
+    {
+        if (window != null)
         {
-            frame.remove(getGUIComponent());
-            frame.setVisible(false);
-            frame.dispose();
-            frame = null;
+            window.remove(getGUIComponent());
+            window.setVisible(false);
+            window.dispose();
+            window = null;
         }
+        newWindow.add(getGUIComponent(), BorderLayout.CENTER);
+        newWindow.pack();
+        newWindow.setVisible(true);
+        this.window = newWindow;
     }
 }
