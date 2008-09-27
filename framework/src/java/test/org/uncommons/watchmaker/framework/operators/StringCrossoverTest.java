@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import org.testng.annotations.Test;
+import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
@@ -78,5 +79,36 @@ public class StringCrossoverTest
         population.add("fghijklm");
         // This should cause an exception since the parents are different lengths.
         crossover.apply(population, rng);
+    }
+
+
+    /**
+     * Probability cannot be greater than one because it would be meaningless.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testProbabilityTooHigh()
+    {
+        new StringCrossover(new ConstantGenerator<Integer>(1), 1.1d); // Should throw an IllegalArgumentException.
+    }
+
+
+    /**
+     * A probability of zero is not allowed as it makes cross-over impossible.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testZeroProbability()
+    {
+        new StringCrossover(new ConstantGenerator<Integer>(1), 0d); // Should throw an IllegalArgumentException.
+    }
+
+
+    /**
+     * Number of cross-over points must be greater than zero otherwise the operator
+     * is a no-op.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testZeroCrossoverPoints()
+    {
+        new StringCrossover(0, 0.5d); // Should throw an IllegalArgumentException.
     }
 }

@@ -6,6 +6,11 @@ Changes in version 0.4.4
 * Added check to ensure that there is always at least one termination condition
   specified.
 
+* Improved reflection in RendererAdapter and InteractiveSelection.  Previously
+  they tried to access classes that may not have been visible to them.
+
+* Introduced tree-based genetic programming example application.
+
 
 Changes in version 0.4.3
 ------------------------

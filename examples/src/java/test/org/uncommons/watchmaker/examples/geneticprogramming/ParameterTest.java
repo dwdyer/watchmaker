@@ -50,6 +50,6 @@ public class ParameterTest
     public void testSetChildren()
     {
         Parameter parameter = new Parameter(2);
-        parameter.setChildren(Arrays.asList(new Constant(1))); // Should throw an exception.
+        parameter.setChildren(Arrays.<Node>asList(new Constant(1))); // Should throw an exception.
     }
 }

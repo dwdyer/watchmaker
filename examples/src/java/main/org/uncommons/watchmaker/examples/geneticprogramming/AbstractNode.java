@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class AbstractNode implements Node
 {
     private final int childCount;
-    protected List<? extends Node> children = Collections.emptyList();
+    protected List<Node> children = Collections.emptyList();
 
     protected AbstractNode(int childCount)
     {
@@ -38,7 +38,7 @@ public abstract class AbstractNode implements Node
     }
 
 
-    public final void setChildren(List<? extends Node> children)
+    public final void setChildren(List<Node> children)
     {
         if (children.size() != getChildCount())
         {
@@ -49,6 +49,12 @@ public abstract class AbstractNode implements Node
     }
 
 
+    public List<Node> getChildren()
+    {
+        return children;
+    }
+
+    
     public int getDepth()
     {
         int childDepth = 0;

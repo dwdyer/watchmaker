@@ -35,7 +35,7 @@ public class CharArrayCrossoverTest
     @Test
     public void testCrossover()
     {
-        EvolutionaryOperator<char[]> crossover = new CharArrayCrossover(1);
+        EvolutionaryOperator<char[]> crossover = new CharArrayCrossover();
         List<char[]> population = new ArrayList<char[]>(4);
         population.add(new char[]{'a', 'b', 'c', 'd', 'e'});
         population.add(new char[]{'f', 'g', 'h', 'i', 'j'});

@@ -31,7 +31,7 @@ public class IsGreaterTest
     public void testBothNodesEqual()
     {
         Node node = new IsGreater();
-        node.setChildren(Arrays.asList(new Constant(1), new Constant(1)));
+        node.setChildren(Arrays.<Node>asList(new Constant(1), new Constant(1)));
         assert node.evaluate(new double[0]) == 0 : "First node should not be greater than second.";
     }
 
@@ -40,7 +40,7 @@ public class IsGreaterTest
     public void testFirstNodeGreater()
     {
         Node node = new IsGreater();
-        node.setChildren(Arrays.asList(new Constant(2), new Constant(1)));
+        node.setChildren(Arrays.<Node>asList(new Constant(2), new Constant(1)));
         assert node.evaluate(new double[0]) > 0 : "First node should be greater than second.";
     }
 
@@ -49,7 +49,7 @@ public class IsGreaterTest
     public void testSecondNodeGreater()
     {
         Node node = new IsGreater();
-        node.setChildren(Arrays.asList(new Constant(-1), new Constant(1)));
+        node.setChildren(Arrays.<Node>asList(new Constant(-1), new Constant(1)));
         assert node.evaluate(new double[0]) == 0 : "First node should be less than second.";
     }
 }

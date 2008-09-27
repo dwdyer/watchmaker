@@ -53,4 +53,28 @@ public class SudokuTableModelTest
         // Check modified row.
         assert newPattern[8].equals("6.4...312") : "Row 8 incorrect: " + newPattern[8]; 
     }
+
+
+    @Test
+    public void testGetValueAt()
+    {
+        SudokuTableModel model = new SudokuTableModel();
+        model.setSudoku(SudokuTestUtils.createSudoku(new int[][]{{1, 2, 3, 4, 5, 6, 7, 8, 9},
+                                                                 {1, 2, 3, 4, 5, 6, 7, 8, 9},
+                                                                 {1, 2, 3, 4, 5, 6, 7, 8, 9},
+                                                                 {1, 2, 3, 4, 5, 6, 7, 8, 9},
+                                                                 {1, 2, 3, 4, 5, 6, 7, 8, 9},
+                                                                 {1, 2, 3, 4, 5, 6, 7, 8, 9},
+                                                                 {1, 2, 3, 4, 5, 6, 7, 8, 9},
+                                                                 {1, 2, 3, 4, 5, 6, 7, 8, 9},
+                                                                 {1, 2, 3, 4, 5, 6, 7, 8, 9}}));
+        for (int row = 0; row < model.getRowCount(); row++)
+        {
+            for (int column = 0; column < model.getColumnCount(); column++)
+            {
+                int actualCell = (Integer) model.getValueAt(row, column);
+                assert actualCell == column + 1: "Wrong value at " + row + ", " + column + ": " + actualCell; 
+            }
+        }
+    }
 }

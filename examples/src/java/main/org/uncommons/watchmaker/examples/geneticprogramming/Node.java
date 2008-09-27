@@ -24,7 +24,9 @@ public interface Node
 {
     int getChildCount();
 
-    void setChildren(List<? extends Node> children);
+    void setChildren(List<Node> children);
+
+    List<Node> getChildren();
 
     double evaluate(double[] programParameters);
 

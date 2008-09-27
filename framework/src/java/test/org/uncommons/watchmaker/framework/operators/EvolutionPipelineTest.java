@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.framework.operators;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
@@ -53,6 +54,16 @@ public class EvolutionPipelineTest
             assert (i % 10 == 4) : "Candidate should have increased by 4, is " + i;
         }
         assert aggregate == 590 : "Aggregate should be 590 after mutations, is " + aggregate;
+    }
 
+
+    /**
+     * An empty pipeline is not allowed.  An exception should be thrown.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testEmptyPipeline()
+    {
+        List<EvolutionaryOperator<? super String>> operators = Collections.emptyList();
+        new EvolutionPipeline<String>(operators); // Should throw an IllegalArgumentException.
     }
 }

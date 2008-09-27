@@ -48,7 +48,7 @@ public interface EvolutionaryOperator<T>
      * instead it should return a list that contains evolved copies of those
      * candidates (umodified candidates can be included in the results without
      * having to be copied).</p>
-     * @param <S> A more spefic type restriction than the one specified
+     * @param <S> A more specific type restriction than the one specified
      * for this class.  Allows the operation to be applied to sub-classes
      * of T and still return a list of the appropriate type.
      * @param selectedCandidates The individuals to evolve.
