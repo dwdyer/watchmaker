@@ -192,7 +192,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         }
         catch (ExecutionException ex)
         {
-            throw (Error) new InternalError("Fitness evaluation task execution failed.").initCause(ex);
+            throw new IllegalStateException("Fitness evaluation task execution failed.", ex);
         }
         catch (InterruptedException ex)
         {
