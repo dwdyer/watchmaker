@@ -15,19 +15,26 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
+import org.testng.annotations.Test;
+
 /**
+ * Simple unit test for the {@link Subtraction} node type.
  * @author Daniel Dyer
  */
-public class IsGreater extends BinaryNode
+public class SubtractionTest
 {
-    public IsGreater(Node left, Node right)
+    @Test
+    public void testEvaluation()
     {
-        super(left, right, '>');
+        Node node = new Subtraction(new Constant(7), new Constant(3));
+        double value = node.evaluate(new double[0]);
+        assert value == 4 : "Wrong result: " + value;
     }
 
-    
-    public double evaluate(double[] programParameters)
+    @Test
+    public void testStringRepresentation()
     {
-        return left.evaluate(programParameters) > right.evaluate(programParameters) ? 1 : 0;
+        Node node = new Subtraction(new Constant(7), new Constant(3));
+        assert node.print().equals("(7.0 - 3.0)") : "Wrong string representation: " + node.print();
     }
 }

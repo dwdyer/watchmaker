@@ -15,7 +15,6 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
-import java.util.Arrays;
 import org.testng.annotations.Test;
 
 /**
@@ -40,16 +39,5 @@ public class ParameterTest
         // There is only one argument, so trying to select the 3rd one should
         // result in an IllegalArgumentException.
         parameter.evaluate(new double[]{0});
-    }
-
-
-    /**
-     * A parameter node should not accept any child nodes.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testSetChildren()
-    {
-        Parameter parameter = new Parameter(2);
-        parameter.setChildren(Arrays.<Node>asList(new Constant(1))); // Should throw an exception.
     }
 }

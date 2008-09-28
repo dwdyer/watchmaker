@@ -20,7 +20,7 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
  * program's parameters.
  * @author Daniel Dyer
  */
-public class Parameter extends AbstractNode
+public class Parameter implements Node
 {
     private final int parameterIndex;
 
@@ -30,8 +30,13 @@ public class Parameter extends AbstractNode
      */
     public Parameter(int parameterIndex)
     {
-        super(0);
         this.parameterIndex = parameterIndex;
+    }
+
+
+    public int getDepth()
+    {
+        return 1;
     }
 
     

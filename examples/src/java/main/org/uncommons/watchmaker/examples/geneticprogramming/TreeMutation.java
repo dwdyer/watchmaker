@@ -17,7 +17,6 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Random;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
@@ -69,12 +68,12 @@ public class TreeMutation implements EvolutionaryOperator<Node>
         }
         else
         {
-            ListIterator<Node> iterator = tree.getChildren().listIterator();
-            while (iterator.hasNext())
-            {
-                Node child = iterator.next();
-                iterator.set(mutateTree(child, rng));
-            }
+//            ListIterator<Node> iterator = tree.getChildren().listIterator();
+//            while (iterator.hasNext())
+//            {
+//                Node child = iterator.next();
+//                iterator.set(mutateTree(child, rng));
+//            }
             return tree;
         }
     }

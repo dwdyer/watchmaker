@@ -18,22 +18,16 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 /**
  * @author Daniel Dyer
  */
-public class Subtraction extends AbstractNode
+public class Subtraction extends BinaryNode
 {
-    public Subtraction()
+    public Subtraction(Node left, Node right)
     {
-        super(2);
+        super(left, right, '-');
     }
 
 
     public double evaluate(double[] programParameters)
     {
-        return children.get(0).evaluate(programParameters) - children.get(1).evaluate(programParameters);
-    }
-
-
-    public String print()
-    {
-        return "(" + children.get(0).print() + " - " + children.get(1).print() + ")";
+        return left.evaluate(programParameters) - right.evaluate(programParameters);
     }
 }

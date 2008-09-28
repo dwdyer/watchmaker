@@ -15,19 +15,26 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
+import org.testng.annotations.Test;
+
 /**
+ * Simple unit test for the {@link Addition} node type.
  * @author Daniel Dyer
  */
-public class IsGreater extends BinaryNode
+public class AdditionTest
 {
-    public IsGreater(Node left, Node right)
+    @Test
+    public void testEvaluation()
     {
-        super(left, right, '>');
+        Node node = new Addition(new Constant(1), new Parameter(0));
+        double value = node.evaluate(new double[]{3}); // 1 + 3
+        assert value == 4 : "Wrong result: " + value;
     }
 
-    
-    public double evaluate(double[] programParameters)
+    @Test
+    public void testStringRepresentation()
     {
-        return left.evaluate(programParameters) > right.evaluate(programParameters) ? 1 : 0;
+        Node node = new Addition(new Constant(1), new Constant(3));
+        assert node.print().equals("(1.0 + 3.0)") : "Wrong string representation: " + node.print();
     }
 }

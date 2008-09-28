@@ -15,19 +15,11 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
-import java.util.List;
-
 /**
  * @author Daniel Dyer
  */
 public interface Node
 {
-    int getChildCount();
-
-    void setChildren(List<Node> children);
-
-    List<Node> getChildren();
-
     double evaluate(double[] programParameters);
 
     String print();

@@ -15,7 +15,6 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
-import java.util.Arrays;
 import org.testng.annotations.Test;
 
 /**
@@ -27,10 +26,9 @@ public class IfThenElseTest
     @Test
     public void testIfBranch()
     {
-        Node node = new IfThenElse();
-        node.setChildren(Arrays.<Node>asList(new Constant(1),
-                                             new Constant(5),
-                                             new Constant(10)));
+        Node node = new IfThenElse(new Constant(1),
+                                   new Constant(5),
+                                   new Constant(10));
         // Condition (1) is true, so result should be 5.
         double value = node.evaluate(new double[0]);
         assert value == 5 : "Wrong answer: " + value; 
@@ -40,27 +38,11 @@ public class IfThenElseTest
     @Test
     public void testElseBranch()
     {
-        Node node = new IfThenElse();
-        node.setChildren(Arrays.<Node>asList(new Constant(0),
-                                             new Constant(5),
-                                             new Constant(10)));
+        Node node = new IfThenElse(new Constant(0),
+                                   new Constant(5),
+                                   new Constant(10));
         // Condition (0) is true, so result should be 10.
         double value = node.evaluate(new double[0]);
         assert value == 10 : "Wrong answer: " + value; 
-    }
-
-
-    /**
-     * An IfThenElse node requires exactly 3 child nodes.  Adding
-     * more should result in an exception.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testTooManyChildren()
-    {
-        Node node = new IfThenElse();
-        node.setChildren(Arrays.<Node>asList(new Constant(0),
-                                             new Constant(5),
-                                             new Constant(10),
-                                             new Constant(15))); // 4 children should cause an exception.
     }
 }

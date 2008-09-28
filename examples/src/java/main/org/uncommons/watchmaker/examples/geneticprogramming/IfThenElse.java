@@ -19,11 +19,23 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
  * Simple conditional program {@link Node}.
  * @author Daniel Dyer
  */
-public class IfThenElse extends AbstractNode
+public class IfThenElse implements Node
 {
-    public IfThenElse()
+    private final Node condition;
+    private final Node then;
+    private final Node otherwise;
+
+    public IfThenElse(Node condition, Node then, Node otherwise)
     {
-        super(3);
+        this.condition = condition;
+        this.then = then;
+        this.otherwise = otherwise;
+    }
+
+
+    public int getDepth()
+    {
+        return Math.max(condition.getDepth(), Math.max(then.getDepth(), otherwise.getDepth()));
     }
 
 
@@ -34,14 +46,14 @@ public class IfThenElse extends AbstractNode
      */
     public double evaluate(double[] programParameters)
     {
-        return children.get(0).evaluate(programParameters) > 0 // If...
-               ? children.get(1).evaluate(programParameters)   // Then...
-               : children.get(2).evaluate(programParameters);  // Else...
+        return condition.evaluate(programParameters) > 0 // If...
+               ? then.evaluate(programParameters)   // Then...
+               : otherwise.evaluate(programParameters);  // Else...
     }
 
     
     public String print()
     {
-        return "(" + children.get(0).print() + " ? " + children.get(1).print() + " : " + children.get(2).print() + ")";
+        return "(" + condition.print() + " ? " + then.print() + " : " + otherwise.print() + ")";
     }
 }

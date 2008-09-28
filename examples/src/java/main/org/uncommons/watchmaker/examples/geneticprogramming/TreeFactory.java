@@ -15,8 +15,6 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 
@@ -27,16 +25,6 @@ import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
  */
 public class TreeFactory extends AbstractCandidateFactory<Node>
 {
-    private static final List<Class<? extends Node>> NODE_TYPES = new ArrayList<Class<? extends Node>>(5);
-    static
-    {
-        NODE_TYPES.add(Addition.class);
-        NODE_TYPES.add(Subtraction.class);
-        NODE_TYPES.add(Multiplication.class);
-        NODE_TYPES.add(IfThenElse.class);
-        NODE_TYPES.add(IsGreater.class);
-    }
-
     // The number of program parameters that each program tree will be provided.
     private final int parameterCount;
 
@@ -119,26 +107,15 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
     {
         if (rng.nextDouble() <= functionProbability && maxDepth > 1)
         {
-            try
+            // Max depth for sub-trees is one less than max depth for this node.
+            int depth = maxDepth - 1;
+            switch (rng.nextInt(5))
             {
-                Class<? extends Node> type = NODE_TYPES.get(rng.nextInt(NODE_TYPES.size()));
-                Node node = type.newInstance();
-                List<Node> children = new ArrayList<Node>(node.getChildCount());
-                for (int i = 0; i < node.getChildCount(); i++)
-                {
-                    // Recursively construct the nodes that this node will operate on.
-                    children.add(makeNode(rng, maxDepth - 1));
-                }
-                node.setChildren(children);
-                return node;
-            }
-            catch (IllegalAccessException ex)
-            {
-                throw new IllegalStateException(ex);
-            }
-            catch (InstantiationException ex)
-            {
-                throw new IllegalStateException(ex);
+                case 0: return new Addition(makeNode(rng, depth), makeNode(rng, depth));
+                case 1: return new Subtraction(makeNode(rng, depth), makeNode(rng, depth));
+                case 2: return new Multiplication(makeNode(rng, depth), makeNode(rng, depth));
+                case 3: return new IfThenElse(makeNode(rng, depth), makeNode(rng, depth), makeNode(rng, depth));
+                default: return new IsGreater(makeNode(rng, depth), makeNode(rng, depth));
             }
         }
         else if (rng.nextDouble() <= parameterProbability)
