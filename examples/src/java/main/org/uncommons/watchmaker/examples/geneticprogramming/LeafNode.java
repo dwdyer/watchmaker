@@ -15,37 +15,30 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
+import java.util.Random;
+
 /**
- * A program {@link Node} that simply returns the value of one of the
- * program's parameters.
+ * Convenient base class for {@link Node}s that have no sub-trees.
  * @author Daniel Dyer
  */
-public class Parameter extends LeafNode
+abstract class LeafNode implements Node
 {
-    private final int parameterIndex;
-
-    /**
-     * @param parameterIndex Which of the program's (zero-indexed) parameter
-     * values should be returned upon evaluation of this node.
-     */
-    public Parameter(int parameterIndex)
+    public int getDepth()
     {
-        this.parameterIndex = parameterIndex;
+        return 1;
     }
 
 
-    public double evaluate(double[] programParameters)
+    public Node mutate(Random rng, double mutationProbability, TreeFactory treeFactory)
     {
-        if (parameterIndex >= programParameters.length)
+        if (rng.nextDouble() < mutationProbability)
         {
-            throw new IllegalArgumentException("Invalid parameter index: " + parameterIndex);
+            return treeFactory.generateRandomCandidate(rng);
         }
-        return programParameters[parameterIndex];
-    }
-
-
-    public String print()
-    {
-        return "arg" + parameterIndex;
+        else
+        {
+            // Node is unchanged.
+            return this;
+        }
     }
 }

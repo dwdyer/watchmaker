@@ -18,19 +18,13 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 /**
  * @author Daniel Dyer
  */
-public class Constant implements Node
+public class Constant extends LeafNode
 {
     private final double constant;
 
     public Constant(double constant)
     {
         this.constant = constant;
-    }
-
-
-    public int getDepth()
-    {
-        return 1;
     }
 
 

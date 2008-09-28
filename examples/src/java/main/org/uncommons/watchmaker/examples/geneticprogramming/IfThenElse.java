@@ -15,6 +15,8 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
+import java.util.Random;
+
 /**
  * Simple conditional program {@link Node}.
  * @author Daniel Dyer
@@ -55,5 +57,30 @@ public class IfThenElse implements Node
     public String print()
     {
         return "(" + condition.print() + " ? " + then.print() + " : " + otherwise.print() + ")";
+    }
+
+
+    public Node mutate(Random rng, double mutationProbability, TreeFactory treeFactory)
+    {
+        if (rng.nextDouble() < mutationProbability)
+        {
+            return treeFactory.generateRandomCandidate(rng);
+        }
+        else
+        {
+            Node newCondition = condition.mutate(rng, mutationProbability, treeFactory);
+            Node newThen = then.mutate(rng, mutationProbability, treeFactory);
+            Node newOtherwise = otherwise.mutate(rng, mutationProbability, treeFactory);
+            if (newCondition != condition && newThen != then && newOtherwise != otherwise)
+            {
+                return new IfThenElse(newCondition, newThen, newOtherwise);
+            }
+            else
+            {
+                // Tree has not changed.
+                return this;
+            }
+        }
+
     }
 }

@@ -62,19 +62,6 @@ public class TreeMutation implements EvolutionaryOperator<Node>
 
     private Node mutateTree(Node tree, Random rng)
     {
-        if (rng.nextDouble() < mutationProbability)
-        {
-            return treeFactory.generateRandomCandidate(rng);
-        }
-        else
-        {
-//            ListIterator<Node> iterator = tree.getChildren().listIterator();
-//            while (iterator.hasNext())
-//            {
-//                Node child = iterator.next();
-//                iterator.set(mutateTree(child, rng));
-//            }
-            return tree;
-        }
+        return tree.mutate(rng, mutationProbability, treeFactory);
     }
 }
