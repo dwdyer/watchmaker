@@ -21,6 +21,7 @@ import java.util.Random;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
+import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
@@ -37,7 +38,7 @@ public class TournamentSelectionTest
     @Test
     public void testNaturalFitnessSelection()
     {
-        SelectionStrategy<Object> selector = new TournamentSelection(0.7d);
+        SelectionStrategy<Object> selector = new TournamentSelection(new Probability(0.7d));
         List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
         EvaluatedCandidate<String> steve = new EvaluatedCandidate<String>("Steve", 10.0);
         EvaluatedCandidate<String> mary = new EvaluatedCandidate<String>("Mary", 9.1);
@@ -58,7 +59,7 @@ public class TournamentSelectionTest
     @Test
     public void testNonNaturalFitnessSelection()
     {
-        SelectionStrategy<Object> selector = new TournamentSelection(0.7d);
+        SelectionStrategy<Object> selector = new TournamentSelection(new Probability(0.7d));
         List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
         EvaluatedCandidate<String> gary = new EvaluatedCandidate<String>("Gary", 6.2);
         EvaluatedCandidate<String> john = new EvaluatedCandidate<String>("John", 8.4);
@@ -87,20 +88,6 @@ public class TournamentSelectionTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testProbabilityTooLow()
     {
-        new TournamentSelection(0.5d);
-    }
-
-
-    /**
-     * The probability of selecting the fitter of two candidates must be less than 1.  A probability
-     * greater than 1 is invalid and a probability equal to 1 removes any chance of weaker candidates
-     * surviving.  This test ensures that an appropriate exception is thrown if the probability is
-     * 1 or more.  Not throwing an exception is an error because it permits undetected bugs in
-     * evolutionary programs.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testProbabilityTooHigh()
-    {
-        new TournamentSelection(1d);
+        new TournamentSelection(Probability.EVENS);
     }
 }

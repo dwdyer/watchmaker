@@ -21,6 +21,7 @@ import java.util.Random;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for random mutation operator for biomorphs.
@@ -31,7 +32,7 @@ public class RandomBiomorphMutationTest
     @Test
     public void testValidity()
     {
-        EvolutionaryOperator<Biomorph> mutation = new RandomBiomorphMutation(1d); // Mutate every gene.
+        EvolutionaryOperator<Biomorph> mutation = new RandomBiomorphMutation(Probability.ONE); // Mutate every gene.
         List<Biomorph> population = new ArrayList<Biomorph>(3);
         population.add(new Biomorph(new int[]{5, -4, -3, -2, -1, 0, 1, 2, 8}));
         population.add(new Biomorph(new int[]{-5, 4, 4, -5, 5, 3, 0, 2, 2}));
@@ -54,25 +55,5 @@ public class RandomBiomorphMutationTest
                     : "Length gene is out of range: " + length;
             }
         }
-    }
-
-
-    /**
-     * Mutation probability must be less than or equal to 1.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testProbabilityTooHigh()
-    {
-        new RandomBiomorphMutation(1.1d); // Should throw an exception.
-    }
-
-
-    /**
-     * Mutation probability must be greater than or equal to zero.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testNegativeProbability()
-    {
-        new RandomBiomorphMutation(-0.2d); // Should throw an exception.
     }
 }

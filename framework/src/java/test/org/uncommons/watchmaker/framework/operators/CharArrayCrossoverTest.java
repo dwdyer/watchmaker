@@ -23,6 +23,7 @@ import java.util.Set;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for cross-over with character arrays.
@@ -72,7 +73,7 @@ public class CharArrayCrossoverTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDifferentLengthParents()
     {
-        EvolutionaryOperator<char[]> crossover = new CharArrayCrossover(1, 1d);
+        EvolutionaryOperator<char[]> crossover = new CharArrayCrossover(1, Probability.ONE);
         List<char[]> population = new ArrayList<char[]>(2);
         population.add(new char[]{'a', 'b', 'c', 'd', 'e'});
         population.add(new char[]{'f', 'g', 'h', 'i', 'j', 'k'});

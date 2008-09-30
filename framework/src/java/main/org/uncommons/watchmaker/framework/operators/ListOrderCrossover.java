@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Implements ordered cross-over between arbitrary lists.  The algorithm is
@@ -33,7 +34,7 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
      */
     public ListOrderCrossover()
     {
-        this(1.0d);
+        this(Probability.ONE);
     }
 
 
@@ -42,7 +43,7 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
      * @param crossoverProbability The probability that cross-over will be performed
      * for any given pair.
      */
-    public ListOrderCrossover(double crossoverProbability)
+    public ListOrderCrossover(Probability crossoverProbability)
     {
         super(2, // Requires exactly two cross-over points.
               crossoverProbability);

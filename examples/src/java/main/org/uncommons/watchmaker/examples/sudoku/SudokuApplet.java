@@ -45,13 +45,14 @@ import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
+import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
 import org.uncommons.watchmaker.swing.AbortControl;
-import org.uncommons.watchmaker.swing.NumericParameterControl;
+import org.uncommons.watchmaker.swing.ProbabilityParameterControl;
 
 /**
  * An evolutionary Sudoku solver.
@@ -115,10 +116,10 @@ public class SudokuApplet extends JApplet
                                                                      "Hard Demo (28 givens)",
                                                                      "Custom"});
     private final JSpinner populationSizeSpinner = new JSpinner(new SpinnerNumberModel(500, 10, 50000, 1));
-    private final NumericParameterControl<Double> selectionPressure = new NumericParameterControl<Double>(0.51d,
-                                                                                                          0.99d,
-                                                                                                          0.01d,
-                                                                                                          0.85d);
+    private final ProbabilityParameterControl selectionPressure = new ProbabilityParameterControl(new Probability(0.51d),
+                                                                                                  new Probability(0.99d),
+                                                                                                  2,
+                                                                                                  new Probability(0.85d));
     private final SelectionStrategy<Object> selectionStrategy
         = new TournamentSelection(selectionPressure.getNumberGenerator());
     private final AbortControl abortControl = new AbortControl();

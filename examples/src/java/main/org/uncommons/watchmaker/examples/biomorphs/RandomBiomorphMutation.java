@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Mutation operator for biomorphs.  Mutates each individual gene
@@ -27,18 +28,14 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public class RandomBiomorphMutation implements EvolutionaryOperator<Biomorph>
 {
-    private final double mutationProbability;
+    private final Probability mutationProbability;
 
     /**
      * @param mutationProbability The probability that a given gene
      * is changed.
      */
-    public RandomBiomorphMutation(double mutationProbability)
+    public RandomBiomorphMutation(Probability mutationProbability)
     {
-        if (mutationProbability < 0 || mutationProbability > 1)
-        {
-            throw new IllegalArgumentException("Mutation probability must be between 0 and 1.");
-        }
         this.mutationProbability = mutationProbability;
     }
 
@@ -74,7 +71,7 @@ public class RandomBiomorphMutation implements EvolutionaryOperator<Biomorph>
         assert genes.length == Biomorph.GENE_COUNT : "Biomorphs must have " + Biomorph.GENE_COUNT + " genes.";
         for (int i = 0; i < Biomorph.GENE_COUNT - 1; i++)
         {
-            if (rng.nextDouble() < mutationProbability)
+            if (mutationProbability.nextEvent(rng))
             {
                 boolean increase = rng.nextBoolean();
                 genes[i] += (increase ? 1 : -1);

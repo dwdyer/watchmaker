@@ -24,6 +24,7 @@ import org.testng.annotations.Test;
 import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for cross-over with byte arrays.
@@ -73,7 +74,7 @@ public class ByteArrayCrossoverTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDifferentLengthParents()
     {
-        EvolutionaryOperator<byte[]> crossover = new ByteArrayCrossover(1, 1d);
+        EvolutionaryOperator<byte[]> crossover = new ByteArrayCrossover(1, Probability.ONE);
         List<byte[]> population = new ArrayList<byte[]>(2);
         population.add(new byte[]{1, 2, 3, 4, 5});
         population.add(new byte[]{2, 4, 8, 10, 12, 14, 16});

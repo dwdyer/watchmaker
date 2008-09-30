@@ -23,6 +23,7 @@ import java.util.Set;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for cross-over with arrays of objects.
@@ -72,7 +73,7 @@ public class ObjectArrayCrossoverTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDifferentLengthParents()
     {
-        EvolutionaryOperator<String[]> crossover = new ObjectArrayCrossover<String>(1, 1d);
+        EvolutionaryOperator<String[]> crossover = new ObjectArrayCrossover<String>(1, Probability.ONE);
         List<String[]> population = new ArrayList<String[]>(2);
         population.add(new String[]{"1", "2", "3", "4", "5"});
         population.add(new String[]{"6", "7", "8", "9", "10", "11", "12"});

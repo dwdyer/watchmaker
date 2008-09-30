@@ -1,0 +1,117 @@
+// ============================================================================
+//   Copyright 2006, 2007 Daniel W. Dyer
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// ============================================================================
+package org.uncommons.watchmaker.swing;
+
+import java.util.Dictionary;
+import java.util.Hashtable;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import org.uncommons.maths.AdjustableNumberGenerator;
+import org.uncommons.maths.Maths;
+import org.uncommons.maths.NumberGenerator;
+import org.uncommons.watchmaker.framework.Probability;
+
+/**
+ * A GUI control that allows the user to set/update the value of a
+ * {@link Probability} parameter.
+ * @author Daniel Dyer
+ */
+public class ProbabilityParameterControl implements EvolutionControl
+{
+    private final Probability initialValue;
+    private final int range;
+    private final JSlider control;
+    private final AdjustableNumberGenerator<Probability> numberGenerator;
+
+
+    public ProbabilityParameterControl(Probability initialValue)
+    {
+        this(Probability.ZERO, Probability.ONE, 2, initialValue);
+    }
+
+    
+    public ProbabilityParameterControl(Probability minimum,
+                                       Probability maximum,
+                                       int decimalPlaces,
+                                       Probability initialValue)
+    {
+        if (initialValue.compareTo(minimum) < 0 || initialValue.compareTo(maximum) > 0)
+        {
+            throw new IllegalArgumentException("Initial value must respect minimum and maximum.");
+        }
+        this.initialValue = initialValue;
+        this.numberGenerator = new AdjustableNumberGenerator<Probability>(this.initialValue);
+        this.range = (int) Maths.raiseToPower(10, decimalPlaces);
+        this.control = createSlider(initialValue, minimum, maximum);
+    }
+
+    private JSlider createSlider(Probability initialValue,
+                                 Probability minimum,
+                                 Probability maximum)
+    {
+        int value = (int) Math.round(range * initialValue.doubleValue());
+        int min = (int) Math.round(range * minimum.doubleValue());
+        int max = (int) Math.round(range * maximum.doubleValue());
+        final JSlider control = new JSlider(min, max, value);
+        control.addChangeListener(new ChangeListener()
+        {
+            public void stateChanged(ChangeEvent changeEvent)
+            {
+                numberGenerator.setValue(new Probability((double) control.getValue() / range));
+            }
+        });
+        Dictionary<Integer, JComponent> labels = new Hashtable<Integer, JComponent>();
+        labels.put(min, new JLabel(minimum.toString()));
+        labels.put(max, new JLabel(maximum.toString()));
+        control.setLabelTable(labels);
+        control.setPaintLabels(true);
+        return control;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public JComponent getControl()
+    {
+        return control;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void reset()
+    {
+        int value = (int) Math.round(range * initialValue.doubleValue());
+        control.setValue(value);
+        numberGenerator.setValue(initialValue);
+    }
+
+
+    /**
+     * Returns a number generator that simply returns the current probability value
+     * represented by the position of the slider control.
+     * @return A number generator that can be used to control an evolutionary program.
+     */
+    public NumberGenerator<Probability> getNumberGenerator()
+    {
+        return numberGenerator;
+    }
+}

@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import java.util.Random;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Simple conditional program {@link Node}.
@@ -60,9 +61,9 @@ public class IfThenElse implements Node
     }
 
 
-    public Node mutate(Random rng, double mutationProbability, TreeFactory treeFactory)
+    public Node mutate(Random rng, Probability mutationProbability, TreeFactory treeFactory)
     {
-        if (rng.nextDouble() < mutationProbability)
+        if (mutationProbability.nextEvent(rng))
         {
             return treeFactory.generateRandomCandidate(rng);
         }

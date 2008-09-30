@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.maths.NumberGenerator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Cross-over with a configurable number of points (fixed or random) for
@@ -55,10 +56,9 @@ public class ByteArrayCrossover extends AbstractCrossover<byte[]>
      * to use for all cross-over operations.
      * @param crossoverProbability The probability that, once selected,
      * a pair of parents will be subjected to cross-over rather than
-     * being copied, unchanged, into the output population.  Must be in the range
-     * {@literal 0 < crossoverProbability <= 1}
+     * being copied, unchanged, into the output population.
      */
-    public ByteArrayCrossover(int crossoverPoints, double crossoverProbability)
+    public ByteArrayCrossover(int crossoverPoints, Probability crossoverProbability)
     {
         super(crossoverPoints, crossoverProbability);
     }
@@ -83,11 +83,10 @@ public class ByteArrayCrossover extends AbstractCrossover<byte[]>
      * of cross-over points for each cross-over operation.
      * @param crossoverProbability The probability that, once selected,
      * a pair of parents will be subjected to cross-over rather than
-     * being copied, unchanged, into the output population.  Must be in the range
-     * {@literal 0 < crossoverProbability <= 1}
+     * being copied, unchanged, into the output population.
      */
     public ByteArrayCrossover(NumberGenerator<Integer> crossoverPointsVariable,
-                              double crossoverProbability)
+                              Probability crossoverProbability)
     {
         super(crossoverPointsVariable, crossoverProbability);
     }

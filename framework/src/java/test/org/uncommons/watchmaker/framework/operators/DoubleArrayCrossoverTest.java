@@ -24,6 +24,7 @@ import org.testng.annotations.Test;
 import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for cross-over with floating point arrays.
@@ -37,7 +38,7 @@ public class DoubleArrayCrossoverTest
     public void testCrossover()
     {
         EvolutionaryOperator<double[]> crossover = new DoubleArrayCrossover(new ConstantGenerator<Integer>(1),
-                                                                            1d);
+                                                                            Probability.ONE);
         List<double[]> population = new ArrayList<double[]>(4);
         population.add(new double[]{1.1d, 2.2d, 3.3d, 4.4d, 5.5d});
         population.add(new double[]{6.6d, 7.7d, 8.8d, 9.9d, 10});
@@ -74,7 +75,7 @@ public class DoubleArrayCrossoverTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDifferentLengthParents()
     {
-        EvolutionaryOperator<double[]> crossover = new DoubleArrayCrossover(1, 1d);
+        EvolutionaryOperator<double[]> crossover = new DoubleArrayCrossover(1, Probability.ONE);
         List<double[]> population = new ArrayList<double[]>(2);
         population.add(new double[]{1.1d, 2.2d, 3.3d, 4.4d, 5.5d});
         population.add(new double[]{6.6d, 7.7d, 8.8d});

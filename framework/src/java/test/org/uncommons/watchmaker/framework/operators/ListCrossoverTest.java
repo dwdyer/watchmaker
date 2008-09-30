@@ -24,6 +24,7 @@ import java.util.Set;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for cross-over with arbitrary lists.
@@ -70,7 +71,7 @@ public class ListCrossoverTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDifferentLengthParents()
     {
-        EvolutionaryOperator<List<?>> crossover = new ListCrossover(1, 1d);
+        EvolutionaryOperator<List<?>> crossover = new ListCrossover(1, Probability.ONE);
         List<List<Integer>> population = new ArrayList<List<Integer>>(2);
         population.add(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
         population.add(Arrays.asList(9, 10, 11));

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Random;
 import org.uncommons.maths.binary.BitString;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Mutation of individual bits in a {@link BitString} according to some
@@ -29,19 +30,14 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public class BitStringMutation implements EvolutionaryOperator<BitString>
 {
-    private final double mutationProbability;
+    private final Probability mutationProbability;
 
 
     /**
      * @param mutationProbability The probability of a single bit being flipped.
      */
-    public BitStringMutation(double mutationProbability)
+    public BitStringMutation(Probability mutationProbability)
     {
-        if (mutationProbability <= 0 || mutationProbability > 1)
-        {
-            throw new IllegalArgumentException("Mutation probability must be greater than "
-                                               + "zero and less than or equal to one.");
-        }
         this.mutationProbability = mutationProbability;
     }
 
@@ -63,7 +59,7 @@ public class BitStringMutation implements EvolutionaryOperator<BitString>
         BitString mutatedBitString = bitString.clone();
         for (int i = 0; i < mutatedBitString.getLength(); i++)
         {
-            if (rng.nextDouble() < mutationProbability)
+            if (mutationProbability.nextEvent(rng))
             {
                 mutatedBitString.flipBit(i);
             }

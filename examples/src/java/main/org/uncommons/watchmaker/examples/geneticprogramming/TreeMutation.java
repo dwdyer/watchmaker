@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Mutation operator for the trees of {@link Node}s used in the genetic
@@ -29,7 +30,7 @@ public class TreeMutation implements EvolutionaryOperator<Node>
 {
     private final TreeFactory treeFactory;
 
-    private final double mutationProbability;
+    private final Probability mutationProbability;
 
     /**
      * The tree mutation operator requires a {@link TreeFactory} because
@@ -41,7 +42,7 @@ public class TreeMutation implements EvolutionaryOperator<Node>
      * mutated by this operator.
      */
     public TreeMutation(TreeFactory treeFactory,
-                        double mutationProbability)
+                        Probability mutationProbability)
     {
         this.treeFactory = treeFactory;
         this.mutationProbability = mutationProbability;
@@ -54,14 +55,8 @@ public class TreeMutation implements EvolutionaryOperator<Node>
         List<S> mutatedPopulation = new ArrayList<S>(selectedCandidates.size());
         for (Node tree : selectedCandidates)
         {
-            mutatedPopulation.add((S) mutateTree(tree, rng));
+            mutatedPopulation.add((S) tree.mutate(rng, mutationProbability, treeFactory));
         }
         return mutatedPopulation;
-    }
-
-
-    private Node mutateTree(Node tree, Random rng)
-    {
-        return tree.mutate(rng, mutationProbability, treeFactory);
     }
 }

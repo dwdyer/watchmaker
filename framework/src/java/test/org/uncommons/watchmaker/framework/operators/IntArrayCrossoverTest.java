@@ -23,6 +23,7 @@ import java.util.Set;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for cross-over with integer arrays.
@@ -72,7 +73,7 @@ public class IntArrayCrossoverTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDifferentLengthParents()
     {
-        EvolutionaryOperator<int[]> crossover = new IntArrayCrossover(1, 1d);
+        EvolutionaryOperator<int[]> crossover = new IntArrayCrossover(1, Probability.ONE);
         List<int[]> population = new ArrayList<int[]>(2);
         population.add(new int[]{1, 2, 3, 4, 5});
         population.add(new int[]{2});

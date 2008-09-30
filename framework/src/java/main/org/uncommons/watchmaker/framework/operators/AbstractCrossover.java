@@ -24,6 +24,7 @@ import java.util.Random;
 import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.maths.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Generic base class for cross-over implementations.  Supports all
@@ -35,19 +36,19 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
 {
     private final NumberGenerator<Integer> crossoverPointsVariable;
-    private final double crossoverProbability;
+    private final Probability crossoverProbability;
 
     /**
      * Sets up a fixed-point cross-over implementation.  Cross-over is
      * applied to all pairs of parents.  To apply cross-over only to a
-     * proportion of parent pairs, use the {@link #AbstractCrossover(int, double)}
+     * proportion of parent pairs, use the {@link #AbstractCrossover(int, Probability)}
      * constructor.
      * @param crossoverPoints The constant number of cross-over points
      * to use for all cross-over operations.
      */
     protected AbstractCrossover(int crossoverPoints)
     {
-        this(crossoverPoints, 1d);
+        this(crossoverPoints, Probability.ONE);
     }
 
 
@@ -64,7 +65,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
      * {@literal 0 < crossoverProbability <= 1}
      */
     protected AbstractCrossover(int crossoverPoints,
-                                double crossoverProbability)
+                                Probability crossoverProbability)
     {
         this(new ConstantGenerator<Integer>(crossoverPoints), crossoverProbability);
         if (crossoverPoints <= 0)
@@ -78,13 +79,13 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
      * Sets up a cross-over implementation that uses a variable number of cross-over
      * points.  Cross-over is applied to all pairs of parents.  To apply cross-over
      * only to a proportion of parent pairs, use the
-     * {@link #AbstractCrossover(NumberGenerator, double)} constructor.
+     * {@link #AbstractCrossover(NumberGenerator, Probability)} constructor.
      * @param crossoverPointsVariable A random variable that provides a number
      * of cross-over points for each cross-over operation.
      */
     protected AbstractCrossover(NumberGenerator<Integer> crossoverPointsVariable)
     {
-        this(crossoverPointsVariable, 1d);
+        this(crossoverPointsVariable, Probability.ONE);
     }
 
 
@@ -97,17 +98,11 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
      * of cross-over points for each cross-over operation.
      * @param crossoverProbability The probability that, once selected,
      * a pair of parents will be subjected to cross-over rather than
-     * being copied, unchanged, into the output population.  Must be in the range
-     * {@code 0 < crossoverProbability <= 1}
+     * being copied, unchanged, into the output population.
      */
     protected AbstractCrossover(NumberGenerator<Integer> crossoverPointsVariable,
-                                double crossoverProbability)
+                                Probability crossoverProbability)
     {
-        if (crossoverProbability <= 0d || crossoverProbability > 1d)
-        {
-            throw new IllegalArgumentException("Cross-over probability must be greater"
-                                               + "than zero and less than or equal to 1.");
-        }
         this.crossoverPointsVariable = crossoverPointsVariable;
         this.crossoverProbability = crossoverProbability;
     }
@@ -152,8 +147,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
                 S parent2 = iterator.next();
                 // Randomly decide (according to the pre-configured cross-over probability)
                 // whether to perform cross-over for these 2 parents.
-                boolean doCrossover = rng.nextDouble() < crossoverProbability;
-                int crossoverPoints = doCrossover ? crossoverPointsVariable.nextValue() : 0;
+                int crossoverPoints = crossoverProbability.nextEvent(rng) ? crossoverPointsVariable.nextValue() : 0;
                 if (crossoverPoints > 0)
                 {
                     result.addAll((Collection<? extends S>) mate(parent1, parent2, crossoverPoints, rng));

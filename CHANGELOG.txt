@@ -11,6 +11,13 @@ Changes in version 0.4.4
 
 * Introduced tree-based genetic programming example application.
 
+* Added Probability class.  This immutatble value type encapsulates a
+  probability value between zero and one.  The class enforces the 0..1 bounds
+  and provides convenient methods for working with probabilities.  Using the
+  Probability type is an improvement over the previous approach of using double
+  values since there is now no need to duplicate bounds-checking and other
+  logic throughout the code.
+
 
 Changes in version 0.4.3
 ------------------------

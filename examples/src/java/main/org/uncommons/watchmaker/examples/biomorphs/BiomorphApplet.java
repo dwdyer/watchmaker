@@ -42,6 +42,7 @@ import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
+import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
@@ -89,7 +90,7 @@ public class BiomorphApplet extends JApplet
         {
             protected Biomorph performTask()
             {
-                EvolutionaryOperator<Biomorph> mutation = random ? new RandomBiomorphMutation(0.12d)
+                EvolutionaryOperator<Biomorph> mutation = random ? new RandomBiomorphMutation(new Probability(0.12d))
                                                                  : new DawkinsBiomorphMutation();
                 InteractiveSelection<Biomorph> selection = new InteractiveSelection<Biomorph>(console,
                                                                                               renderer,

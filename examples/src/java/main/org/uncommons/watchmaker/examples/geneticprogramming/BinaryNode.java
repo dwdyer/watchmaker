@@ -2,6 +2,7 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import java.lang.reflect.Constructor;
 import java.util.Random;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Convenient base class for {@link Node}s that have two sub-trees.
@@ -44,9 +45,9 @@ abstract class BinaryNode implements Node
     }
 
 
-    public Node mutate(Random rng, double mutationProbability, TreeFactory treeFactory)
+    public Node mutate(Random rng, Probability mutationProbability, TreeFactory treeFactory)
     {
-        if (rng.nextDouble() < mutationProbability)
+        if (mutationProbability.nextEvent(rng))
         {
             return treeFactory.generateRandomCandidate(rng);
         }

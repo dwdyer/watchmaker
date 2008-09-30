@@ -28,14 +28,14 @@ import org.uncommons.maths.NumberGenerator;
  * @param <T> The numeric type of this control (e.g. Integer, Double).
  * @author Daniel Dyer
  */
-public class NumericParameterControl<T extends Number> implements EvolutionControl
+public class NumericParameterControl<T extends Number & Comparable<T>> implements EvolutionControl
 {
     private final T initialValue;
     private final JSpinner control;
     private final AdjustableNumberGenerator<T> numberGenerator;
 
-    public NumericParameterControl(Comparable<T> minimum,
-                                   Comparable<T> maximum,
+    public NumericParameterControl(T minimum,
+                                   T maximum,
                                    T stepSize,
                                    T initialValue)
     {
@@ -56,6 +56,9 @@ public class NumericParameterControl<T extends Number> implements EvolutionContr
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public JSpinner getControl()
     {
         return control;
@@ -63,7 +66,7 @@ public class NumericParameterControl<T extends Number> implements EvolutionContr
 
 
     /**
-     * Resets the spinner to its initial state.
+     * {@inheritDoc}
      */
     public void reset()
     {

@@ -23,6 +23,7 @@ import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
+import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.factories.BitStringFactory;
 import org.uncommons.watchmaker.framework.operators.BitStringCrossover;
@@ -52,8 +53,8 @@ public class BitsExample
     {
         List<EvolutionaryOperator<? super BitString>> operators
             = new ArrayList<EvolutionaryOperator<? super BitString>>(2);
-        operators.add(new BitStringCrossover(1, 0.7d));
-        operators.add(new BitStringMutation(0.001d));
+        operators.add(new BitStringCrossover(1, new Probability(0.7d)));
+        operators.add(new BitStringMutation(new Probability(0.001d)));
         EvolutionaryOperator<BitString> pipeline = new EvolutionPipeline<BitString>(operators);
         EvolutionEngine<BitString> engine = new StandaloneEvolutionEngine<BitString>(new BitStringFactory(length),
                                                                                      pipeline,

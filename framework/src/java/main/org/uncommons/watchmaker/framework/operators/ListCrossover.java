@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.maths.NumberGenerator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Variable-point (fixed or random) cross-over for arbitrary lists.
@@ -54,10 +55,9 @@ public class ListCrossover extends AbstractCrossover<List<?>>
      * to use for all cross-over operations.
      * @param crossoverProbability The probability that, once selected,
      * a pair of parents will be subjected to cross-over rather than
-     * being copied, unchanged, into the output population.  Must be in the range
-     * {@literal 0 < crossoverProbability <= 1}
+     * being copied, unchanged, into the output population.
      */
-    public ListCrossover(int crossoverPoints, double crossoverProbability)
+    public ListCrossover(int crossoverPoints, Probability crossoverProbability)
     {
         super(crossoverPoints, crossoverProbability);
     }
@@ -82,11 +82,10 @@ public class ListCrossover extends AbstractCrossover<List<?>>
      * of cross-over points for each cross-over operation.
      * @param crossoverProbability The probability that, once selected,
      * a pair of parents will be subjected to cross-over rather than
-     * being copied, unchanged, into the output population.  Must be in the range
-     * {@literal 0 < crossoverProbability <= 1}
+     * being copied, unchanged, into the output population.
      */
     public ListCrossover(NumberGenerator<Integer> crossoverPointsVariable,
-                         double crossoverProbability)
+                         Probability crossoverProbability)
     {
         super(crossoverPointsVariable, crossoverProbability);
     }

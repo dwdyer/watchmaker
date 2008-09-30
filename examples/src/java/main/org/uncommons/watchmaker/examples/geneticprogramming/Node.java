@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import java.util.Random;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * @author Daniel Dyer
@@ -28,5 +29,5 @@ public interface Node
 
     int getDepth();
 
-    Node mutate(Random rng, double mutationProbability, TreeFactory treeFactory);
+    Node mutate(Random rng, Probability mutationProbability, TreeFactory treeFactory);
 }
