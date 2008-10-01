@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 /**
+ * Simple subtraction operator {@link Node}.
  * @author Daniel Dyer
  */
 public class Subtraction extends BinaryNode
@@ -26,8 +27,14 @@ public class Subtraction extends BinaryNode
     }
 
 
+    /**
+     * Evaluates the two sub-trees and returns the difference between these two values.
+     * @param programParameters Program parameters (ignored by the subtraction operator
+     * but may be used in evaluating the sub-trees).
+     * @return The difference between the values of the two child nodes.
+     */
     public double evaluate(double[] programParameters)
     {
-        return left.evaluate(programParameters) - right.evaluate(programParameters);
+        return getLeft().evaluate(programParameters) - getRight().evaluate(programParameters);
     }
 }

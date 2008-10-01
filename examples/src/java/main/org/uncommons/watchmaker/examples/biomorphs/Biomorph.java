@@ -123,6 +123,8 @@ public final class Biomorph
 
 
     /**
+     * Compares the genes of two Biomporph objects and returns true if they are
+     * identical.
      * @param obj The object to compare with this one.
      * @return True if the argument is a Biomoprh instance and the 2
      * biomorphs have the same genes, false otherwise.

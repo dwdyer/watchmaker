@@ -5,23 +5,27 @@
 <!-- Checkstyle configuration for uncommons.org Coding Standards. -->
 <module name="Checker">
 
+  <property name="severity" value="error"/>
+
   <module name="NewlineAtEndOfFile"/>
-  <module name="Translation"/>
 
   <module name="TreeWalker">
-
-    <property name="severity" value="warning"/>
 
     <!-- Documentation. -->
     <module name="Header">
       <property name="headerFile" value="${conf.dir}/java.header"/>
     </module>
     <module name="JavadocMethod">
+      <property name="severity" value="warning"/>
       <property name="scope" value="protected"/>
+      <property name="allowUndeclaredRTE" value="true" />
+      <property name="allowThrowsTagsForSubclasses" value="true" />
+      <property name="allowMissingPropertyJavadoc" value="true" />
     </module>
     <module name="JavadocStyle"/>
     <module name="JavadocType"/>
     <module name="JavadocVariable">
+      <property name="severity" value="warning"/>
       <property name="scope" value="package"/>
     </module>
 
@@ -35,7 +39,9 @@
 
 
     <!-- Length. -->
-    <module name="AnonInnerLength"/>
+    <module name="AnonInnerLength">
+      <property name="severity" value="warning"/>
+    </module>
     <module name="FileLength"/>
     <module name="LineLength">
       <property name="max" value="120"/>
@@ -59,7 +65,10 @@
 
     <!-- Whitespace. -->
     <module name="EmptyForIteratorPad"/>
-    <module name="Indentation"/>
+    <module name="Indentation">
+      <!-- This should be an error rather than a warning but it won't accept single-line case statements. -->
+      <property name="severity" value="warning"/>
+    </module>
     <module name="MethodParamPad"/>
     <module name="NoWhitespaceAfter"/>
     <module name="NoWhitespaceBefore"/>
@@ -101,9 +110,7 @@
 
 
     <!-- Inheritance -->
-    <module name="SuperClone">
-      <property name="severity" value="error"/>
-    </module>
+    <module name="SuperClone"/>
     <module name="SuperFinalize"/>
 
 
@@ -113,10 +120,9 @@
     <module name="DefaultComesLast"/>
     <module name="DoubleCheckedLocking"/>
     <module name="EmptyStatement"/>
-    <module name="EqualsHashCode">
-      <property name="severity" value="error"/>
-    </module>
+    <module name="EqualsHashCode"/>
     <module name="HiddenField">
+      <property name="severity" value="warning"/>
       <property name="ignoreConstructorParameter" value="true"/>
       <property name="ignoreSetter" value="true"/>
     </module>
@@ -132,13 +138,13 @@
 
     <!-- Class design. -->
     <module name="FinalClass"/>
-    <module name="HideUtilityClassConstructor"/>
+    <module name="HideUtilityClassConstructor">
+      <property name="severity" value="warning"/>
+    </module>
     <module name="InterfaceIsType">
       <property name="allowMarkerInterfaces" value="false" />
     </module>
-    <module name="PackageDeclaration">
-      <property name="severity" value="error"/>
-    </module>
+    <module name="PackageDeclaration"/>
     <module name="VisibilityModifier"/>
 
 

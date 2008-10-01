@@ -159,6 +159,4 @@ class SudokuCellRenderer extends DefaultTableCellRenderer
             default: return null;
         }
     }
-
-
 }

@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
  * use this class and avoid all of the boiler-plate exception handling.
  * @author Daniel Dyer
  */
-public class ReflectionUtils
+public final class ReflectionUtils
 {
     private ReflectionUtils()
     {

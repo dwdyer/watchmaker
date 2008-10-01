@@ -32,6 +32,10 @@ import org.uncommons.watchmaker.framework.PopulationData;
  * {@link org.uncommons.watchmaker.framework.EvolutionEngine} to provide
  * real-time information (in a Swing GUI) about the current state of the
  * evolution.
+ * @param <T> The type of entity that exists in the evolving population
+ * that is being monitored.  This type can be bound to a super-type of the
+ * actual population type so as to allow a non-specific monitor that can
+ * be re-used for different population types.
  * @author Daniel Dyer
  */
 public class EvolutionMonitor<T> implements EvolutionObserver<T>

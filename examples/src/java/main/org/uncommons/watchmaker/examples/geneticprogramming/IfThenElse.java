@@ -28,6 +28,15 @@ public class IfThenElse implements Node
     private final Node then;
     private final Node otherwise;
 
+    /**
+     * @param condition If this node evaluates to a value greater than zero then
+     * the value of the {@literal then} node is returned.  Otherwise the value of
+     * the {@literal otherwise} node is returned.
+     * @param then This node is evaluated if the {@literal condition} node has a
+     * value greater than zero.
+     * @param otherwise This node is evaluated if the {@literal condition} node has a
+     * value less than or equal to zero.
+     */
     public IfThenElse(Node condition, Node then, Node otherwise)
     {
         this.condition = condition;
@@ -36,6 +45,9 @@ public class IfThenElse implements Node
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int getDepth()
     {
         return Math.max(condition.getDepth(), Math.max(then.getDepth(), otherwise.getDepth()));
@@ -43,9 +55,12 @@ public class IfThenElse implements Node
 
 
     /**
+     * {@inheritDoc}
      * Operates on three other nodes.  The first is an expression to evaluate.
      * Which of the other two nodes is evaluated and returned depends on whether
      * this node evaluates to greater than zero or not.
+     * @param programParameters Program parameters (ignored by the conditional operator
+     * but may be used in evaluating child nodes).
      */
     public double evaluate(double[] programParameters)
     {
@@ -55,12 +70,18 @@ public class IfThenElse implements Node
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
     public String print()
     {
         return "(" + condition.print() + " ? " + then.print() + " : " + otherwise.print() + ")";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */    
     public Node mutate(Random rng, Probability mutationProbability, TreeFactory treeFactory)
     {
         if (mutationProbability.nextEvent(rng))

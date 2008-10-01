@@ -34,5 +34,5 @@ public interface IDSource<T extends Serializable>
      * @throws IDSourceExhaustedException If this ID source cannot generate any more
      * unique IDs.
      */
-    T nextID() throws IDSourceExhaustedException;
+    T nextID();
 }

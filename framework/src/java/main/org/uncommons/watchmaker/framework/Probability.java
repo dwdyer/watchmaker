@@ -123,12 +123,20 @@ public final class Probability extends Number implements Comparable<Probability>
     }
 
 
+    /**
+     * Returns the probability value as a float.
+     * @return A real number between 0 and 1 inclusive.
+     */
     public float floatValue()
     {
         return (float) probability;
     }
 
-    
+
+    /**
+     * Returns the probability value as a double.
+     * @return A real number between 0 and 1 inclusive.
+     */
     public double doubleValue()
     {
         return probability;
@@ -150,10 +158,9 @@ public final class Probability extends Number implements Comparable<Probability>
         Probability that = (Probability) o;
 
         return Double.compare(that.probability, probability) == 0;
-
     }
 
-
+    
     @Override
     public int hashCode()
     {
@@ -162,9 +169,9 @@ public final class Probability extends Number implements Comparable<Probability>
     }
 
 
-    public int compareTo(Probability probability)
+    public int compareTo(Probability other)
     {
-        return Double.compare(this.probability, probability.doubleValue());
+        return Double.compare(this.probability, other.doubleValue());
     }
 
 

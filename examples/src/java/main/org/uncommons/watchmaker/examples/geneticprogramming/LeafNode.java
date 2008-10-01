@@ -24,12 +24,19 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 abstract class LeafNode implements Node
 {
+    /**
+     * Leaf nodes always have a depth of 1 since they have no child nodes.
+     * @return 1 
+     */
     public int getDepth()
     {
         return 1;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Node mutate(Random rng, Probability mutationProbability, TreeFactory treeFactory)
     {
         if (mutationProbability.nextEvent(rng))

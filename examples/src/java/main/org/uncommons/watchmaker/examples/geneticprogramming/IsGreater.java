@@ -28,6 +28,6 @@ public class IsGreater extends BinaryNode
     
     public double evaluate(double[] programParameters)
     {
-        return left.evaluate(programParameters) > right.evaluate(programParameters) ? 1 : 0;
+        return getLeft().evaluate(programParameters) > getRight().evaluate(programParameters) ? 1 : 0;
     }
 }

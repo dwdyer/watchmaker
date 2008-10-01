@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 /**
+ * Simple addition operator {@link Node}.
  * @author Daniel Dyer
  */
 public class Addition extends BinaryNode
@@ -26,8 +27,14 @@ public class Addition extends BinaryNode
     }
 
 
+    /**
+     * Evaluates the two sub-trees and returns the sum of these two values.
+     * @param programParameters Program parameters (ignored by the addition operator
+     * but may be used in evaluating the sub-trees).
+     * @return The sum of the values of both child nodes.
+     */
     public double evaluate(double[] programParameters)
     {
-        return left.evaluate(programParameters) + right.evaluate(programParameters);
+        return getLeft().evaluate(programParameters) + getRight().evaluate(programParameters);
     }
 }
