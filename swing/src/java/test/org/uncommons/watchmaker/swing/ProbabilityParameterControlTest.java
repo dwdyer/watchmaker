@@ -43,7 +43,7 @@ public class ProbabilityParameterControlTest
         new ProbabilityParameterControl(Probability.EVENS,
                                         Probability.ONE,
                                         2,
-                                        new Probability(0.45)); // Should throw an IllegalArgumentException.
+                                        new Probability(0.45d)); // Should throw an IllegalArgumentException.
     }
 
 
@@ -56,7 +56,20 @@ public class ProbabilityParameterControlTest
         new ProbabilityParameterControl(Probability.ZERO,
                                         Probability.EVENS,
                                         2,
-                                        new Probability(0.55)); // Should throw an IllegalArgumentException.
+                                        new Probability(0.55d)); // Should throw an IllegalArgumentException.
+    }
+
+
+    /**
+     * Minimum must be less than maximum.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testMinimumHigherThanMaximum()
+    {
+        new ProbabilityParameterControl(new Probability(0.7d),
+                                        new Probability(0.6d),
+                                        2,
+                                        new Probability(0.7d)); // Should throw an IllegalArgumentException.
     }
 
 

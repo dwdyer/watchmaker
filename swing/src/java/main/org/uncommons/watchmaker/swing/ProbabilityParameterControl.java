@@ -36,7 +36,7 @@ public class ProbabilityParameterControl implements EvolutionControl
 {
     private final Probability initialValue;
     private final int range;
-    private final JSlider control;
+    private final JSlider slider;
     private final AdjustableNumberGenerator<Probability> numberGenerator;
 
 
@@ -58,7 +58,7 @@ public class ProbabilityParameterControl implements EvolutionControl
         this.initialValue = initialValue;
         this.numberGenerator = new AdjustableNumberGenerator<Probability>(this.initialValue);
         this.range = (int) Maths.raiseToPower(10, decimalPlaces);
-        this.control = createSlider(initialValue, minimum, maximum);
+        this.slider = createSlider(initialValue, minimum, maximum);
     }
 
     private JSlider createSlider(Probability initialValue,
@@ -68,20 +68,25 @@ public class ProbabilityParameterControl implements EvolutionControl
         int value = (int) Math.round(range * initialValue.doubleValue());
         int min = (int) Math.round(range * minimum.doubleValue());
         int max = (int) Math.round(range * maximum.doubleValue());
-        final JSlider control = new JSlider(min, max, value);
-        control.addChangeListener(new ChangeListener()
+        final JSlider slider = new JSlider(min, max, value);
+        slider.addChangeListener(new ChangeListener()
         {
             public void stateChanged(ChangeEvent changeEvent)
             {
-                numberGenerator.setValue(new Probability((double) control.getValue() / range));
+                Probability probability = new Probability((double) slider.getValue() / range);
+                numberGenerator.setValue(probability);
+                slider.setToolTipText(probability.toString());
             }
         });
         Dictionary<Integer, JComponent> labels = new Hashtable<Integer, JComponent>();
         labels.put(min, new JLabel(minimum.toString()));
         labels.put(max, new JLabel(maximum.toString()));
-        control.setLabelTable(labels);
-        control.setPaintLabels(true);
-        return control;
+        slider.setLabelTable(labels);
+        slider.setPaintLabels(true);
+        slider.setMajorTickSpacing(range / 10);
+        slider.setExtent(range / 20);
+        slider.setPaintTicks(true);
+        return slider;
     }
 
 
@@ -90,7 +95,7 @@ public class ProbabilityParameterControl implements EvolutionControl
      */
     public JComponent getControl()
     {
-        return control;
+        return slider;
     }
 
 
@@ -100,7 +105,7 @@ public class ProbabilityParameterControl implements EvolutionControl
     public void reset()
     {
         int value = (int) Math.round(range * initialValue.doubleValue());
-        control.setValue(value);
+        slider.setValue(value);
         numberGenerator.setValue(initialValue);
     }
 

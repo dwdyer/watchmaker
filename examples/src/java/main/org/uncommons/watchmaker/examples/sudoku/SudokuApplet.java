@@ -116,8 +116,8 @@ public class SudokuApplet extends JApplet
                                                                      "Hard Demo (28 givens)",
                                                                      "Custom"});
     private final JSpinner populationSizeSpinner = new JSpinner(new SpinnerNumberModel(500, 10, 50000, 1));
-    private final ProbabilityParameterControl selectionPressure = new ProbabilityParameterControl(new Probability(0.51d),
-                                                                                                  new Probability(0.99d),
+    private final ProbabilityParameterControl selectionPressure = new ProbabilityParameterControl(Probability.EVENS,
+                                                                                                  Probability.ONE,
                                                                                                   2,
                                                                                                   new Probability(0.85d));
     private final SelectionStrategy<Object> selectionStrategy
