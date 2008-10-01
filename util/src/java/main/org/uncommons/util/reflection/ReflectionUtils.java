@@ -19,9 +19,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Helper methods to simplify code that uses reflection.  It handles the checked
- * exceptions and throws only unchecked exceptions.  It is useful for dealing with
- * reflection when we know that there is no chance of a checked exception.  We can
+ * Helper methods to simplify code that uses reflection.  These methods handle the
+ * checked exceptions and throw only unchecked exceptions.  They are useful for dealing
+ * with reflection when we know that there is no chance of a checked exception.  We can
  * use this class and avoid all of the boiler-plate exception handling.
  * @author Daniel Dyer
  */
@@ -37,7 +37,7 @@ public class ReflectionUtils
      * Invokes the specified method without throwing any checked exceptions.
      * This is only valid for methods that are not declared to throw any checked
      * exceptions.  Any unchecked exceptions thrown by the specified method will be
-     * re-thrown (in their originally form, not wrapped in an InvocationTargetException
+     * re-thrown (in their original form, not wrapped in an InvocationTargetException
      * as would be the case for a normal reflective invocation).
      * @param method The method to invoke.  Both the method and its class must have
      * been declared public, otherwise they will be inaccessible.
