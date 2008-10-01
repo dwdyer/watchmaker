@@ -40,12 +40,23 @@ public class ProbabilityParameterControl implements EvolutionControl
     private final AdjustableNumberGenerator<Probability> numberGenerator;
 
 
+    /**
+     * Creates a control with a default range of 0..1 and a default granularity
+     * of 2 decimal places.
+     * @param initialValue The default probability value.
+     */
     public ProbabilityParameterControl(Probability initialValue)
     {
         this(Probability.ZERO, Probability.ONE, 2, initialValue);
     }
 
-    
+
+    /**
+     * @param minimum The minimum probability that this control will permit.
+     * @param maximum The maximum probability that this control will permit.
+     * @param decimalPlaces The granularity of the control.
+     * @param initialValue The default probability.
+     */
     public ProbabilityParameterControl(Probability minimum,
                                        Probability maximum,
                                        int decimalPlaces,
@@ -61,6 +72,7 @@ public class ProbabilityParameterControl implements EvolutionControl
         this.slider = createSlider(initialValue, minimum, maximum);
     }
 
+    
     private JSlider createSlider(Probability initialValue,
                                  Probability minimum,
                                  Probability maximum)

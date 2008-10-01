@@ -55,6 +55,39 @@ public class SudokuTableModelTest
     }
 
 
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testTooManyRowsInPattern()
+    {
+        SudokuTableModel model = new SudokuTableModel();
+        model.setPattern(new String[]{".........",
+                                      ".........",
+                                      ".........",
+                                      ".........",
+                                      ".........",
+                                      ".........",
+                                      ".........",
+                                      ".........",
+                                      ".........",
+                                      "........."}); // 10 rows should trigger an IllegalArgumentException.
+    }
+
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testTooManyColumnsInPattern()
+    {
+        SudokuTableModel model = new SudokuTableModel();
+        model.setPattern(new String[]{"..........",
+                                      "..........",
+                                      "..........",
+                                      "..........",
+                                      "..........",
+                                      "..........",
+                                      "..........",
+                                      "..........",
+                                      ".........."}); // 10 columns in each row should trigger an IllegalArgumentException.
+    }
+
+
     @Test
     public void testGetValueAt()
     {

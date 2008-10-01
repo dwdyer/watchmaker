@@ -15,14 +15,14 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.sudoku;
 
-import org.testng.annotations.Test;
-import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.maths.random.MersenneTwisterRNG;
-import java.util.List;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.HashSet;
+import org.testng.annotations.Test;
+import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
  * Unit test for Sudoku mutation operator.
@@ -30,6 +30,8 @@ import java.util.HashSet;
  */
 public class SudokuRowMutationTest
 {
+    private final Random rng = new MersenneTwisterRNG();
+
     /**
      * Tests to ensure that rows are still valid after mutation.  Each row
      * should contain each value 1-9 exactly once.
@@ -37,7 +39,6 @@ public class SudokuRowMutationTest
     @Test
     public void testValidity()
     {
-        Random rng = new MersenneTwisterRNG();
         EvolutionaryOperator<Sudoku> mutation = new SudokuRowMutation(8, 1);
         List<Sudoku> population = Arrays.asList(SudokuTestUtils.createSudoku(new int[][]
         {
@@ -71,5 +72,59 @@ public class SudokuRowMutationTest
                 counts.clear();
             }
         }
+    }
+
+
+    /**
+     * Check that the mutation never modifies the value of fixed cells.
+     */
+    @Test(dependsOnMethods = "testValidity")
+    public void testFixedConstraints()
+    {
+        EvolutionaryOperator<Sudoku> mutation = new SudokuRowMutation(8, 1);
+        Sudoku.Cell[][] cells = new Sudoku.Cell[Sudoku.SIZE][Sudoku.SIZE];
+        // One cell in each row is fixed (cell 1 in row 1, cell 2 in row 2, etc.)
+        for (int row = 0; row < Sudoku.SIZE; row++)
+        {
+            for (int column = 0; column < Sudoku.SIZE; column++)
+            {
+                cells[row][column] = new Sudoku.Cell(column + 1, column == row);
+            }
+        }
+        List<Sudoku> population = Arrays.asList(new Sudoku(cells));
+        for (int i = 0; i < 100; i++) // 100 generations of mutation.
+        {
+            population = mutation.apply(population, rng);
+            Sudoku sudoku = population.get(0);
+            for (int row = 0; row < Sudoku.SIZE; row++)
+            {
+                for (int column = 0; column < Sudoku.SIZE; column++)
+                {
+                    if (row == column)
+                    {
+                        assert sudoku.isFixed(row, column) : "Fixed cell has become unfixed.";
+                        assert sudoku.getValue(row, column) == (row + 1) : "Fixed cell has changed value.";
+                    }
+                    else
+                    {
+                        assert !sudoku.isFixed(row, column) : "Unfixed cell has become fixed.";
+                    }
+                }
+            }
+        }
+    }
+
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testInvalidMutationCount()
+    {
+        new SudokuRowMutation(0, 1); // Should throw an IllegalArgumentException.
+    }
+
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testInvalidMutationAmount()
+    {
+        new SudokuRowMutation(1, 0); // Should throw an IllegalArgumentException.
     }
 }

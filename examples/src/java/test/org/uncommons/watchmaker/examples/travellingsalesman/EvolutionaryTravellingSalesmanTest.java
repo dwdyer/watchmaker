@@ -30,13 +30,14 @@ import org.uncommons.watchmaker.framework.selection.TruncationSelection;
  */
 public class EvolutionaryTravellingSalesmanTest
 {
+    private final DistanceLookup data = new TestDistances();
+
     /**
      * Ensure that the algorithm behaves when configured to use mutation.
      */
     @Test
     public void testWithMutation()
     {
-        DistanceLookup data = new TestDistances();
         TravellingSalesmanStrategy strategy = new EvolutionaryTravellingSalesman(data,
                                                                                  new TruncationSelection(0.5),
                                                                                  10, // Small population.
@@ -60,7 +61,6 @@ public class EvolutionaryTravellingSalesmanTest
     @Test
     public void testWithCrossover()
     {
-        DistanceLookup data = new TestDistances();
         TravellingSalesmanStrategy strategy = new EvolutionaryTravellingSalesman(data,
                                                                                  new TruncationSelection(0.5),
                                                                                  10, // Small population.
@@ -75,5 +75,21 @@ public class EvolutionaryTravellingSalesmanTest
         assert route.contains("City2") : "Route does not contain City2.";
         assert route.contains("City3") : "Route does not contain City3.";
         assert route.contains("City4") : "Route does not contain City4.";
+    }
+
+
+    /**
+     * The strategy must ensure that at least one of cross-over or mutation is chosen.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testNoEvolution()
+    {
+        new EvolutionaryTravellingSalesman(data,
+                                           new TruncationSelection(0.5),
+                                           10,
+                                           0,
+                                           3,
+                                           false,
+                                           false); // Should throw an IllegalArgumentException as no operators are enabled.
     }
 }

@@ -15,6 +15,8 @@
 // ============================================================================
 package org.uncommons.util.concurrent;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.testng.annotations.Test;
@@ -71,7 +73,33 @@ public class ConfigurableThreadFactoryTest
 
 
     @Test
-    public void testExceptionHandler() throws InterruptedException
+    public void testDefaultExceptionHandler() throws InterruptedException
+    {
+        // Intercept std. err.
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(byteStream));
+
+        ThreadFactory threadFactory = new ConfigurableThreadFactory("Test",
+                                                                    Thread.MAX_PRIORITY,
+                                                                    false);
+        Runnable doNothing = new Runnable()
+        {
+            public void run()
+            {
+                throw new IllegalStateException("This is a test.");
+            }
+        };
+        Thread thread = threadFactory.newThread(doNothing);
+        thread.start();
+        thread.join();
+
+        String output = byteStream.toString();
+        assert output.startsWith("java.lang.IllegalStateException") : "Exception handler failed to log exception.";
+    }
+
+
+    @Test
+    public void testCustomExceptionHandler() throws InterruptedException
     {
         ExceptionHandler exceptionHandler = new ExceptionHandler();
         ThreadFactory threadFactory = new ConfigurableThreadFactory("Test",

@@ -72,10 +72,6 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
                                           boolean crossover,
                                           boolean mutation)
     {
-        if (eliteCount < 0 || eliteCount >= populationSize)
-        {
-            throw new IllegalArgumentException("Elite count must be non-zero and less than population size.");
-        }
         if (!crossover && !mutation)
         {
             throw new IllegalArgumentException("At least one of cross-over or mutation must be selected.");

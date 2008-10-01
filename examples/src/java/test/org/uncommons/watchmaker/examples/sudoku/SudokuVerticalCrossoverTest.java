@@ -15,13 +15,12 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.sudoku;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
-import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import java.util.Random;
-import java.util.List;
-import java.util.Arrays;
 
 /**
  * Unit test for Sudoku cross-over operator.
@@ -30,14 +29,14 @@ import java.util.Arrays;
 public class SudokuVerticalCrossoverTest
 {
     /**
-     * Ensures that the simplest configuration (a single, fixed
-     * cross-over point) works as expected.
+     * Ensures that the simplest configuration (a single cross-over point)
+     * works as expected.
      */
     @Test
-    public void testFixedPointCrossover()
+    public void testSinglePointCrossover()
     {
         Random rng = new MersenneTwisterRNG();
-        EvolutionaryOperator<Sudoku> crossover = new SudokuVerticalCrossover(new ConstantGenerator<Integer>(1));
+        EvolutionaryOperator<Sudoku> crossover = new SudokuVerticalCrossover();
         int[] forwards = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
         int[] backwards = new int[]{9, 8, 7, 6, 5, 4, 3, 2, 1};
         int[][] parent1 = new int[Sudoku.SIZE][];

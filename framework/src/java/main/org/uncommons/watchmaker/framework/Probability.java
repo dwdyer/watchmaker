@@ -43,7 +43,7 @@ public final class Probability extends Number implements Comparable<Probability>
 
     /**
      * Convenient constant representing a probability of one.  An event with
-     * a probability of one us a certainty.
+     * a probability of one is a certainty.
      * @see #ZERO
      * @see #EVENS
      */
@@ -100,7 +100,7 @@ public final class Probability extends Number implements Comparable<Probability>
     {
         if (probability % 1 != 0)
         {
-            throw new ArithmeticException("Cannot convert to integer due to loss of precision.");
+            throw new ArithmeticException("Cannot convert probability to integer due to loss of precision.");
         }
         else
         {

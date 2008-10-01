@@ -29,6 +29,19 @@ import org.uncommons.util.id.StringPrefixIDSource;
  */
 public class ConfigurableThreadFactory implements ThreadFactory
 {
+    /**
+     * A default exception handler that simply logs the stack trace of the exception.
+     */
+    private static final Thread.UncaughtExceptionHandler DEFAULT_EXCEPTION_HANDLER = new Thread.UncaughtExceptionHandler()
+    {
+        public void uncaughtException(Thread thread, Throwable throwable)
+        {
+            // Log any exceptions thrown.
+            throwable.printStackTrace();
+        }
+    };
+
+    
     private final IDSource<String> nameGenerator;
     private final int priority;
     private final boolean daemon;
@@ -44,7 +57,7 @@ public class ConfigurableThreadFactory implements ThreadFactory
                                      int priority,
                                      boolean daemon)
     {
-        this(namePrefix, priority, daemon, null);
+        this(namePrefix, priority, daemon, DEFAULT_EXCEPTION_HANDLER);
     }
 
 
@@ -77,10 +90,7 @@ public class ConfigurableThreadFactory implements ThreadFactory
         Thread thread = new Thread(runnable, nameGenerator.nextID());
         thread.setPriority(priority);
         thread.setDaemon(daemon);
-        if (uncaughtExceptionHandler != null)
-        {
-            thread.setUncaughtExceptionHandler(uncaughtExceptionHandler);
-        }
+        thread.setUncaughtExceptionHandler(uncaughtExceptionHandler);
         return thread;
     }
 }

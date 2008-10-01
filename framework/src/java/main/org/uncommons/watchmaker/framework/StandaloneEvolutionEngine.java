@@ -77,7 +77,9 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
              fitnessEvaluator,
              selectionStrategy,
              rng,
-             new ConfigurableThreadFactory("EvolutionEngine", Thread.NORM_PRIORITY, true));
+             new ConfigurableThreadFactory("EvolutionEngine",
+                                           Thread.NORM_PRIORITY,
+                                           true));
     }
 
 

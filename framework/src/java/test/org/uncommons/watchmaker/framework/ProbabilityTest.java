@@ -16,7 +16,9 @@
 package org.uncommons.watchmaker.framework;
 
 import java.util.Random;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
+import org.uncommons.maths.Maths;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 
 /**
@@ -141,5 +143,28 @@ public class ProbabilityTest
         {
             assert Probability.ONE.nextEvent(rng) : "Certainty failed to happen.";
         }
+    }
+
+
+    /**
+     * Check that the observed event outcomes are in line with what we would expect.
+     */
+    @Test
+    public void testPossibleEvents()
+    {
+        final int iterations = 1000;
+        int count = 0;
+        for (int i = 0; i < iterations; i++)
+        {
+            if (Probability.EVENS.nextEvent(rng))
+            {
+                ++count;
+            }
+        }
+        double observedProbability = (double) count / iterations;
+        // If we get between 450 and 550 successful outcomes (the expected 500 +/- 10%),
+        // we will assume that that the distribution is correct.
+        Reporter.log("Observed probability: " + observedProbability);
+        assert Maths.approxEquals(observedProbability, 0.5d, 0.1d) : "Observed probability outside tolerance.";
     }
 }
