@@ -16,16 +16,32 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 /**
+ * A program {@link Node} that evaluates to a one if the value of its first
+ * argument is greater than the value of its second, or evaluates to zero otherwise. 
  * @author Daniel Dyer
  */
 public class IsGreater extends BinaryNode
 {
+    /**
+     * Creates a node that evaluates to one if the value of the first child node
+     * is greater than the value of the second child node.  Otherwise it evaluates
+     * to zero.
+     * @param left The first operand.
+     * @param right The second operand.
+     */
     public IsGreater(Node left, Node right)
     {
         super(left, right, '>');
     }
 
-    
+
+    /**
+     * Returns a value of one if the value of the first node is greater than the value of
+     * the second node.  Returns a value of zero otherwise.
+     * @param programParameters The parameters passed to this program (ignored by the
+     * IsGreater node but may be used in the evaluation of child nodes).
+     * @return One or zero depending on the relative values of the two child nodes.
+     */
     public double evaluate(double[] programParameters)
     {
         return getLeft().evaluate(programParameters) > getRight().evaluate(programParameters) ? 1 : 0;

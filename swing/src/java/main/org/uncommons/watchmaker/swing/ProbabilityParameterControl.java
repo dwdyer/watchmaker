@@ -34,20 +34,20 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class ProbabilityParameterControl implements EvolutionControl
 {
-    private final Probability initialValue;
+    private final Probability defaultValue;
     private final int range;
-    private final JSlider slider;
+    private final JSlider control;
     private final AdjustableNumberGenerator<Probability> numberGenerator;
 
 
     /**
      * Creates a control with a default range of 0..1 and a default granularity
      * of 2 decimal places.
-     * @param initialValue The default probability value.
+     * @param defaultValue The default probability value.
      */
-    public ProbabilityParameterControl(Probability initialValue)
+    public ProbabilityParameterControl(Probability defaultValue)
     {
-        this(Probability.ZERO, Probability.ONE, 2, initialValue);
+        this(Probability.ZERO, Probability.ONE, 2, defaultValue);
     }
 
 
@@ -66,10 +66,10 @@ public class ProbabilityParameterControl implements EvolutionControl
         {
             throw new IllegalArgumentException("Initial value must respect minimum and maximum.");
         }
-        this.initialValue = initialValue;
-        this.numberGenerator = new AdjustableNumberGenerator<Probability>(this.initialValue);
+        this.defaultValue = initialValue;
+        this.numberGenerator = new AdjustableNumberGenerator<Probability>(this.defaultValue);
         this.range = (int) Maths.raiseToPower(10, decimalPlaces);
-        this.slider = createSlider(initialValue, minimum, maximum);
+        this.control = createSlider(initialValue, minimum, maximum);
     }
 
     
@@ -107,7 +107,7 @@ public class ProbabilityParameterControl implements EvolutionControl
      */
     public JComponent getControl()
     {
-        return slider;
+        return control;
     }
 
 
@@ -116,9 +116,9 @@ public class ProbabilityParameterControl implements EvolutionControl
      */
     public void reset()
     {
-        int value = (int) Math.round(range * initialValue.doubleValue());
-        slider.setValue(value);
-        numberGenerator.setValue(initialValue);
+        int value = (int) Math.round(range * defaultValue.doubleValue());
+        control.setValue(value);
+        numberGenerator.setValue(defaultValue);
     }
 
 

@@ -21,6 +21,12 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
  */
 public class Multiplication extends BinaryNode
 {
+    /**
+     * Creates a node that evaluates to the sum of the values of its two
+     * child nodes ({@literal left} and {@literal right}).
+     * @param left The first operand.
+     * @param right The second operand.
+     */
     public Multiplication(Node left, Node right)
     {
         super(left, right, '*');

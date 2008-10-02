@@ -30,7 +30,7 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
 
     // The maximum depth of a program tree.  No function nodes will be created below
     // this depth (branches will be terminated with parameters or constants).
-    private final int maxDepth;
+    private final int maximumDepth;
 
     // Probability that a created node is a function node rather
     // than a value node.
@@ -68,7 +68,7 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
         assertProbabilityInRange(parameterProbability);
         
         this.parameterCount = parameterCount;
-        this.maxDepth = maxDepth;
+        this.maximumDepth = maxDepth;
         this.functionProbability = functionProbability;
         this.parameterProbability = parameterProbability;
     }
@@ -93,7 +93,7 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
      */
     protected Node generateRandomCandidate(Random rng)
     {
-        return makeNode(rng, maxDepth);
+        return makeNode(rng, maximumDepth);
     }
 
 

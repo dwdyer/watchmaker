@@ -30,7 +30,7 @@ import org.uncommons.maths.NumberGenerator;
  */
 public class NumericParameterControl<T extends Number & Comparable<T>> implements EvolutionControl
 {
-    private final T initialValue;
+    private final T defaultValue;
     private final JSpinner control;
     private final AdjustableNumberGenerator<T> numberGenerator;
 
@@ -39,8 +39,8 @@ public class NumericParameterControl<T extends Number & Comparable<T>> implement
                                    T stepSize,
                                    T initialValue)
     {
-        this.initialValue = initialValue;
-        this.numberGenerator = new AdjustableNumberGenerator<T>(this.initialValue);
+        this.defaultValue = initialValue;
+        this.numberGenerator = new AdjustableNumberGenerator<T>(this.defaultValue);
         control = new JSpinner(new SpinnerNumberModel(initialValue,
                                                       minimum,
                                                       maximum,
@@ -70,7 +70,7 @@ public class NumericParameterControl<T extends Number & Comparable<T>> implement
      */
     public void reset()
     {
-        control.setValue(initialValue);
+        control.setValue(defaultValue);
         control.setEnabled(true);
     }
 

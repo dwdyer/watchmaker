@@ -143,6 +143,13 @@ public final class Probability extends Number implements Comparable<Probability>
     }
 
 
+    /**
+     * Determines whether this probability value is equal to some other object.
+     * To be considered equal the other object must also be a Probability object
+     * with an indentical probability value.
+     * @param o The object to compare against.
+     * @return True if the objects are equal, false otherwise.
+     */
     @Override
     public boolean equals(Object o)
     {
@@ -160,7 +167,11 @@ public final class Probability extends Number implements Comparable<Probability>
         return Double.compare(that.probability, probability) == 0;
     }
 
-    
+
+    /**
+     * Over-ridden to be consistent with {@link #equals(Object)}. 
+     * @return The hash code value.
+     */
     @Override
     public int hashCode()
     {
@@ -169,12 +180,24 @@ public final class Probability extends Number implements Comparable<Probability>
     }
 
 
+    /**
+     * Compares this object with the specified object for order. Returns a negative
+     * integer, zero, or a positive integer as this object is less than, equal to, or
+     * greater than the specified object.
+     * @param other Another Probability value.
+     * @return A negative integer, zero, or a positive integer as this object is less
+     * than, equal to, or greater than the specified object.
+     */
     public int compareTo(Probability other)
     {
         return Double.compare(this.probability, other.doubleValue());
     }
 
 
+    /**
+     * @return A string representation of the probability value (a number between
+     * 0 and 1 inclusive).
+     */
     @Override
     public String toString()
     {

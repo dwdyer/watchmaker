@@ -21,6 +21,12 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
  */
 public class Subtraction extends BinaryNode
 {
+    /**
+     * Creates a node that evaluates the the value of {@literal left}
+     * minus the value of {@literal right}.
+     * @param left The first operand.
+     * @param right The second operand.
+     */
     public Subtraction(Node left, Node right)
     {
         super(left, right, '-');

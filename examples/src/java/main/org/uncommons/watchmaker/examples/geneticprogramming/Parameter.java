@@ -34,6 +34,11 @@ public class Parameter extends LeafNode
     }
 
 
+    /**
+     * Returns the value of one of the program parameters.
+     * @param programParameters The parameters to this program.
+     * @return The program parameter at the index condigured for this node.
+     */
     public double evaluate(double[] programParameters)
     {
         if (parameterIndex >= programParameters.length)

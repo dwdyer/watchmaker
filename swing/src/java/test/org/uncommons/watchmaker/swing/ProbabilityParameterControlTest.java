@@ -26,11 +26,11 @@ import org.uncommons.watchmaker.framework.Probability;
 public class ProbabilityParameterControlTest
 {
     @Test
-    public void testInitialValue()
+    public void testDefaultValue()
     {
-        Probability initialValue = new Probability(0.75d);
-        ProbabilityParameterControl control = new ProbabilityParameterControl(initialValue);
-        assert control.getNumberGenerator().nextValue().equals(initialValue) : "Wrong initial value.";
+        Probability defaultValue = new Probability(0.75d);
+        ProbabilityParameterControl control = new ProbabilityParameterControl(defaultValue);
+        assert control.getNumberGenerator().nextValue().equals(defaultValue) : "Wrong initial value.";
     }
 
 
@@ -38,7 +38,7 @@ public class ProbabilityParameterControlTest
      * Initial value must not be less than the minimum.
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testInitialValueTooLow()
+    public void testDefaultValueTooLow()
     {
         new ProbabilityParameterControl(Probability.EVENS,
                                         Probability.ONE,
@@ -51,7 +51,7 @@ public class ProbabilityParameterControlTest
      * Initial value must not be less than the minimum.
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testInitialValueTooHigh()
+    public void testDefaultValueTooHigh()
     {
         new ProbabilityParameterControl(Probability.ZERO,
                                         Probability.EVENS,
@@ -73,11 +73,11 @@ public class ProbabilityParameterControlTest
     }
 
 
-    @Test(dependsOnMethods = "testInitialValue")
+    @Test(dependsOnMethods = "testDefaultValue")
     public void testSlider()
     {
-        Probability initialValue = new Probability(0.75d);
-        ProbabilityParameterControl control = new ProbabilityParameterControl(initialValue);
+        Probability defaultValue = new Probability(0.75d);
+        ProbabilityParameterControl control = new ProbabilityParameterControl(defaultValue);
         JSlider slider = (JSlider) control.getControl();
         assert slider.getValue() == 75 : "Wrong slider position: " + slider.getValue();
         slider.setValue(80); // 80 ticks is a probability of 0.8.
@@ -89,13 +89,13 @@ public class ProbabilityParameterControlTest
     @Test(dependsOnMethods = "testSlider")
     public void testReset()
     {
-        Probability initialValue = new Probability(0.75d);
-        ProbabilityParameterControl control = new ProbabilityParameterControl(initialValue);
+        Probability defaultValue = new Probability(0.75d);
+        ProbabilityParameterControl control = new ProbabilityParameterControl(defaultValue);
         JSlider slider = (JSlider) control.getControl();
         slider.setValue(80); // 80 ticks is a probability of 0.8.
 
         control.reset();
-        assert control.getNumberGenerator().nextValue().equals(initialValue) : "NumberGenerator reset failed.";
+        assert control.getNumberGenerator().nextValue().equals(defaultValue) : "NumberGenerator reset failed.";
         assert slider.getValue() == 75 : "JSlider reset failed.";
     }
 }

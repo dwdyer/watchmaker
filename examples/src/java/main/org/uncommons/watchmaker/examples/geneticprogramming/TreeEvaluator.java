@@ -42,14 +42,25 @@ public class TreeEvaluator implements FitnessEvaluator<Node>
         this.data = data;
     }
 
-    
+
+    /**
+     * If the evolved program correctly calculates the right answer
+     * for all sets of inputs then it has a fitness of zero.  Otherwise, its fitness
+     * is an error value that indicates how accurate it was (the larger the combined
+     * error value, the less accurate the function is).
+     * The combined error value is calculated by summing the squares of each individual
+     * error (the difference between the expected output and the actual output).
+     * @param candidate The program tree to evaluate.
+     * @param population Ignored by this implementation.
+     * @return The fitness score for the specified candidate.
+     */
     public double getFitness(Node candidate, List<? extends Node> population)
     {
         double error = 0;
         for (Map.Entry<double[], Double> entry : data.entrySet())
         {
             double actualValue = candidate.evaluate(entry.getKey());
-            double diff = Math.abs(actualValue - entry.getValue());
+            double diff = actualValue - entry.getValue();
             error += (diff * diff);
         }
         return error;

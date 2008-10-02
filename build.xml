@@ -416,7 +416,6 @@
 
     <checkstyle config="${conf.dir}/checks.xml"
                 failonviolation="false"
-                failureproperty="style.violation"
                 classpathref="checkstyle.path">
       <fileset dir="." defaultexcludes="yes">
         <include name="**/${java.dir}/main/org/uncommons/**/*.java"/>
@@ -426,8 +425,6 @@
     <xslt in="${checkstyle-results.dir}/checkstyle_report.xml"
           out="${checkstyle-results.dir}/checkstyle_report.html"
           style="${conf.dir}/checkstyle-noframes-sorted.xsl"/>
-    <!-- Only fail once we have generated the report. -->
-    <fail if="style.violation" message="Failed Checkstyle checks."/>
   </target>
 
 
