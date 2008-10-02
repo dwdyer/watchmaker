@@ -1,5 +1,5 @@
 // ============================================================================
-//   Copyright 2006, 2007 Daniel W. Dyer
+//   Copyright 2006, 2007, 2008 Daniel W. Dyer
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.biomorphs;
 
-import org.testng.annotations.Test;
-import org.uncommons.watchmaker.framework.CandidateFactory;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import java.util.List;
+import org.testng.annotations.Test;
+import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.CandidateFactory;
 
 /**
  * Unit test for the biomorph candidate factory.
