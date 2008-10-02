@@ -61,7 +61,7 @@ public interface FitnessEvaluator<T>
      * is attempting to minimise that cost.</p>
      * <p>The terminology of <i>natural</i> and <i>non-natural</i> fitness scores
      * is introduced by the Watchmaker Framework to describe the two types of fitness
-     * scoring that imortant within the framework.  It does not correspond to either
+     * scoring that exist within the framework.  It does not correspond to either
      * <i>standardised fitness</i> or <i>normalised fitness</i> in the EA
      * literature.  Standardised fitness evaluation generates non-natural
      * scores with a score of zero corresponding to the best possible fitness.

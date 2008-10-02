@@ -63,6 +63,12 @@ public class ConfigurableLineBorder implements Border
     /**
      * Renders borders for the specified component based on the configuration
      * of this border object.
+     * @param component The component for which the border is painted.
+     * @param graphics A {@link Graphics} object to use for painting.
+     * @param x The X-coordinate of the top left point of the border rectangle.
+     * @param y The Y-coordinate of the top left point of the border rectangle.
+     * @param width The width of the border rectangle.
+     * @param height The height of the border rectangle.
      */
     public void paintBorder(Component component,
                             Graphics graphics,
@@ -91,6 +97,7 @@ public class ConfigurableLineBorder implements Border
 
 
     /**
+     * @param component The component for which the border is painted.
      * @return Insets for the current border configuration.
      */
     public Insets getBorderInsets(Component component)

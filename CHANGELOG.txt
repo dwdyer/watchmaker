@@ -18,6 +18,11 @@ Changes in version 0.4.4
   values since there is now no need to duplicate bounds-checking and other
   logic throughout the code.
 
+* Introduced new Swing component (ProbabilityParameterControl) for manipulating
+  Probability parameters from a GUI.
+
+* Javadoc improvements.
+
 
 Changes in version 0.4.3
 ------------------------

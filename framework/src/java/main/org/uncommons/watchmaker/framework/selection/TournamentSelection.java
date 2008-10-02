@@ -80,11 +80,9 @@ public class TournamentSelection implements SelectionStrategy<Object>
             EvaluatedCandidate<S> candidate1 = population.get(rng.nextInt(population.size()));
             EvaluatedCandidate<S> candidate2 = population.get(rng.nextInt(population.size()));
 
-            Probability probability = selectionProbability.nextValue();
-
             // Use a random value to decide wether to select the fitter individual or the weaker one.
             boolean selectFitter = selectionProbability.nextValue().nextEvent(rng);
-            if ((selectFitter && naturalFitnessScores) || (!selectFitter && !naturalFitnessScores))
+            if (selectFitter == naturalFitnessScores)
             {
                 // Select the fitter candidate.
                 if (candidate2.getFitness() > candidate1.getFitness())
