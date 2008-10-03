@@ -13,7 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 ========================================================================== -->
-<project name="watchmaker" default="dist" basedir=".">
+<project name="watchmaker"
+         xmlns:uncommons="antlib:org.uncommons.antlib"
+         default="dist"
+         basedir=".">
   <description>Ant build file for the Watchmaker framework.</description>
 
   
@@ -42,12 +45,12 @@
   <property name="build.dir" value="build"/>
   <property name="classes.dir" value="${build.dir}/classes" />
 
+
   <!-- Classpath for compilation and tests. -->
   <path id="base.path">
-    <fileset dir="${lib.dir}">
-      <include name="**/*.jar" />
-    </fileset>
+    <fileset dir="${lib.dir}" includes="**/*.jar" />
   </path>
+
 
   <property name="version" value="0.4.4pre"/>
   <property name="artifact.identifier" value="watchmaker-framework-${version}"/>
@@ -178,6 +181,7 @@
     <clean.module module.name="framework" />
     <clean.module module.name="swing" />
     <clean.module module.name="util" />
+    <clean.module module.name="book" />
   </target>
 
 
@@ -432,6 +436,19 @@
   <target name="docs"
           description="Generates Javadoc API documentation for all modules.">
     <api.docs api.dir="${api.dir}" />
+  </target>
+
+  
+  <target name="book">
+    <taskdef uri="antlib:org.uncommons.antlib"
+             resource="org/uncommons/antlib/antlib.xml"
+             classpathref="base.path"/>
+
+    <mkdir dir="book/${build.dir}" />
+    <uncommons:docbook classpathref="base.path"
+                       stylesheet="${conf.dir}/docbook/fo/docbook.xsl"
+                       source="book/${src.dir}/xml/book.xml"
+                       output="book/${build.dir}/book.pdf"/>
   </target>
 
 
