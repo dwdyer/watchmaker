@@ -1,7 +1,8 @@
 <?xml version='1.0'?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:doc="http://nwalsh.com/xsl/documentation/1.0"
-                exclude-result-prefixes="doc"
+                xmlns:d="http://docbook.org/ns/docbook"
+xmlns:doc="http://nwalsh.com/xsl/documentation/1.0"
+                exclude-result-prefixes="doc d"
                 version='1.0'>
 
 <!-- ********************************************************************
@@ -209,56 +210,56 @@ document output.
 </xsl:template>
 -->
 
-<xsl:template match="set" mode="olink.mode">
+<xsl:template match="d:set" mode="olink.mode">
   <xsl:call-template name="div"/>
 </xsl:template>
 
-<xsl:template match="book" mode="olink.mode">
+<xsl:template match="d:book" mode="olink.mode">
   <xsl:call-template name="div"/>
 </xsl:template>
 
-<xsl:template match="preface|chapter|appendix" mode="olink.mode">
+<xsl:template match="d:preface|d:chapter|d:appendix" mode="olink.mode">
   <xsl:call-template name="div"/>
 </xsl:template>
 
-<xsl:template match="part|reference" mode="olink.mode">
+<xsl:template match="d:part|d:reference" mode="olink.mode">
   <xsl:call-template name="div"/>
 </xsl:template>
 
-<xsl:template match="article" mode="olink.mode">
+<xsl:template match="d:article" mode="olink.mode">
   <xsl:call-template name="div"/>
 </xsl:template>
 
-<xsl:template match="bibliography|bibliodiv" mode="olink.mode">
+<xsl:template match="d:bibliography|d:bibliodiv" mode="olink.mode">
   <xsl:call-template name="div"/>
 </xsl:template>
 
-<xsl:template match="biblioentry|bibliomixed" mode="olink.mode">
+<xsl:template match="d:biblioentry|d:bibliomixed" mode="olink.mode">
   <xsl:call-template name="obj"/>
 </xsl:template>
 
-<xsl:template match="refentry" mode="olink.mode">
+<xsl:template match="d:refentry" mode="olink.mode">
   <xsl:call-template name="div"/>
 </xsl:template>
 
-<xsl:template match="section|sect1|sect2|sect3|sect4|sect5" mode="olink.mode">
+<xsl:template match="d:section|d:sect1|d:sect2|d:sect3|d:sect4|d:sect5" mode="olink.mode">
   <xsl:call-template name="div"/>
 </xsl:template>
 
-<xsl:template match="refsection|refsect1|refsect2|refsect3" mode="olink.mode">
+<xsl:template match="d:refsection|d:refsect1|d:refsect2|d:refsect3" mode="olink.mode">
   <xsl:call-template name="div"/>
 </xsl:template>
 
-<xsl:template match="figure|example|table" mode="olink.mode">
+<xsl:template match="d:figure|d:example|d:table" mode="olink.mode">
   <xsl:call-template name="obj"/>
   <xsl:apply-templates mode="olink.mode"/>
 </xsl:template>
 
-<xsl:template match="equation[title or info/title]" mode="olink.mode">
+<xsl:template match="d:equation[d:title or d:info/d:title]" mode="olink.mode">
   <xsl:call-template name="obj"/>
 </xsl:template>
 
-<xsl:template match="qandaset|qandaentry" mode="olink.mode">
+<xsl:template match="d:qandaset|d:qandaentry" mode="olink.mode">
   <xsl:call-template name="div"/>
 </xsl:template>
 

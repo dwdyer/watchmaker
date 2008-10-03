@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                version="1.0">
+<xsl:stylesheet exclude-result-prefixes="d"
+                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:d="http://docbook.org/ns/docbook"
+version="1.0">
 
 <!-- Create keys for quickly looking up olink targets -->
 <xsl:key name="targetdoc-key" match="document" use="@targetdoc" />

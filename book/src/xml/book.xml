@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <book xmlns="http://docbook.org/ns/docbook"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0CR3/xsd/docbook.xsd"
       version="5.0">
@@ -17,57 +18,15 @@
     </copyright>
   </info>
 
-  <preface>
-    <para>TODO</para>
-  </preface>
+  <xi:include href="preface.xml" />
 
-  <chapter>
-    <title>The Power of Evolution</title>
-    <para>TODO</para>
-  </chapter>
+  <!-- Chapters -->
+  <xi:include href="evolution.xml" />
+  <xi:include href="components.xml" />
+  <xi:include href="geneticprogramming.xml" />
 
-  <chapter>
-    <title>The Components of an Evolutionary Algorithm</title>
-    <section>
-      <title>Candidate Representation</title>
-      <para>TODO</para>
-    </section>
-    <section>
-      <title>Fitness Function</title>
-      <para>TODO</para>
-    </section>
-    <section>
-      <title>Selection Strategy</title>
-      <para>TODO</para>
-    </section>
-    <section>
-      <title>Evolutionary Operators</title>
-      <section>
-        <title>Cross-Over</title>
-        <para>TODO</para>
-      </section>
-      <section>
-        <title>Mutation</title>
-        <para>TODO</para>
-      </section>
-    </section>
-  </chapter>
-
-  <chapter>
-    <title>Genetic Programming</title>
-    <para>TODO</para>
-  </chapter>
-
-  <appendix>
-    <title>Building Graphical User Interfaces for Evolutionary Programs</title>
-    <subtitle>Using the Watchmaker Swing Module</subtitle>
-    <para>TO DO</para>
-  </appendix>
-
-  <appendix>
-    <title>Distributed Evolutionary Algorithms</title>
-    <subtitle>Running Watchmaker Programs on Hadoop with Apache Mahout</subtitle>
-    <para>TO DO</para>
-  </appendix>
+  <!-- Appendices -->
+  <xi:include href="gui.xml" />
+  <xi:include href="distributed.xml" />
 
 </book>

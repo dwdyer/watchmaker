@@ -1,8 +1,9 @@
 <?xml version='1.0'?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		xmlns:hl="java:net.sf.xslthl.ConnectorSaxon6"
+		xmlns:d="http://docbook.org/ns/docbook"
+xmlns:hl="java:net.sf.xslthl.ConnectorSaxon6"
                 xmlns:exsl="http://exslt.org/common"
-		exclude-result-prefixes="exsl hl"
+		exclude-result-prefixes="exsl hl d"
                 version='1.0'>
 
 <!-- ********************************************************************

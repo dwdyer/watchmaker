@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:fo="http://www.w3.org/1999/XSL/Format"
+<xsl:stylesheet exclude-result-prefixes="d"
+                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:d="http://docbook.org/ns/docbook"
+xmlns:fo="http://www.w3.org/1999/XSL/Format"
                 version="1.0">
 
 <!-- ********************************************************************
@@ -20,17 +22,17 @@
 </xsl:attribute-set>
 
 <!-- Outputs an fo:table only, not the caption -->
-<xsl:template match="table|informaltable" mode="htmlTable">
+<xsl:template match="d:table|d:informaltable" mode="htmlTable">
 
   <xsl:variable name="numcols">
     <xsl:call-template name="widest-html-row">
-      <xsl:with-param name="rows" select=".//tr"/>
+      <xsl:with-param name="rows" select=".//d:tr"/>
     </xsl:call-template>
   </xsl:variable>
 
   <xsl:variable name="prop-columns"
-                select=".//col[contains(@width, '%')] |
-                        .//colgroup[contains(@width, '%')]"/>
+                select=".//d:col[contains(@width, '%')] |
+                        .//d:colgroup[contains(@width, '%')]"/>
 
   <xsl:variable name="table.width">
     <xsl:call-template name="table.width"/>
@@ -57,15 +59,15 @@
     <xsl:call-template name="make-html-table-columns">
       <xsl:with-param name="count" select="$numcols"/>
     </xsl:call-template>
-    <xsl:apply-templates select="thead" mode="htmlTable"/>
-    <xsl:apply-templates select="tfoot" mode="htmlTable"/>
+    <xsl:apply-templates select="d:thead" mode="htmlTable"/>
+    <xsl:apply-templates select="d:tfoot" mode="htmlTable"/>
     <xsl:choose>
-      <xsl:when test="tbody">
-        <xsl:apply-templates select="tbody" mode="htmlTable"/>
+      <xsl:when test="d:tbody">
+        <xsl:apply-templates select="d:tbody" mode="htmlTable"/>
       </xsl:when>
       <xsl:otherwise>
         <fo:table-body start-indent="0pt" end-indent="0pt">
-          <xsl:apply-templates select="tr" mode="htmlTable"/>
+          <xsl:apply-templates select="d:tr" mode="htmlTable"/>
         </fo:table-body>
       </xsl:otherwise>
     </xsl:choose>
@@ -73,7 +75,7 @@
 
 </xsl:template>
 
-<xsl:template match="caption" mode="htmlTable">
+<xsl:template match="d:caption" mode="htmlTable">
   <!-- Handled by formal.object.heading -->
 </xsl:template>
 
@@ -108,11 +110,11 @@
   <xsl:param name="number" select="1"/>
 
   <xsl:choose>
-    <xsl:when test="col|colgroup/col">
-      <xsl:for-each select="col|colgroup/col">
+    <xsl:when test="d:col|d:colgroup/d:col">
+      <xsl:for-each select="d:col|d:colgroup/d:col">
         <fo:table-column>
           <xsl:attribute name="column-number">
-            <xsl:number from="table|informaltable" level="any" format="1"/>
+            <xsl:number from="d:table|d:informaltable" level="any" format="1"/>
           </xsl:attribute>
           <xsl:if test="@width">
             <xsl:attribute name="column-width">
@@ -145,7 +147,7 @@
   </xsl:choose>
 </xsl:template>
 
-<xsl:template match="tbody" mode="htmlTable">
+<xsl:template match="d:tbody" mode="htmlTable">
   <fo:table-body border-bottom-width="0.25pt"
                  border-bottom-style="solid"
                  border-bottom-color="black"
@@ -155,7 +157,7 @@
   </fo:table-body>
 </xsl:template>
 
-<xsl:template match="td" mode="htmlTable">
+<xsl:template match="d:td" mode="htmlTable">
   <xsl:variable name="bgcolor">
     <xsl:call-template name="pi.dbfo_bgcolor"/>
   </xsl:variable>
@@ -172,14 +174,14 @@
   </fo:table-cell>
 </xsl:template>
 
-<xsl:template match="tfoot" mode="htmlTable">
+<xsl:template match="d:tfoot" mode="htmlTable">
   <fo:table-footer start-indent="0pt"
                    end-indent="0pt">
     <xsl:apply-templates mode="htmlTable"/>
   </fo:table-footer>
 </xsl:template>
 
-<xsl:template match="th" mode="htmlTable">
+<xsl:template match="d:th" mode="htmlTable">
   <xsl:variable name="bgcolor">
     <xsl:call-template name="pi.dbfo_bgcolor"/>
   </xsl:variable>
@@ -196,7 +198,7 @@
   </fo:table-cell>
 </xsl:template>
 
-<xsl:template match="thead" mode="htmlTable">
+<xsl:template match="d:thead" mode="htmlTable">
   <fo:table-header border-bottom-width="0.25pt"
                    border-bottom-style="solid"
                    border-bottom-color="black"
@@ -207,7 +209,7 @@
   </fo:table-header>
 </xsl:template>
 
-<xsl:template match="tr" mode="htmlTable">
+<xsl:template match="d:tr" mode="htmlTable">
   <fo:table-row>
     <xsl:call-template name="table.row.properties"/>
     <xsl:apply-templates mode="htmlTable"/>

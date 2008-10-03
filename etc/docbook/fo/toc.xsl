@@ -1,6 +1,8 @@
 <?xml version='1.0'?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:fo="http://www.w3.org/1999/XSL/Format"
+<xsl:stylesheet exclude-result-prefixes="d"
+                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:d="http://docbook.org/ns/docbook"
+xmlns:fo="http://www.w3.org/1999/XSL/Format"
                 version='1.0'>
 
 <!-- ********************************************************************
@@ -18,7 +20,7 @@
 <!-- FIXME: in the contexts where <toc> can occur, I think it's always
      the case that a page-sequence is required. Is that true? -->
 
-<xsl:template match="toc">
+<xsl:template match="d:toc">
   <xsl:variable name="master-reference">
     <xsl:call-template name="select.pagemaster"/>
   </xsl:variable>
@@ -141,25 +143,25 @@
 
           <fo:flow flow-name="xsl-region-body">
             <xsl:choose>
-              <xsl:when test="parent::section
-                              or parent::sect1
-                              or parent::sect2
-                              or parent::sect3
-                              or parent::sect4
-                              or parent::sect5">
+              <xsl:when test="parent::d:section
+                              or parent::d:sect1
+                              or parent::d:sect2
+                              or parent::d:sect3
+                              or parent::d:sect4
+                              or parent::d:sect5">
                 <xsl:apply-templates select="parent::*"
                                      mode="toc.for.section"/>
               </xsl:when>
-              <xsl:when test="parent::article">
+              <xsl:when test="parent::d:article">
                 <xsl:apply-templates select="parent::*"
                                      mode="toc.for.component"/>
               </xsl:when>
-              <xsl:when test="parent::book
-                              or parent::part">
+              <xsl:when test="parent::d:book
+                              or parent::d:part">
                 <xsl:apply-templates select="parent::*"
                                      mode="toc.for.division"/>
               </xsl:when>
-              <xsl:when test="parent::set">
+              <xsl:when test="parent::d:set">
                 <xsl:apply-templates select="parent::*"
                                      mode="toc.for.set"/>
               </xsl:when>
@@ -177,17 +179,17 @@
   </xsl:choose>
 </xsl:template>
 
-<xsl:template match="tocpart|tocchap
-                     |toclevel1|toclevel2|toclevel3|toclevel4|toclevel5">
-  <xsl:apply-templates select="tocentry"/>
-  <xsl:if test="tocchap|toclevel1|toclevel2|toclevel3|toclevel4|toclevel5">
+<xsl:template match="d:tocpart|d:tocchap
+                     |d:toclevel1|d:toclevel2|d:toclevel3|d:toclevel4|d:toclevel5">
+  <xsl:apply-templates select="d:tocentry"/>
+  <xsl:if test="d:tocchap|d:toclevel1|d:toclevel2|d:toclevel3|d:toclevel4|d:toclevel5">
     <fo:block start-indent="{count(ancestor::*)*2}pc">
-      <xsl:apply-templates select="tocchap|toclevel1|toclevel2|toclevel3|toclevel4|toclevel5"/>
+      <xsl:apply-templates select="d:tocchap|d:toclevel1|d:toclevel2|d:toclevel3|d:toclevel4|d:toclevel5"/>
     </fo:block>
   </xsl:if>
 </xsl:template>
 
-<xsl:template match="tocentry|tocfront|tocback">
+<xsl:template match="d:tocentry|d:tocfront|d:tocback">
   <fo:block text-align-last="justify"
             end-indent="2pc"
             last-line-end-indent="-2pc">
@@ -274,7 +276,7 @@
 
 <!-- ==================================================================== -->
 
-<xsl:template match="lot|lotentry">
+<xsl:template match="d:lot|d:lotentry">
 </xsl:template>
 
 </xsl:stylesheet>

@@ -1,7 +1,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:doc="http://nwalsh.com/xsl/documentation/1.0"
+                xmlns:d="http://docbook.org/ns/docbook"
+xmlns:doc="http://nwalsh.com/xsl/documentation/1.0"
 		version="1.0"
-                exclude-result-prefixes="doc">
+                exclude-result-prefixes="doc d">
 
 <!-- ********************************************************************
      $Id: maketoc.xsl 6910 2007-06-28 23:23:30Z xmldoc $
@@ -24,7 +25,7 @@
 
 <!-- refentry in autotoc.xsl does not use subtoc, so must
      handle it explicitly here. -->
-<xsl:template match="refentry" mode="toc">
+<xsl:template match="d:refentry" mode="toc">
   <xsl:param name="toc-context" select="."/>
 
   <xsl:call-template name="subtoc">

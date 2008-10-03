@@ -1,6 +1,8 @@
 <?xml version='1.0'?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                version='1.0'>
+<xsl:stylesheet exclude-result-prefixes="d"
+                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:d="http://docbook.org/ns/docbook"
+version='1.0'>
 
 <!-- ********************************************************************
      $Id: toc.xsl 6910 2007-06-28 23:23:30Z xmldoc $
@@ -14,7 +16,7 @@
 
 <!-- ==================================================================== -->
 
-<xsl:template match="toc">
+<xsl:template match="d:toc">
   <xsl:choose>
     <xsl:when test="*">
       <xsl:if test="$process.source.toc != 0">
@@ -27,25 +29,25 @@
     <xsl:otherwise>
       <xsl:if test="$process.empty.source.toc != 0">
         <xsl:choose>
-          <xsl:when test="parent::section
-                          or parent::sect1
-                          or parent::sect2
-                          or parent::sect3
-                          or parent::sect4
-                          or parent::sect5">
+          <xsl:when test="parent::d:section
+                          or parent::d:sect1
+                          or parent::d:sect2
+                          or parent::d:sect3
+                          or parent::d:sect4
+                          or parent::d:sect5">
             <xsl:apply-templates select="parent::*"
                                  mode="toc.for.section"/>
           </xsl:when>
-          <xsl:when test="parent::article">
+          <xsl:when test="parent::d:article">
             <xsl:apply-templates select="parent::*"
                                  mode="toc.for.component"/>
           </xsl:when>
-          <xsl:when test="parent::book
-                          or parent::part">
+          <xsl:when test="parent::d:book
+                          or parent::d:part">
             <xsl:apply-templates select="parent::*"
                                  mode="toc.for.division"/>
           </xsl:when>
-          <xsl:when test="parent::set">
+          <xsl:when test="parent::d:set">
             <xsl:apply-templates select="parent::*"
                                  mode="toc.for.set"/>
           </xsl:when>
@@ -61,46 +63,46 @@
   </xsl:choose>
 </xsl:template>
 
-<xsl:template match="tocpart|tocchap
-                     |toclevel1|toclevel2|toclevel3|toclevel4|toclevel5">
+<xsl:template match="d:tocpart|d:tocchap
+                     |d:toclevel1|d:toclevel2|d:toclevel3|d:toclevel4|d:toclevel5">
   <xsl:variable name="sub-toc">
-    <xsl:if test="tocchap|toclevel1|toclevel2|toclevel3|toclevel4|toclevel5">
+    <xsl:if test="d:tocchap|d:toclevel1|d:toclevel2|d:toclevel3|d:toclevel4|d:toclevel5">
       <xsl:choose>
         <xsl:when test="$toc.list.type = 'dl'">
           <dd>
             <xsl:element name="{$toc.list.type}">
-              <xsl:apply-templates select="tocchap|toclevel1|toclevel2|toclevel3|toclevel4|toclevel5"/>
+              <xsl:apply-templates select="d:tocchap|d:toclevel1|d:toclevel2|d:toclevel3|d:toclevel4|d:toclevel5"/>
             </xsl:element>
           </dd>
         </xsl:when>
         <xsl:otherwise>
           <xsl:element name="{$toc.list.type}">
-            <xsl:apply-templates select="tocchap|toclevel1|toclevel2|toclevel3|toclevel4|toclevel5"/>
+            <xsl:apply-templates select="d:tocchap|d:toclevel1|d:toclevel2|d:toclevel3|d:toclevel4|d:toclevel5"/>
           </xsl:element>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
   </xsl:variable>
 
-  <xsl:apply-templates select="tocentry[position() != last()]"/>
+  <xsl:apply-templates select="d:tocentry[position() != last()]"/>
 
   <xsl:choose>
     <xsl:when test="$toc.list.type = 'dl'">
       <dt>
-        <xsl:apply-templates select="tocentry[position() = last()]"/>
+        <xsl:apply-templates select="d:tocentry[position() = last()]"/>
       </dt>
       <xsl:copy-of select="$sub-toc"/>
     </xsl:when>
     <xsl:otherwise>
       <li>
-        <xsl:apply-templates select="tocentry[position() = last()]"/>
+        <xsl:apply-templates select="d:tocentry[position() = last()]"/>
         <xsl:copy-of select="$sub-toc"/>
       </li>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
 
-<xsl:template match="tocentry|tocfront|tocback">
+<xsl:template match="d:tocentry|d:tocfront|d:tocback">
   <xsl:choose>
     <xsl:when test="$toc.list.type = 'dl'">
       <dt>
@@ -115,7 +117,7 @@
   </xsl:choose>
 </xsl:template>
 
-<xsl:template match="tocentry[position() = last()]" priority="2">
+<xsl:template match="d:tocentry[position() = last()]" priority="2">
   <xsl:call-template name="tocentry-content"/>
 </xsl:template>
 
@@ -167,7 +169,7 @@
 
 <!-- ==================================================================== -->
 
-<xsl:template match="lot|lotentry">
+<xsl:template match="d:lot|d:lotentry">
 </xsl:template>
 
 </xsl:stylesheet>
