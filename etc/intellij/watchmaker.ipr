@@ -4,7 +4,7 @@
     <defaultAnt bundledAnt="true" />
     <buildFile url="file:///Users/dan/Projects/watchmaker/build.xml">
       <additionalClassPath />
-      <antReference projectDefault="true" />
+      <antReference name="Apache Ant version 1.7.1" />
       <customJdkName value="" />
       <maximumHeapSize value="128" />
       <properties />

@@ -25,19 +25,19 @@
 =================================================================== -->
 
   <!-- Project-global locations. -->
-  <property name="conf.dir" location="./etc" />
-  <property name="lib.dir" location="./lib" />
-  <property name="lib.compiletime" location="${lib.dir}/compiletime" />
-  <property name="lib.runtime" location="${lib.dir}/runtime" />
-  <property name="dist.dir" location="./dist" />
-  <property name="docs.dir" location="./docs" />
-  <property name="api.dir" location="${docs.dir}/api" />
-  <property name="coverage.dir" location="${docs.dir}/coverage" />
-  <property name="test-results.dir" location="${docs.dir}/test-results" />
-  <property name="checkstyle-results.dir" location="${docs.dir}/checkstyle" />
-  <property name="release.dir" location="./release" />
-  <property name="web.dir" location="./www" />
-  <property name="temp.dir" location="./temp" />
+  <property name="conf.dir" value="etc" />
+  <property name="lib.dir" value="lib" />
+  <property name="lib.compiletime" value="${lib.dir}/compiletime" />
+  <property name="lib.runtime" value="${lib.dir}/runtime" />
+  <property name="dist.dir" value="dist" />
+  <property name="docs.dir" value="docs" />
+  <property name="api.dir" value="${docs.dir}/api" />
+  <property name="coverage.dir" value="${docs.dir}/coverage" />
+  <property name="test-results.dir" value="${docs.dir}/test-results" />
+  <property name="checkstyle-results.dir" value="${docs.dir}/checkstyle" />
+  <property name="release.dir" value="release" />
+  <property name="web.dir" value="www" />
+  <property name="temp.dir" value="temp" />
 
   <!-- Per-module locations. -->
   <property name="src.dir" value="src" />
@@ -50,6 +50,10 @@
   <path id="base.path">
     <fileset dir="${lib.dir}" includes="**/*.jar" />
   </path>
+
+  <taskdef uri="antlib:org.uncommons.antlib"
+           resource="org/uncommons/antlib/antlib.xml"
+           classpathref="base.path"/>  
 
 
   <property name="version" value="0.4.4pre"/>
@@ -65,76 +69,6 @@
 <!-- ==================================================================
      MACROS
 =================================================================== -->
-
-  <!-- This macro deletes all build artifacts from a module. -->
-  <macrodef name="clean.module">
-    <attribute name="module.name"/>
-    <sequential>
-      <delete dir="./@{module.name}/${build.dir}"/>
-    </sequential>
-  </macrodef>
-
-  <!-- This macro compiles one source group (i.e. the main source tree
-       or the unit test source tree) of a given module. -->
-  <macrodef name="compile.src.group">
-    <attribute name="module.name"/>
-    <attribute name="src.group"/>
-    <element name="groupclasspath" optional="true"/>
-    <sequential>
-      <mkdir dir="./@{module.name}/${classes.dir}/@{src.group}" />
-      <javac destdir="./@{module.name}/${classes.dir}/@{src.group}"
-             debug="on"
-             deprecation="on"
-             optimize="on"
-             source="1.5"
-             target="1.5"
-             srcdir="./@{module.name}/${java.dir}/@{src.group}">
-        <classpath>
-          <groupclasspath/>
-          <path refid="base.path"/>
-        </classpath>
-        <compilerarg value="-Xlint:unchecked" />
-      </javac>
-    </sequential>
-  </macrodef>
-
-  <!-- This macro compiles all source (including unit tests) for a
-       single module.  -->
-  <macrodef name="compile.module">
-    <attribute name="module.name"/>
-    <element name="moduleclasspath" optional="true"/>
-    <sequential>
-      <compile.src.group module.name="@{module.name}" src.group="main">
-        <groupclasspath>
-          <moduleclasspath />
-        </groupclasspath>
-      </compile.src.group>
-      <compile.src.group module.name="@{module.name}" src.group="test">
-        <groupclasspath>
-          <!-- Add the main classes to the classpath for unit test compilation. -->
-          <path location="./@{module.name}/${classes.dir}/main" />
-          <moduleclasspath />
-        </groupclasspath>
-      </compile.src.group>
-    </sequential>
-  </macrodef>
-
-  <!-- This macro builds a JAR file for a module, containing all of
-       the classes in the main source group for the module
-       (i.e. unit test classes are excluded).  The JAR file name is
-       derived from the module name. -->
-  <macrodef name="jar.module">
-    <attribute name="module.name"/>
-    <attribute name="jar.name" default="@{module.name}.jar"/>
-    <element name="additionalcontents" optional="true"/>
-    <sequential>
-      <jar destfile="./@{module.name}/${build.dir}/@{jar.name}">
-        <fileset dir="./@{module.name}/${classes.dir}/main"/>
-        <additionalcontents/>
-      </jar>
-    </sequential>
-  </macrodef>
-
 
   <!-- Generates API documentation for all modules. -->
   <macrodef name="api.docs">
@@ -177,19 +111,19 @@
     <delete dir="${dist.dir}" />
     <delete dir="${release.dir}" />
     <delete dir="${temp.dir}" />
-    <clean.module module.name="examples" />
-    <clean.module module.name="framework" />
-    <clean.module module.name="swing" />
-    <clean.module module.name="util" />
-    <clean.module module.name="book" />
+    <uncommons:clean module="examples" />
+    <uncommons:clean module="framework" />
+    <uncommons:clean module="swing" />
+    <uncommons:clean module="util" />
+    <uncommons:clean module="book" />
   </target>
 
 
   <!-- Builds the util module. -->
   <target name="util"
           description="Build the utilities module.">
-    <compile.module module.name="util" />
-    <jar.module module.name="util" jar.name="uncommons-util.jar"/>
+    <uncommons:compile module="util" />
+    <uncommons:jar module="util" jarfile="uncommons-util.jar"/>
   </target>
 
 
@@ -197,18 +131,10 @@
   <target name="framework"
           depends="util"
           description="Build the framework module.">
-    <compile.module module.name="framework">
-      <moduleclasspath>
-        <path location="./util/${build.dir}/uncommons-util.jar" />
-      </moduleclasspath>
-    </compile.module>
-    <jar.module module.name="framework" jar.name="${artifact.identifier}.jar">
-      <additionalcontents>
-        <manifest>
-          <attribute name="Class-Path" value="uncommons-util.jar uncommons-maths-1.0.2.jar"/>
-        </manifest>
-      </additionalcontents>
-    </jar.module>
+    <uncommons:compile module="framework" />
+    <uncommons:jar module="framework"
+                   jarfile="${artifact.identifier}.jar"
+                   classpath="uncommons-util.jar uncommons-maths-1.0.2.jar" />
   </target>
 
 
@@ -216,18 +142,10 @@
   <target name="swing"
           depends="framework"
           description="Build the GUI module.">
-    <compile.module module.name="swing">
-      <moduleclasspath>
-        <path location="./framework/${build.dir}/${artifact.identifier}.jar" />
-      </moduleclasspath>
-    </compile.module>
-    <jar.module module.name="swing" jar.name="watchmaker-swing-${version}.jar">
-      <additionalcontents>
-        <manifest>
-          <attribute name="Class-Path" value="${artifact.identifier}.jar uncommons-maths-1.0.2.jar jfreechart-1.0.6.jar"/>
-        </manifest>
-      </additionalcontents>
-    </jar.module>
+    <uncommons:compile module="swing" />
+    <uncommons:jar module="swing"
+                   jarfile="watchmaker-swing-${version}.jar"
+                   classpath="${artifact.identifier}.jar uncommons-maths-1.0.2.jar jfreechart-1.0.6.jar" />
   </target>
 
 
@@ -235,19 +153,10 @@
   <target name="examples"
           depends="framework, swing"
           description="Build the examples.">
-    <compile.module module.name="examples">
-      <moduleclasspath>
-        <path location="./framework/${build.dir}/${artifact.identifier}.jar" />
-        <path location="./swing/${build.dir}/watchmaker-swing-${version}.jar" />
-      </moduleclasspath>
-    </compile.module>
-    <jar.module module.name="examples" jar.name="watchmaker-examples-${version}.jar">
-      <additionalcontents>
-        <manifest>
-          <attribute name="Class-Path" value="${artifact.identifier}.jar uncommons-maths-1.0.2.jar watchmaker-swing-${version}.jar"/>
-        </manifest>
-      </additionalcontents>
-    </jar.module>
+    <uncommons:compile module="examples" />
+    <uncommons:jar module="examples"
+                   jarfile="watchmaker-examples-${version}.jar"
+                   classpath="${artifact.identifier}.jar uncommons-maths-1.0.2.jar watchmaker-swing-${version}.jar" />
   </target>
 
 
@@ -439,11 +348,7 @@
   </target>
 
   
-  <target name="book">
-    <taskdef uri="antlib:org.uncommons.antlib"
-             resource="org/uncommons/antlib/antlib.xml"
-             classpathref="base.path"/>
-
+  <target name="book" description="Generates the PDF user guide.">
     <mkdir dir="book/${build.dir}" />
     <uncommons:docbook classpathref="base.path"
                        stylesheet="${conf.dir}/docbook/fo/docbook.xsl"
