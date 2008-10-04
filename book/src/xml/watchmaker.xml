@@ -4,6 +4,16 @@
          xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0CR3/xsd/docbook.xsd">
   <title>The Watchmaker Framework</title>
   <para>
-    Evolutionary algorithms can be implemented in any general purpose programming language.    
+    Evolutionary algorithms can be implemented in any general purpose programming language.
+    Most programmers will simply choose the language that they are most comfortable with.
+    A quick web search will return examples of evolutionary programs written in C, C++,
+    Java, C#, Python, Ruby, Perl, Lisp and several other languages.
+  </para>
+  <para>
+    Performance may be a consideration in choosing which language to use.
+    Almost all evolutionary algorithms are CPU-bound.  For this reason, compiled languages
+    typically offer much better EA performance than interpretted languages.  For
+    short-lived programs the difference is unlikely to be significant, but for
+    long-running programs it could be considerable.
   </para>
 </chapter>

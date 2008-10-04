@@ -6,7 +6,7 @@
   <section>
     <title>What are Evolutionary Algorithms?</title>
     <para>
-      Evolutionary algorithms are inspired by the biological model of evolution and
+      Evolutionary algorithms (EAs) are inspired by the biological model of evolution and
       natural selection first proposed by Charles Darwin in 1859.
       The field of Evolutionary Computation encompasses Genetic Algorithms,
       Genetic Programming, Evolutionary Programming, Evolution Strategies and several
@@ -17,26 +17,129 @@
     <para>
       A <emphasis>population</emphasis> of candidate solutions is iteratively evolved
       over many <emphasis>generations</emphasis>.  Mimicking the concept of
-      natural selection in biology, the survival of candidates from generation to
-      generation in an evolutionary algorithm is governed by a <emphasis>fitness
-      function</emphasis> that evaluates each candidate according to how close it is
-      to the desired outcome, and a selection strategy that favours the better
-      solutions.  Over time, the quality of the solutions in the population should
-      improve.  If the program is successful, we can terminate the evolution once
-      it has found a solution that is good enough.
+      natural selection in biology, the survival of candidates (or their offspring)
+      from generation to generation in an EA is governed by a <emphasis>fitness
+      function</emphasis> that evaluates each candidate according to how close it is to
+      the desired outcome, and a <emphasis>selection strategy</emphasis> that favours
+      the better solutions.
+      Over time, the quality of the solutions in the population should improve.
+      If the program is successful, we can terminate the evolution once it has found
+      a solution that is good enough.
     </para>
     <section>
       <title>An Example</title>
       <para>
         Now that we have introduced the basic concepts and terminology, I will attempt
         to illustrate by way of an example. Suppose that we want to use evolution to generate
-        a particular string of text, for example "HELLO WORLD".  This is a contrived example
+        a particular character string, for example "HELLO WORLD".  This is a contrived example
         in as much as it assumes that we don't know how to create such a string and that
         evolution is the best approach available to us.  However, bear with me as this simple
         example is useful for demonstrating exactly how the evolutionary approach works.
       </para>
       <para>
-        TODO: Example
+        Each candidate solution in our population will be a string.  We'll use a fixed-length
+        representation so that each string is 11 characters long.  Each character in a string
+        will be one of the 27 valid characters (the upper case letters 'A' to 'Z' plus the space
+        character).
+      </para>
+      <para>
+        For the fitness function we'll use the simple approach of assigning a candidate
+        solution one point for each position in the string that has the correct character.
+        For the string "HELLO WORLD" this gives a maximum possible fitness score of 11 (the
+        length of the string).
+      </para>
+      <para>
+        The first task for the evolutionary algorithm is to randomly generate the initial
+        population. We can use any size population that we choose.
+        Typical EA population sizes can vary from tens to thousands of individuals.
+        For this example we will use a population size of 10.
+        After the initialisation of the population we might have the following candidates
+        (fitness scores in brackets):
+        <informalexample>
+          <programlisting>
+  1.  GERZUNFXCEN  (1)
+  2.  HSFDAHDMUYZ  (1)
+  3.  UQ IGARHGJN  (0)
+  4.  ZASIB WSUVP  (2)
+  5.  XIXROIUAZBH  (1)
+  6.  VDLGCWMBFYA  (1)
+  7.  SY YUHYRSEE  (0)
+  8.  EUSVBIVFHFK  (0)
+  9.  HHENRFZAMZH  (1)
+  10. UJBBDFZPLCN  (0)
+          </programlisting>
+        </informalexample>
+      </para>
+      <para>
+        None of these candidate solutions is particularly good. The best (number 4) has just two
+        characters out of eleven that match the target string (the space character and the 'W').
+      </para>
+      <para>
+        The next step is to select candidates based on their fitness and use them to create
+        a new generation.  One technique for favouring the selection of fitter candidates over
+        weaker candidates is to assign each candidate a selection probability proportionate to
+        its fitness.
+      </para>
+      <para>
+        If we use fitness-proportionate selection, none of the candidates with zero fitness will
+        be selected and the candidate with a fitness of 2 is twice as likely to be selected as
+        any of the candidates with a fitness of 1. For the next step we need to select 10 parents,
+        so it is obvious that some of the fit candidates are going to be selected multiple times.
+      </para>
+      <para>
+        Now that we have some parents, we can breed the next generation.  We do this via a process
+        called <emphasis>cross-over</emphasis>, which is analogous to sexual reproduction in biology.
+        For each pair of parents, a cross-over point is selected randomly.  Assuming that the first
+        two randomly selected parents are numbers 2 and 4, if the cross-over occurs after the
+        first four characters, we will get the following offspring:
+        <informalexample>
+          <programlisting>
+  Parent 1:     <emphasis role="bold">HSFDAHDMUYZ</emphasis>
+  Parent 2:     ZASIB WSUVP
+
+  Offspring 1:  <emphasis role="bold">HSFD</emphasis>B WSUVP
+  Offspring 2:  ZASI<emphasis role="bold">AHDMUYZ</emphasis>
+          </programlisting>
+        </informalexample>
+      </para>
+      <para>
+        This recombination has given us two new candidates for the next generation, one of which is
+        better than either of the parents (offspring 1 has a fitness score of 3).  This shows how
+        cross-over can lead towards better solutions.  However, looking at the initial population as
+        a whole, we can see that no combination of cross-overs will ever result in a candidate with
+        a fitness higher than 6.  This is because, among all 10 original candidates, there are only 6
+        positions in which we have the correct character.  This can be mitigated to some extent by
+        increasing the size of the population.  With 100 individuals in the initial population we
+        would be much more likely to have the necessary building blocks for a perfect solution, but
+        there is no guarantee.  This is where <emphasis>mutation</emphasis> comes in.
+      </para>
+      <para>
+        Mutation is implemented by modifying each character in a string according to some small
+        probability, say 0.02 or 0.05.  This means that any single individual will be changed only
+        slightly by mutation, or perhaps not at all.
+      </para>
+      <para>
+        By applying mutation to each of the offspring produced by cross-over, we will occasionally
+        introduce correct characters in new positions.  We will also occasionally remove correct
+        characters but these bad mutations are unlikely to survive selection in the next generation,
+        so this is not a big problem.  Advantageous mutations will be propagated by cross-over and
+        selection and will quickly spread throughout the population.
+      </para>
+      <para>
+        After repeating this process for dozens, or perhaps even hundreds, of generations we will
+        eventually converge on our desired solution.
+      </para>
+      <para>
+        This is a convoluted process for finding a string that we already knew to start with.
+        However, as we shall see in the remainder of this book, the evolutionary approach
+        generalises to deal with problems where we don't know what the best solution is and
+        therefore can't encode that knowledge in our fitness function.
+      </para>        
+      <para>
+        The important point demonstrated by this example is that we can arrive at a satisfactory
+        solution without having to enumerate every possible candidate in the search space.
+        Even for this trivial example, a brute force search would involve generating and
+        checking approximately 5.6 quadrillion strings.
       </para>
     </section>
     <section>
@@ -69,7 +172,7 @@
             Generate a new population of offspring by randomly altering and/or combining
             elements of the parent candidates.  The evolution is performed by one or more
             <emphasis>evolutionary operators</emphasis>.  The most common operators are
-            <emphasis>cross-over</emphasis> and <emphasis>mutation</emphasis>.
+            cross-over and mutation.
             Cross-over takes two parents, cuts them each into two or more pieces and recombines
             the pieces to create two new offspring.  Mutation copies an individual but with
             small, random modifications (such as flipping a bit from zero to one).
@@ -101,10 +204,9 @@
     <para>
       Evolutionary algorithms can also be used to tackle problems that humans don't really
       know how to solve.
-      An evolutionary algorithm, free of any human preconceptions or biases, can generate
-      suprising solutions that are comparable to, or better than, the best human-generated
-      efforts.
-      The only requirement is that we can recognise a good solution if
+      An EA, free of any human preconceptions or biases, can generate suprising solutions
+      that are comparable to, or better than, the best human-generated efforts.
+      It is merely necessary that we can recognise a good solution if
       it were presented to us, even if we don't know how to create a good solution.
       In other words, we need to be able to formulate an effective fitness function.
       <!-- TODO: Compelling example (possibly the antenna one). -->
@@ -112,22 +214,28 @@
     <section>
       <title>Pre-requisites</title>
       <para>
-        There are two requirements that must be met before an evolutionary algorithm can be used
-        for a particular problem.
-        Firstly, we need a way to encode candidate solutions to the problem.  The simplest encoding,
-        and that used by many genetic algorithms, is a bit string.  The candidates are simply a
-        sequence of zeros and ones.
-        This encoding makes cross-over and mutation very straightforward, but that does not mean
-        that you cannot use more complicated representations.
+        There are two requirements that must be met before an evolutionary algorithm can
+        be used for a particular problem.
+        Firstly, we need a way to encode candidate solutions to the problem.  The simplest
+        encoding, and that used by many genetic algorithms, is a bit string.  The candidates
+        are simply a sequence of zeros and ones.
+        This encoding makes cross-over and mutation very straightforward, but that does not
+        mean that you cannot use more complicated representations.  In fact, we will see
+        several instances of more advanced candidate representations in later chapters.
+        As long as we can devise a scheme for evolving the candidates, there really is no
+        restriction on the types that we can use.
+        Genetic programming is a good example of this.  GP evolves computer programs
+        represented as syntax trees.
       </para>
       <para>
-        Secondly, there must be a way of evaluating partial solutions to the problem - the fitness
-        function.  It is not sufficient to evaluate solutions as right or wrong, the fitness score
-        needs to indicate <emphasis>how right</emphasis> or, if your glass is half empty,
-        <emphasis>how wrong</emphasis> a candidate solution is.  So a function that returns either
-        0 or 1 is useless.  A function that returns a score on a scale of 1 - 100 is much better.
-        We need shades of grey, not just black and white, since this is how the algorithm guides
-        the random evolution to find increasingly better solutions.
+        The second requirement for applying evolutionary algorithms is that there must be a
+        way of evaluating partial solutions to the problem - the fitness function.  It is
+        not sufficient to evaluate solutions as right or wrong, the fitness score needs to
+        indicate <emphasis>how right</emphasis> or, if your glass is half empty,
+        <emphasis>how wrong</emphasis> a candidate solution is.  So a function that returns
+        either 0 or 1 is useless.  A function that returns a score on a scale of 1 - 100 is
+        much better.  We need shades of grey, not just black and white, since this is how the
+        algorithm guides the random evolution to find increasingly better solutions.
       </para>
     </section>
   </section>

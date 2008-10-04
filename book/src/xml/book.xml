@@ -24,8 +24,11 @@
   <!-- Chapters -->
   <xi:include href="evolution.xml" />
   <xi:include href="watchmaker.xml" />
+  <xi:include href="salesman.xml" />
   <xi:include href="selection.xml" />
+  <xi:include href="sudoku.xml" />
   <xi:include href="interactive.xml" />
+  <xi:include href="music.xml" />
   <xi:include href="geneticprogramming.xml" />
 
   <!-- Appendices -->
