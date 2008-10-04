@@ -3,5 +3,132 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0CR3/xsd/docbook.xsd">
   <title>The Power of Evolution</title>
-  <para>TODO</para>
+  <section>
+    <title>What are Evolutionary Algorithms?</title>
+    <para>
+      Evolutionary algorithms are inspired by the biological model of evolution and
+      natural selection first proposed by Charles Darwin in 1859.
+      The field of Evolutionary Computation encompasses Genetic Algorithms,
+      Genetic Programming, Evolutionary Programming, Evolution Strategies and several
+      other techniques.
+      There are important differences between the different types of evolutionary
+      algorithm, but they all follow a similar pattern.
+    </para>
+    <para>
+      A <emphasis>population</emphasis> of candidate solutions is iteratively evolved
+      over many <emphasis>generations</emphasis>.  Mimicking the concept of
+      natural selection in biology, the survival of candidates from generation to
+      generation in an evolutionary algorithm is governed by a <emphasis>fitness
+      function</emphasis> that evaluates each candidate according to how close it is
+      to the desired outcome, and a selection strategy that favours the better
+      solutions.  Over time, the quality of the solutions in the population should
+      improve.  If the program is successful, we can terminate the evolution once
+      it has found a solution that is good enough.
+    </para>
+    <section>
+      <title>An Example</title>
+      <para>
+        Now that we have introduced the basic concepts and terminology, I will attempt
+        to illustrate by way of an example. Suppose that we want to use evolution to generate
+        a particular string of text, for example "HELLO WORLD".  This is a contrived example
+        in as much as it assumes that we don't know how to create such a string and that
+        evolution is the best approach available to us.  However, bear with me as this simple
+        example is useful for demonstrating exactly how the evolutionary approach works.
+      </para>
+      <para>
+        TODO: Example
+      </para>
+    </section>
+    <section>
+      <title>The Outline of an Evolutionary Algorithm</title>
+      <procedure>
+        <step>
+          <title>Genesis</title>
+          <para>
+            Create an initial set (population) of <literal>n</literal> candidate solutions.
+            This may be done entirely randomly or the population may be seeded with some
+            hand-picked candidates.
+          </para>
+        </step>
+        <step>
+          <title>Evaluation</title>
+          <para>
+            Evaluate each member of the population using some fitness function.
+          </para>
+        </step>
+        <step>
+          <title>Survival of the Fittest</title>
+          <para>
+            Select a number of members of the evaluated population, favouring those
+            with higher fitness scores.  These will be the parents of the next generation.
+          </para>
+        </step>
+        <step>
+          <title>Evolution</title>
+          <para>
+            Generate a new population of offspring by randomly altering and/or combining
+            elements of the parent candidates.  The evolution is performed by one or more
+            <emphasis>evolutionary operators</emphasis>.  The most common operators are
+            <emphasis>cross-over</emphasis> and <emphasis>mutation</emphasis>.
+            Cross-over takes two parents, cuts them each into two or more pieces and recombines
+            the pieces to create two new offspring.  Mutation copies an individual but with
+            small, random modifications (such as flipping a bit from zero to one).
+          </para>
+        </step>
+        <step>
+          <title>Iteration</title>
+          <para>
+            Repeat steps 2-4 until a satisfactory solution is found or some other termination
+            condition is met (such as number of generations or elapsed time).
+          </para>
+        </step>
+      </procedure>
+    </section>
+  </section>
+  <section>
+    <title>When are Evolutionary Algorithms Useful?</title>
+    <para>
+      Evolutionary algorithms are typically used to provide good approximate
+      solutions to problems that cannot be solved easily using other techniques.
+      Many optimisation problems fall into this category.  It may be too
+      computationally-intensive to find an exact solution but sometimes a near-optimal
+      solution is sufficient.  In these situations evolutionary techniques can be
+      effective.  Due to their random nature, evolutionary algorithms are never guaranteed
+      to find an optimal solution for any problem, but they will often find a good solution
+      if one exists.
+      <!-- TODO: Compelling examples of optimisation problems suited to EAs. -->
+    </para>
+    <para>
+      Evolutionary algorithms can also be used to tackle problems that humans don't really
+      know how to solve.
+      An evolutionary algorithm, free of any human preconceptions or biases, can generate
+      suprising solutions that are comparable to, or better than, the best human-generated
+      efforts.
+      The only requirement is that we can recognise a good solution if
+      it were presented to us, even if we don't know how to create a good solution.
+      In other words, we need to be able to formulate an effective fitness function.
+      <!-- TODO: Compelling example (possibly the antenna one). -->
+    </para>
+    <section>
+      <title>Pre-requisites</title>
+      <para>
+        There are two requirements that must be met before an evolutionary algorithm can be used
+        for a particular problem.
+        Firstly, we need a way to encode candidate solutions to the problem.  The simplest encoding,
+        and that used by many genetic algorithms, is a bit string.  The candidates are simply a
+        sequence of zeros and ones.
+        This encoding makes cross-over and mutation very straightforward, but that does not mean
+        that you cannot use more complicated representations.
+      </para>
+      <para>
+        Secondly, there must be a way of evaluating partial solutions to the problem - the fitness
+        function.  It is not sufficient to evaluate solutions as right or wrong, the fitness score
+        needs to indicate <emphasis>how right</emphasis> or, if your glass is half empty,
+        <emphasis>how wrong</emphasis> a candidate solution is.  So a function that returns either
+        0 or 1 is useless.  A function that returns a score on a scale of 1 - 100 is much better.
+        We need shades of grey, not just black and white, since this is how the algorithm guides
+        the random evolution to find increasingly better solutions.
+      </para>
+    </section>
+  </section>
 </chapter>

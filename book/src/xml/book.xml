@@ -10,6 +10,7 @@
       <personname>
         <firstname>Daniel</firstname>
         <surname>Dyer</surname>
+        <othername>W.</othername>
       </personname>
       <email>dan@uncommons.org</email>
     </author>
@@ -22,10 +23,13 @@
 
   <!-- Chapters -->
   <xi:include href="evolution.xml" />
-  <xi:include href="components.xml" />
+  <xi:include href="watchmaker.xml" />
+  <xi:include href="selection.xml" />
+  <xi:include href="interactive.xml" />
   <xi:include href="geneticprogramming.xml" />
 
   <!-- Appendices -->
+  <xi:include href="performance.xml" />
   <xi:include href="gui.xml" />
   <xi:include href="distributed.xml" />
 
