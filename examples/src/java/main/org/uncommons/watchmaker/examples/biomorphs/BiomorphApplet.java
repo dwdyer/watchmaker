@@ -38,12 +38,12 @@ import javax.swing.SwingUtilities;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
+import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.Probability;
-import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
@@ -96,7 +96,7 @@ public class BiomorphApplet extends JApplet
                                                                                               renderer,
                                                                                               populationSize,
                                                                                               1);
-                EvolutionEngine<Biomorph> engine = new StandaloneEvolutionEngine<Biomorph>(new BiomorphFactory(),
+                EvolutionEngine<Biomorph> engine = new ConcurrentEvolutionEngine<Biomorph>(new BiomorphFactory(),
                                                                                            mutation,
                                                                                            selection,
                                                                                            new MersenneTwisterRNG());

@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.uncommons.maths.binary.BitString;
 import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.Probability;
-import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.factories.BitStringFactory;
 import org.uncommons.watchmaker.framework.operators.BitStringCrossover;
 import org.uncommons.watchmaker.framework.operators.BitStringMutation;
@@ -56,7 +56,7 @@ public class BitsExample
         operators.add(new BitStringCrossover(1, new Probability(0.7d)));
         operators.add(new BitStringMutation(new Probability(0.001d)));
         EvolutionaryOperator<BitString> pipeline = new EvolutionPipeline<BitString>(operators);
-        EvolutionEngine<BitString> engine = new StandaloneEvolutionEngine<BitString>(new BitStringFactory(length),
+        EvolutionEngine<BitString> engine = new ConcurrentEvolutionEngine<BitString>(new BitStringFactory(length),
                                                                                      pipeline,
                                                                                      new BitStringEvaluator(),
                                                                                      new RouletteWheelSelection(),

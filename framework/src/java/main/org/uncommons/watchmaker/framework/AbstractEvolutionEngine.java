@@ -139,6 +139,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                                                                                          rng));
         // Calculate the fitness scores for each member of the initial population.
         List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
+        sortEvaluatedPopulation(evaluatedPopulation);
         PopulationData<T> data = getPopulationData(evaluatedPopulation);
         // Notify observers of the state of the population.
         notifyPopulationChange(data);
@@ -148,6 +149,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
             ++currentGenerationIndex;
             population = createNextGeneration(evaluatedPopulation, eliteCount);
             evaluatedPopulation = evaluatePopulation(population);
+            sortEvaluatedPopulation(evaluatedPopulation);
             data = getPopulationData(evaluatedPopulation);
             // Notify observers of the state of the population.
             notifyPopulationChange(data);
@@ -222,14 +224,33 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
     /**
      * Takes a population, assigns a fitness score to each member and returns
-     * the members with their scores attached, sorted in descending order of
-     * fitness (descending order of fitness score for natural scores, ascending
-     * order of scores for non-natural scores).
+     * the members with their scores attached.  Order is not important since
+     * the returned population will be sorted later if required.
      * @param population The population of evolved candidate to be evaluated.
      * @return A list containing each of the candidates with an attached fitness
      * score.
      */
     protected abstract List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population);
+
+    
+    /**
+     * Sorts an evaluated population in descending order of fitness
+     * (descending order of fitness score for natural scores, ascending
+     * order of scores for non-natural scores)
+     * @param evaluatedPopulation The population to be sorted (in-place).
+     */
+    private void sortEvaluatedPopulation(List<EvaluatedCandidate<T>> evaluatedPopulation)
+    {
+        // Sort candidates in descending order according to fitness.
+        if (getFitnessEvaluator().isNatural()) // Descending values for natural fitness.
+        {
+            Collections.sort(evaluatedPopulation, Collections.reverseOrder());
+        }
+        else // Ascending values for non-natural fitness.
+        {
+            Collections.sort(evaluatedPopulation);
+        }
+    }
 
 
     /**
@@ -308,13 +329,11 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      */
     private PopulationData<T> getPopulationData(List<EvaluatedCandidate<T>> evaluatedPopulation)
     {
-        double[] fitnesses = new double[evaluatedPopulation.size()];
-        int index = -1;
+        DataSet stats = new DataSet(evaluatedPopulation.size());
         for (EvaluatedCandidate<T> candidate : evaluatedPopulation)
         {
-            fitnesses[++index] = candidate.getFitness();
+            stats.addValue(candidate.getFitness());
         }
-        DataSet stats = new DataSet(fitnesses);
         return new PopulationData<T>(evaluatedPopulation.get(0).getCandidate(),
                                      evaluatedPopulation.get(0).getFitness(),
                                      stats.getArithmeticMean(),

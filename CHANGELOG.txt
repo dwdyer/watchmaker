@@ -31,6 +31,12 @@ Changes in version 0.5.0
 
 * Introduced very simple evolutionary music example application using JFugue.
 
+* Renamed StandaloneEvolutionEngine to ConcurrentEvolutionEngine.
+
+* Introduced SequentialEvolutionEngine, which performs all work synchronously
+  on the request thread, making it suitable for use in restricted/managed
+  environments that do not permit direct control over threading.
+
 
 Changes in version 0.4.3
 ------------------------

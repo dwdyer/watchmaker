@@ -41,13 +41,13 @@ import org.uncommons.maths.random.DiscreteUniformGenerator;
 import org.uncommons.maths.random.PoissonGenerator;
 import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
+import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
-import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
@@ -219,7 +219,7 @@ public class SudokuApplet extends JApplet
 
                 EvolutionaryOperator<Sudoku> pipeline = new EvolutionPipeline<Sudoku>(operators);
 
-                EvolutionEngine<Sudoku> engine = new StandaloneEvolutionEngine<Sudoku>(new SudokuFactory(puzzle),
+                EvolutionEngine<Sudoku> engine = new ConcurrentEvolutionEngine<Sudoku>(new SudokuFactory(puzzle),
                                                                                        pipeline,
                                                                                        new SudokuEvaluator(),
                                                                                        selectionStrategy,

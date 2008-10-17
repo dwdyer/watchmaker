@@ -24,9 +24,9 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import org.jfugue.Note;
 import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.operators.ListCrossover;
@@ -50,7 +50,7 @@ public class MusicExample
                                                                                           5);
         Random rng = new MersenneTwisterRNG();
 
-        EvolutionEngine<List<Note>> engine = new StandaloneEvolutionEngine<List<Note>>(factory,
+        EvolutionEngine<List<Note>> engine = new ConcurrentEvolutionEngine<List<Note>>(factory,
                                                                                        operator,
                                                                                        selection,
                                                                                        rng);

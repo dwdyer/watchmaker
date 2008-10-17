@@ -18,11 +18,11 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 import java.util.HashMap;
 import java.util.Map;
 import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.Probability;
-import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
 import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
@@ -63,7 +63,7 @@ public class GeneticProgrammingExample
         TreeFactory factory = new TreeFactory(2, 4, 0.5, 0.6);
         TreeMutation mutation = new TreeMutation(factory, new Probability(0.4d));
         TreeEvaluator evaluator = new TreeEvaluator(data);
-        EvolutionEngine<Node> engine = new StandaloneEvolutionEngine<Node>(factory,
+        EvolutionEngine<Node> engine = new ConcurrentEvolutionEngine<Node>(factory,
                                                                            mutation,
                                                                            evaluator,
                                                                            new RouletteWheelSelection(),

@@ -18,34 +18,27 @@ package org.uncommons.watchmaker.framework;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
-import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 import org.uncommons.watchmaker.framework.termination.ElapsedTime;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
- * Unit-test for the single-node evolution engine.
+ * Convenient base class that defines test cases for various implementations of
+ * {@link EvolutionEngine}.
  * @author Daniel Dyer
  */
-public class StandaloneEvolutionEngineTest
+// Has to be public otherwise TestNG fails.
+public abstract class EvolutionEngineTestBase
 {
-    private final Random rng = new MersenneTwisterRNG();
-    private EvolutionEngine<Integer> engine;
+    private final EvolutionEngine<Integer> engine;
 
-    @BeforeMethod
-    public void prepareEngine()
+    protected EvolutionEngineTestBase(EvolutionEngine<Integer> engine)
     {
-        engine = new StandaloneEvolutionEngine<Integer>(new IntegerFactory(),
-                                                        new IntegerZeroMaker(),
-                                                        new IntegerEvaluator(),
-                                                        new RouletteWheelSelection(),
-                                                        rng);        
+        this.engine = engine;
     }
 
-
+    
     @Test
     public void testElitism()
     {
@@ -127,7 +120,7 @@ public class StandaloneEvolutionEngineTest
     /**
      * Stub candidate factory for tests.  Always returns zero-valued integers.
      */
-    private static final class IntegerFactory extends AbstractCandidateFactory<Integer>
+    protected static final class IntegerFactory extends AbstractCandidateFactory<Integer>
     {
         protected Integer generateRandomCandidate(Random rng)
         {
@@ -139,7 +132,7 @@ public class StandaloneEvolutionEngineTest
     /**
      * Trivial fitness evaluator for integers.  Used by tests above.
      */
-    private static final class IntegerEvaluator implements FitnessEvaluator<Integer>
+    protected static final class IntegerEvaluator implements FitnessEvaluator<Integer>
     {
 
         public double getFitness(Integer candidate,
@@ -159,8 +152,8 @@ public class StandaloneEvolutionEngineTest
      * Trivial test operator that mutates all integers into zeroes.
      */
     @SuppressWarnings("unchecked")
-    private static final class IntegerZeroMaker implements EvolutionaryOperator<Integer>
-    {        
+    protected static final class IntegerZeroMaker implements EvolutionaryOperator<Integer>
+    {
         public <S extends Integer> List<S> apply(List<S> selectedCandidates, Random rng)
         {
             List<S> result = new ArrayList<S>(selectedCandidates.size());

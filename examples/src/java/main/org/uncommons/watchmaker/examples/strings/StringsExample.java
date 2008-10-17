@@ -18,11 +18,11 @@ package org.uncommons.watchmaker.examples.strings;
 import java.util.ArrayList;
 import java.util.List;
 import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
-import org.uncommons.watchmaker.framework.StandaloneEvolutionEngine;
 import org.uncommons.watchmaker.framework.factories.StringFactory;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.StringCrossover;
@@ -68,7 +68,7 @@ public final class StringsExample
         operators.add(new StringMutation(ALPHABET, 0.02d));
         operators.add(new StringCrossover());
         EvolutionaryOperator<String> pipeline = new EvolutionPipeline<String>(operators);
-        EvolutionEngine<String> engine = new StandaloneEvolutionEngine<String>(new StringFactory(ALPHABET,
+        EvolutionEngine<String> engine = new ConcurrentEvolutionEngine<String>(new StringFactory(ALPHABET,
                                                                                                  target.length()),
                                                                                pipeline,
                                                                                new StringEvaluator(target),

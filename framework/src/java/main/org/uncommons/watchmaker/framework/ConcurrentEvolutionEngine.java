@@ -31,17 +31,25 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.NullFitnessEvaluator;
 
 /**
- * Generic evolutionary algorithm engine for evolution that runs
- * on a single host.  Includes support for parallel fitness evaluations
- * on multi-processor and multi-core machines.
+ * <p>Multi-threaded {@link EvolutionEngine}.  Fitness evaluations are performed
+ * in parallel on multi-processor, multi-core and hyper-threaded machines.
+ * Evolution (mutation, cross-over, etc.) occurs on the request thread but
+ * fitness evaluations are delegated to a pool of worker threads.
+ * All of the host's available processing units are used (i.e. on a quad-core
+ * machine, there will be four fitness evaluation worker threads).</p>
+ * <p>This evolution engine is the most suitable for typical evolutionary
+ * algorithms.  Evolutionary programs that execute in a restricted/managed
+ * environment (where it is not permitted for applications to manage their own
+ * threads) should use the {@link SequentialEvolutionEngine}/
  * @param <T> The type of entity that is to be evolved.
  * @author Daniel Dyer
+ * @see SequentialEvolutionEngine
  * @see CandidateFactory
  * @see FitnessEvaluator
  * @see SelectionStrategy
  * @see EvolutionaryOperator
  */
-public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
+public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
     private static final int PROCESSOR_COUNT = Runtime.getRuntime().availableProcessors();
 
@@ -66,7 +74,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      * @param rng The source of randomness used by all stochastic processes (including
      * evolutionary operators and selection strategies).
      */
-    public StandaloneEvolutionEngine(CandidateFactory<T> candidateFactory,
+    public ConcurrentEvolutionEngine(CandidateFactory<T> candidateFactory,
                                      EvolutionaryOperator<? super T> evolutionScheme,
                                      FitnessEvaluator<? super T> fitnessEvaluator,
                                      SelectionStrategy<? super T> selectionStrategy,
@@ -87,7 +95,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      * Creates a new evolution engine by specifying the various components required by
      * an evolutionary algorithm and a thread factory.  Most users will not need a
      * custom thread factory and should instead use the
-     * {@link #StandaloneEvolutionEngine(CandidateFactory, EvolutionaryOperator,
+     * {@link #ConcurrentEvolutionEngine(CandidateFactory, EvolutionaryOperator,
      *  FitnessEvaluator, SelectionStrategy, Random)} constructor, which provides a
      * sensible default.
      * @param candidateFactory Factory used to create the initial population that is
@@ -105,7 +113,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      * This is particularly useful for fine-tuning resource usage when running embedded
      * inside another application such as a servlet container.
      */
-    public StandaloneEvolutionEngine(CandidateFactory<T> candidateFactory,
+    public ConcurrentEvolutionEngine(CandidateFactory<T> candidateFactory,
                                      EvolutionaryOperator<? super T> evolutionScheme,
                                      FitnessEvaluator<? super T> fitnessEvaluator,
                                      SelectionStrategy<? super T> selectionStrategy,
@@ -137,7 +145,7 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      * @param rng The source of randomness used by all stochastic processes (including
      * evolutionary operators and selection strategies).
      */
-    public StandaloneEvolutionEngine(CandidateFactory<T> candidateFactory,
+    public ConcurrentEvolutionEngine(CandidateFactory<T> candidateFactory,
                                      EvolutionaryOperator<? super T> evolutionScheme,
                                      InteractiveSelection<T> selectionStrategy,
                                      Random rng)
@@ -203,15 +211,6 @@ public class StandaloneEvolutionEngine<T> extends AbstractEvolutionEngine<T>
             Thread.currentThread().interrupt();
         }
 
-        // Sort candidates in descending order according to fitness.
-        if (getFitnessEvaluator().isNatural()) // Descending values for natural fitness.
-        {
-            Collections.sort(evaluatedPopulation, Collections.reverseOrder());
-        }
-        else // Ascending values for non-natural fitness.
-        {
-            Collections.sort(evaluatedPopulation);
-        }
         return evaluatedPopulation;
     }
 
