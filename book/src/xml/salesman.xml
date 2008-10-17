@@ -1,7 +1,16 @@
 <chapter xmlns="http://docbook.org/ns/docbook"
          xmlns:xi="http://www.w3.org/2001/XInclude"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0CR3/xsd/docbook.xsd">
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
   <title>The Travelling Salesman</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="book/src/images/travelling_salesman_problem.png"
+                 format="PNG" scale="65" />
+    </imageobject>
+    <caption>
+      http://xkcd.com/399
+    </caption>
+  </mediaobject>
   <para>TODO</para>
 </chapter>

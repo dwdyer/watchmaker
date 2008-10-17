@@ -1,18 +1,70 @@
 <chapter xmlns="http://docbook.org/ns/docbook"
          xmlns:xi="http://www.w3.org/2001/XInclude"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0CR3/xsd/docbook.xsd">
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
   <title>The Power of Evolution</title>
+  <para>
+    Software is normally developed in a very precise, deterministic way.  The behaviour of a
+    computer is governed by strict logical rules.  A computer invariably does exactly what
+    it is told to do.
+  </para>
+  <para>
+    When writing a program to solve a particular problem, software developers will identify
+    the necessary sub-tasks that the program must perform.  Algorithms are chosen and
+    implemented for each task.  The completed program becomes a detailed specification of
+    exactly how to get from A to B.  Every aspect is carefully designed by its developers
+    who must understand how the various components interact to deliver the program's
+    functionality.
+  </para>
+  <para>
+    This prescriptive approach to solving problems with computers has served us well and is
+    responsible for most of the software applications that we use today.  However, it is not
+    without limitations.
+    Solutions to problems are constrained by the intuition, knowledge and prejudices
+    of those who develop the software.
+    <emphasis>The programmers have to know exactly how to solve the problem.</emphasis>
+  </para>
+  <para>
+    Another characteristic of the prescriptive approach that is sometimes problematic is
+    that it is best suited to finding exact answers.  Not all problems have exact solutions,
+    and some that do may be too computationally expensive to solve.  Sometimes it is
+    more useful to be able to find an approximate answer quickly than to waste time searching
+    for a better solution.
+  </para>
   <section>
     <title>What are Evolutionary Algorithms?</title>
     <para>
       Evolutionary algorithms (EAs) are inspired by the biological model of evolution and
       natural selection first proposed by Charles Darwin in 1859.
-      The field of Evolutionary Computation encompasses Genetic Algorithms,
-      Genetic Programming, Evolutionary Programming, Evolution Strategies and several
-      other techniques.
-      There are important differences between the different types of evolutionary
-      algorithm, but they all follow a similar pattern.
+    </para>
+    <para>
+      In the natural world, evolution helps species adapt to their environments.
+      Environmental factors that influence the survival prospects of an organism
+      include climate, availability of food and the dangers of predators.
+    </para>
+    <para>
+      Species change over the course of many generations.
+      Mutations occur randomly.  Some mutations will be advantageous, but many will be
+      useless or detrimental.  Progress comes from the feedback provided by natural
+      selection.
+      For example, organisms that can survive for long periods without water will be
+      more likely to thrive in dry conditions than those that can't.
+      Likewise, animals that can run fast will be more successful at evading predators
+      than their slower rivals.
+      If a random genetic modification helps an organism to survive and to reproduce,
+      that modification will itself survive, via offspring, and spread throughout the
+      population.
+    </para>
+    <para>
+      Evolutionary algorithms are based on a simplified model of this biological evolution.
+      To solve a particular problem, we create an environment in which potential
+      solutions can evolve.  The environment is shaped by the parameters of the problem
+      and encourages the evolution of good solutions.
+    </para>
+    <para>
+      The field of Evolutionary Computation encompasses several types of evolutionary
+      algorithm.  There are important differences between them but they all
+      follow a similar pattern.
     </para>
     <para>
       A <emphasis>population</emphasis> of candidate solutions is iteratively evolved
