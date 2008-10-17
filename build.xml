@@ -246,6 +246,7 @@
         <include name="**/${classes.dir}/test" />
       </dirset>
       <fileset dir="${temp.dir}" includes="*.jar"/>
+      <fileset dir="." includes="**/${lib.dir}/*.jar"/>
       <path refid="base.path" />
     </path>
     <mkdir dir="${test-results.dir}" />

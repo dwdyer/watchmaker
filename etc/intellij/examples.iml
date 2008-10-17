@@ -17,6 +17,15 @@
     <orderEntry type="library" name="testng-5.6-jdk15" level="project" />
     <orderEntry type="library" name="uncommons-maths-1.0.2" level="project" />
     <orderEntry type="library" name="fest-swing-1.0b1" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../examples/lib/jfugue-4.0.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntryProperties />
   </component>
 </module>
