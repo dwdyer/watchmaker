@@ -248,7 +248,7 @@ public class SudokuApplet extends JApplet
      */
     private class GridViewUpdater implements EvolutionObserver<Sudoku>
     {
-        public void populationUpdate(PopulationData<Sudoku> data)
+        public void populationUpdate(PopulationData<? extends Sudoku> data)
         {
             sudokuView.setSolution(data.getBestCandidate());
             generationsLabel.setText(String.valueOf(data.getGenerationNumber() + 1));

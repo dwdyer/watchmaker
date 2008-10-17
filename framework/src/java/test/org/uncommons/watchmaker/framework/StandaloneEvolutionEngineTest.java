@@ -51,9 +51,9 @@ public class StandaloneEvolutionEngineTest
     {
         class ElitismObserver implements EvolutionObserver<Integer>
         {
-            private PopulationData<Integer> data;
+            private PopulationData<? extends Integer> data;
 
-            public void populationUpdate(PopulationData<Integer> data)
+            public void populationUpdate(PopulationData<? extends Integer> data)
             {
                 this.data = data;
             }
@@ -108,7 +108,7 @@ public class StandaloneEvolutionEngineTest
         final Thread requestThread = Thread.currentThread();
         engine.addEvolutionObserver(new EvolutionObserver<Integer>()
         {
-            public void populationUpdate(PopulationData<Integer> populationData)
+            public void populationUpdate(PopulationData<? extends Integer> populationData)
             {
                 if (populationData.getElapsedTime() > timeout / 2)
                 {

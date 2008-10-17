@@ -67,7 +67,7 @@ public interface EvolutionEngine<T>
      * @param observer An evolution observer call-back.
      * @see #removeEvolutionObserver(EvolutionObserver)
      */
-    void addEvolutionObserver(EvolutionObserver<T> observer);
+    void addEvolutionObserver(EvolutionObserver<? super T> observer);
 
 
     /**
@@ -75,5 +75,5 @@ public interface EvolutionEngine<T>
      * @param observer An evolution observer call-back.
      * @see #addEvolutionObserver(EvolutionObserver)
      */
-    void removeEvolutionObserver(EvolutionObserver<T> observer);
+    void removeEvolutionObserver(EvolutionObserver<? super T> observer);
 }

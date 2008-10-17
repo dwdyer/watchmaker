@@ -32,15 +32,11 @@ import org.uncommons.watchmaker.framework.PopulationData;
  * {@link org.uncommons.watchmaker.framework.EvolutionEngine} to provide
  * real-time information (in a Swing GUI) about the current state of the
  * evolution.
- * @param <T> The type of entity that exists in the evolving population
- * that is being monitored.  This type can be bound to a super-type of the
- * actual population type so as to allow a non-specific monitor that can
- * be re-used for different population types.
  * @author Daniel Dyer
  */
-public class EvolutionMonitor<T> implements EvolutionObserver<T>
+public class EvolutionMonitor implements EvolutionObserver<Object>
 {
-    private final List<EvolutionObserver<T>> views = new LinkedList<EvolutionObserver<T>>();
+    private final List<EvolutionObserver<Object>> views = new LinkedList<EvolutionObserver<Object>>();
     private final JComponent monitorComponent = new JTabbedPane();
 
     private Window window = null;
@@ -48,7 +44,7 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
 
     public EvolutionMonitor()
     {
-        PopulationFitnessView<T> fitnessView = new PopulationFitnessView<T>();
+        PopulationFitnessView fitnessView = new PopulationFitnessView();
         monitorComponent.add("Population Fitness", fitnessView);
         views.add(fitnessView);
     }
@@ -57,9 +53,9 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
     /**
      * {@inheritDoc}
      */
-    public void populationUpdate(PopulationData<T> populationData)
+    public void populationUpdate(PopulationData<? extends Object> populationData)
     {
-        for (EvolutionObserver<T> view : views)
+        for (EvolutionObserver<Object> view : views)
         {
             view.populationUpdate(populationData);
         }

@@ -69,7 +69,7 @@ public class GeneticProgrammingExample
                                                                            new RouletteWheelSelection(),
                                                                            new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
-        EvolutionMonitor<Node> evolutionMonitor = new EvolutionMonitor<Node>();
+        EvolutionMonitor evolutionMonitor = new EvolutionMonitor();
         engine.addEvolutionObserver(evolutionMonitor);
         evolutionMonitor.showInFrame("GP Example");
         return engine.evolve(1000, 5, new TargetFitness(0d, evaluator.isNatural()));
@@ -82,7 +82,7 @@ public class GeneticProgrammingExample
      */
     private static class EvolutionLogger implements EvolutionObserver<Node>
     {
-        public void populationUpdate(PopulationData<Node> data)
+        public void populationUpdate(PopulationData<? extends Node> data)
         {
             System.out.println("Generation " + data.getGenerationNumber() + ": " + data.getBestCandidateFitness());
         }

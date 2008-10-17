@@ -1,4 +1,4 @@
-Changes in version 0.4.4
+Changes in version 0.5.0
 ------------------------
 
 * Added wildcard to generic parameter of Console select method.
@@ -22,6 +22,14 @@ Changes in version 0.4.4
   Probability parameters from a GUI.
 
 * Javadoc improvements.
+
+* Relaxed generic constraints on EvolutionObservers (generic type can now be
+  less specific than the EvolutionEngine type).  Added wildcard to
+  populationUpdate method of EvolutionObserver to support this.
+
+* EvolutionMonitor no longer requires a generic type.
+
+* Introduced very simple evolutionary music example application using JFugue.
 
 
 Changes in version 0.4.3

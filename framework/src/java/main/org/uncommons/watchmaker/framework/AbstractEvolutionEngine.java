@@ -35,7 +35,7 @@ import org.uncommons.maths.statistics.DataSet;
  */
 public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 {
-    private final List<EvolutionObserver<T>> observers = new LinkedList<EvolutionObserver<T>>();
+    private final List<EvolutionObserver<? super T>> observers = new LinkedList<EvolutionObserver<? super T>>();
     private final Random rng;
     private final CandidateFactory<T> candidateFactory;
     private final EvolutionaryOperator<? super T> evolutionScheme;
@@ -271,7 +271,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     /**
      * {@inheritDoc}
      */
-    public void addEvolutionObserver(EvolutionObserver<T> observer)
+    public void addEvolutionObserver(EvolutionObserver<? super T> observer)
     {
         observers.add(observer);
     }
@@ -280,7 +280,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     /**
      * {@inheritDoc}
      */
-    public void removeEvolutionObserver(EvolutionObserver<T> observer)
+    public void removeEvolutionObserver(EvolutionObserver<? super T> observer)
     {
         observers.remove(observer);
     }
@@ -292,7 +292,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      */
     private void notifyPopulationChange(PopulationData<T> data)
     {
-        for (EvolutionObserver<T> observer : observers)
+        for (EvolutionObserver<? super T> observer : observers)
         {
             observer.populationUpdate(data);
         }

@@ -74,7 +74,7 @@ public class BitsExample
      */
     private static class EvolutionLogger implements EvolutionObserver<BitString>
     {
-        public void populationUpdate(PopulationData<BitString> data)
+        public void populationUpdate(PopulationData<? extends BitString> data)
         {
             System.out.println("Generation " + data.getGenerationNumber() + ": " + data.getBestCandidate());
         }

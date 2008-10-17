@@ -137,7 +137,7 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
                                                           rng);
         engine.addEvolutionObserver(new EvolutionObserver<List<String>>()
         {
-            public void populationUpdate(PopulationData<List<String>> data)
+            public void populationUpdate(PopulationData<? extends List<String>> data)
             {
                 if (progressListener != null)
                 {

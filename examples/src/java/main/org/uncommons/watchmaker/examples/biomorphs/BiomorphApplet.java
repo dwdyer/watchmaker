@@ -123,7 +123,7 @@ public class BiomorphApplet extends JApplet
      */
     private final class GenerationTracker implements EvolutionObserver<Biomorph>
     {
-        public void populationUpdate(final PopulationData<Biomorph> populationData)
+        public void populationUpdate(final PopulationData<? extends Biomorph> populationData)
         {
             SwingUtilities.invokeLater(new Runnable()
             {

@@ -38,13 +38,9 @@ import org.uncommons.watchmaker.framework.PopulationData;
 /**
  * {@link EvolutionMonitor} view for displaying a graph of population fitness data
  * over the lifetime of the evolutionary algorithm.
- * @param <T> The type of entity that exists in the evolving population
- * that is being observed.  This type can be bound to a super-type of the
- * actual population type so as to allow a non-specific observer that can
- * be re-used for different population types.
  * @author Daniel Dyer
  */
-class PopulationFitnessView<T> extends JPanel implements EvolutionObserver<T>
+class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
 {
     private final XYIntervalSeries meanSeries = new XYIntervalSeries("Mean Fitness");
     private final XYIntervalSeries bestSeries = new XYIntervalSeries("Fittest Individual");
@@ -111,7 +107,7 @@ class PopulationFitnessView<T> extends JPanel implements EvolutionObserver<T>
     /**
      * {@inheritDoc}
      */
-    public void populationUpdate(PopulationData<T> populationData)
+    public void populationUpdate(PopulationData<? extends Object> populationData)
     {
         int generation = populationData.getGenerationNumber();
         double mean = populationData.getMeanFitness();
