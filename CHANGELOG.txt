@@ -27,8 +27,6 @@ Changes in version 0.5.0
   less specific than the EvolutionEngine type).  Added wildcard to
   populationUpdate method of EvolutionObserver to support this.
 
-* EvolutionMonitor no longer requires a generic type.
-
 * Introduced very simple evolutionary music example application using JFugue.
 
 * Renamed StandaloneEvolutionEngine to ConcurrentEvolutionEngine.

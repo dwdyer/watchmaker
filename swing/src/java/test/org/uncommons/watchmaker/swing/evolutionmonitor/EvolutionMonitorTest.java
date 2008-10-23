@@ -52,7 +52,7 @@ public class EvolutionMonitorTest
     @Test(groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
     public void testShowInFrame()
     {
-        EvolutionMonitor monitor = new EvolutionMonitor();
+        EvolutionMonitor<String> monitor = new EvolutionMonitor<String>();
         monitor.showInFrame("MonitorFrame");
         robot.waitForIdle();
         // There ought to be a visible frame containing the evolution monitor.
@@ -68,7 +68,7 @@ public class EvolutionMonitorTest
     @Test(groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
     public void testShowInDialog()
     {
-        EvolutionMonitor monitor = new EvolutionMonitor();
+        EvolutionMonitor<String> monitor = new EvolutionMonitor<String>();
         monitor.showInDialog(null, "MonitorDialog", false);
         robot.waitForIdle();
         // There ought to be a visible dialog containing the evolution monitor.
@@ -83,13 +83,13 @@ public class EvolutionMonitorTest
 
     /**
      * If the evolution monitor is already displayed in a window, a subsequent call to one of
-     * the show methods should result in that window being replaced. 
+     * the show methods should result in that window being replaced.
      */
     @Test(dependsOnMethods = {"testShowInFrame", "testShowInDialog"},
           groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
     public void testShowInFrameThenShowInDialog()
     {
-        EvolutionMonitor monitor = new EvolutionMonitor();
+        EvolutionMonitor<String> monitor = new EvolutionMonitor<String>();
         monitor.showInFrame("MonitorFrame");
         robot.waitForIdle();
         // There ought to be a visible frame containing the evolution monitor.

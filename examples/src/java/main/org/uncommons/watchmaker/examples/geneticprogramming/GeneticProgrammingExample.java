@@ -69,7 +69,7 @@ public class GeneticProgrammingExample
                                                                            new RouletteWheelSelection(),
                                                                            new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
-        EvolutionMonitor evolutionMonitor = new EvolutionMonitor();
+        EvolutionMonitor<Node> evolutionMonitor = new EvolutionMonitor<Node>();
         engine.addEvolutionObserver(evolutionMonitor);
         evolutionMonitor.showInFrame("GP Example");
         return engine.evolve(1000, 5, new TargetFitness(0d, evaluator.isNatural()));

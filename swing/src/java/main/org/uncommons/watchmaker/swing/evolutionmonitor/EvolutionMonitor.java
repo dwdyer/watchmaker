@@ -26,6 +26,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.PopulationData;
+import org.uncommons.watchmaker.framework.interactive.Renderer;
 
 /**
  * The Evolution Monitor is a component that can be attached to an
@@ -34,14 +35,18 @@ import org.uncommons.watchmaker.framework.PopulationData;
  * evolution.
  * @author Daniel Dyer
  */
-public class EvolutionMonitor implements EvolutionObserver<Object>
+public class EvolutionMonitor<T> implements EvolutionObserver<T>
 {
-    private final List<EvolutionObserver<Object>> views = new LinkedList<EvolutionObserver<Object>>();
+    private final List<EvolutionObserver<? super T>> views = new LinkedList<EvolutionObserver<? super T>>();
     private final JComponent monitorComponent = new JTabbedPane();
 
     private Window window = null;
 
 
+    /**
+     * Creates an EvolutionMonitor with a single panel that graphs the fitness scores
+     * of the population from generation to generation.
+     */
     public EvolutionMonitor()
     {
         PopulationFitnessView fitnessView = new PopulationFitnessView();
@@ -51,11 +56,25 @@ public class EvolutionMonitor implements EvolutionObserver<Object>
 
 
     /**
+     * Creates an EvolutionMonitor with a second panel that displays a graphical
+     * representation of the fittest candidate in the population.
+     * @param renderer Renders a candidate solution as a JComponent.
+     */
+    public EvolutionMonitor(Renderer<T, JComponent> renderer)
+    {
+        this();
+        FittestCandidateView<T> candidateView = new FittestCandidateView<T>(renderer);
+        monitorComponent.add("Fittest Candidate So Far", candidateView);
+        views.add(candidateView);
+    }
+
+
+    /**
      * {@inheritDoc}
      */
-    public void populationUpdate(PopulationData<? extends Object> populationData)
+    public void populationUpdate(PopulationData<? extends T> populationData)
     {
-        for (EvolutionObserver<Object> view : views)
+        for (EvolutionObserver<? super T> view : views)
         {
             view.populationUpdate(populationData);
         }

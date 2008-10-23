@@ -338,7 +338,7 @@
     </checkstyle>
     <xslt in="${checkstyle-results.dir}/checkstyle_report.xml"
           out="${checkstyle-results.dir}/checkstyle_report.html"
-          style="${conf.dir}/checkstyle-noframes-sorted.xsl"/>
+          style="${conf.dir}/checkstyle-noframes-sorted.xsl" />
   </target>
 
 
@@ -352,9 +352,8 @@
   <target name="book" description="Generates the PDF user guide.">
     <mkdir dir="book/${build.dir}" />
     <uncommons:docbook classpathref="base.path"
-                       stylesheet="${conf.dir}/docbook/fo/docbook.xsl"
                        source="book/${src.dir}/xml/book.xml"
-                       output="book/${build.dir}/book.pdf"/>
+                       output="book/${build.dir}/book.pdf" />
   </target>
 
 
