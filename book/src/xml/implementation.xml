@@ -14,7 +14,7 @@
     <para>
       Performance may be a consideration when choosing a language.
       Almost all evolutionary algorithms are CPU-bound.  For this reason, compiled languages
-      typically offer much better EA performance than interpretted languages.  For
+      typically offer much better EA performance than interpreted languages.  For
       short-lived programs the difference is unlikely to be significant, but for
       long-running programs it could be considerable.
     </para>

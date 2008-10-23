@@ -256,7 +256,7 @@
     <para>
       Evolutionary algorithms can also be used to tackle problems that humans don't really
       know how to solve.
-      An EA, free of any human preconceptions or biases, can generate suprising solutions
+      An EA, free of any human preconceptions or biases, can generate surprising solutions
       that are comparable to, or better than, the best human-generated efforts.
       It is merely necessary that we can recognise a good solution if
       it were presented to us, even if we don't know how to create a good solution.

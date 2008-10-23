@@ -353,7 +353,10 @@
     <mkdir dir="book/${build.dir}" />
     <uncommons:docbook classpathref="base.path"
                        source="book/${src.dir}/xml/book.xml"
-                       output="book/${build.dir}/book.pdf" />
+                       format="pdf"
+                       outputDir="book/${build.dir}" >
+      <parameter name="paper.type" value="A4" />
+    </uncommons:docbook>
   </target>
 
 

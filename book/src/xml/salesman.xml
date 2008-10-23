@@ -6,7 +6,7 @@
   <mediaobject>
     <imageobject>
       <imagedata fileref="book/src/images/travelling_salesman_problem.png"
-                 format="PNG" scale="65" />
+                 format="PNG" scale="62" />
     </imageobject>
     <caption>
       http://xkcd.com/399
