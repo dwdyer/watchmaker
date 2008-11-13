@@ -236,7 +236,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     /**
      * Sorts an evaluated population in descending order of fitness
      * (descending order of fitness score for natural scores, ascending
-     * order of scores for non-natural scores)
+     * order of scores for non-natural scores).
      * @param evaluatedPopulation The population to be sorted (in-place).
      */
     private void sortEvaluatedPopulation(List<EvaluatedCandidate<T>> evaluatedPopulation)

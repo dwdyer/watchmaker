@@ -27,6 +27,7 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  * {@link EvolutionMonitor} view for displaying a graphical representation
  * of the fittest candidate found so far.  This allows us to monitor the
  * progress of an evolutionary algorithm.
+ * @param <T> The type of the evolved entity displayed by this component.
  * @author Daniel Dyer
  */
 class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>

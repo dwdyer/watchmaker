@@ -33,6 +33,7 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  * {@link org.uncommons.watchmaker.framework.EvolutionEngine} to provide
  * real-time information (in a Swing GUI) about the current state of the
  * evolution.
+ * @param <T> The type of the evolved entities monitored by this component.
  * @author Daniel Dyer
  */
 public class EvolutionMonitor<T> implements EvolutionObserver<T>
