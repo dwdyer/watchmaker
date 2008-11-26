@@ -26,12 +26,12 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  * <p>Implements selection of <i>n</i> candidates from a population by selecting
  * <i>n</i> candidates at random where the probability of each candidate getting
  * selected is proportional to its fitness score.  This is analogous to each
- * candidate be assigned an area on a roulette wheel proportionate to its fitness
+ * candidate being assigned an area on a roulette wheel proportionate to its fitness
  * and the wheel being spun <n>i</n> times.  Candidates may be selected more than
  * once.</p>
  *
  * <p>In some instances, particularly with small population sizes, the randomness
- * of selection may result in excessively high occurances of particular candidates.
+ * of selection may result in excessively high occurrences of particular candidates.
  * If this is a problem, {@link StochasticUniversalSampling} provides an alternative
  * fitness-proportionate strategy for selection.</p>
  *
