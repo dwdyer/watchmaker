@@ -70,7 +70,7 @@ public final class Probability extends Number implements Comparable<Probability>
      * Generates an event according the probability value {@literal p}.
      * @param rng A source of randomness for generating events.
      * @return True with a probability of {@literal p}, fales with a probability of
-     * {@literal 1 - p).
+     * {@literal 1 - p}.
      */
     public boolean nextEvent(Random rng)
     {

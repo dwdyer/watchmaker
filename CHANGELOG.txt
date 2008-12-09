@@ -33,6 +33,9 @@ Changes in version 0.5.0
   on the request thread, making it suitable for use in restricted/managed
   environments that do not permit direct control over threading.
 
+* Use only integer labels for the generations axis on the Evolution Monitor's
+  fitness view.
+
 
 Changes in version 0.4.3
 ------------------------
