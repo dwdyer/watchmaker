@@ -29,7 +29,7 @@
   <xi:include href="sudoku.xml" />
   <xi:include href="islands.xml" />
   <xi:include href="interactive.xml" />
-  <xi:include href="music.xml" />
+  <xi:include href="steadystate.xml" />
   <xi:include href="multiobjective.xml" />
   <xi:include href="geneticprogramming.xml" />
 
