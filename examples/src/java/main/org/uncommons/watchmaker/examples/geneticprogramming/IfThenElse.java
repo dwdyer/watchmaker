@@ -53,6 +53,66 @@ public class IfThenElse implements Node
         return Math.max(condition.getDepth(), Math.max(then.getDepth(), otherwise.getDepth()));
     }
 
+    
+    public int countNodes()
+    {
+        return 1 + condition.countNodes() + then.countNodes() + otherwise.countNodes();
+    }
+
+
+    public Node getNode(int index)
+    {
+        if (index == 0)
+        {
+            return this;
+        }
+        int conditionNodes = condition.countNodes();
+        if (index <= conditionNodes)
+        {
+            return condition.getNode(index - 1);
+        }
+        else
+        {
+            int thenNodes = then.countNodes();
+            if (index <= conditionNodes + thenNodes)
+            {
+                return then.getNode(index - conditionNodes - 1);
+            }
+            else
+            {
+                return otherwise.getNode(index - conditionNodes - thenNodes - 1);
+            }
+        }
+    }
+
+
+    public Node replaceNode(int index, Node newNode)
+    {
+        if (index == 0)
+        {
+            return newNode;
+        }
+
+        int conditionNodes = condition.countNodes();
+        if (index <= conditionNodes)
+        {
+            return new IfThenElse(condition.replaceNode(index - 1, newNode), then, otherwise);
+        }
+        else
+        {
+            int thenNodes = then.countNodes();
+            if (index <= conditionNodes + thenNodes)
+            {
+                return new IfThenElse(condition, then.replaceNode(index - conditionNodes - 1, newNode), otherwise);
+            }
+            else
+            {
+                return new IfThenElse(condition, then, otherwise.replaceNode(index - conditionNodes - thenNodes - 1, newNode));
+            }
+        }
+    }
+
+
 
     /**
      * {@inheritDoc}
@@ -93,7 +153,7 @@ public class IfThenElse implements Node
             Node newCondition = condition.mutate(rng, mutationProbability, treeFactory);
             Node newThen = then.mutate(rng, mutationProbability, treeFactory);
             Node newOtherwise = otherwise.mutate(rng, mutationProbability, treeFactory);
-            if (newCondition != condition && newThen != then && newOtherwise != otherwise)
+            if (newCondition != condition || newThen != then || newOtherwise != otherwise)
             {
                 return new IfThenElse(newCondition, newThen, newOtherwise);
             }

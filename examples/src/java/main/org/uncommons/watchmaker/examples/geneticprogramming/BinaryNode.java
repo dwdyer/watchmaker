@@ -59,6 +59,58 @@ abstract class BinaryNode implements Node
     }
 
 
+    public int countNodes()
+    {
+        return 1 + left.countNodes() + right.countNodes();
+    }
+
+
+    public Node getNode(int index)
+    {
+        if (index == 0)
+        {
+            return this;
+        }
+        int leftNodes = left.countNodes();
+        if (index <= leftNodes)
+        {
+            return left.getNode(index - 1);
+        }
+        else
+        {
+            return right.getNode(index - leftNodes - 1);
+        }
+    }
+
+
+    public Node replaceNode(int index, Node newNode)
+    {
+        if (index == 0)
+        {
+            return newNode;
+        }
+
+        Class<? extends BinaryNode> nodeClass = this.getClass();
+        try
+        {
+            int leftNodes = left.countNodes();
+            Constructor<? extends BinaryNode> constructor = nodeClass.getConstructor(Node.class, Node.class);
+            if (index <= leftNodes)
+            {
+                return constructor.newInstance(left.replaceNode(index - 1, newNode), right);
+            }
+            else
+            {
+                return constructor.newInstance(left, right.replaceNode(index - leftNodes - 1, newNode));
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new IllegalStateException("Mutation failed.", ex);
+        }
+    }
+
+
     /**
      * {@inheritDoc} 
      */

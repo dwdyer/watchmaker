@@ -269,14 +269,14 @@
         There are two requirements that must be met before an evolutionary algorithm can
         be used for a particular problem.
         Firstly, we need a way to encode candidate solutions to the problem.  The simplest
-        encoding, and that used by many genetic algorithms, is a bit string.  The candidates
-        are simply a sequence of zeros and ones.
+        encoding, and that used by many genetic algorithms, is a bit string.  Each candidate
+        is simply a sequence of zeros and ones.
         This encoding makes cross-over and mutation very straightforward, but that does not
         mean that you cannot use more complicated representations.  In fact, we will see
         several instances of more advanced candidate representations in later chapters.
         As long as we can devise a scheme for evolving the candidates, there really is no
         restriction on the types that we can use.
-        Genetic programming is a good example of this.  GP evolves computer programs
+        Genetic programming (GP) is a good example of this.  GP evolves computer programs
         represented as syntax trees.
       </para>
       <para>

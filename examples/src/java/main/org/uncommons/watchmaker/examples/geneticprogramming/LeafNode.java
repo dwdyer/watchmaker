@@ -33,7 +33,36 @@ abstract class LeafNode implements Node
         return 1;
     }
 
+    
+    /**
+     * {@inheritDoc}
+     */
+    public int countNodes()
+    {
+        return 1;
+    }
 
+
+    public Node getNode(int index)
+    {
+        if (index > 0)
+        {
+            throw new IndexOutOfBoundsException("Invalid node index: " + index);
+        }
+        return this;
+    }
+
+
+    public Node replaceNode(int index, Node newNode)
+    {
+        if (index > 0)
+        {
+            throw new IndexOutOfBoundsException("Invalid node index: " + index);
+        }
+        return newNode;        
+    }
+
+    
     /**
      * {@inheritDoc}
      */

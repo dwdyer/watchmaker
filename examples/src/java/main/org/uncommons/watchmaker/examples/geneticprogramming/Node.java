@@ -46,6 +46,22 @@ public interface Node
     int getDepth();
 
     /**
+     * @return The total number of nodes in this tree (recursively counts the nodes
+     * for each sub-node of this node).
+     */
+    int countNodes();
+
+    /**
+     * Retrieves a sub-node from this tree. 
+     * @param index The index of a node.  Index 0 is the root node.  Nodes are numbered
+     * depth-first, right-to-left.
+     * @return The node at the specified position.
+     */
+    Node getNode(int index);
+
+    Node replaceNode(int index, Node newNode);
+
+    /**
      * Helper method for the {@link TreeMutation} evolutionary operator.
      * @param rng A source of randomness.
      * @param mutationProbability The probability that a given node will be mutated.

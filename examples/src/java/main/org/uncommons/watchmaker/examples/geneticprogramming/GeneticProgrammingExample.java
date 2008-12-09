@@ -15,17 +15,20 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
+import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.Probability;
+import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
-import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
 
 /**
  * Simple tree-based genetic programming application based on the first example
@@ -34,6 +37,9 @@ import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
  */
 public class GeneticProgrammingExample
 {
+    // This data describes the problem.  For each pair of inputs, the generated program
+    // should return the associated output.  The goal of this appliction is to generalise
+    // the examples into an equation.
     private static final Map<double[], Double> TEST_DATA = new HashMap<double[], Double>();
     static
     {
@@ -60,19 +66,21 @@ public class GeneticProgrammingExample
      */
     public static Node evolveProgram(Map<double[], Double> data)
     {
-        TreeFactory factory = new TreeFactory(2, 4, 0.5, 0.6);
-        TreeMutation mutation = new TreeMutation(factory, new Probability(0.4d));
+        TreeFactory factory = new TreeFactory(2, // Number of parameters passed into each program.
+                                              4, // Maximum depth of generated trees.
+                                              0.5, // Probability that a node is a function node.
+                                              0.6); // Probability that other nodes are params rather than constants.
+        List<EvolutionaryOperator<? super Node>> operators = new ArrayList<EvolutionaryOperator<? super Node>>(2);
+        operators.add(new TreeMutation(factory, new Probability(0.4d)));
+        operators.add(new TreeCrossover());
         TreeEvaluator evaluator = new TreeEvaluator(data);
         EvolutionEngine<Node> engine = new ConcurrentEvolutionEngine<Node>(factory,
-                                                                           mutation,
+                                                                           new EvolutionPipeline<Node>(operators),
                                                                            evaluator,
                                                                            new RouletteWheelSelection(),
                                                                            new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
-        EvolutionMonitor<Node> evolutionMonitor = new EvolutionMonitor<Node>();
-        engine.addEvolutionObserver(evolutionMonitor);
-        evolutionMonitor.showInFrame("GP Example");
-        return engine.evolve(1000, 5, new TargetFitness(0d, evaluator.isNatural()));
+        return engine.evolve(500, 5, new TargetFitness(0d, evaluator.isNatural()));
     }
 
 
