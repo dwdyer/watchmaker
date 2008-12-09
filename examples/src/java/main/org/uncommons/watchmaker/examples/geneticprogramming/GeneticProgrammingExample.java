@@ -80,7 +80,7 @@ public class GeneticProgrammingExample
                                                                            new RouletteWheelSelection(),
                                                                            new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
-        return engine.evolve(500, 5, new TargetFitness(0d, evaluator.isNatural()));
+        return engine.evolve(1000, 5, new TargetFitness(0d, evaluator.isNatural()));
     }
 
 

@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.data.xy.XYIntervalSeries;
@@ -66,6 +67,7 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
         renderer.setSeriesPaint(1, Color.RED);
         renderer.setAlpha(0.1f);
         chart.getXYPlot().setRenderer(renderer);
+        chart.getXYPlot().getDomainAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         add(createControls(), BorderLayout.SOUTH);
         add(new ChartPanel(chart), BorderLayout.CENTER);
     }
