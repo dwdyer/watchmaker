@@ -156,7 +156,11 @@
     <uncommons:compile module="examples" />
     <uncommons:jar module="examples"
                    jarfile="watchmaker-examples-${version}.jar"
-                   classpath="${artifact.identifier}.jar uncommons-maths-1.0.2.jar watchmaker-swing-${version}.jar" />
+                   classpath="${artifact.identifier}.jar uncommons-maths-1.0.2.jar watchmaker-swing-${version}.jar">
+      <additionalcontents>
+        <fileset dir="${modules.dir}/examples/resources" includes="**/*" />
+      </additionalcontents>
+    </uncommons:jar>
   </target>
 
 
