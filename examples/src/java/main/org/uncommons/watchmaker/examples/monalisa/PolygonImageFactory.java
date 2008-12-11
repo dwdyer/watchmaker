@@ -49,7 +49,7 @@ public class PolygonImageFactory extends AbstractCandidateFactory<List<ColouredP
     }
 
     
-    protected List<ColouredPolygon> generateRandomCandidate(Random rng)
+    public List<ColouredPolygon> generateRandomCandidate(Random rng)
     {
         List<ColouredPolygon> polygons = new ArrayList<ColouredPolygon>(polygonCount);
         for (int i = 0; i < polygonCount; i++)

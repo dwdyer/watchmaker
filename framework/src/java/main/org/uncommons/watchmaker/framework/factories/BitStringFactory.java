@@ -46,7 +46,7 @@ public class BitStringFactory extends AbstractCandidateFactory<BitString>
      * @return A random bit string of the length configured for this
      * factory.
      */
-    protected BitString generateRandomCandidate(Random rng)
+    public BitString generateRandomCandidate(Random rng)
     {
         return new BitString(length, rng);
     }

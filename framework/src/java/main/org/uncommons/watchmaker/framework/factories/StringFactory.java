@@ -50,7 +50,7 @@ public class StringFactory extends AbstractCandidateFactory<String>
      * the string.
      * @return A randomly generated string.
      */
-    protected String generateRandomCandidate(Random rng)
+    public String generateRandomCandidate(Random rng)
     {
         char[] chars = new char[stringLength];
         for (int i = 0; i < stringLength; i++)

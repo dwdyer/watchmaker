@@ -61,4 +61,12 @@ public interface CandidateFactory<T>
     List<T> generateInitialPopulation(int populationSize,
                                       Collection<T> seedCandidates,
                                       Random rng);
+
+    /**
+     * Randomly create a single candidate solution.
+     * @param rng The random number generator to use when creating the random
+     * candidate.
+     * @return A randomly-initialised candidate.
+     */
+    T generateRandomCandidate(Random rng);
 }

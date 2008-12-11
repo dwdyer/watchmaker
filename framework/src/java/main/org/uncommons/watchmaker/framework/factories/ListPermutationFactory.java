@@ -48,7 +48,7 @@ public class ListPermutationFactory<T>  extends AbstractCandidateFactory<List<T>
      * permutation.
      * @return A random permutation.
      */
-    protected List<T> generateRandomCandidate(Random rng)
+    public List<T> generateRandomCandidate(Random rng)
     {
         List<T> candidate = new ArrayList<T>(elements);
         Collections.shuffle(candidate, rng);

@@ -48,7 +48,7 @@ public class ObjectArrayPermutationFactory<T>  extends AbstractCandidateFactory<
      * permutation.
      * @return A random permutation.
      */
-    protected T[] generateRandomCandidate(Random rng)
+    public T[] generateRandomCandidate(Random rng)
     {
         T[] candidate = elements.clone();
         List<T> list = Arrays.asList(candidate);

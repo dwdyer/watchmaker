@@ -29,7 +29,7 @@ public class BiomorphFactory extends AbstractCandidateFactory<Biomorph>
      * @param rng The source of randomness used to generate the biomoprh. 
      * @return A randomly-generated biomorph.
      */
-    protected Biomorph generateRandomCandidate(Random rng)
+    public Biomorph generateRandomCandidate(Random rng)
     {
         int[] genes = new int[Biomorph.GENE_COUNT];
         for (int i = 0; i < Biomorph.GENE_COUNT - 1; i++)

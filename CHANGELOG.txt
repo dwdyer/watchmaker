@@ -13,6 +13,10 @@ Changes in version 0.5.1
   evolution of the Mona Lisa, see
   http://rogeralsing.com/2008/12/07/genetic-programming-evolution-of-mona-lisa/
 
+* Added Replacement evolutionary operator that randomly replaces candidates
+  with independent, newly-generated random candidates.  Useful for introducing
+  new genetic material into stagnating populations.
+
 * Enhancements to the Evolution Monitor component.
 
 

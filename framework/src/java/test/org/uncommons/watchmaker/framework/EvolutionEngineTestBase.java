@@ -122,7 +122,7 @@ public abstract class EvolutionEngineTestBase
      */
     protected static final class IntegerFactory extends AbstractCandidateFactory<Integer>
     {
-        protected Integer generateRandomCandidate(Random rng)
+        public Integer generateRandomCandidate(Random rng)
         {
             return 0;
         }

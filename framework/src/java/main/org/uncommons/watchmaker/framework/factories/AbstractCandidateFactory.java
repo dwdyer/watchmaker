@@ -31,15 +31,6 @@ import org.uncommons.watchmaker.framework.CandidateFactory;
 public abstract class AbstractCandidateFactory<T> implements CandidateFactory<T>
 {
     /**
-     * Randomly create a single candidate solution.
-     * @param rng The random number generator to use when creating the random
-     * candidate.
-     * @return A randomly-initialised candidate.
-     */
-    protected abstract T generateRandomCandidate(Random rng);
-
-
-    /**
      * Randomly, create an initial population of candidates.  If some
      * control is required over the composition of the initial population,
      * consider the overloaded {@link #generateInitialPopulation(int,Collection,Random)}

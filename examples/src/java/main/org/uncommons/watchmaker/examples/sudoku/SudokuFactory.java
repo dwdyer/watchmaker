@@ -96,7 +96,7 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
      * The generated potential solution is guaranteed to have no
      * duplicates in any row but could have duplicates in a column or sub-grid.
      */
-    protected Sudoku generateRandomCandidate(Random rng)
+    public Sudoku generateRandomCandidate(Random rng)
     {
         // Clone the template as the basis for this grid.
         Sudoku.Cell[][] rows = template.clone();

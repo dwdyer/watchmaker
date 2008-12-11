@@ -91,7 +91,7 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
     /**
      * {@inheritDoc}
      */
-    protected Node generateRandomCandidate(Random rng)
+    public Node generateRandomCandidate(Random rng)
     {
         return makeNode(rng, maximumDepth);
     }
