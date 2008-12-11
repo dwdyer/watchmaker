@@ -34,6 +34,7 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.interactive.RendererAdapter;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.ListCrossover;
+import org.uncommons.watchmaker.framework.operators.ListOrderMutation;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.Stagnation;
 import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
@@ -64,16 +65,18 @@ public class MonaLisaExample
         List<EvolutionaryOperator<List<ColouredPolygon>>> operators
             = new ArrayList<EvolutionaryOperator<List<ColouredPolygon>>>();
         operators.add(new ListCrossover<ColouredPolygon>(2)); // 2-point cross-over.
+        operators.add(new ListOrderMutation<ColouredPolygon>());
         operators.add(new PolygonImageMutation(canvasSize,
                                                new Probability(0.01),
-                                               new GaussianGenerator(0, 10, rng)));
+                                               new GaussianGenerator(0, 10, rng),
+                                               new GaussianGenerator(0, 0.1, rng)));
         EvolutionPipeline<List<ColouredPolygon>> pipeline = new EvolutionPipeline<List<ColouredPolygon>>(operators);
 
         EvolutionEngine<List<ColouredPolygon>> engine
             = new ConcurrentEvolutionEngine<List<ColouredPolygon>>(factory,
                                                                    pipeline,
                                                                    evaluator,
-                                                                   new TournamentSelection(new Probability(0.85)),
+                                                                   new TournamentSelection(new Probability(0.8)),
                                                                    rng);
         Renderer<List<ColouredPolygon>, JComponent> renderer
             = new RendererAdapter<List<ColouredPolygon>, JComponent>(new PolygonRenderer(canvasSize),
@@ -83,7 +86,7 @@ public class MonaLisaExample
         engine.addEvolutionObserver(monitor);
         monitor.showInFrame("Mona Lisa");
 
-        engine.evolve(100, 5, new Stagnation(1000, evaluator.isNatural()));
+        engine.evolve(20, 3, new Stagnation(100, evaluator.isNatural()));
     }
 
 

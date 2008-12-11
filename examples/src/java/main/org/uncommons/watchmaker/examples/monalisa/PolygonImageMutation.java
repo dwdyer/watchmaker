@@ -34,14 +34,17 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
     private final Dimension canvasSize;
     private final Probability mutationProbability;
     private final GaussianGenerator colourChangeAmount;
+    private final GaussianGenerator vertexChangeAmount;
 
     public PolygonImageMutation(Dimension canvasSize,
                                 Probability mutationProbability,
-                                GaussianGenerator colourChangeAmount)
+                                GaussianGenerator colourChangeAmount,
+                                GaussianGenerator vertexChangeAmount)
     {
         this.canvasSize = canvasSize;
         this.mutationProbability = mutationProbability;
         this.colourChangeAmount = colourChangeAmount;
+        this.vertexChangeAmount = vertexChangeAmount;
     }
 
     
@@ -105,8 +108,11 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
         {
             if (mutationProbability.nextEvent(rng))
             {
-                newVertices.add(new Point(rng.nextInt(canvasSize.width),
-                                          rng.nextInt(canvasSize.height)));
+                int x = (int) Math.round(point.x + (point.x * vertexChangeAmount.nextValue()));
+                x = Math.max(0, Math.min(canvasSize.width - 1, x));
+                int y = (int) Math.round(point.y + (point.y * vertexChangeAmount.nextValue()));
+                y = Math.max(0, Math.min(canvasSize.width - 1, y));
+                newVertices.add(new Point(x, y));
             }
             else
             {

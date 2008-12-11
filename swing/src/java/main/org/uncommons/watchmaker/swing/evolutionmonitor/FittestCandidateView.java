@@ -17,6 +17,7 @@ package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
@@ -48,6 +49,7 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
             public void run()
             {
                 removeAll();
+                add(new JLabel("Fitness: " + populationData.getBestCandidateFitness(), JLabel.CENTER), BorderLayout.NORTH);
                 add(renderer.render(populationData.getBestCandidate()), BorderLayout.CENTER);
                 revalidate();
             }

@@ -65,7 +65,7 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
     {
         this();
         FittestCandidateView<T> candidateView = new FittestCandidateView<T>(renderer);
-        monitorComponent.add("Fittest Candidate So Far", candidateView);
+        monitorComponent.add("Fittest Individual", candidateView);
         views.add(candidateView);
     }
 
