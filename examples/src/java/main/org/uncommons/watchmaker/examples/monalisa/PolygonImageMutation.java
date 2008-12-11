@@ -21,7 +21,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.random.GaussianGenerator;
+import org.uncommons.maths.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 
@@ -33,13 +33,13 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
 {
     private final Dimension canvasSize;
     private final Probability mutationProbability;
-    private final GaussianGenerator colourChangeAmount;
-    private final GaussianGenerator vertexChangeAmount;
+    private final NumberGenerator<Double> colourChangeAmount;
+    private final NumberGenerator<Double> vertexChangeAmount;
 
     public PolygonImageMutation(Dimension canvasSize,
                                 Probability mutationProbability,
-                                GaussianGenerator colourChangeAmount,
-                                GaussianGenerator vertexChangeAmount)
+                                NumberGenerator<Double> colourChangeAmount,
+                                NumberGenerator<Double> vertexChangeAmount)
     {
         this.canvasSize = canvasSize;
         this.mutationProbability = mutationProbability;
@@ -59,6 +59,12 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
     }
 
 
+    /**
+     * Muate a single image.
+     * @param candidate The image to mutate.
+     * @param rng A source of randomness.
+     * @return The (possibly) mutated version of the canidate image.
+     */
     private List<ColouredPolygon> mutateImage(List<ColouredPolygon> candidate, Random rng)
     {
         List<ColouredPolygon> mutatedPolygons = new ArrayList<ColouredPolygon>(candidate.size());
@@ -70,6 +76,13 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
     }
 
 
+    /**
+     * Muate a single polygon.
+     * @param polygon The polygon to mutate.
+     * @param rng A source of randomness.
+     * @return The (possibly) mutated version of the original polygon (the colour and/or
+     * vertices may have been changed).
+     */
     private ColouredPolygon mutatePolygon(ColouredPolygon polygon, Random rng)
     {
         return new ColouredPolygon(mutateColour(polygon.getColour(), rng),
@@ -77,6 +90,12 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
     }
 
 
+    /**
+     * Mutate the specified colour.
+     * @param colour The colour to mutate.
+     * @param rng A source of randomness.
+     * @return The (possibly) mutated colour.
+     */
     private Color mutateColour(Color colour, Random rng)
     {
         if (mutationProbability.nextEvent(rng))
@@ -93,6 +112,11 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
     }
 
 
+    /**
+     * Adjust a single component (red, green, blue or alpha) of a colour.
+     * @param component The value to mutate.
+     * @return The mutated component value.
+     */
     private int mutateColourComponent(int component)
     {
         int mutatedComponent = (int) Math.round(component + colourChangeAmount.nextValue());

@@ -9,6 +9,12 @@ Changes in version 0.5.1
 * Added generic type parameters to ListCrossover, ListOrderCrossover and
   ListOrderMutation to be compatible with the above change.
 
+* Added evolutionary art example appliction inspired by Roger Alsing's
+  evolution of the Mona Lisa, see
+  http://rogeralsing.com/2008/12/07/genetic-programming-evolution-of-mona-lisa/
+
+* Enhancements to the Evolution Monitor component.
+
 
 Changes in version 0.5.0
 ------------------------

@@ -44,18 +44,27 @@ public class ColouredPolygon
     }
 
 
+    /**
+     * @return The colour that this polygon should be rendered.
+     */
     public Color getColour()
     {
         return colour;
     }
 
 
+    /**
+     * @return A list of this polygon's vertices.
+     */
     public List<Point> getVertices()
     {
         return vertices;
     }
 
 
+    /**
+     * @return The AWT shape used for rendering.
+     */
     public Polygon getPolygon()
     {
         return polygon;

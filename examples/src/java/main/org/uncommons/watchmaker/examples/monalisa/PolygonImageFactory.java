@@ -33,6 +33,12 @@ public class PolygonImageFactory extends AbstractCandidateFactory<List<ColouredP
     private final int polygonCount;
     private final int vertexCount;
 
+    /**
+     * @param canvasSize The size of the canvas on which the image will be rendered.
+     * All polygons must fit within its bounds. 
+     * @param polygonCount The number of polygons that make up a single image.
+     * @param vertexCount The number of vertices that each polygon has.
+     */
     public PolygonImageFactory(Dimension canvasSize,
                                int polygonCount,
                                int vertexCount)

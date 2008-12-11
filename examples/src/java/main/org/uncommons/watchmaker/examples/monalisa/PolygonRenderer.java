@@ -20,6 +20,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
@@ -35,6 +36,9 @@ public class PolygonRenderer implements Renderer<List<ColouredPolygon>, Buffered
 
     private final Dimension targetSize;
 
+    /**
+     * @param targetSize The size of the canvas on which the polygons will be rendered.
+     */
     public PolygonRenderer(Dimension targetSize)
     {
         this.targetSize = targetSize;
@@ -48,7 +52,7 @@ public class PolygonRenderer implements Renderer<List<ColouredPolygon>, Buffered
      */
     public BufferedImage render(List<ColouredPolygon> entity)
     {
-        BufferedImage image = GRAPHICS_CONFIG.createCompatibleImage(targetSize.width, targetSize.height);
+        BufferedImage image = GRAPHICS_CONFIG.createCompatibleImage(targetSize.width, targetSize.height, Transparency.OPAQUE);
         Graphics graphics = image.getGraphics();
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, targetSize.width, targetSize.height);

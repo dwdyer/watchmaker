@@ -60,14 +60,14 @@ public class MonaLisaExample
         Dimension canvasSize = new Dimension(targetImage.getWidth(), targetImage.getHeight());
 
         Random rng = new MersenneTwisterRNG();
-        ImageEvaluator evaluator = new ImageEvaluator(targetImage);
+        PolygonImageEvaluator evaluator = new PolygonImageEvaluator(targetImage);
         PolygonImageFactory factory = new PolygonImageFactory(canvasSize, 50, 7);
 
         List<EvolutionaryOperator<List<ColouredPolygon>>> operators
             = new ArrayList<EvolutionaryOperator<List<ColouredPolygon>>>();
-        operators.add(new ListCrossover<ColouredPolygon>(2)); // 2-point cross-over.
+        operators.add(new ListCrossover<ColouredPolygon>(new PoissonGenerator(2, rng)));
         operators.add(new ListOrderMutation<ColouredPolygon>(new PoissonGenerator(1, rng),
-                                                             new PoissonGenerator(1, rng)));
+                                                             new PoissonGenerator(2, rng)));
         operators.add(new PolygonImageMutation(canvasSize,
                                                new Probability(0.01),
                                                new GaussianGenerator(0, 10, rng),
@@ -88,7 +88,7 @@ public class MonaLisaExample
         engine.addEvolutionObserver(monitor);
         monitor.showInFrame("Mona Lisa");
 
-        engine.evolve(20, 2, new Stagnation(100, evaluator.isNatural()));
+        engine.evolve(20, 1, new Stagnation(100, evaluator.isNatural()));
     }
 
 

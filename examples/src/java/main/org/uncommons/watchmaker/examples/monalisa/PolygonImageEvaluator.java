@@ -16,6 +16,10 @@
 package org.uncommons.watchmaker.examples.monalisa;
 
 import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.util.List;
@@ -28,18 +32,48 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  * fitness value is a combination of the differences for each pixel.  Lower fitness is better. 
  * @author Daniel Dyer
  */
-public class ImageEvaluator implements FitnessEvaluator<List<ColouredPolygon>>
+public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPolygon>>
 {
     private final BufferedImage targetImage;
     private final Renderer<List<ColouredPolygon>, BufferedImage> renderer;
 
-    public ImageEvaluator(BufferedImage targetImage)
+    public PolygonImageEvaluator(BufferedImage targetImage)
     {
-        this.targetImage = targetImage;
+        this.targetImage = convertImage(targetImage);
         this.renderer = new PolygonRenderer(new Dimension(targetImage.getWidth(), targetImage.getHeight()));
     }
 
-    
+
+    /**
+     * Make sure that the image is in the most efficient format for reading from.
+     * Avoids having to convert pixels every time we access them.
+     */
+    private BufferedImage convertImage(BufferedImage image)
+    {
+        if (image.getType() != BufferedImage.TYPE_INT_RGB)
+        {
+            GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+            GraphicsConfiguration config = graphicsDevice.getDefaultConfiguration();
+            BufferedImage newImage = config.createCompatibleImage(image.getWidth(), image.getHeight(), Transparency.OPAQUE);
+            newImage.getGraphics().drawImage(image, 0, 0, null);
+            return newImage;
+        }
+        else
+        {
+            return image;
+        }
+    }
+
+
+    /**
+     * Render the polygons as an image and then do a pixel-by-pixel comparison
+     * against the target image.  The fitness score is the total error.  A lower
+     * score means a closer match.
+     * @param candidate The image to evaluate.
+     * @param population Not used.
+     * @return A number indicating how close the candidate image is to the target image
+     * (lower is better).
+     */
     public double getFitness(List<ColouredPolygon> candidate,
                              List<? extends List<ColouredPolygon>> population)
     {
@@ -49,8 +83,8 @@ public class ImageEvaluator implements FitnessEvaluator<List<ColouredPolygon>>
         assert candidateImageData.getHeight() == targetImage.getHeight() : "Image height mismatch.";
 
         double fitness = 0;
-        int[] targetPixelValues = new int[4];
-        int[] candidatePixelValues = new int[4];
+        int[] targetPixelValues = new int[3];
+        int[] candidatePixelValues = new int[3];
         for (int row = 0; row < targetImage.getHeight(); row++)
         {
             for (int column = 0; column < targetImage.getWidth(); column++)
@@ -58,7 +92,7 @@ public class ImageEvaluator implements FitnessEvaluator<List<ColouredPolygon>>
                 targetPixelValues = targetImageData.getPixel(column, row, targetPixelValues);
                 candidatePixelValues = candidateImageData.getPixel(column, row, candidatePixelValues);
                 long error = 0;
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < targetPixelValues.length; i++)
                 {
                     int delta = targetPixelValues[i] - candidatePixelValues[i];
                     error += (delta * delta);
