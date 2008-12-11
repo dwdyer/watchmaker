@@ -81,10 +81,10 @@
                classpathref="base.path">
         <fileset dir="." defaultexcludes="yes">
           <include name="**/${java.dir}/main/org/uncommons/**/*.java"/>
+          <exclude name="examples/${java.dir}/main/org/uncommons/**/*.java"/>
         </fileset>
         <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
         <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
-        <group title="Watchmaker Example Programs" packages="org.uncommons.watchmaker.examples.*"/>
         <group title="Uncommons Utilities" packages="org.uncommons.util:org.uncommons.util.*"/>
         <header><![CDATA[Watchmaker Framework API<br><small>(Version ${version})</small>]]></header>
         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
