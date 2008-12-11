@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import org.uncommons.maths.random.GaussianGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.maths.random.PoissonGenerator;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
@@ -60,16 +61,17 @@ public class MonaLisaExample
 
         Random rng = new MersenneTwisterRNG();
         ImageEvaluator evaluator = new ImageEvaluator(targetImage);
-        PolygonImageFactory factory = new PolygonImageFactory(canvasSize, 50, 6);
+        PolygonImageFactory factory = new PolygonImageFactory(canvasSize, 50, 7);
 
         List<EvolutionaryOperator<List<ColouredPolygon>>> operators
             = new ArrayList<EvolutionaryOperator<List<ColouredPolygon>>>();
         operators.add(new ListCrossover<ColouredPolygon>(2)); // 2-point cross-over.
-        operators.add(new ListOrderMutation<ColouredPolygon>());
+        operators.add(new ListOrderMutation<ColouredPolygon>(new PoissonGenerator(1, rng),
+                                                             new PoissonGenerator(1, rng)));
         operators.add(new PolygonImageMutation(canvasSize,
                                                new Probability(0.01),
                                                new GaussianGenerator(0, 10, rng),
-                                               new GaussianGenerator(0, 0.1, rng)));
+                                               new GaussianGenerator(0, 15, rng)));
         EvolutionPipeline<List<ColouredPolygon>> pipeline = new EvolutionPipeline<List<ColouredPolygon>>(operators);
 
         EvolutionEngine<List<ColouredPolygon>> engine
@@ -86,7 +88,7 @@ public class MonaLisaExample
         engine.addEvolutionObserver(monitor);
         monitor.showInFrame("Mona Lisa");
 
-        engine.evolve(20, 3, new Stagnation(100, evaluator.isNatural()));
+        engine.evolve(20, 2, new Stagnation(100, evaluator.isNatural()));
     }
 
 

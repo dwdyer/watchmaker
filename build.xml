@@ -145,7 +145,7 @@
     <uncommons:compile module="swing" />
     <uncommons:jar module="swing"
                    jarfile="watchmaker-swing-${version}.jar"
-                   classpath="${artifact.identifier}.jar uncommons-maths-1.0.2.jar jfreechart-1.0.6.jar" />
+                   classpath="${artifact.identifier}.jar uncommons-maths-1.0.2.jar jfreechart-1.0.6.jar jcommon-1.0.10.jar" />
   </target>
 
 

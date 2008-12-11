@@ -22,6 +22,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
@@ -39,7 +40,8 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
 public class EvolutionMonitor<T> implements EvolutionObserver<T>
 {
     private final List<EvolutionObserver<? super T>> views = new LinkedList<EvolutionObserver<? super T>>();
-    private final JComponent monitorComponent = new JTabbedPane();
+    private final JTabbedPane tabs = new JTabbedPane();
+    private final JComponent monitorComponent = new JPanel(new BorderLayout());
 
     private Window window = null;
 
@@ -50,9 +52,15 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
      */
     public EvolutionMonitor()
     {
+        monitorComponent.add(tabs, BorderLayout.CENTER);
+
         PopulationFitnessView fitnessView = new PopulationFitnessView();
-        monitorComponent.add("Population Fitness", fitnessView);
+        tabs.add("Population Fitness", fitnessView);
         views.add(fitnessView);
+
+        StatusBar statusBar = new StatusBar();
+        monitorComponent.add(statusBar, BorderLayout.SOUTH);
+        views.add(statusBar);
     }
 
 
@@ -65,7 +73,7 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
     {
         this();
         FittestCandidateView<T> candidateView = new FittestCandidateView<T>(renderer);
-        monitorComponent.add("Fittest Individual", candidateView);
+        tabs.add("Fittest Individual", candidateView);
         views.add(candidateView);
     }
 

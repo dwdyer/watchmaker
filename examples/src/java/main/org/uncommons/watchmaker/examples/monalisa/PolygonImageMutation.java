@@ -108,9 +108,9 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
         {
             if (mutationProbability.nextEvent(rng))
             {
-                int x = (int) Math.round(point.x + (point.x * vertexChangeAmount.nextValue()));
+                int x = (int) Math.round(point.x + vertexChangeAmount.nextValue());
                 x = Math.max(0, Math.min(canvasSize.width - 1, x));
-                int y = (int) Math.round(point.y + (point.y * vertexChangeAmount.nextValue()));
+                int y = (int) Math.round(point.y + vertexChangeAmount.nextValue());
                 y = Math.max(0, Math.min(canvasSize.width - 1, y));
                 newVertices.add(new Point(x, y));
             }
