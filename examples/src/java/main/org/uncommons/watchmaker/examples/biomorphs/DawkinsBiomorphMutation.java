@@ -32,13 +32,11 @@ public class DawkinsBiomorphMutation implements EvolutionaryOperator<Biomorph>
      * candidate is mutated differently. 
      * @param selectedCandidates {@inheritDoc}
      * @param rng A source of randomness (not used since this mutation is non-random).
-     * @param <S> {@inheritDoc}
      * @return {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <S extends Biomorph> List<S> apply(List<S> selectedCandidates, Random rng)
+    public List<Biomorph> apply(List<Biomorph> selectedCandidates, Random rng)
     {
-        List<S> mutatedPopulation = new ArrayList<S>(selectedCandidates.size());
+        List<Biomorph> mutatedPopulation = new ArrayList<Biomorph>(selectedCandidates.size());
         int mutatedGene = 0;
         int mutation = 1;
         for (Biomorph b : selectedCandidates)
@@ -62,7 +60,7 @@ public class DawkinsBiomorphMutation implements EvolutionaryOperator<Biomorph>
                 genes[mutatedGene] = max;
             }
 
-            mutatedPopulation.add((S) new Biomorph(genes));
+            mutatedPopulation.add(new Biomorph(genes));
         }
         return mutatedPopulation;
     }

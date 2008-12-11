@@ -51,8 +51,7 @@ public class BitsExample
 
     public static BitString evolveBits(int length)
     {
-        List<EvolutionaryOperator<? super BitString>> operators
-            = new ArrayList<EvolutionaryOperator<? super BitString>>(2);
+        List<EvolutionaryOperator<BitString>> operators = new ArrayList<EvolutionaryOperator<BitString>>(2);
         operators.add(new BitStringCrossover(1, new Probability(0.7d)));
         operators.add(new BitStringMutation(new Probability(0.001d)));
         EvolutionaryOperator<BitString> pipeline = new EvolutionPipeline<BitString>(operators);

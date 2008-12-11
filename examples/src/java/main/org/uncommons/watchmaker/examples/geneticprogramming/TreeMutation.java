@@ -49,13 +49,12 @@ public class TreeMutation implements EvolutionaryOperator<Node>
     }
 
 
-    @SuppressWarnings("unchecked")
-    public <S extends Node> List<S> apply(List<S> selectedCandidates, Random rng)
+    public List<Node> apply(List<Node> selectedCandidates, Random rng)
     {
-        List<S> mutatedPopulation = new ArrayList<S>(selectedCandidates.size());
+        List<Node> mutatedPopulation = new ArrayList<Node>(selectedCandidates.size());
         for (Node tree : selectedCandidates)
         {
-            mutatedPopulation.add((S) tree.mutate(rng, mutationProbability, treeFactory));
+            mutatedPopulation.add(tree.mutate(rng, mutationProbability, treeFactory));
         }
         return mutatedPopulation;
     }

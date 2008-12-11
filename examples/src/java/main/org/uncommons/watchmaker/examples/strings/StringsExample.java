@@ -64,7 +64,7 @@ public final class StringsExample
 
     public static String evolveString(String target)
     {
-        List<EvolutionaryOperator<? super String>> operators = new ArrayList<EvolutionaryOperator<? super String>>(2);
+        List<EvolutionaryOperator<String>> operators = new ArrayList<EvolutionaryOperator<String>>(2);
         operators.add(new StringMutation(ALPHABET, 0.02d));
         operators.add(new StringCrossover());
         EvolutionaryOperator<String> pipeline = new EvolutionPipeline<String>(operators);

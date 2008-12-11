@@ -27,18 +27,17 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  * generation while the remainder are evolved.
  * @author Daniel Dyer
  */
-public class IdentityOperator implements EvolutionaryOperator<Object>
+public class IdentityOperator<T> implements EvolutionaryOperator<T>
 {
     /**
      * Returns the selected candidates unaltered.
      * @param selectedCandidates The candidates to "evolve" (or do
      * nothing to in this case). 
      * @param rng A source of randomness (not used).
-     * @param <S> {@inheritDoc}
      * @return The unaltered candidates.
      */
-    public <S> List<S> apply(List<S> selectedCandidates, Random rng)
+    public List<T> apply(List<T> selectedCandidates, Random rng)
     {
-        return new ArrayList<S>(selectedCandidates);
+        return new ArrayList<T>(selectedCandidates);
     }
 }

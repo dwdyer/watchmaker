@@ -25,7 +25,7 @@ import org.uncommons.watchmaker.framework.Probability;
  * Variable-point (fixed or random) cross-over for arbitrary lists.
  * @author Daniel Dyer
  */
-public class ListCrossover extends AbstractCrossover<List<?>>
+public class ListCrossover<T> extends AbstractCrossover<List<T>>
 {
     /**
      * Default is single-point cross-over, applied to all parents.
@@ -91,8 +91,8 @@ public class ListCrossover extends AbstractCrossover<List<?>>
     }
 
 
-    protected List<List<?>> mate(List<?> parent1,
-                                 List<?> parent2,
+    protected List<List<T>> mate(List<T> parent1,
+                                 List<T> parent2,
                                  int numberOfCrossoverPoints,
                                  Random rng)
     {
@@ -100,8 +100,8 @@ public class ListCrossover extends AbstractCrossover<List<?>>
         {
             throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
         }
-        List<Object> offspring1 = new ArrayList<Object>(parent1); // Use a random-access list for performance.
-        List<Object> offspring2 = new ArrayList<Object>(parent2);
+        List<T> offspring1 = new ArrayList<T>(parent1); // Use a random-access list for performance.
+        List<T> offspring2 = new ArrayList<T>(parent2);
         // Apply as many cross-overs as required.
         for (int i = 0; i < numberOfCrossoverPoints; i++)
         {
@@ -111,12 +111,12 @@ public class ListCrossover extends AbstractCrossover<List<?>>
             int crossoverIndex = (1 + rng.nextInt(parent1.size() - 1));
             for (int j = 0; j < crossoverIndex; j++)
             {
-                Object temp = offspring1.get(j);
+                T temp = offspring1.get(j);
                 offspring1.set(j, offspring2.get(j));
                 offspring2.set(j, temp);
             }
         }
-        List<List<?>> result = new ArrayList<List<?>>(2);
+        List<List<T>> result = new ArrayList<List<T>>(2);
         result.add(offspring1);
         result.add(offspring2);
         return result;

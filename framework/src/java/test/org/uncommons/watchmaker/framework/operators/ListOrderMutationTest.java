@@ -34,7 +34,7 @@ public class ListOrderMutationTest
     @Test
     public void testMutation()
     {
-        ListOrderMutation operator = new ListOrderMutation();
+        ListOrderMutation<Character> operator = new ListOrderMutation<Character>();
         List<Character> candidate = new ArrayList<Character>(5);
         candidate.add('a');
         candidate.add('b');

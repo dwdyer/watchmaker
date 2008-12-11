@@ -42,13 +42,12 @@ public class BitStringMutation implements EvolutionaryOperator<BitString>
     }
 
 
-    @SuppressWarnings("unchecked")
-    public <S extends BitString> List<S> apply(List<S> selectedCandidates, Random rng)
+    public List<BitString> apply(List<BitString> selectedCandidates, Random rng)
     {
-        List<S> mutatedPopulation = new ArrayList<S>(selectedCandidates.size());
+        List<BitString> mutatedPopulation = new ArrayList<BitString>(selectedCandidates.size());
         for (BitString b : selectedCandidates)
         {
-            mutatedPopulation.add((S) mutateBitString(b, rng));
+            mutatedPopulation.add(mutateBitString(b, rng));
         }
         return mutatedPopulation;
     }

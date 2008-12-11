@@ -38,7 +38,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     private final List<EvolutionObserver<? super T>> observers = new LinkedList<EvolutionObserver<? super T>>();
     private final Random rng;
     private final CandidateFactory<T> candidateFactory;
-    private final EvolutionaryOperator<? super T> evolutionScheme;
+    private final EvolutionaryOperator<T> evolutionScheme;
     private final FitnessEvaluator<? super T> fitnessEvaluator;
     private final SelectionStrategy<? super T> selectionStrategy;
 
@@ -61,7 +61,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      * evolutionary operators and selection strategies).
      */
     protected AbstractEvolutionEngine(CandidateFactory<T> candidateFactory,
-                                      EvolutionaryOperator<? super T> evolutionScheme,
+                                      EvolutionaryOperator<T> evolutionScheme,
                                       FitnessEvaluator<? super T> fitnessEvaluator,
                                       SelectionStrategy<? super T> selectionStrategy,
                                       Random rng)

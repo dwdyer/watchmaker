@@ -59,8 +59,8 @@ public class MonaLisaExample
         ImageEvaluator evaluator = new ImageEvaluator(targetImage);
         PolygonImageFactory factory = new PolygonImageFactory(canvasSize, 50, 6);
 
-        List<EvolutionaryOperator<? super List<ColouredPolygon>>> operators = new ArrayList<EvolutionaryOperator<? super List<ColouredPolygon>>>();
-        operators.add(new ListCrossover(2)); // 2-point cross-over.
+        List<EvolutionaryOperator<List<ColouredPolygon>>> operators = new ArrayList<EvolutionaryOperator<List<ColouredPolygon>>>();
+        operators.add(new ListCrossover<ColouredPolygon>(2)); // 2-point cross-over.
         operators.add(new PolygonImageMutation(canvasSize,
                                                new Probability(0.01),
                                                new GaussianGenerator(0, 10, rng)));

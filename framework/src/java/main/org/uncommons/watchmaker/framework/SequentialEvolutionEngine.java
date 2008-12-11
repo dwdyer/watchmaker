@@ -55,7 +55,7 @@ public class SequentialEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      * evolutionary operators and selection strategies).
      */
     public SequentialEvolutionEngine(CandidateFactory<T> candidateFactory,
-                                     EvolutionaryOperator<? super T> evolutionScheme,
+                                     EvolutionaryOperator<T> evolutionScheme,
                                      FitnessEvaluator<? super T> fitnessEvaluator,
                                      SelectionStrategy<? super T> selectionStrategy,
                                      Random rng)
@@ -81,7 +81,7 @@ public class SequentialEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      * evolutionary operators and selection strategies).
      */
     public SequentialEvolutionEngine(CandidateFactory<T> candidateFactory,
-                                     EvolutionaryOperator<? super T> evolutionScheme,
+                                     EvolutionaryOperator<T> evolutionScheme,
                                      InteractiveSelection<T> selectionStrategy,
                                      Random rng)
     {

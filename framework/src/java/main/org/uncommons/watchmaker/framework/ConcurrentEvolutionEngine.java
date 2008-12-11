@@ -75,7 +75,7 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      * evolutionary operators and selection strategies).
      */
     public ConcurrentEvolutionEngine(CandidateFactory<T> candidateFactory,
-                                     EvolutionaryOperator<? super T> evolutionScheme,
+                                     EvolutionaryOperator<T> evolutionScheme,
                                      FitnessEvaluator<? super T> fitnessEvaluator,
                                      SelectionStrategy<? super T> selectionStrategy,
                                      Random rng)
@@ -114,7 +114,7 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      * inside another application such as a servlet container.
      */
     public ConcurrentEvolutionEngine(CandidateFactory<T> candidateFactory,
-                                     EvolutionaryOperator<? super T> evolutionScheme,
+                                     EvolutionaryOperator<T> evolutionScheme,
                                      FitnessEvaluator<? super T> fitnessEvaluator,
                                      SelectionStrategy<? super T> selectionStrategy,
                                      Random rng,
@@ -146,7 +146,7 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      * evolutionary operators and selection strategies).
      */
     public ConcurrentEvolutionEngine(CandidateFactory<T> candidateFactory,
-                                     EvolutionaryOperator<? super T> evolutionScheme,
+                                     EvolutionaryOperator<T> evolutionScheme,
                                      InteractiveSelection<T> selectionStrategy,
                                      Random rng)
     {

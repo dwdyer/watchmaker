@@ -37,7 +37,7 @@ public class ListCrossoverTest
     @Test
     public void testCrossover()
     {
-        EvolutionaryOperator<List<?>> crossover = new ListCrossover();
+        EvolutionaryOperator<List<Integer>> crossover = new ListCrossover<Integer>();
         List<List<Integer>> population = new ArrayList<List<Integer>>(4);
         population.add(Arrays.asList(1, 2, 3, 4, 5));
         population.add(Arrays.asList(6, 7, 8, 9, 10));
@@ -71,7 +71,7 @@ public class ListCrossoverTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDifferentLengthParents()
     {
-        EvolutionaryOperator<List<?>> crossover = new ListCrossover(1, Probability.ONE);
+        EvolutionaryOperator<List<Integer>> crossover = new ListCrossover<Integer>(1, Probability.ONE);
         List<List<Integer>> population = new ArrayList<List<Integer>>(2);
         population.add(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
         population.add(Arrays.asList(9, 10, 11));

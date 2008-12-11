@@ -45,13 +45,12 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
     }
 
     
-    @SuppressWarnings("unchecked")
-    public <S extends List<ColouredPolygon>> List<S> apply(List<S> selectedCandidates, Random rng)
+    public List<List<ColouredPolygon>> apply(List<List<ColouredPolygon>> selectedCandidates, Random rng)
     {
-        List<S> mutatedCandidates = new ArrayList<S>(selectedCandidates.size());
-        for (S candidate : selectedCandidates)
+        List<List<ColouredPolygon>> mutatedCandidates = new ArrayList<List<ColouredPolygon>>(selectedCandidates.size());
+        for (List<ColouredPolygon> candidate : selectedCandidates)
         {
-            mutatedCandidates.add((S) mutateImage(candidate, rng));
+            mutatedCandidates.add(mutateImage(candidate, rng));
         }
         return mutatedCandidates;
     }

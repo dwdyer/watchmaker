@@ -114,18 +114,18 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
         Random rng = new MersenneTwisterRNG();
 
         // Set-up evolution pipeline (cross-over followed by mutation).
-        List<EvolutionaryOperator<? super List<?>>> operators = new ArrayList<EvolutionaryOperator<? super List<?>>>(2);
+        List<EvolutionaryOperator<List<String>>> operators = new ArrayList<EvolutionaryOperator<List<String>>>(2);
         if (crossover)
         {
-            operators.add(new ListOrderCrossover());
+            operators.add(new ListOrderCrossover<String>());
         }
         if (mutation)
         {
-            operators.add(new ListOrderMutation(new PoissonGenerator(1.5, rng),
-                                                new PoissonGenerator(1.5, rng)));
+            operators.add(new ListOrderMutation<String>(new PoissonGenerator(1.5, rng),
+                                                        new PoissonGenerator(1.5, rng)));
         }
 
-        EvolutionaryOperator<List<?>> pipeline = new EvolutionPipeline<List<?>>(operators);
+        EvolutionaryOperator<List<String>> pipeline = new EvolutionPipeline<List<String>>(operators);
 
         CandidateFactory<List<String>> candidateFactory
             = new ListPermutationFactory<String>(new LinkedList<String>(cities));

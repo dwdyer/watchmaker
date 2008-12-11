@@ -70,7 +70,7 @@ public class GeneticProgrammingExample
                                               4, // Maximum depth of generated trees.
                                               0.5, // Probability that a node is a function node.
                                               0.6); // Probability that other nodes are params rather than constants.
-        List<EvolutionaryOperator<? super Node>> operators = new ArrayList<EvolutionaryOperator<? super Node>>(2);
+        List<EvolutionaryOperator<Node>> operators = new ArrayList<EvolutionaryOperator<Node>>(2);
         operators.add(new TreeMutation(factory, new Probability(0.4d)));
         operators.add(new TreeCrossover());
         TreeEvaluator evaluator = new TreeEvaluator(data);

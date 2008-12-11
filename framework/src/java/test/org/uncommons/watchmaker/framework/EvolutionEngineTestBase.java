@@ -151,15 +151,14 @@ public abstract class EvolutionEngineTestBase
     /**
      * Trivial test operator that mutates all integers into zeroes.
      */
-    @SuppressWarnings("unchecked")
     protected static final class IntegerZeroMaker implements EvolutionaryOperator<Integer>
     {
-        public <S extends Integer> List<S> apply(List<S> selectedCandidates, Random rng)
+        public List<Integer> apply(List<Integer> selectedCandidates, Random rng)
         {
-            List<S> result = new ArrayList<S>(selectedCandidates.size());
+            List<Integer> result = new ArrayList<Integer>(selectedCandidates.size());
             for (int i = 0; i < selectedCandidates.size(); i++)
             {
-                result.add((S) Integer.valueOf(0));
+                result.add(0);
             }
             return result;
         }

@@ -41,7 +41,7 @@ public class EvolutionPipelineTest
             population.add(i);
         }
         // Increment 30% of the numbers and decrement the other 70%.
-        List<EvolutionaryOperator<? super Integer>> operators = new ArrayList<EvolutionaryOperator<? super Integer>>(2);
+        List<EvolutionaryOperator<Integer>> operators = new ArrayList<EvolutionaryOperator<Integer>>(2);
         operators.add(new IntegerAdjuster(1));
         operators.add(new IntegerAdjuster(3));
         EvolutionPipeline<Integer> evolutionScheme = new EvolutionPipeline<Integer>(operators);
@@ -63,7 +63,7 @@ public class EvolutionPipelineTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testEmptyPipeline()
     {
-        List<EvolutionaryOperator<? super String>> operators = Collections.emptyList();
+        List<EvolutionaryOperator<String>> operators = Collections.emptyList();
         new EvolutionPipeline<String>(operators); // Should throw an IllegalArgumentException.
     }
 }

@@ -89,18 +89,17 @@ public class SudokuRowMutation implements EvolutionaryOperator<Sudoku>
     }
 
 
-    @SuppressWarnings("unchecked")
-    public <S extends Sudoku> List<S> apply(List<S> selectedCandidates, Random rng)
+    public List<Sudoku> apply(List<Sudoku> selectedCandidates, Random rng)
     {
         if (!cached)
         {
             buildCache(selectedCandidates.get(0));
         }
 
-        List<S> mutatedCandidates = new ArrayList<S>(selectedCandidates.size());
+        List<Sudoku> mutatedCandidates = new ArrayList<Sudoku>(selectedCandidates.size());
         for (Sudoku sudoku : selectedCandidates)
         {
-            mutatedCandidates.add((S) mutate(sudoku, rng));
+            mutatedCandidates.add(mutate(sudoku, rng));
         }
         return mutatedCandidates;
     }

@@ -1,3 +1,15 @@
+Changes in version 0.5.1
+------------------------
+
+* Simplified generics for EvolutionaryOperators.  It's now slightly less
+  flexible but the most common scenarios are now less cumbersome since there
+  are no 'super' wildcards to deal with when constructing pipelines and no
+  need to deal with sub-types when implementing your own operators.
+
+* Added generic type parameters to ListCrossover, ListOrderCrossover and
+  ListOrderMutation to be compatible with the above change.
+
+
 Changes in version 0.5.0
 ------------------------
 

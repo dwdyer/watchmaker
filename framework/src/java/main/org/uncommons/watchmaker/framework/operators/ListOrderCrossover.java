@@ -27,7 +27,7 @@ import org.uncommons.watchmaker.framework.Probability;
  * the Partially Mapped Cross-over (PMX) algorithm. 
  * @author Daniel Dyer
  */
-public class ListOrderCrossover extends AbstractCrossover<List<?>>
+public class ListOrderCrossover<T> extends AbstractCrossover<List<T>>
 {
     /**
      * Creates a cross-over operator with a cross-over probability of 1.
@@ -50,10 +50,10 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
     }
 
 
-    protected List<? extends List<?>> mate(List<?> parent1,
-                                           List<?> parent2,
-                                           int numberOfCrossoverPoints,
-                                           Random rng)
+    protected List<List<T>> mate(List<T> parent1,
+                                 List<T> parent2,
+                                 int numberOfCrossoverPoints,
+                                 Random rng)
     {
         assert numberOfCrossoverPoints == 2 : "Expected number of cross-over points to be 2.";
 
@@ -62,8 +62,8 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
             throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
         }
 
-        List<Object> offspring1 = new ArrayList<Object>(parent1); // Use a random-access list for performance.
-        List<Object> offspring2 = new ArrayList<Object>(parent2);
+        List<T> offspring1 = new ArrayList<T>(parent1); // Use a random-access list for performance.
+        List<T> offspring2 = new ArrayList<T>(parent2);
 
         int point1 = rng.nextInt(parent1.size());
         int point2 = rng.nextInt(parent1.size());
@@ -74,13 +74,13 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
             length += parent1.size();
         }
 
-        Map<Object, Object> mapping1 = new HashMap<Object, Object>(length * 2); // Big enough map to avoid re-hashing.
-        Map<Object, Object> mapping2 = new HashMap<Object, Object>(length * 2);
+        Map<T, T> mapping1 = new HashMap<T, T>(length * 2); // Big enough map to avoid re-hashing.
+        Map<T, T> mapping2 = new HashMap<T, T>(length * 2);
         for (int i = 0; i < length; i++)
         {
             int index = (i + point1) % parent1.size();
-            Object item1 = offspring1.get(index);
-            Object item2 = offspring2.get(index);
+            T item1 = offspring1.get(index);
+            T item2 = offspring2.get(index);
             offspring1.set(index, item2);
             offspring2.set(index, item1);
             mapping1.put(item1, item2);
@@ -90,7 +90,7 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
         checkUnmappedElements(offspring1, mapping2, point1, point2);
         checkUnmappedElements(offspring2, mapping1, point1, point2);
 
-        List<List<?>> result = new ArrayList<List<?>>(2);
+        List<List<T>> result = new ArrayList<List<T>>(2);
         result.add(offspring1);
         result.add(offspring2);
         return result;
@@ -102,8 +102,8 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
      * see if there are any duplicate items in the list.  If there are, they
      * are mapped appropriately.
      */
-    private void checkUnmappedElements(List<Object> offspring,
-                                       Map<Object, Object> mapping,
+    private void checkUnmappedElements(List<T> offspring,
+                                       Map<T, T> mapping,
                                        int mappingStart,
                                        int mappingEnd)
     {
@@ -111,7 +111,7 @@ public class ListOrderCrossover extends AbstractCrossover<List<?>>
         {
             if (!isInsideMappedRegion(i, mappingStart, mappingEnd))
             {
-                Object mapped = offspring.get(i);
+                T mapped = offspring.get(i);
                 while (mapping.containsKey(mapped))
                 {
                     mapped = mapping.get(mapped);

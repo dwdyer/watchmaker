@@ -208,8 +208,7 @@ public class SudokuApplet extends JApplet
             protected Sudoku performTask()
             {
                 Random rng = new CellularAutomatonRNG();
-                List<EvolutionaryOperator<? super Sudoku>> operators
-                    = new ArrayList<EvolutionaryOperator<? super Sudoku>>(2);
+                List<EvolutionaryOperator<Sudoku>> operators = new ArrayList<EvolutionaryOperator<Sudoku>>(2);
                 // Cross-over rows between parents (so offspring is x rows from parent1 and
                 // y rows from parent2).
                 operators.add(new SudokuVerticalCrossover());

@@ -32,7 +32,7 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public class EvolutionPipeline<T> implements EvolutionaryOperator<T>
 {
-    private final List<EvolutionaryOperator<? super T>> pipeline;
+    private final List<EvolutionaryOperator<T>> pipeline;
 
 
     /**
@@ -41,30 +41,27 @@ public class EvolutionPipeline<T> implements EvolutionaryOperator<T>
      * @param pipeline An ordered list of operators that make up the
      * pipeline.
      */
-    public EvolutionPipeline(List<EvolutionaryOperator<? super T>> pipeline)
+    public EvolutionPipeline(List<EvolutionaryOperator<T>> pipeline)
     {
         if (pipeline.isEmpty())
         {
             throw new IllegalArgumentException("Pipeline must contain at least one operator.");
         }
-        this.pipeline = new ArrayList<EvolutionaryOperator<? super T>>(pipeline);
+        this.pipeline = new ArrayList<EvolutionaryOperator<T>>(pipeline);
     }
 
 
     /**
      * Applies each operation in the pipeline in turn to the selection.
-     * @param <S> A more specific type restriction than that associated
-     * with this class (T).  Ensures that the returned list is of the appropriate
-     * type even when dealing with sub-classes of T.
      * @param selectedCandidates The candidates to subjected to evolution.
      * @param rng A source of randomness used by all stochastic processes in
      * the pipeline.
      * @return A list of evolved candidates.
      */
-    public <S extends T> List<S> apply(List<S> selectedCandidates, Random rng)
+    public List<T> apply(List<T> selectedCandidates, Random rng)
     {
-        List<S> population = selectedCandidates;
-        for (EvolutionaryOperator<? super T> operator : pipeline)
+        List<T> population = selectedCandidates;
+        for (EvolutionaryOperator<T> operator : pipeline)
         {
             population = operator.apply(population, rng);
         }

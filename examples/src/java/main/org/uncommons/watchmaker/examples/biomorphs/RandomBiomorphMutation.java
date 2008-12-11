@@ -44,16 +44,14 @@ public class RandomBiomorphMutation implements EvolutionaryOperator<Biomorph>
      * Randomly mutate each selected candidate.
      * @param selectedCandidates {@inheritDoc}
      * @param rng {@inheritDoc}
-     * @param <S> {@inheritDoc}
      * @return {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public <S extends Biomorph> List<S> apply(List<S> selectedCandidates, Random rng)
+    public List<Biomorph> apply(List<Biomorph> selectedCandidates, Random rng)
     {
-        List<S> mutatedPopulation = new ArrayList<S>(selectedCandidates.size());
+        List<Biomorph> mutatedPopulation = new ArrayList<Biomorph>(selectedCandidates.size());
         for (Biomorph biomorph : selectedCandidates)
         {
-            mutatedPopulation.add((S) mutateBiomorph(biomorph, rng));
+            mutatedPopulation.add(mutateBiomorph(biomorph, rng));
         }
         return mutatedPopulation;
     }
