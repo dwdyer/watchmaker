@@ -41,6 +41,8 @@ import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
 /**
  * This program is inspired by Roger Alsing's evolution of the Mona Lisa
  * (http://rogeralsing.com/2008/12/07/genetic-programming-evolution-of-mona-lisa/).
+ * It attempts to find the combination of 50 translucent polygons that most closely
+ * resembles Leonardo da Vinci's Mona Lisa.
  * @author Daniel Dyer
  */
 public class MonaLisaExample
@@ -59,18 +61,20 @@ public class MonaLisaExample
         ImageEvaluator evaluator = new ImageEvaluator(targetImage);
         PolygonImageFactory factory = new PolygonImageFactory(canvasSize, 50, 6);
 
-        List<EvolutionaryOperator<List<ColouredPolygon>>> operators = new ArrayList<EvolutionaryOperator<List<ColouredPolygon>>>();
+        List<EvolutionaryOperator<List<ColouredPolygon>>> operators
+            = new ArrayList<EvolutionaryOperator<List<ColouredPolygon>>>();
         operators.add(new ListCrossover<ColouredPolygon>(2)); // 2-point cross-over.
         operators.add(new PolygonImageMutation(canvasSize,
                                                new Probability(0.01),
                                                new GaussianGenerator(0, 10, rng)));
         EvolutionPipeline<List<ColouredPolygon>> pipeline = new EvolutionPipeline<List<ColouredPolygon>>(operators);
 
-        EvolutionEngine<List<ColouredPolygon>> engine = new ConcurrentEvolutionEngine<List<ColouredPolygon>>(factory,
-                                                                                                             pipeline,
-                                                                                                             evaluator,
-                                                                                                             new TournamentSelection(new Probability(0.85)),
-                                                                                                             rng);
+        EvolutionEngine<List<ColouredPolygon>> engine
+            = new ConcurrentEvolutionEngine<List<ColouredPolygon>>(factory,
+                                                                   pipeline,
+                                                                   evaluator,
+                                                                   new TournamentSelection(new Probability(0.85)),
+                                                                   rng);
         Renderer<List<ColouredPolygon>, JComponent> renderer
             = new RendererAdapter<List<ColouredPolygon>, JComponent>(new PolygonRenderer(canvasSize),
                                                                      new SwingImageRenderer(targetImage));

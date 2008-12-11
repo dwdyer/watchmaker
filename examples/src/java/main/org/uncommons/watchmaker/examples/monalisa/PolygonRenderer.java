@@ -41,6 +41,11 @@ public class PolygonRenderer implements Renderer<List<ColouredPolygon>, Buffered
     }
 
 
+    /**
+     * Renders the specified polygons as an image.
+     * @param entity A collection of coloured polygons.
+     * @return An image object displaying the polygons.
+     */
     public BufferedImage render(List<ColouredPolygon> entity)
     {
         BufferedImage image = GRAPHICS_CONFIG.createCompatibleImage(targetSize.width, targetSize.height);

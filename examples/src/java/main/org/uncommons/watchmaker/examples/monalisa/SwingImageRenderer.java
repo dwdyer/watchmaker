@@ -24,7 +24,8 @@ import javax.swing.JPanel;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 
 /**
- * Converts a {@link BufferedImage} to a {@link JComponent} that displays that image.
+ * Converts a {@link BufferedImage} to a {@link JComponent} that displays that image
+ * alongside a pre-specified target image.
  * @author Daniel Dyer
  */
 public class SwingImageRenderer implements Renderer<BufferedImage, JComponent>
@@ -32,12 +33,21 @@ public class SwingImageRenderer implements Renderer<BufferedImage, JComponent>
     private final BufferedImage targetImage;
 
 
+    /**
+     * @param targetImage This image is displayed on the left side of the
+     * JComponent.
+     */
     public SwingImageRenderer(BufferedImage targetImage)
     {
         this.targetImage = targetImage;
     }
 
-    
+
+    /**
+     * Renders the specified image as a JComponent with the image on the
+     * right and the pre-specified target image on the left.
+     * @param entity The image to render on the right side of the component.
+     */
     public JComponent render(BufferedImage entity)
     {
         JPanel panel = new JPanel(new GridLayout(1, 2));
@@ -47,6 +57,10 @@ public class SwingImageRenderer implements Renderer<BufferedImage, JComponent>
     }
 
 
+    /**
+     * Swing component for rendering a fixed size image.  If the image is smaller
+     * than the component, it is centered.
+     */
     private static final class ImageComponent extends JComponent
     {
         private final BufferedImage image;

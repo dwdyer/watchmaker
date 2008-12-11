@@ -31,7 +31,7 @@ public class ImageEvaluatorTest
      * An image that is identical to the target image should have a fitness
      * of zero. 
      */
-    @Test
+    @Test(groups = "display-required")
     public void testPerfectMatch()
     {
         Dimension canvasSize = new Dimension(100, 100);
