@@ -78,7 +78,10 @@ public class ListCrossoverTest
 
         List<List<Integer>> offspring = crossover.apply(population, rng);
         assert offspring.size() == 2 : "Should be 2 offspring, is " + offspring.size();
-        assert offspring.get(0).size() == parent2.size() : "Wrong length.";
-        assert offspring.get(1).size() == parent1.size() : "Wrong length.";
+        // Should be 1 child of length 8 and one of length 3.  Don't know which order though
+        // as parents are shuffled before cross-over is applied.
+        assert (offspring.get(0).size() == parent1.size() && offspring.get(1).size() == parent2.size())
+               || (offspring.get(0).size() == parent2.size() && offspring.get(1).size() == parent1.size())
+               : "Offspring are wrong lengths after cross-over.";
     }
 }

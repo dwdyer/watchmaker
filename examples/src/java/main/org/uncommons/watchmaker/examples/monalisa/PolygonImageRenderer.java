@@ -29,7 +29,7 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  * Renders a polygon-based image to a {@link BufferedImage}.
  * @author Daniel Dyer
  */
-public class PolygonRenderer implements Renderer<List<ColouredPolygon>, BufferedImage>
+public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, BufferedImage>
 {
     private static final GraphicsConfiguration GRAPHICS_CONFIG
         = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
@@ -39,7 +39,7 @@ public class PolygonRenderer implements Renderer<List<ColouredPolygon>, Buffered
     /**
      * @param targetSize The size of the canvas on which the polygons will be rendered.
      */
-    public PolygonRenderer(Dimension targetSize)
+    public PolygonImageRenderer(Dimension targetSize)
     {
         this.targetSize = targetSize;
     }
@@ -56,7 +56,7 @@ public class PolygonRenderer implements Renderer<List<ColouredPolygon>, Buffered
                                                                     targetSize.height,
                                                                     Transparency.OPAQUE);
         Graphics graphics = image.getGraphics();
-        graphics.setColor(Color.WHITE);
+        graphics.setColor(Color.GRAY);
         graphics.fillRect(0, 0, targetSize.width, targetSize.height);
         for (ColouredPolygon polygon : entity)
         {

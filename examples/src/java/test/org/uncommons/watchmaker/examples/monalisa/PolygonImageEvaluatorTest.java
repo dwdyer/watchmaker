@@ -41,7 +41,7 @@ public class PolygonImageEvaluatorTest
         PolygonImageFactory factory = new PolygonImageFactory(canvasSize, 5, 3);
         List<ColouredPolygon> image = factory.generateRandomCandidate(new MersenneTwisterRNG());
 
-        BufferedImage targetImage = new PolygonRenderer(canvasSize).render(image);
+        BufferedImage targetImage = new PolygonImageRenderer(canvasSize).render(image);
         PolygonImageEvaluator evaluator = new PolygonImageEvaluator(targetImage);
 
         double fitness = evaluator.getFitness(image, null);
@@ -67,7 +67,7 @@ public class PolygonImageEvaluatorTest
                                                                                                new Point(99, 99),
                                                                                                new Point(0, 99))));
 
-        BufferedImage renderedTarget = new PolygonRenderer(canvasSize).render(targetImage);
+        BufferedImage renderedTarget = new PolygonImageRenderer(canvasSize).render(targetImage);
         PolygonImageEvaluator evaluator = new PolygonImageEvaluator(renderedTarget);
 
         double fitness = evaluator.getFitness(candidateImage, null);

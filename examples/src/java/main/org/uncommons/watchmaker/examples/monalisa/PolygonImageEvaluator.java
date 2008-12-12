@@ -40,7 +40,7 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
     public PolygonImageEvaluator(BufferedImage targetImage)
     {
         this.targetImage = convertImage(targetImage);
-        this.renderer = new PolygonRenderer(new Dimension(targetImage.getWidth(), targetImage.getHeight()));
+        this.renderer = new PolygonImageRenderer(new Dimension(targetImage.getWidth(), targetImage.getHeight()));
     }
 
 

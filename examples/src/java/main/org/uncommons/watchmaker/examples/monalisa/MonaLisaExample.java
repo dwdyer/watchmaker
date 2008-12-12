@@ -31,7 +31,6 @@ import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
-import org.uncommons.watchmaker.framework.interactive.RendererAdapter;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.ListCrossover;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
@@ -78,9 +77,7 @@ public class MonaLisaExample
                                                                    evaluator,
                                                                    new TournamentSelection(new Probability(0.8)),
                                                                    rng);
-        Renderer<List<ColouredPolygon>, JComponent> renderer
-            = new RendererAdapter<List<ColouredPolygon>, JComponent>(new PolygonRenderer(canvasSize),
-                                                                     new SwingImageRenderer(targetImage));
+        Renderer<List<ColouredPolygon>, JComponent> renderer = new PolygonImageSwingRenderer(targetImage);
 
         EvolutionMonitor<List<ColouredPolygon>> monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer);
         engine.addEvolutionObserver(monitor);
