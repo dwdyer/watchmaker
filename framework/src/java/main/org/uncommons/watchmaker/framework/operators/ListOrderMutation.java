@@ -32,6 +32,7 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  * sequence, typically a poisson distribution (see
  * {@link org.uncommons.maths.random.PoissonGenerator}), to determine how
  * many mutations to apply.
+ * @param <T> The component type of the lists that are mutated.
  * @author Daniel Dyer
  */
 public class ListOrderMutation<T> implements EvolutionaryOperator<List<T>>

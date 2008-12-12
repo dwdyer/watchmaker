@@ -47,6 +47,8 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
     /**
      * Make sure that the image is in the most efficient format for reading from.
      * Avoids having to convert pixels every time we access them.
+     * @param image The image to convert.
+     * @return The image converted to INT_RGB format.
      */
     private BufferedImage convertImage(BufferedImage image)
     {
@@ -54,7 +56,9 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
         {
             GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             GraphicsConfiguration config = graphicsDevice.getDefaultConfiguration();
-            BufferedImage newImage = config.createCompatibleImage(image.getWidth(), image.getHeight(), Transparency.OPAQUE);
+            BufferedImage newImage = config.createCompatibleImage(image.getWidth(),
+                                                                  image.getHeight(),
+                                                                  Transparency.OPAQUE);
             newImage.getGraphics().drawImage(image, 0, 0, null);
             return newImage;
         }

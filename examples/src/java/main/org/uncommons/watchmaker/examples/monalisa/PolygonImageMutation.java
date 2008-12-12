@@ -21,6 +21,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.maths.ConstantGenerator;
 import org.uncommons.maths.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
@@ -32,12 +33,12 @@ import org.uncommons.watchmaker.framework.Probability;
 public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredPolygon>>
 {
     private final Dimension canvasSize;
-    private final Probability mutationProbability;
+    private final NumberGenerator<Probability> mutationProbability;
     private final NumberGenerator<Double> colourChangeAmount;
     private final NumberGenerator<Double> vertexChangeAmount;
 
     public PolygonImageMutation(Dimension canvasSize,
-                                Probability mutationProbability,
+                                NumberGenerator<Probability> mutationProbability,
                                 NumberGenerator<Double> colourChangeAmount,
                                 NumberGenerator<Double> vertexChangeAmount)
     {
@@ -45,6 +46,18 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
         this.mutationProbability = mutationProbability;
         this.colourChangeAmount = colourChangeAmount;
         this.vertexChangeAmount = vertexChangeAmount;
+    }
+
+
+    public PolygonImageMutation(Dimension canvasSize,
+                                Probability mutationProbability,
+                                NumberGenerator<Double> colourChangeAmount,
+                                NumberGenerator<Double> vertexChangeAmount)
+    {
+        this(canvasSize,
+             new ConstantGenerator<Probability>(mutationProbability),
+             colourChangeAmount,
+             vertexChangeAmount);
     }
 
     
@@ -98,7 +111,7 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
      */
     private Color mutateColour(Color colour, Random rng)
     {
-        if (mutationProbability.nextEvent(rng))
+        if (mutationProbability.nextValue().nextEvent(rng))
         {
             return new Color(mutateColourComponent(colour.getRed()),
                              mutateColourComponent(colour.getGreen()),
@@ -130,7 +143,7 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
         List<Point> newVertices = new ArrayList<Point>(vertices.size());
         for (Point point : vertices)
         {
-            if (mutationProbability.nextEvent(rng))
+            if (mutationProbability.nextValue().nextEvent(rng))
             {
                 int x = (int) Math.round(point.x + vertexChangeAmount.nextValue());
                 x = Math.max(0, Math.min(canvasSize.width - 1, x));

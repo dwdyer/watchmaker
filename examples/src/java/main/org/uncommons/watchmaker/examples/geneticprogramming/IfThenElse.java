@@ -107,7 +107,9 @@ public class IfThenElse implements Node
             }
             else
             {
-                return new IfThenElse(condition, then, otherwise.replaceNode(index - conditionNodes - thenNodes - 1, newNode));
+                return new IfThenElse(condition,
+                                      then,
+                                      otherwise.replaceNode(index - conditionNodes - thenNodes - 1, newNode));
             }
         }
     }

@@ -25,6 +25,7 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  * This can be useful when combined with {@link SplitEvolution} so that a
  * proportion of the selected candidates can be copied unaltered into the next
  * generation while the remainder are evolved.
+ * @param <T> The type of evolvable entity that this operator is used with.
  * @author Daniel Dyer
  */
 public class IdentityOperator<T> implements EvolutionaryOperator<T>

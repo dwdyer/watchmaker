@@ -49,7 +49,8 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
             public void run()
             {
                 removeAll();
-                add(new JLabel("Fitness: " + populationData.getBestCandidateFitness(), JLabel.CENTER), BorderLayout.NORTH);
+                add(new JLabel("Fitness: " + populationData.getBestCandidateFitness(), JLabel.CENTER),
+                    BorderLayout.NORTH);
                 add(renderer.render(populationData.getBestCandidate()), BorderLayout.CENTER);
                 revalidate();
             }

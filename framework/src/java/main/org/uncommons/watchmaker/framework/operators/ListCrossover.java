@@ -23,6 +23,7 @@ import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Variable-point (fixed or random) cross-over for arbitrary lists.
+ * @param <T> The component type of the lists that are combined.
  * @author Daniel Dyer
  */
 public class ListCrossover<T> extends AbstractCrossover<List<T>>

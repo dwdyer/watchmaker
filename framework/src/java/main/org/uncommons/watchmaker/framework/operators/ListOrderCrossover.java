@@ -24,7 +24,8 @@ import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Implements ordered cross-over between arbitrary lists.  The algorithm is
- * the Partially Mapped Cross-over (PMX) algorithm. 
+ * the Partially Mapped Cross-over (PMX) algorithm.
+ * @param <T> The component type of the lists that are combined. 
  * @author Daniel Dyer
  */
 public class ListOrderCrossover<T> extends AbstractCrossover<List<T>>

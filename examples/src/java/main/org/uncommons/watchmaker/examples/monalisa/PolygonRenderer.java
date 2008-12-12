@@ -52,7 +52,9 @@ public class PolygonRenderer implements Renderer<List<ColouredPolygon>, Buffered
      */
     public BufferedImage render(List<ColouredPolygon> entity)
     {
-        BufferedImage image = GRAPHICS_CONFIG.createCompatibleImage(targetSize.width, targetSize.height, Transparency.OPAQUE);
+        BufferedImage image = GRAPHICS_CONFIG.createCompatibleImage(targetSize.width,
+                                                                    targetSize.height,
+                                                                    Transparency.OPAQUE);
         Graphics graphics = image.getGraphics();
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, targetSize.width, targetSize.height);
