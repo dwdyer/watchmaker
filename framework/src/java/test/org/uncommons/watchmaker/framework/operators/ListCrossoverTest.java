@@ -62,20 +62,23 @@ public class ListCrossoverTest
 
 
     /**
-     * The {@link ListCrossover} operator is only defined to work on populations
-     * containing lists of equal lengths.  Any attempt to apply the operation to
-     * populations that contain different length lists should throw an exception.
-     * Not throwing an exception should be considered a bug since it could lead to
-     * hard to trace bugs elsewhere.
+     * When applied to lists of different lenghts, the {@link ListCrossover} operator
+     * should pick a cross-over point that exists in both lists.  Therefore, the two
+     * offspring will be the lengths of the two parents.
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void testDifferentLengthParents()
     {
         EvolutionaryOperator<List<Integer>> crossover = new ListCrossover<Integer>(1, Probability.ONE);
         List<List<Integer>> population = new ArrayList<List<Integer>>(2);
-        population.add(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
-        population.add(Arrays.asList(9, 10, 11));
-        // This should cause an exception since the parents are different lengths.
-        crossover.apply(population, rng);
+        List<Integer> parent1 = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
+        population.add(parent1);
+        List<Integer> parent2 = Arrays.asList(9, 10, 11);
+        population.add(parent2);
+
+        List<List<Integer>> offspring = crossover.apply(population, rng);
+        assert offspring.size() == 2 : "Should be 2 offspring, is " + offspring.size();
+        assert offspring.get(0).size() == parent2.size() : "Wrong length.";
+        assert offspring.get(1).size() == parent1.size() : "Wrong length.";
     }
 }

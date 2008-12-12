@@ -33,31 +33,41 @@ import org.uncommons.watchmaker.framework.Probability;
 public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredPolygon>>
 {
     private final Dimension canvasSize;
-    private final NumberGenerator<Probability> mutationProbability;
+    private final NumberGenerator<Probability> colourMutationProbability;
     private final NumberGenerator<Double> colourChangeAmount;
-    private final NumberGenerator<Double> vertexChangeAmount;
+    private final NumberGenerator<Probability> changePolygonProbability;
+    private final NumberGenerator<Probability> changePointProbability;
+    private final PolygonImageFactory factory;
+
 
     public PolygonImageMutation(Dimension canvasSize,
-                                NumberGenerator<Probability> mutationProbability,
+                                NumberGenerator<Probability> colourMutationProbability,
                                 NumberGenerator<Double> colourChangeAmount,
-                                NumberGenerator<Double> vertexChangeAmount)
+                                NumberGenerator<Probability> changePolygonProbability,
+                                NumberGenerator<Probability> changePointProbability,
+                                PolygonImageFactory factory)
     {
         this.canvasSize = canvasSize;
-        this.mutationProbability = mutationProbability;
+        this.colourMutationProbability = colourMutationProbability;
         this.colourChangeAmount = colourChangeAmount;
-        this.vertexChangeAmount = vertexChangeAmount;
+        this.changePolygonProbability = changePolygonProbability;
+        this.changePointProbability = changePointProbability;
+        this.factory = factory;
     }
 
-
     public PolygonImageMutation(Dimension canvasSize,
-                                Probability mutationProbability,
+                                Probability colourMutationProbability,
                                 NumberGenerator<Double> colourChangeAmount,
-                                NumberGenerator<Double> vertexChangeAmount)
+                                Probability changePolygonProbability,
+                                Probability changePointProbability,
+                                PolygonImageFactory factory)
     {
         this(canvasSize,
-             new ConstantGenerator<Probability>(mutationProbability),
+             new ConstantGenerator<Probability>(colourMutationProbability),
              colourChangeAmount,
-             vertexChangeAmount);
+             new ConstantGenerator<Probability>(changePolygonProbability),
+             new ConstantGenerator<Probability>(changePointProbability),
+             factory);
     }
 
     
@@ -80,12 +90,47 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
      */
     private List<ColouredPolygon> mutateImage(List<ColouredPolygon> candidate, Random rng)
     {
-        List<ColouredPolygon> mutatedPolygons = new ArrayList<ColouredPolygon>(candidate.size());
+        List<ColouredPolygon> newPolygons = new ArrayList<ColouredPolygon>(candidate.size());
         for (ColouredPolygon polygon : candidate)
         {
-            mutatedPolygons.add(mutatePolygon(polygon, rng));
+            newPolygons.add(mutatePolygon(polygon, rng));
         }
-        return mutatedPolygons;
+
+        if (changePolygonProbability.nextValue().nextEvent(rng))
+        {
+            switch (rng.nextInt(4))
+            {
+                case 0: // Remove a polygon.
+                {
+                    if (newPolygons.size() > 3)
+                    {
+                        newPolygons.remove(rng.nextInt(newPolygons.size()));
+                    }
+                    break;
+                }
+                case 1: // Replace a polygon.
+                {
+                    newPolygons.set(rng.nextInt(newPolygons.size()),
+                                    factory.createRandomPolygon(rng));
+                    break;
+                }
+                case 2: // Add a polygon.
+                {
+                    if (newPolygons.size() < 50)
+                    {
+                        newPolygons.add(rng.nextInt(newPolygons.size() + 1),
+                                        factory.createRandomPolygon(rng));
+                    }
+                    break;
+                }
+                default: // Move a polygon.
+                {
+                    ColouredPolygon polygon = newPolygons.remove(rng.nextInt(newPolygons.size()));
+                    newPolygons.add(rng.nextInt(newPolygons.size()) + 1, polygon);
+                }
+            }
+        }
+        return newPolygons;
     }
 
 
@@ -111,7 +156,7 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
      */
     private Color mutateColour(Color colour, Random rng)
     {
-        if (mutationProbability.nextValue().nextEvent(rng))
+        if (colourMutationProbability.nextValue().nextEvent(rng))
         {
             return new Color(mutateColourComponent(colour.getRed()),
                              mutateColourComponent(colour.getGreen()),
@@ -140,22 +185,39 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
 
     private List<Point> mutateVertices(List<Point> vertices, Random rng)
     {
-        List<Point> newVertices = new ArrayList<Point>(vertices.size());
-        for (Point point : vertices)
+        if (changePointProbability.nextValue().nextEvent(rng))
         {
-            if (mutationProbability.nextValue().nextEvent(rng))
+            List<Point> newVertices = new ArrayList<Point>(vertices);
+            switch (rng.nextInt(3))
             {
-                int x = (int) Math.round(point.x + vertexChangeAmount.nextValue());
-                x = Math.max(0, Math.min(canvasSize.width - 1, x));
-                int y = (int) Math.round(point.y + vertexChangeAmount.nextValue());
-                y = Math.max(0, Math.min(canvasSize.width - 1, y));
-                newVertices.add(new Point(x, y));
+                case 0: // Remove a point.
+                {
+                    if (newVertices.size() > 3)
+                    {
+                        newVertices.remove(rng.nextInt(newVertices.size()));
+                    }
+                    break;
+                }
+                case 1: // Replace a point.
+                {
+                    newVertices.set(rng.nextInt(newVertices.size()),
+                                    new Point(rng.nextInt(canvasSize.width), rng.nextInt(canvasSize.height)));
+                    break;
+                }
+                default: // Add a point.
+                {
+                    if (newVertices.size() < 10)
+                    {
+                        newVertices.add(rng.nextInt(newVertices.size()),
+                                        new Point(rng.nextInt(canvasSize.width), rng.nextInt(canvasSize.height)));
+                    }
+                }
             }
-            else
-            {
-                newVertices.add(point);
-            }
+            return newVertices;
         }
-        return newVertices;
+        else
+        {
+            return vertices;
+        }
     }
 }

@@ -37,12 +37,17 @@ public class PolygonImageFactory extends AbstractCandidateFactory<List<ColouredP
      * @param canvasSize The size of the canvas on which the image will be rendered.
      * All polygons must fit within its bounds. 
      * @param polygonCount The number of polygons that make up a single image.
-     * @param vertexCount The number of vertices that each polygon has.
+     * @param vertexCount The maximum number of vertices that each polygon has.
+     * Must be at least 3.
      */
     public PolygonImageFactory(Dimension canvasSize,
                                int polygonCount,
                                int vertexCount)
     {
+        if (vertexCount < 3)
+        {
+            throw new IllegalArgumentException("Polygons must have at least 3 points.");
+        }
         this.canvasSize = canvasSize;
         this.polygonCount = polygonCount;
         this.vertexCount = vertexCount;
@@ -60,10 +65,11 @@ public class PolygonImageFactory extends AbstractCandidateFactory<List<ColouredP
     }
 
 
-    private ColouredPolygon createRandomPolygon(Random rng)
+    ColouredPolygon createRandomPolygon(Random rng)
     {
         List<Point> vertices = new ArrayList<Point>(vertexCount);
-        for (int j = 0; j < vertexCount; j++)
+        int count = 3 + (vertexCount > 3 ? rng.nextInt(vertexCount - 3) : 0);
+        for (int j = 0; j < count; j++)
         {
             vertices.add(new Point(rng.nextInt(canvasSize.width), rng.nextInt(canvasSize.height)));
         }

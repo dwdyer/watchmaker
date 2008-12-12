@@ -26,7 +26,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import org.uncommons.maths.random.GaussianGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
-import org.uncommons.maths.random.PoissonGenerator;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
@@ -35,7 +34,6 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.interactive.RendererAdapter;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.ListCrossover;
-import org.uncommons.watchmaker.framework.operators.ListOrderMutation;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.Stagnation;
 import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
@@ -61,17 +59,17 @@ public class MonaLisaExample
 
         Random rng = new MersenneTwisterRNG();
         PolygonImageEvaluator evaluator = new PolygonImageEvaluator(targetImage);
-        PolygonImageFactory factory = new PolygonImageFactory(canvasSize, 50, 7);
+        PolygonImageFactory factory = new PolygonImageFactory(canvasSize, 2, 10);
 
         List<EvolutionaryOperator<List<ColouredPolygon>>> operators
             = new ArrayList<EvolutionaryOperator<List<ColouredPolygon>>>();
-        operators.add(new ListCrossover<ColouredPolygon>(new PoissonGenerator(2, rng)));
-        operators.add(new ListOrderMutation<ColouredPolygon>(new PoissonGenerator(1, rng),
-                                                             new PoissonGenerator(2, rng)));
+        operators.add(new ListCrossover<ColouredPolygon>());
         operators.add(new PolygonImageMutation(canvasSize,
                                                new Probability(0.01),
                                                new GaussianGenerator(0, 10, rng),
-                                               new GaussianGenerator(0, 15, rng)));
+                                               new Probability(0.05),
+                                               new Probability(0.02),
+                                               factory));
         EvolutionPipeline<List<ColouredPolygon>> pipeline = new EvolutionPipeline<List<ColouredPolygon>>(operators);
 
         EvolutionEngine<List<ColouredPolygon>> engine
@@ -88,7 +86,7 @@ public class MonaLisaExample
         engine.addEvolutionObserver(monitor);
         monitor.showInFrame("Mona Lisa");
 
-        engine.evolve(20, 1, new Stagnation(100, evaluator.isNatural()));
+        engine.evolve(20, 1, new Stagnation(500, evaluator.isNatural()));
     }
 
 

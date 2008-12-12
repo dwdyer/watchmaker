@@ -17,6 +17,9 @@ Changes in version 0.5.1
   with independent, newly-generated random candidates.  Useful for introducing
   new genetic material into stagnating populations.
 
+* Improved ListCrossover operator so that it can work with parents of variable
+  lengths.
+
 * Enhancements to the Evolution Monitor component.
 
 
