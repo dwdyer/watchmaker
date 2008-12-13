@@ -28,6 +28,7 @@ import org.uncommons.watchmaker.framework.Probability;
  * are not derived from the selected individuals, they are completely random.  This
  * operator provides a way to prevent stagnation by occassionally introducing
  * new genetic material into the population.
+ * @param <T> The type of evolvable entity that this operator applies to. 
  * @author Daniel Dyer
  */
 public class Replacement<T> implements EvolutionaryOperator<T>

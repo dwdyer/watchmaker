@@ -20,6 +20,8 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Transparency;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.util.List;
@@ -36,17 +38,32 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
 {
     private final BufferedImage targetImage;
     private final Renderer<List<ColouredPolygon>, BufferedImage> renderer;
+    private final AffineTransformOp transform;
 
     public PolygonImageEvaluator(BufferedImage targetImage)
     {
-        this.targetImage = convertImage(targetImage);
         this.renderer = new PolygonImageRenderer(new Dimension(targetImage.getWidth(), targetImage.getHeight()));
+        int width = targetImage.getWidth();
+        int height = targetImage.getWidth();
+        // Scale the image down so that its smallest dimension is 100 pixels.  For large images this drastically
+        // reduces the number of pixels that we need to check for fitness evaluation.
+        double ratio = 1;
+        if (width > 100 && height > 100)
+        {
+            ratio = 100d / (width > height ? width : height);
+        }
+        this.transform = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio),
+                                               AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        this.targetImage = convertImage(transform.filter(targetImage, null));
+        assert this.targetImage.getType() == BufferedImage.TYPE_INT_RGB : "Inefficient image type.";
     }
 
 
     /**
      * Make sure that the image is in the most efficient format for reading from.
-     * Avoids having to convert pixels every time we access them.
+     * This avoids having to convert pixels every time we access them.  This method also reduces
+     * the image to thumbnail size so that we don't have so many pixels to check when evaluating
+     * fitness.
      * @param image The image to convert.
      * @return The image converted to INT_RGB format.
      */
@@ -82,7 +99,9 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
                              List<? extends List<ColouredPolygon>> population)
     {
         Raster targetImageData = targetImage.getData();
-        Raster candidateImageData = renderer.render(candidate).getData();
+        BufferedImage candidateImage = renderer.render(candidate);
+        candidateImage = transform.filter(candidateImage, null);
+        Raster candidateImageData = candidateImage.getData();
         assert candidateImageData.getWidth() == targetImage.getWidth() : "Image width mismatch.";
         assert candidateImageData.getHeight() == targetImage.getHeight() : "Image height mismatch.";
 
