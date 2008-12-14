@@ -82,7 +82,7 @@ public class MonaLisaExample
     /**
      * Construct the combination of evolutionary operators that will be used to evolve the
      * polygon-based images.
-     * @param factory
+     * @param factory A source of polygons.
      * @param canvasSize The size of the target image.
      * @param rng A source of randomness.
      * @return A complex evolutionary operator constructed from simpler operators.
@@ -94,7 +94,7 @@ public class MonaLisaExample
         List<EvolutionaryOperator<List<ColouredPolygon>>> operators
             = new ArrayList<EvolutionaryOperator<List<ColouredPolygon>>>();
         operators.add(new ListCrossover<ColouredPolygon>());
-        operators.add(new PolygonImageMutation(new Probability(0.05), factory));
+        operators.add(new PolygonImageMutation(new Probability(0.05), factory, 50));
         operators.add(new ListOperator<ColouredPolygon>(new PolygonColourMutation(new Probability(0.01),
                                                                                   new GaussianGenerator(0, 10, rng))));
         operators.add(new ListOperator<ColouredPolygon>(new PolygonVertexMutation(canvasSize, new Probability(0.02))));

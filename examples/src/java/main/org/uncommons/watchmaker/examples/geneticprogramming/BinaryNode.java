@@ -17,6 +17,7 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import java.lang.reflect.Constructor;
 import java.util.Random;
+import org.uncommons.util.reflection.ReflectionUtils;
 import org.uncommons.watchmaker.framework.Probability;
 
 /**
@@ -90,23 +91,21 @@ abstract class BinaryNode implements Node
             return newNode;
         }
 
-        Class<? extends BinaryNode> nodeClass = this.getClass();
-        try
+        int leftNodes = left.countNodes();
+        Constructor<? extends BinaryNode> constructor = ReflectionUtils.findKnownConstructor(this.getClass(),
+                                                                                             Node.class,
+                                                                                             Node.class);
+        if (index <= leftNodes)
         {
-            int leftNodes = left.countNodes();
-            Constructor<? extends BinaryNode> constructor = nodeClass.getConstructor(Node.class, Node.class);
-            if (index <= leftNodes)
-            {
-                return constructor.newInstance(left.replaceNode(index - 1, newNode), right);
-            }
-            else
-            {
-                return constructor.newInstance(left, right.replaceNode(index - leftNodes - 1, newNode));
-            }
+            return ReflectionUtils.invokeUnchecked(constructor,
+                                                   left.replaceNode(index - 1, newNode),
+                                                   right);
         }
-        catch (Exception ex)
+        else
         {
-            throw new IllegalStateException("Mutation failed.", ex);
+            return ReflectionUtils.invokeUnchecked(constructor,
+                                                   left,
+                                                   right.replaceNode(index - leftNodes - 1, newNode));
         }
     }
 
@@ -142,16 +141,10 @@ abstract class BinaryNode implements Node
             Node newRight = right.mutate(rng, mutationProbability, treeFactory);
             if (newLeft != left && newRight != right)
             {
-                Class<? extends BinaryNode> nodeClass = this.getClass();
-                try
-                {
-                    Constructor<? extends BinaryNode> constructor = nodeClass.getConstructor(Node.class, Node.class);
-                    return constructor.newInstance(newLeft, newRight);
-                }
-                catch (Exception ex)
-                {
-                    throw new IllegalStateException("Mutation failed.", ex);
-                }
+                Constructor<? extends BinaryNode> constructor = ReflectionUtils.findKnownConstructor(this.getClass(),
+                                                                                                     Node.class,
+                                                                                                     Node.class);
+                return ReflectionUtils.invokeUnchecked(constructor, newLeft, newRight);
             }
             else
             {

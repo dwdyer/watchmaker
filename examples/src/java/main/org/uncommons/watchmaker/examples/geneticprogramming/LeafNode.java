@@ -45,7 +45,7 @@ abstract class LeafNode implements Node
 
     public Node getNode(int index)
     {
-        if (index > 0)
+        if (index != 0)
         {
             throw new IndexOutOfBoundsException("Invalid node index: " + index);
         }
@@ -55,7 +55,7 @@ abstract class LeafNode implements Node
 
     public Node replaceNode(int index, Node newNode)
     {
-        if (index > 0)
+        if (index != 0)
         {
             throw new IndexOutOfBoundsException("Invalid node index: " + index);
         }

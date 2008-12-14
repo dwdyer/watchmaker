@@ -32,20 +32,42 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
 {
     private final NumberGenerator<Probability> changePolygonProbability;
     private final PolygonImageFactory factory;
+    private final int minPolygons = 2;
+    private final int maxPolygons;
 
 
+    /**
+     * @param changePolygonProbability A {@link NumberGenerator} that controls the probability
+     * that any given polygon will be mutated.
+     * @param factory Used to create new polygons.
+     * @param maxPolygons The maximum number of polygons permitted in an image (minimum is 2).
+     */
     public PolygonImageMutation(NumberGenerator<Probability> changePolygonProbability,
-                                PolygonImageFactory factory)
+                                PolygonImageFactory factory,
+                                int maxPolygons)
     {
+        if (maxPolygons < minPolygons)
+        {
+            throw new IllegalArgumentException("Max polygons must be >= " + minPolygons);
+        }
         this.changePolygonProbability = changePolygonProbability;
         this.factory = factory;
+        this.maxPolygons = maxPolygons;
     }
 
 
+    /**
+     * @param changePolygonProbability The probability that any given polygon will be mutated.
+     * @param factory Used to create new polygons.
+     * @param maxPolygons The maximum number of polygons permitted in an image (minimum is 2).
+     */
     public PolygonImageMutation(Probability changePolygonProbability,
-                                PolygonImageFactory factory)
+                                PolygonImageFactory factory,
+                                int maxPolygons)
     {
-        this(new ConstantGenerator<Probability>(changePolygonProbability), factory);
+        this(new ConstantGenerator<Probability>(changePolygonProbability),
+             factory,
+             maxPolygons);
     }
 
     
@@ -76,7 +98,7 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
             {
                 case 0: // Remove a polygon.
                 {
-                    if (newPolygons.size() > 3)
+                    if (newPolygons.size() > minPolygons)
                     {
                         newPolygons.remove(rng.nextInt(newPolygons.size()));
                     }
@@ -90,7 +112,7 @@ public class PolygonImageMutation implements EvolutionaryOperator<List<ColouredP
                 }
                 case 2: // Add a polygon.
                 {
-                    if (newPolygons.size() < 50)
+                    if (newPolygons.size() < maxPolygons)
                     {
                         newPolygons.add(rng.nextInt(newPolygons.size() + 1),
                                         factory.createRandomPolygon(rng));
