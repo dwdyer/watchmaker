@@ -33,6 +33,7 @@ import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.ListCrossover;
+import org.uncommons.watchmaker.framework.operators.ListOperator;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.Stagnation;
 import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
@@ -59,17 +60,7 @@ public class MonaLisaExample
         Random rng = new MersenneTwisterRNG();
         PolygonImageEvaluator evaluator = new PolygonImageEvaluator(targetImage);
         PolygonImageFactory factory = new PolygonImageFactory(canvasSize, 2, 10);
-
-        List<EvolutionaryOperator<List<ColouredPolygon>>> operators
-            = new ArrayList<EvolutionaryOperator<List<ColouredPolygon>>>();
-        operators.add(new ListCrossover<ColouredPolygon>());
-        operators.add(new PolygonImageMutation(canvasSize,
-                                               new Probability(0.01),
-                                               new GaussianGenerator(0, 10, rng),
-                                               new Probability(0.05),
-                                               new Probability(0.02),
-                                               factory));
-        EvolutionPipeline<List<ColouredPolygon>> pipeline = new EvolutionPipeline<List<ColouredPolygon>>(operators);
+        EvolutionaryOperator<List<ColouredPolygon>> pipeline = createEvolutionPipeline(factory, canvasSize, rng);
 
         EvolutionEngine<List<ColouredPolygon>> engine
             = new ConcurrentEvolutionEngine<List<ColouredPolygon>>(factory,
@@ -77,6 +68,7 @@ public class MonaLisaExample
                                                                    evaluator,
                                                                    new TournamentSelection(new Probability(0.8)),
                                                                    rng);
+        
         Renderer<List<ColouredPolygon>, JComponent> renderer = new PolygonImageSwingRenderer(targetImage);
 
         EvolutionMonitor<List<ColouredPolygon>> monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer);
@@ -87,4 +79,26 @@ public class MonaLisaExample
     }
 
 
+    /**
+     * Construct the combination of evolutionary operators that will be used to evolve the
+     * polygon-based images.
+     * @param factory
+     * @param canvasSize The size of the target image.
+     * @param rng A source of randomness.
+     * @return A complex evolutionary operator constructed from simpler operators.
+     */
+    private static EvolutionaryOperator<List<ColouredPolygon>> createEvolutionPipeline(PolygonImageFactory factory,
+                                                                                       Dimension canvasSize,
+                                                                                       Random rng)
+    {
+        List<EvolutionaryOperator<List<ColouredPolygon>>> operators
+            = new ArrayList<EvolutionaryOperator<List<ColouredPolygon>>>();
+        operators.add(new ListCrossover<ColouredPolygon>());
+        operators.add(new PolygonImageMutation(new Probability(0.05), factory));
+        operators.add(new ListOperator<ColouredPolygon>(new PolygonColourMutation(new Probability(0.01),
+                                                                                  new GaussianGenerator(0, 10, rng))));
+        operators.add(new ListOperator<ColouredPolygon>(new PolygonVertexMutation(canvasSize, new Probability(0.02))));
+
+        return new EvolutionPipeline<List<ColouredPolygon>>(operators);
+    }
 }

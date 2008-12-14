@@ -16,9 +16,7 @@
 package org.uncommons.watchmaker.examples.monalisa;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -28,32 +26,26 @@ import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.Probability;
 
 /**
- * Unit test for the {@link PolygonImageMutation} evolutionary operator.
+ * Unit test for the {@link PolygonVertexMutation} evolutionary operator.
  * @author Daniel Dyer
  */
-public class PolygonImageMutationTest
+public class PolygonColourMutationTest
 {
     private final Random rng = new MersenneTwisterRNG();
 
     @Test
     public void testColourMutation()
     {
-        PolygonImageMutation mutation = new PolygonImageMutation(new Dimension(100, 100),
-                                                                 Probability.ONE, // Guaranteed mutation.
-                                                                 new ConstantGenerator<Double>(1d), // Fixed colour mutation.
-                                                                 Probability.ZERO,
-                                                                 Probability.ZERO,
-                                                                 null);
+        PolygonColourMutation mutation = new PolygonColourMutation(Probability.ONE, // Guaranteed mutation.
+                                                                   new ConstantGenerator<Double>(1d));
         // A grey triangle.
         final ColouredPolygon polygon = new ColouredPolygon(new Color(128, 128, 128, 128),
                                                             Arrays.asList(new Point(0, 0),
                                                                           new Point(50, 50),
                                                                           new Point(0, 75)));
         List<ColouredPolygon> image = Arrays.asList(polygon);
-        List<List<ColouredPolygon>> images = new ArrayList<List<ColouredPolygon>>(1);
-        images.add(image);
-        List<List<ColouredPolygon>> mutatedImages = mutation.apply(images, rng);
-        Color mutatedColor = mutatedImages.get(0).get(0).getColour();
+        List<ColouredPolygon> mutatedImage = mutation.apply(image, rng);
+        Color mutatedColor = mutatedImage.get(0).getColour();
         assert mutatedColor.getRed() == 129 : "Red component should have been incremented, is " + mutatedColor.getRed();
         assert mutatedColor.getGreen() == 129 : "Green component should have been incremented, is " + mutatedColor.getGreen();
         assert mutatedColor.getBlue() == 129 : "Blue component should have been incremented, is " + mutatedColor.getBlue();
