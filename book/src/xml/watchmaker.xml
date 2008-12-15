@@ -2,18 +2,78 @@
          xmlns:xi="http://www.w3.org/2001/XInclude"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
-  <title>The Watchmaker Framework for Evolutionary Computation</title>
+  <title>The Watchmaker Framework</title>
+  <indexterm significance="preferred"><primary>Watchmaker Framework</primary></indexterm>
   <para>
-    The Watchmaker Framework is an extensible, high-performance, object-oriented framework for
-    implementing platform-independent evolutionary algorithms in Java.
+    The Watchmaker Framework for Evolutionary Computation is an extensible, high-performance,
+    object-oriented framework for implementing platform-independent evolutionary algorithms
+    in Java.
+    It is freely available under a permissive Open Source licence.  It can be downloaded from
+    <link href="https://watchmaker.dev.java.net">https://watchmaker.dev.java.net</link>.
+  </para>
+  <para>
+    This chapter introduces the core components of the Watchmaker Framework and shows how
+    they can be used to implement simple evolutionary algorithms such as the one outlined
+    in the previous chapter.
   </para>
   <section>
     <title>The Evolution Engine</title>
-    <para>TODO</para>
+    <indexterm><primary>ConcurrentEvolutionEngine</primary></indexterm>
+    <indexterm><primary>EvolutionEngine</primary></indexterm>
+    <para>
+      The central object of an evolutionary program built with the Watchmaker Framework is
+      the evolution engine.  An evolution engine is a general-purpose implementation of
+      the evolutionary algorithm outline from chapter 1.
+    </para>
+    <para>
+      The framework provides multiple implementations of the
+      <classname>EvolutionEngine</classname> interface, but the one that you will
+      usually want to use is the <classname>ConcurrentEvolutionEngine</classname>.  As its
+      name suggests, it takes advantage of the parallel processing facilities of your
+      computer in order to speed-up the evolutionary process.
+    </para>
+    <para>
+      An <classname>EvolutionEngine</classname> has a single generic type parameter
+      that indicates the type of object that it can evolve.  Creating an engine that
+      can evolve Java <classname>String</classname>s would look something like this:
+    </para>
+    <informalexample>
+      <programlisting language="java">
+<![CDATA[EvolutionEngine<String> engine
+    = new ConcurrentEvolutionEngine<String>(candidateFactory,
+                                            evolutionaryOperator,
+                                            fitnessEvaluator,
+                                            selectionStrategy,
+                                            rng);]]>
+      </programlisting>
+    </informalexample>
+    <para>
+      Once you have created an <classname>EvolutionEngine</classname>, your program is as
+      simple as calling the <methodname>evolve</methodname> method with appropriate
+      arguments.
+      However, as you can see from the code snippet above, there is a little bit of work to
+      be done first in order to create an <classname>EvolutionEngine</classname> that is
+      configured appropriately for the given problem.
+      The constructor of the <classname>ConcurrentEvolutionEngine</classname> class requires
+      five objects.  These are:
+    </para>
+    <itemizedlist>
+      <listitem>A Candidate Factory</listitem>
+      <listitem>An Evolutionary Operator</listitem>
+      <listitem>A Fitness Evaluator</listitem>
+      <listitem>A Selection Strategy</listitem>
+      <listitem>A Random Number Generator</listitem>
+    </itemizedlist>
   </section>
   <section>
     <title>The Candidate Factory</title>
-    <para>TODO</para>
+    <indexterm><primary>CandidateFactory</primary></indexterm>
+    <para>
+      The first object that needs to be plugged into the evolution engine is a candidate
+      factory.  Every evolutionary simulation must start with an initial population of
+      candidate solutions and the factory is the mechanism by which the evolution engine
+      creates this population.
+    </para>
   </section>
   <section>
     <title>Selection Strategy</title>
@@ -24,7 +84,23 @@
     <para>TODO</para>
   </section>
   <section>
-    <title>Termination Conditions</title>
+    <title>The Fitness Evaluator</title>
     <para>TODO</para>
+  </section>
+  <section>
+    <title>Random Number Generator</title>
+    <para>TODO</para>
+  </section>
+  <section>
+    <title>Putting it all Together</title>
+    <para>TODO</para>
+    <section>
+      <title>Termination Conditions</title>
+      <para>TODO</para>
+    </section>
+    <section>
+      <title>Evolution Observers</title>
+      <para>TODO</para>
+    </section>
   </section>
 </chapter>

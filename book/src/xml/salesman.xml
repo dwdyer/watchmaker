@@ -9,7 +9,9 @@
                  format="PNG" scalefit="1" width="100%" />
     </imageobject>
     <caption>
-      http://xkcd.com/399
+      <para>
+        <link href="http://xkcd.com/399">http://xkcd.com/399</link>
+      </para>
     </caption>
   </mediaobject>
   <para>TODO</para>

@@ -33,7 +33,9 @@
   </para>
   <section>
     <title>What are Evolutionary Algorithms?</title>
+    <indexterm><primary>evolutionary algorithm</primary></indexterm>
     <para>
+      <indexterm><primary>Darwin</primary></indexterm>
       Evolutionary algorithms (EAs) are inspired by the biological model of evolution and
       natural selection first proposed by Charles Darwin in 1859.
       In the natural world, evolution helps species adapt to their environments.
@@ -60,11 +62,14 @@
       and encourages the evolution of good solutions.
     </para>
     <para>
+      <indexterm><primary>evolutionary computation</primary></indexterm>
       The field of Evolutionary Computation encompasses several types of evolutionary
       algorithm.  There are significant differences between them but they all
       follow a similar pattern.
     </para>
     <para>
+      <indexterm><primary>fitness function</primary></indexterm>
+      <indexterm><primary>population</primary></indexterm>
       A <emphasis>population</emphasis> of candidate solutions is iteratively evolved
       over many <emphasis>generations</emphasis>.  Mimicking the concept of
       natural selection in biology, the survival of candidates (or their offspring)
@@ -131,12 +136,15 @@
         its fitness.
       </para>
       <para>
+        <indexterm><primary>fitness-proportionate selection</primary></indexterm>
+        <indexterm><primary>selection</primary><secondary>fitness-proportionate</secondary></indexterm>
         If we use fitness-proportionate selection, none of the candidates with zero fitness will
         be selected and the candidate with a fitness of 2 is twice as likely to be selected as
         any of the candidates with a fitness of 1. For the next step we need to select 10 parents,
         so it is obvious that some of the fit candidates are going to be selected multiple times.
       </para>
       <para>
+        <indexterm><primary>cross-over</primary></indexterm>
         Now that we have some parents, we can breed the next generation.  We do this via a process
         called <emphasis>cross-over</emphasis>, which is analogous to sexual reproduction in biology.
         For each pair of parents, a cross-over point is selected randomly.  Assuming that the first
@@ -153,6 +161,7 @@
         </informalexample>
       </para>
       <para>
+        <indexterm><primary>mutation</primary></indexterm>
         This recombination has given us two new candidates for the next generation, one of which is
         better than either of the parents (offspring 1 has a fitness score of 3).  This shows how
         cross-over can lead towards better solutions.  However, looking at the initial population as
@@ -211,6 +220,7 @@
         </step>
         <step>
           <title>Survival of the Fittest</title>
+          <indexterm><primary>selection</primary></indexterm>
           <para>
             Select a number of members of the evaluated population, favouring those
             with higher fitness scores.  These will be the parents of the next generation.
@@ -218,6 +228,8 @@
         </step>
         <step>
           <title>Evolution</title>
+          <indexterm><primary>cross-over</primary></indexterm>
+          <indexterm><primary>mutation</primary></indexterm>
           <para>
             Generate a new population of offspring by randomly altering and/or combining
             elements of the parent candidates.  The evolution is performed by one or more
@@ -274,7 +286,6 @@
       In other words, we need to be able to formulate an effective fitness function.
     </para>
     <para>
-      <!-- http://ti.arc.nasa.gov/projects/esg/research/antenna.htm -->
       Engineers working for NASA know a lot about physics.  They know exactly which
       characteristics make for a good communications antenna.  But the process
       of designing an antenna so that it has the necessary properties is hard.  Even
@@ -284,13 +295,27 @@
     <para>
       NASA's Evolvable Systems Group has used evolutionary algorithms to successfully
       evolve antennas for use on satellites.  These evolved antennas have irregular shapes
-      with no obvious symmetry.  It is unlikely that a human expert would have arrived at
-      such an unconventional design.  Despite this, when tested these antennas proved to be
-      extremely well adapted to their purpose.
+      with no obvious symmetry (one of these antennas is pictured below).
+      It is unlikely that a human expert would have arrived at such an unconventional design.
+      Despite this, when tested these antennas proved to be extremely well adapted to their
+      purpose.
     </para>
+    <informalfigure>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/antenna.jpg" format="JPG" width="50%" align="center"/>
+        </imageobject>
+        <caption>
+          <para>
+            <link href="http://ti.arc.nasa.gov/projects/esg/research/antenna.htm">http://ti.arc.nasa.gov/projects/esg/research/antenna.htm</link>
+          </para>
+        </caption>
+      </mediaobject>
+    </informalfigure>
     <section>
       <title>Pre-requisites</title>
       <para>
+        <indexterm><primary>encoding</primary></indexterm>
         There are two requirements that must be met before an evolutionary algorithm can
         be used for a particular problem.
         Firstly, we need a way to encode candidate solutions to the problem.  The simplest
@@ -305,6 +330,7 @@
         represented as syntax trees.
       </para>
       <para>
+        <indexterm><primary>fitness function</primary></indexterm>
         The second requirement for applying evolutionary algorithms is that there must be a
         way of evaluating partial solutions to the problem - the fitness function.  It is
         not sufficient to evaluate solutions as right or wrong, the fitness score needs to
@@ -351,6 +377,7 @@
     </section>
     <section>
       <title>Evolution Frameworks</title>
+      <indexterm><primary>frameworks</primary></indexterm>
       <para>
         As we saw above, the basic outline of an evolutionary algorithm is fairly
         straightforward.  It consists of a main loop that performs one generation per iteration,

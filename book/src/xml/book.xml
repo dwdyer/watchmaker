@@ -39,4 +39,7 @@
   <xi:include href="gui.xml" />
   <xi:include href="distributed.xml" />
   <xi:include href="furtherreading.xml" />
+
+  <index />
+  
 </book>

@@ -18,6 +18,7 @@
   </para>
   <section>
     <title>Optimising the Fitness Evaluator</title>
+    <indexterm><primary>fitness function</primary><secondary>optimising</secondary></indexterm>
     <para>
       For most non-trivial evolutionary algorithms, the bulk of the work is the evaluation of
       candidate solutions.  For this reason the fitness function is often the obvious place to
@@ -39,8 +40,8 @@
     <para>
       The random number generator (RNG) is a core component of any evolutionary simulation.  It is
       used for selection, for cross-over and for mutation.  A slow random number generator can be
-      a bottleneck.  Most programming languages provide a mechanism to generate random numbers.  Few
-      of them are ideal though.  The Java standard library includes two RNGs,
+      a bottleneck.  Most programming languages provide a mechanism to generate random numbers.
+      Unfortunately, few of them are ideal.  The Java standard library includes two RNGs,
       <classname>java.util.Random</classname> and <classname>java.security.SecureRandom</classname>.
       These should be avoided for statistical and performance reasons respectively.
     </para>
