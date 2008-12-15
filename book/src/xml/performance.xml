@@ -3,5 +3,102 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
   <title>Optimising for Performance</title>
-  <para>TODO</para>
+  <para>
+    This appendix lists some suggestions on how to get the best possible performance from your
+    evolutionary Java programs.  Most of the advice here applies whether or not you are using the
+    Watchmaker Framework to develop your evolutionary programs.
+  </para>
+  <para>
+    As with all optimisations in software development, the golden rule is don't do it unless you have
+    a demonstrable need for improved performance.  Optimisations often introduce complexity and make
+    code harder to maintain.  Before starting on any optimisations, always use a profiler to identify
+    the bottlenecks in your application.  This will pinpoint the areas where optimisations are most
+    likely to beneficial.  It is pointless to expend effort to try to speed up a routine that accounts
+    for only 0.1% of the CPU time.
+  </para>
+  <section>
+    <title>Optimising the Fitness Evaluator</title>
+    <para>
+      For most non-trivial evolutionary algorithms, the bulk of the work is the evaluation of
+      candidate solutions.  For this reason the fitness function is often the obvious place to
+      make improvements.  A fitness evaluator should do no more work than is absolutely
+      necessary on each invocation. If there is some initialisation that is repeated unnecessarily,
+      consider moving it to the constructor.  If similar calculations are performed every time,
+      consider pre-computing the possible results and using a look-up table.  When you consider
+      that the evaluator may be invoked millions of times in a single run, it is clear that even
+      small optimisations to the fitness function may add up to substantial reductions in running
+      time.
+    </para>
+  </section>
+  <section>
+    <title>Minimising the Search Space</title>
+    <para>TODO</para>
+  </section>
+  <section>
+    <title>Random Number Generators</title>
+    <para>
+      The random number generator (RNG) is a core component of any evolutionary simulation.  It is
+      used for selection, for cross-over and for mutation.  A slow random number generator can be
+      a bottleneck.  Most programming languages provide a mechanism to generate random numbers.  Few
+      of them are ideal though.  The Java standard library includes two RNGs,
+      <classname>java.util.Random</classname> and <classname>java.security.SecureRandom</classname>.
+      These should be avoided for statistical and performance reasons respectively.
+    </para>
+    <para>
+      The Watchmaker Framework comes bundled with three high-quality RNGs provided by the Uncommons
+      Maths project.  Of these, the <classname>org.uncommons.maths.random.MersenneTwisterRNG</classname>
+      is the most suitable for the majority of evolutionary programs.  Alternatively, you can use any
+      third party RNG that is a sub-class of <classname>java.util.Random</classname>.
+    </para>
+  </section>
+  <section>
+    <title>JVM Options</title>
+    <para>
+      The Java Virtual Machine (JVM) is a complex piece of software.  It is designed to run a huge
+      variety different programs.  As such, its default configuration is not optimised for the
+      particular needs of evolutionary computation.  This section lists some of the JVM options
+      that you can tweak to try to achieve better performance.
+    </para>
+    <section>
+      <title>Server VM</title>
+      <para>
+        The Sun JVM provides two modes of operation, one optimised for client applications (the
+        default) and one for server applications.  The server VM takes marginally longer to start
+        up but provides substantially better performance for long-running processes and is therefore
+        a better choice for most evolutionary algorithms.  The server VM is enabled using the
+        <literal>-server</literal> switch.
+      </para>
+    </section>
+    <section>
+      <title>Garbage Collection</title>
+      <para>
+        Evolutionary algorithms create many short-lived objects. Modern JVMs, with their generational
+        garbage collectors, are typically well tuned for this usage pattern. However, you may find
+        that by modifying the settings you are able to improve throughput.
+      </para>
+      <para>
+        Garbage collectors make a trade-off between overall throughput and pause time. For
+        evolutionary algorithms we typically want to maximise throughput, even at the expense of
+        introducing noticeable pauses in the program's execution. What is most important is how soon
+        the program completes, not how smoothly it runs.
+      </para>
+      <para>
+        You can get information on what the garbage collector is doing by starting the JVM with the
+        <literal>-verbosegc</literal> switch. If you find that the program is spending a lot of time
+        collecting garbage, it may be because it is short of memory. If you have sufficient RAM,
+        increasing the maximum size of the Java heap (using the <literal>-Xmx</literal> switch) may
+        improve things.
+      </para>
+    </section>
+    <section>
+      <title>Alternative JVMs</title>
+      <para>
+        Sun Microsystems is not the only provider of virtual machines for Java. If your platform is
+        supported, you may also have the option of using a JVM from BEA, IBM or some other third party.
+        These virtual machines have different performance characteristics and different garbage
+        collector implementations. If you have tried everything else and still need something faster,
+        you may find that a different JVM will perform better.  Then again, it may not.
+      </para>
+    </section>
+  </section>
 </appendix>

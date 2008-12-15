@@ -36,8 +36,6 @@
     <para>
       Evolutionary algorithms (EAs) are inspired by the biological model of evolution and
       natural selection first proposed by Charles Darwin in 1859.
-    </para>
-    <para>
       In the natural world, evolution helps species adapt to their environments.
       Environmental factors that influence the survival prospects of an organism
       include climate, availability of food and the dangers of predators.
@@ -52,12 +50,12 @@
       Likewise, animals that can run fast will be more successful at evading predators
       than their slower rivals.
       If a random genetic modification helps an organism to survive and to reproduce,
-      that modification will itself survive, via offspring, and spread throughout the
-      population.
+      that modification will itself survive and spread throughout the population, via
+      the organism's offspring.
     </para>
     <para>
       Evolutionary algorithms are based on a simplified model of this biological evolution.
-      To solve a particular problem, we create an environment in which potential
+      To solve a particular problem we create an environment in which potential
       solutions can evolve.  The environment is shaped by the parameters of the problem
       and encourages the evolution of good solutions.
     </para>
@@ -251,7 +249,19 @@
       effective.  Due to their random nature, evolutionary algorithms are never guaranteed
       to find an optimal solution for any problem, but they will often find a good solution
       if one exists.
-      <!-- TODO: Compelling examples of optimisation problems suited to EAs. -->
+    </para>
+    <para>
+      One example of this kind of optimisation problem is the challenge of timetabling.
+      Schools and universities must arrange room and staff allocations to suit the needs
+      of their curriculum.  There are several constraints that must be satisfied.
+      A member of staff can only be in one place at a time, they can only teach classes
+      that are in their area of expertise, rooms cannot host lessons if they are already
+      occupied, and classes must not clash with other classes taken by the same students.
+      This is a combinatorial problem and known to be NP-Hard.
+      It is not feasible to exhaustively search for the optimal timetable due to the huge
+      amount of computation involved.  Instead, heuristics must be used.
+      Genetic algorithms have proven to be a successful way of generating satisfactory
+      solutions to many scheduling problems.
     </para>
     <para>
       Evolutionary algorithms can also be used to tackle problems that humans don't really
@@ -259,9 +269,24 @@
       An EA, free of any human preconceptions or biases, can generate surprising solutions
       that are comparable to, or better than, the best human-generated efforts.
       It is merely necessary that we can recognise a good solution if
-      it were presented to us, even if we don't know how to create a good solution.
+      it were presented to us, even if we don't know <emphasis>how</emphasis> to create a
+      good solution.
       In other words, we need to be able to formulate an effective fitness function.
-      <!-- TODO: Compelling example (possibly the antenna one). -->
+    </para>
+    <para>
+      <!-- http://ti.arc.nasa.gov/projects/esg/research/antenna.htm -->
+      Engineers working for NASA know a lot about physics.  They know exactly which
+      characteristics make for a good communications antenna.  But the process
+      of designing an antenna so that it has the necessary properties is hard.  Even
+      though the engineers know what is required from the final antenna, they may not know
+      how to design the antenna so that it satisfies those requirements.
+    </para>
+    <para>
+      NASA's Evolvable Systems Group has used evolutionary algorithms to successfully
+      evolve antennas for use on satellites.  These evolved antennas have irregular shapes
+      with no obvious symmetry.  It is unlikely that a human expert would have arrived at
+      such an unconventional design.  Despite this, when tested these antennas proved to be
+      extremely well adapted to their purpose.
     </para>
     <section>
       <title>Pre-requisites</title>
@@ -288,6 +313,70 @@
         either 0 or 1 is useless.  A function that returns a score on a scale of 1 - 100 is
         much better.  We need shades of grey, not just black and white, since this is how the
         algorithm guides the random evolution to find increasingly better solutions.
+      </para>
+    </section>
+  </section>
+  <section>
+    <title>Implementing Evolutionary Algorithms</title>
+    <para>
+      If an evolutionary algorithm is a good fit for a particular problem, there are plenty of
+      options when it comes to implementing it. 
+      You may choose to use a high-level programming language for simplicity, or a low-level
+      language for performance.
+      You could write all of the code yourself from scratch, or you could reuse pre-written
+      components and libraries.
+      In this book we will necessarily be using one particular approach, but it is worth noting
+      that there are alternatives.
+    </para>
+    <section>
+      <title>Choice of Programming Language</title>
+      <para>
+        Evolutionary algorithms can be implemented in any general purpose programming language.
+        Most programmers will simply choose the language that they are most comfortable with.
+        A quick web search will return examples of evolutionary programs written in C, C++,
+        Java, C#, Python, Ruby, Perl, Lisp and several other languages.
+      </para>
+      <para>
+        Performance may be a consideration when choosing a language.
+        Almost all evolutionary algorithms are CPU-bound.  For this reason, compiled languages
+        typically offer better EA performance than interpreted languages.  For
+        short-lived programs the difference is unlikely to be significant, but for
+        long-running programs it could be considerable.
+      </para>
+      <para>
+        If you can recall the title of this book, it should come as no surprise that we will be
+        using Java for all of the example code.  Java offers a good balance of performance,
+        ease-of-use and a rich standard library.
+      </para>
+    </section>
+    <section>
+      <title>Evolution Frameworks</title>
+      <para>
+        As we saw above, the basic outline of an evolutionary algorithm is fairly
+        straightforward.  It consists of a main loop that performs one generation per iteration,
+        supplemented by a few functions to perform fitness evaluation, selection and
+        mutation/cross-over.  When implementing a simple EA, writing this structural code is
+        not particularly onerous.  However, if you write many different evolutionary
+        programs, as we will be doing in the remainder of this book, you end up writing code
+        that is very similar over and over again.
+      </para>
+      <para>
+        A good programmer will usually want to extract and reuse this common code.
+        Once you have done this, you have the basis of an evolutionary computation framework.
+        Typically this will consist of an evolution engine that is reusable and that can
+        accept different functions to customise fitness evaluation, selection and evolutionary
+        operators.
+      </para>
+      <para>
+        An alternative to using a home-grown framework is to choose a ready-made one.  There
+        are open source evolutionary computation frameworks available for most programming languages.
+        For popular languages, such as C, C++ and Java, there are dozens.
+      </para>
+      <para>
+        The advantage of a
+        ready-made framework that is used by many other programmers is that it will have been well
+        tested and should be free of significant bugs and performance problems.  It may also provide
+        advanced features such as parallel and/or distributed processing.
       </para>
     </section>
   </section>

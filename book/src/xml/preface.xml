@@ -9,8 +9,6 @@
     problems.  This is not intended to be a thorough theoretical guide.  I will introduce the
     key evolutionary computation concepts and demonstrate their practical application, but I will
     endeavour to keep abstract theory and mathematics to the minimum necessary.
-  </para>
-  <para>
     For a more academic treatment of the material, I recommend Melanie Mitchell's
     <emphasis>An Introduction to Genetic Algorithms</emphasis> and A.E. Eiben and J.E. Smith's
     <emphasis>Introduction to Evolutionary Computing</emphasis>.

@@ -23,15 +23,16 @@
 
   <!-- Chapters -->
   <xi:include href="evolution.xml" />
-  <xi:include href="implementation.xml" />
+  <xi:include href="watchmaker.xml" />
   <xi:include href="salesman.xml" />
   <xi:include href="selection.xml" />
   <xi:include href="sudoku.xml" />
   <xi:include href="islands.xml" />
   <xi:include href="interactive.xml" />
   <xi:include href="steadystate.xml" />
-  <xi:include href="multiobjective.xml" />
   <xi:include href="geneticprogramming.xml" />
+  <xi:include href="classifiers.xml" />
+  <xi:include href="multiobjective.xml" />
 
   <!-- Appendices -->
   <xi:include href="performance.xml" />

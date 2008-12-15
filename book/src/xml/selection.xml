@@ -4,4 +4,28 @@
          xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
   <title>Selection Strategies</title>
   <para>TODO</para>
+  <section>
+    <title>Truncation Selection</title>
+    <para>TODO</para>
+  </section>
+  <section>
+    <title>Fitness-Proportionate Selection</title>
+    <para>TODO</para>
+    <section>
+      <title>Roulette Wheel Selection</title>
+      <para>TODO</para>
+    </section>
+    <section>
+      <title>Stochastic Universal Sampling</title>
+      <para>TODO</para>
+    </section>
+  </section>
+  <section>
+    <title>Rank Selection</title>
+    <para>TODO</para>
+  </section>
+  <section>
+    <title>Tournament Selection</title>
+    <para>TODO</para>
+  </section>
 </chapter>

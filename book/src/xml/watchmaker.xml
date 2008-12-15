@@ -1,0 +1,30 @@
+<chapter xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
+  <title>The Watchmaker Framework for Evolutionary Computation</title>
+  <para>
+    The Watchmaker Framework is an extensible, high-performance, object-oriented framework for
+    implementing platform-independent evolutionary algorithms in Java.
+  </para>
+  <section>
+    <title>The Evolution Engine</title>
+    <para>TODO</para>
+  </section>
+  <section>
+    <title>The Candidate Factory</title>
+    <para>TODO</para>
+  </section>
+  <section>
+    <title>Selection Strategy</title>
+    <para>TODO</para>
+  </section>
+  <section>
+    <title>Evolutionary Operators</title>
+    <para>TODO</para>
+  </section>
+  <section>
+    <title>Termination Conditions</title>
+    <para>TODO</para>
+  </section>
+</chapter>
