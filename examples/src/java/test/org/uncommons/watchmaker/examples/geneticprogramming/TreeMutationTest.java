@@ -39,7 +39,8 @@ public class TreeMutationTest
     @Test
     public void testNoMutations()
     {
-        EvolutionaryOperator<Node> mutation = new TreeMutation(new TreeFactory(0, 3, 0.5, 0.5),
+        TreeFactory treeFactory = new TreeFactory(0, 3, Probability.EVENS, Probability.EVENS);
+        EvolutionaryOperator<Node> mutation = new TreeMutation(treeFactory,
                                                                Probability.ZERO); // Zero probability means no mutations.
         List<Node> candidates = Arrays.<Node>asList(new Addition(new Constant(3), new Constant(4)));
         List<Node> result = mutation.apply(candidates, rng);
@@ -54,7 +55,7 @@ public class TreeMutationTest
     @Test
     public void testSomeMutations()
     {
-        TreeFactory treeFactory = new TreeFactory(1, 4, 0.6, 0.2);
+        TreeFactory treeFactory = new TreeFactory(1, 4, new Probability(0.6d), new Probability(0.2d));
         EvolutionaryOperator<Node> mutation = new TreeMutation(treeFactory,
                                                                Probability.ONE); // Probability of 1 means guaranteed mutations.
         List<Node> candidates = treeFactory.generateInitialPopulation(20, rng);

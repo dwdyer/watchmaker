@@ -34,14 +34,15 @@
   <section>
     <title>What are Evolutionary Algorithms?</title>
     <indexterm><primary>evolutionary algorithm</primary></indexterm>
+    <indexterm><primary>Darwin, Charles</primary></indexterm>
     <para>
-      <indexterm><primary>Darwin</primary></indexterm>
       Evolutionary algorithms (EAs) are inspired by the biological model of evolution and
       natural selection first proposed by Charles Darwin in 1859.
       In the natural world, evolution helps species adapt to their environments.
       Environmental factors that influence the survival prospects of an organism
       include climate, availability of food and the dangers of predators.
     </para>
+    <indexterm><primary>natural selection</primary></indexterm>
     <para>
       Species change over the course of many generations.
       Mutations occur randomly.  Some mutations will be advantageous, but many will be
@@ -61,15 +62,26 @@
       solutions can evolve.  The environment is shaped by the parameters of the problem
       and encourages the evolution of good solutions.
     </para>
+    <indexterm><primary>evolutionary computation</primary></indexterm>
     <para>
-      <indexterm><primary>evolutionary computation</primary></indexterm>
       The field of Evolutionary Computation encompasses several types of evolutionary
-      algorithm.  There are significant differences between them but they all
-      follow a similar pattern.
+      algorithm.  These include <emphasis>Genetic Algorithms</emphasis> (GAs),
+      <emphasis>Evolution Strategies</emphasis>, <emphasis>Genetic Programming</emphasis>
+      (GP), <emphasis>Evolutionary Programming</emphasis> and <emphasis>Learning
+      Classifier Systems</emphasis>.
     </para>
+    <indexterm><primary>genetic algorithms</primary></indexterm>
     <para>
-      <indexterm><primary>fitness function</primary></indexterm>
-      <indexterm><primary>population</primary></indexterm>
+      The most common type of evolutionary algorithm is the generational genetic
+      algorithm.  We'll cover other EA variants in later chapters but, for now,
+      all of the evolutionary algorithms that we meet will be some kind of generational
+      GA.
+    </para>
+    <indexterm><primary>fitness function</primary></indexterm>
+    <indexterm><primary>population</primary></indexterm>
+    <para>
+      The basic outline of a generational GA is as follows (most other EA variants are
+      broadly similar).
       A <emphasis>population</emphasis> of candidate solutions is iteratively evolved
       over many <emphasis>generations</emphasis>.  Mimicking the concept of
       natural selection in biology, the survival of candidates (or their offspring)
@@ -135,16 +147,16 @@
         weaker candidates is to assign each candidate a selection probability proportionate to
         its fitness.
       </para>
+      <indexterm><primary>fitness-proportionate selection</primary></indexterm>
+      <indexterm><primary>selection</primary><secondary>fitness-proportionate</secondary></indexterm>
       <para>
-        <indexterm><primary>fitness-proportionate selection</primary></indexterm>
-        <indexterm><primary>selection</primary><secondary>fitness-proportionate</secondary></indexterm>
         If we use fitness-proportionate selection, none of the candidates with zero fitness will
         be selected and the candidate with a fitness of 2 is twice as likely to be selected as
         any of the candidates with a fitness of 1. For the next step we need to select 10 parents,
         so it is obvious that some of the fit candidates are going to be selected multiple times.
       </para>
+      <indexterm><primary>cross-over</primary></indexterm>
       <para>
-        <indexterm><primary>cross-over</primary></indexterm>
         Now that we have some parents, we can breed the next generation.  We do this via a process
         called <emphasis>cross-over</emphasis>, which is analogous to sexual reproduction in biology.
         For each pair of parents, a cross-over point is selected randomly.  Assuming that the first
@@ -160,8 +172,8 @@
           </programlisting>
         </informalexample>
       </para>
+      <indexterm><primary>mutation</primary></indexterm>
       <para>
-        <indexterm><primary>mutation</primary></indexterm>
         This recombination has given us two new candidates for the next generation, one of which is
         better than either of the parents (offspring 1 has a fitness score of 3).  This shows how
         cross-over can lead towards better solutions.  However, looking at the initial population as
@@ -314,8 +326,8 @@
     </informalfigure>
     <section>
       <title>Pre-requisites</title>
+      <indexterm><primary>encoding</primary></indexterm>
       <para>
-        <indexterm><primary>encoding</primary></indexterm>
         There are two requirements that must be met before an evolutionary algorithm can
         be used for a particular problem.
         Firstly, we need a way to encode candidate solutions to the problem.  The simplest
@@ -329,8 +341,8 @@
         Genetic programming (GP) is a good example of this.  GP evolves computer programs
         represented as syntax trees.
       </para>
+      <indexterm><primary>fitness function</primary></indexterm>
       <para>
-        <indexterm><primary>fitness function</primary></indexterm>
         The second requirement for applying evolutionary algorithms is that there must be a
         way of evaluating partial solutions to the problem - the fitness function.  It is
         not sufficient to evaluate solutions as right or wrong, the fitness score needs to
@@ -369,6 +381,7 @@
         short-lived programs the difference is unlikely to be significant, but for
         long-running programs it could be considerable.
       </para>
+      <indexterm><primary>Java</primary></indexterm>
       <para>
         If you can recall the title of this book, it should come as no surprise that we will be
         using Java for all of the example code.  Java offers a good balance of performance,

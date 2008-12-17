@@ -13,8 +13,8 @@
   </para>
   <para>
     This chapter introduces the core components of the Watchmaker Framework and shows how
-    they can be used to implement simple evolutionary algorithms such as the one outlined
-    in the previous chapter.
+    they can be used to implement simple evolutionary algorithms such as the "Hello World"
+    example outlined in the previous chapter.
   </para>
   <section>
     <title>The Evolution Engine</title>
@@ -28,14 +28,15 @@
     <para>
       The framework provides multiple implementations of the
       <classname>EvolutionEngine</classname> interface, but the one that you will
-      usually want to use is the <classname>ConcurrentEvolutionEngine</classname>.  As its
+      usually want to use is <classname>ConcurrentEvolutionEngine</classname>.  As its
       name suggests, it takes advantage of the parallel processing facilities of your
       computer in order to speed-up the evolutionary process.
     </para>
     <para>
       An <classname>EvolutionEngine</classname> has a single generic type parameter
-      that indicates the type of object that it can evolve.  Creating an engine that
-      can evolve Java <classname>String</classname>s would look something like this:
+      that indicates the type of object that it can evolve.
+      For the "Hello World" program, we need to be able to evolve Java strings.
+      Code that creates an engine that can evolve strings would look something like this:
     </para>
     <informalexample>
       <programlisting language="java">
@@ -58,11 +59,21 @@
       five objects.  These are:
     </para>
     <itemizedlist>
-      <listitem>A Candidate Factory</listitem>
-      <listitem>An Evolutionary Operator</listitem>
-      <listitem>A Fitness Evaluator</listitem>
-      <listitem>A Selection Strategy</listitem>
-      <listitem>A Random Number Generator</listitem>
+      <listitem>
+        <para>A Candidate Factory</para>
+      </listitem>
+      <listitem>
+        <para>An Evolutionary Operator</para>
+      </listitem>
+      <listitem>
+        <para>A Fitness Evaluator</para>
+      </listitem>
+      <listitem>
+        <para>A Selection Strategy</para>
+      </listitem>
+      <listitem>
+        <para>A Random Number Generator</para>
+      </listitem>
     </itemizedlist>
   </section>
   <section>
@@ -71,24 +82,178 @@
     <para>
       The first object that needs to be plugged into the evolution engine is a candidate
       factory.  Every evolutionary simulation must start with an initial population of
-      candidate solutions and the factory is the mechanism by which the evolution engine
-      creates this population.
+      candidate solutions and the <classname>CandidateFactory</classname> interface is
+      the mechanism by which the evolution engine creates this population.
+    </para>
+    <para>
+      A candidate factory implementation has an associated type.  It can only create
+      objects of that type.  The type must match the type of the evolution engine that
+      it is plugged into.
+      You can write your own implementation of <classname>CandidateFactory</classname>
+      for your program or, if you are using a common type such as strings, lists or
+      arrays, you may be able to use a ready-made factory from the
+      <package>org.uncommons.watchmaker.framework.factories</package> package.
+    </para>
+    <indexterm><primary>StringFactory</primary></indexterm>
+    <para>
+      For our "Hello World" program, we can use the provided
+      <classname>StringFactory</classname>:
+    </para>
+    <informalexample>
+      <programlisting language="java">
+<![CDATA[// Define the set of permitted characters (A-Z plus space).
+char[] chars = new char[27];
+for (char c = 'A'; c <= 'Z'; c++)
+{
+    chars[c - 'A'] = c;
+}
+chars[26] = ' ';
+
+// Factory for random 11-character Strings.
+CandidateFactory<String> factory = new StringFactory(chars, 11);]]>
+      </programlisting>
+    </informalexample>
+    <tip>
+      <indexterm><primary>AbstractCandidateFactory</primary></indexterm>
+      <para>
+        When writing your own <classname>CandidateFactory</classname> implementations,
+        it is easiest to extend the provided <classname>AbstractCandidateFactory</classname>
+        base class since there is then only a single method that must be implemented.
+      </para>
+    </tip>
+  </section>
+  <section>
+    <title>Evolutionary Operators</title>
+    <indexterm><primary>EvolutionaryOperator</primary></indexterm>
+    <para>
+      Evolutionary operators are the components that perform the actual evolution of a
+      population.  Cross-over is an evolutionary operator, as is mutation.
+    </para>
+    <para>
+      In the Watchamker Framework, evolutionary operators are defined in terms of the
+      <classname>EvolutionaryOperator</classname> interface.  This interface declares a
+      single method that takes a list of selected individuals and returns a list of
+      evolved individuals.  Some operators (i.e. mutation) will process one individual
+      at a time, whereas others will process individuals in groups (cross-over processes
+      two individuals at a time).
+    </para>
+    <indexterm><primary>StringCrossover</primary></indexterm>
+    <indexterm><primary>StringMutation</primary></indexterm>
+    <para>
+      As with candidate factories, evolutionary operators have associated types that
+      must be compatible with the type of the evolution engine that they are used with.
+      And, as with candidate factories, the framework provides several ready-made operators
+      for common types.  These can be found in the
+      <package>org.uncommons.watchmaker.framework.operators</package> package.  The
+      cross-over and mutation operators that we need for our "Hello World" program are
+      provided by the <classname>StringCrossover</classname> and
+      <classname>StringMutation</classname> classes.
+    </para>
+    <section>
+      <title>The Evolution Pipeline</title>
+      <indexterm><primary>EvolutionPipeline</primary></indexterm>
+      <para>
+        Alert readers will have noticed that the evolution engine constructor only accepts
+        a single evolutionary operator.  So how can we use both cross-over and mutation?
+        The answer is provided by the <classname>EvolutionPipeline</classname> operator.
+        This is a compound evolutionary operator that chains together multiple operators of
+        the same type.
+      </para>
+      <informalexample>
+        <programlisting language="java">
+<![CDATA[List<EvolutionaryOperator<String>> operators
+    = new LinkedList<EvolutionaryOperator<String>>();
+operators.add(new StringCrossover());
+operators.add(new StringMutation(chars, new Probability(0.02)));
+
+EvolutionaryOperator<String> pipeline
+    = new EvolutionPipeline<String>(operators);]]>
+        </programlisting>
+      </informalexample>
+      <note>
+        <para>
+          The evolution pipeline is just one of many useful operators included
+          in the <package>org.uncommons.watchmaker.framework.operators</package> package.
+          Elaborate evolution schemes can be constructed from combinations of these
+          operators.
+          Users of the Watchmaker Framework should take a few minutes to browse the API
+          documentation and familiarise themselves with the available classes.
+        </para>
+      </note>
+    </section>
+  </section>
+  <section>
+    <title>The Fitness Evaluator</title>
+    <indexterm><primary>FitnessEvaluator</primary></indexterm>
+    <para>
+      So far we've been able to build our evolutionary program by simply combining instances
+      of classes provided by the framework.  There is one part of the program that we will
+      always have to write for ourselves though and that is the fitness fuction, which is
+      necessarily different for every program.
+    </para>
+    <para>
+      In the Watchmaker Framework, a fitness function is written by implementing the
+      <classname>FitnessEvaluator</classname> interface.  The
+      <methodname>getFitness</methodname> of this interface takes a candidate solution
+      and returns its fitness score as a Java double.  Actually, the method takes two
+      parameters, but we can ignore the second for now.
+    </para>
+    <para>
+      Tbe listing below is a fitness evaluator for the "Hello World" program.  It
+      simply assigns one point for each character in the candidate string that
+      matches the corresponding position in the target string.
+    </para>
+    <informalexample>
+      <programlisting language="java">
+<![CDATA[public class StringEvaluator implements FitnessEvaluator<String>
+{
+    private final String targetString = "HELLO WORLD";
+
+    /**
+     * Assigns one "fitness point" for every character in the
+     * candidate String that matches the corresponding position in
+     * the target string.
+     */
+    public double getFitness(String candidate,
+                             List<? extends String> population)
+    {
+        int matches = 0;
+        for (int i = 0; i < candidate.length(); i++)
+        {
+            if (candidate.charAt(i) == targetString.charAt(i))
+            {
+                ++matches;
+            }
+        }
+        return matches;
+    }
+
+    public boolean isNatural()
+    {
+        return true;
+    }
+}]]>        
+      </programlisting>
+    </informalexample>
+    <indexterm><primary>fitness function</primary><secondary>natural</secondary></indexterm>
+    <indexterm><primary>natural fitness</primary></indexterm>
+    <para>
+      By some fitness measures a higher value indicates a fitter solution.  In other
+      cases, a lower value is better.  The <methodname>isNatural</methodname> method
+      of a fitness evaluator simply specifies which scenario applies.  In Watchmaker
+      terminology a <emphasis>natural</emphasis> fitness function is one that returns
+      higher values for fitter individuals.
     </para>
   </section>
   <section>
     <title>Selection Strategy</title>
-    <para>TODO</para>
-  </section>
-  <section>
-    <title>Evolutionary Operators</title>
-    <para>TODO</para>
-  </section>
-  <section>
-    <title>The Fitness Evaluator</title>
+    <indexterm><primary>SelectionStrategy</primary></indexterm>
     <para>TODO</para>
   </section>
   <section>
     <title>Random Number Generator</title>
+    <indexterm><primary>random number generator</primary></indexterm>
+    <indexterm><primary>RNG</primary></indexterm>
     <para>TODO</para>
   </section>
   <section>
@@ -96,10 +261,12 @@
     <para>TODO</para>
     <section>
       <title>Termination Conditions</title>
+      <indexterm><primary>TerminationCondition</primary></indexterm>
       <para>TODO</para>
     </section>
     <section>
       <title>Evolution Observers</title>
+      <indexterm><primary>EvolutionObserver</primary></indexterm>
       <para>TODO</para>
     </section>
   </section>

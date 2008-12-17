@@ -19,6 +19,7 @@ import java.util.List;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.CandidateFactory;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for the {@link TreeFactory} used by the gentic programming
@@ -31,7 +32,10 @@ public class TreeFactoryTest
     public void testMaxDepth()
     {
         final int maxDepth = 3;
-        CandidateFactory<Node> factory = new TreeFactory(2, maxDepth, 0.6, 0.5);
+        CandidateFactory<Node> factory = new TreeFactory(2,
+                                                         maxDepth,
+                                                         new Probability(0.6),
+                                                         Probability.EVENS);
         List<Node> trees = factory.generateInitialPopulation(20, new MersenneTwisterRNG());
         for (Node tree : trees)
         {
@@ -44,27 +48,19 @@ public class TreeFactoryTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testInvalidParameterCount()
     {
-        new TreeFactory(-1, 1, 0.5, 0.5); // Should throw an exception, parameter count can't be negative.
+        new TreeFactory(-1,
+                        1,
+                        Probability.EVENS,
+                        Probability.EVENS); // Should throw an exception, parameter count can't be negative.
     }
 
     
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testInvalidMaxDepth()
     {
-        new TreeFactory(1, 0, 0.5, 0.5); // Should throw an exception, depth must be at least one.
-    }
-
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testProbabilityTooLow()
-    {
-        new TreeFactory(1, 1, -0.1, 0.5); // Should throw an exception, probability must be in 0..1 range.
-    }
-
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testProbabilityTooHigh()
-    {
-        new TreeFactory(1, 1, 0.5, 1.1); // Should throw an exception, probability must be in 0..1 range.
+        new TreeFactory(1,
+                        0,
+                        Probability.EVENS,
+                        Probability.EVENS); // Should throw an exception, depth must be at least one.
     }
 }

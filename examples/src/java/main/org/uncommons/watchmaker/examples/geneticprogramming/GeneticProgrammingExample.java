@@ -68,8 +68,8 @@ public class GeneticProgrammingExample
     {
         TreeFactory factory = new TreeFactory(2, // Number of parameters passed into each program.
                                               4, // Maximum depth of generated trees.
-                                              0.5, // Probability that a node is a function node.
-                                              0.6); // Probability that other nodes are params rather than constants.
+                                              Probability.EVENS, // Probability that a node is a function node.
+                                              new Probability(0.6d)); // Probability that other nodes are params rather than constants.
         List<EvolutionaryOperator<Node>> operators = new ArrayList<EvolutionaryOperator<Node>>(2);
         operators.add(new TreeMutation(factory, new Probability(0.4d)));
         operators.add(new TreeCrossover());

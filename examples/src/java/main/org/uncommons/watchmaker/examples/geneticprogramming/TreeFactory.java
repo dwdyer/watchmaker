@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import java.util.Random;
+import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 
 /**
@@ -34,11 +35,11 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
 
     // Probability that a created node is a function node rather
     // than a value node.
-    private final double functionProbability;
+    private final Probability functionProbability;
 
     // Probability that a value (non-function) node is a parameter
     // node rather than a constant node.
-    private final double parameterProbability;
+    private final Probability parameterProbability;
 
 
     /**
@@ -53,8 +54,8 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
      */
     public TreeFactory(int parameterCount,
                        int maxDepth,
-                       double functionProbability,
-                       double parameterProbability)
+                       Probability functionProbability,
+                       Probability parameterProbability)
     {
         if (parameterCount < 0)
         {
@@ -64,27 +65,11 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
         {
             throw new IllegalArgumentException("Max depth must be at least 1.");
         }
-        assertProbabilityInRange(functionProbability);
-        assertProbabilityInRange(parameterProbability);
-        
+
         this.parameterCount = parameterCount;
         this.maximumDepth = maxDepth;
         this.functionProbability = functionProbability;
         this.parameterProbability = parameterProbability;
-    }
-
-
-    /**
-     * Check that a probability is in the range 0..1 and throw an exception
-     * if it is not.
-     * @param p The probability to check.
-     */
-    private void assertProbabilityInRange(double p)
-    {
-        if (p < 0 || p > 1)
-        {
-            throw new IllegalArgumentException("Probability must be between 0 and 1.");
-        }
     }
 
 
@@ -105,7 +90,7 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
      */
     private Node makeNode(Random rng, int maxDepth)
     {
-        if (rng.nextDouble() <= functionProbability && maxDepth > 1)
+        if (functionProbability.nextEvent(rng) && maxDepth > 1)
         {
             // Max depth for sub-trees is one less than max depth for this node.
             int depth = maxDepth - 1;
@@ -118,7 +103,7 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
                 default: return new IsGreater(makeNode(rng, depth), makeNode(rng, depth));
             }
         }
-        else if (rng.nextDouble() <= parameterProbability)
+        else if (parameterProbability.nextEvent(rng))
         {
             return new Parameter(rng.nextInt(parameterCount));
         }

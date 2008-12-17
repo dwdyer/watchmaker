@@ -23,6 +23,7 @@ import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.PopulationData;
+import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.factories.StringFactory;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.StringCrossover;
@@ -65,7 +66,7 @@ public final class StringsExample
     public static String evolveString(String target)
     {
         List<EvolutionaryOperator<String>> operators = new ArrayList<EvolutionaryOperator<String>>(2);
-        operators.add(new StringMutation(ALPHABET, 0.02d));
+        operators.add(new StringMutation(ALPHABET, new Probability(0.02d)));
         operators.add(new StringCrossover());
         EvolutionaryOperator<String> pipeline = new EvolutionPipeline<String>(operators);
         EvolutionEngine<String> engine = new ConcurrentEvolutionEngine<String>(new StringFactory(ALPHABET,

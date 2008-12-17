@@ -37,6 +37,9 @@
   </section>
   <section>
     <title>Random Number Generators</title>
+    <indexterm><primary>random number generator</primary></indexterm>
+    <indexterm><primary>RNG</primary></indexterm>
+    <indexterm><primary>SecureRandom</primary></indexterm>
     <para>
       The random number generator (RNG) is a core component of any evolutionary simulation.  It is
       used for selection, for cross-over and for mutation.  A slow random number generator can be
@@ -45,6 +48,7 @@
       <classname>java.util.Random</classname> and <classname>java.security.SecureRandom</classname>.
       These should be avoided for statistical and performance reasons respectively.
     </para>
+    <indexterm><primary>MersenneTwisterRNG</primary></indexterm>
     <para>
       The Watchmaker Framework comes bundled with three high-quality RNGs provided by the Uncommons
       Maths project.  Of these, the <classname>org.uncommons.maths.random.MersenneTwisterRNG</classname>
@@ -54,6 +58,8 @@
   </section>
   <section>
     <title>JVM Options</title>
+    <indexterm><primary>Java Virtual Machine</primary></indexterm>
+    <indexterm><primary>JVM</primary></indexterm>
     <para>
       The Java Virtual Machine (JVM) is a complex piece of software.  It is designed to run a huge
       variety different programs.  As such, its default configuration is not optimised for the
@@ -62,6 +68,7 @@
     </para>
     <section>
       <title>Server VM</title>
+      <indexterm><primary>server VM</primary></indexterm>
       <para>
         The Sun JVM provides two modes of operation, one optimised for client applications (the
         default) and one for server applications.  The server VM takes marginally longer to start
@@ -72,6 +79,7 @@
     </section>
     <section>
       <title>Garbage Collection</title>
+      <indexterm><primary>garbage collection</primary></indexterm>
       <para>
         Evolutionary algorithms create many short-lived objects. Modern JVMs, with their generational
         garbage collectors, are typically well tuned for this usage pattern. However, you may find

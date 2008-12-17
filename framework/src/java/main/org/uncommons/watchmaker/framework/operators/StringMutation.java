@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Mutation of individual characters in a string according to some
@@ -28,20 +29,15 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 public class StringMutation implements EvolutionaryOperator<String>
 {
     private final char[] alphabet;
-    private final double mutationProbability;
+    private final Probability mutationProbability;
 
     /**
      * @param alphabet The permitted values for each character in a string.
      * @param mutationProbability The probability that a given character
      * is changed.
      */
-    public StringMutation(char[] alphabet, double mutationProbability)
+    public StringMutation(char[] alphabet, Probability mutationProbability)
     {
-        if (mutationProbability <= 0 || mutationProbability > 1)
-        {
-            throw new IllegalArgumentException("Mutation probability must be greater than "
-                                               + "zero and less than or equal to one.");
-        }
         this.alphabet = alphabet.clone();
         this.mutationProbability = mutationProbability;
     }
@@ -63,7 +59,7 @@ public class StringMutation implements EvolutionaryOperator<String>
         StringBuilder buffer = new StringBuilder(s);
         for (int i = 0; i < buffer.length(); i++)
         {
-            if (rng.nextDouble() < mutationProbability)
+            if (mutationProbability.nextEvent(rng))
             {
                 buffer.setCharAt(i, alphabet[rng.nextInt(alphabet.length)]);
             }
