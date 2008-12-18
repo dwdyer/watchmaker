@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import org.testng.annotations.Test;
-import org.uncommons.maths.ConstantGenerator;
+import org.uncommons.maths.number.ConstantGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;

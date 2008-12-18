@@ -16,7 +16,7 @@
 package org.uncommons.watchmaker.swing;
 
 import org.testng.annotations.Test;
-import org.uncommons.maths.NumberGenerator;
+import org.uncommons.maths.number.NumberGenerator;
 
 /**
  * Unit test for the numeric parameter GUI control.

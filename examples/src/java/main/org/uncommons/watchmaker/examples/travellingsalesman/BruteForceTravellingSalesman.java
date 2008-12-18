@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import org.uncommons.maths.PermutationGenerator;
+import org.uncommons.maths.combinatorics.PermutationGenerator;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**

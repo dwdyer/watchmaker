@@ -22,9 +22,9 @@ import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.uncommons.maths.AdjustableNumberGenerator;
 import org.uncommons.maths.Maths;
-import org.uncommons.maths.NumberGenerator;
+import org.uncommons.maths.number.AdjustableNumberGenerator;
+import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.watchmaker.framework.Probability;
 
 /**

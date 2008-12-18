@@ -19,8 +19,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.uncommons.maths.AdjustableNumberGenerator;
-import org.uncommons.maths.NumberGenerator;
+import org.uncommons.maths.number.AdjustableNumberGenerator;
+import org.uncommons.maths.number.NumberGenerator;
 
 /**
  * A GUI control that allows the user to set/update the value of a

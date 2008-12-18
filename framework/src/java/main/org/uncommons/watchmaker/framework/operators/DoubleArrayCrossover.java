@@ -18,7 +18,7 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.NumberGenerator;
+import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.watchmaker.framework.Probability;
 
 /**

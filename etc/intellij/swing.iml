@@ -16,8 +16,8 @@
     <orderEntry type="library" name="testng-5.6-jdk15" level="project" />
     <orderEntry type="library" name="jfreechart-1.0.6" level="project" />
     <orderEntry type="library" name="jcommon-1.0.10" level="project" />
-    <orderEntry type="library" name="uncommons-maths-1.0.2" level="project" />
     <orderEntry type="library" name="fest-swing-1.0b1" level="project" />
+    <orderEntry type="library" name="uncommons-maths-1.1" level="project" />
     <orderEntryProperties />
   </component>
 </module>

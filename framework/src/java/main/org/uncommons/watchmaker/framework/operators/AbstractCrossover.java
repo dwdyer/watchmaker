@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.ConstantGenerator;
-import org.uncommons.maths.NumberGenerator;
+import org.uncommons.maths.number.ConstantGenerator;
+import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 
