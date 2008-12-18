@@ -209,27 +209,27 @@
         <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/2">
             <compilation-unit>
                 <package-root>${project.dir}/framework/src/java/main</package-root>
-                <classpath mode="compile">${project.dir}/util/build/classes/main:${project.dir}/lib/runtime/uncommons-maths-1.0.2.jar</classpath>
+                <classpath mode="compile">${project.dir}/util/build/classes/main:${project.dir}/lib/runtime/uncommons-maths-1.1.jar</classpath>
                 <built-to>${project.dir}/framework/build/classes/main</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
             <compilation-unit>
                 <package-root>${project.dir}/examples/src/java/main</package-root>
-                <classpath mode="compile">${project.dir}/framework/build/classes/main:${project.dir}/swing/build/classes/main:${project.dir}/lib/runtime/uncommons-maths-1.0.2.jar</classpath>
+                <classpath mode="compile">${project.dir}/framework/build/classes/main:${project.dir}/util/build/classes/main:${project.dir}/swing/build/classes/main:${project.dir}/lib/runtime/uncommons-maths-1.1.jar</classpath>
                 <built-to>${project.dir}/examples/build/classes/main</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
             <compilation-unit>
                 <package-root>${project.dir}/framework/src/java/test</package-root>
                 <unit-tests/>
-                <classpath mode="compile">${project.dir}/framework/build/classes/main:${project.dir}/lib/compiletime/testng/testng-5.6-jdk15.jar:${project.dir}/lib/runtime/uncommons-maths-1.0.2.jar</classpath>
+                <classpath mode="compile">${project.dir}/framework/build/classes/main:${project.dir}/lib/runtime/uncommons-maths-1.1.jar:${project.dir}/lib/compiletime/testng/testng-5.7-jdk15.jar</classpath>
                 <built-to>${project.dir}/framework/build/classes/test</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
             <compilation-unit>
                 <package-root>${project.dir}/examples/src/java/test</package-root>
                 <unit-tests/>
-                <classpath mode="compile">${project.dir}/examples/build/classes/main:${project.dir}/framework/build/classes/main:${project.dir}/lib/compiletime/testng/testng-5.6-jdk15.jar:${project.dir}/lib/runtime/uncommons-maths-1.0.2.jar:${project.dir}/lib/compiletime/fest/fest-swing-1.0b1.jar</classpath>
+                <classpath mode="compile">${project.dir}/examples/build/classes/main:${project.dir}/framework/build/classes/main:${project.dir}/lib/runtime/uncommons-maths-1.1.jar:${project.dir}/lib/compiletime/testng/testng-5.7-jdk15.jar:${project.dir}/lib/compiletime/fest/fest-swing-1.0b1.jar</classpath>
                 <built-to>${project.dir}/examples/build/classes/test</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
@@ -240,21 +240,21 @@
             </compilation-unit>
             <compilation-unit>
                 <package-root>${project.dir}/swing/src/java/main</package-root>
-                <classpath mode="compile">${project.dir}/framework/build/classes/main:${project.dir}/lib/runtime/uncommons-maths-1.0.2.jar:${project.dir}/lib/runtime/jfreechart-1.0.6.jar:${project.dir}/lib/runtime/jcommon-1.0.10.jar</classpath>
+                <classpath mode="compile">${project.dir}/framework/build/classes/main:${project.dir}/lib/runtime/jfreechart-1.0.6.jar:${project.dir}/lib/runtime/jcommon-1.0.10.jar:${project.dir}/lib/runtime/uncommons-maths-1.1.jar</classpath>
                 <built-to>${project.dir}/swing/build/classes/main</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
             <compilation-unit>
                 <package-root>${project.dir}/util/src/java/test</package-root>
                 <unit-tests/>
-                <classpath mode="compile">${project.dir}/util/build/classes/main:${project.dir}/lib/compiletime/testng/testng-5.6-jdk15.jar</classpath>
+                <classpath mode="compile">${project.dir}/util/build/classes/main:${project.dir}/lib/compiletime/testng/testng-5.7-jdk15.jar</classpath>
                 <built-to>${project.dir}/util/build/classes/test</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
             <compilation-unit>
                 <package-root>${project.dir}/swing/src/java/test</package-root>
                 <unit-tests/>
-                <classpath mode="compile">${project.dir}/swing/build/classes/main:${project.dir}/framework/build/classes/main:${project.dir}/lib/compiletime/testng/testng-5.6-jdk15.jar:${project.dir}/lib/runtime/uncommons-maths-1.0.2.jar:${project.dir}/lib/compiletime/fest/fest-swing-1.0b1.jar</classpath>
+                <classpath mode="compile">${project.dir}/swing/build/classes/main:${project.dir}/framework/build/classes/main:${project.dir}/lib/runtime/uncommons-maths-1.1.jar:${project.dir}/lib/compiletime/testng/testng-5.7-jdk15.jar:${project.dir}/lib/compiletime/fest/fest-swing-1.0b1.jar</classpath>
                 <built-to>${project.dir}/swing/build/classes/test</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
