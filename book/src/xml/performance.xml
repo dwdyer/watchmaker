@@ -33,7 +33,17 @@
   </section>
   <section>
     <title>Minimising the Search Space</title>
-    <para>TODO</para>
+    <para>
+      An evolutionary algorithm is a type of non-deterministic search.  The algorithm is
+      searching the space of all possible solutions to find one that is good enough.  The
+      larger the search space, the longer it is likely to take to converge on a
+      satisfactory solution.
+      For this reason, anything we can do to constrain the search space, without
+      handicapping the algorithm, is likely to be beneficial.  This includes choosing
+      an efficient candidate representation and using evolutionary operators that
+      avoid generating useless or invalid solutions.
+      A little intelligent design can go a long way.
+    </para>
   </section>
   <section>
     <title>Random Number Generators</title>

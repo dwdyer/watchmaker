@@ -316,7 +316,7 @@
     <informalfigure>
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/antenna.jpg" format="JPG" width="50%" align="center"/>
+          <imagedata fileref="antenna.jpg" format="JPG" width="50%" align="center"/>
         </imageobject>
         <caption>
           <para>

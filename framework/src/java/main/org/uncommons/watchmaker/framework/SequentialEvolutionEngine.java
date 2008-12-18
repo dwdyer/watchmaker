@@ -22,9 +22,10 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.NullFitnessEvaluator;
 
 /**
- * <p>Single-threaded {@link EvolutionEngine}.  All work is completed synchronously
- * on the request thread.  This implementation does not take advantage of the
- * parallelism offered by multi-processor, multi-core or hyper-threaded machines.</p>
+ * <p>Single-threaded generational {@link EvolutionEngine}.  All work is completed
+ * synchronously on the request thread.  This implementation does not take advantage
+ * of the parallelism offered by multi-processor, multi-core or hyper-threaded
+ * machines.</p>
  *
  * <p>This evolution engine is suitable for restricted/managed environments
  * (where it is not permitted for applications to manage their own threads).

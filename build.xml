@@ -357,10 +357,11 @@
     <mkdir dir="book/${build.dir}" />
     <uncommons:docbook classpathref="base.path"
                        source="book/${src.dir}/xml/book.xml"
-                       format="pdf"
+                       format="pdf"                       
                        outputDir="book/${build.dir}" >
       <parameter name="paper.type" value="A4" />
       <parameter name="highlight.source" value="1" />
+      <parameter name="img.src.path" value="./book/src/images/" />
     </uncommons:docbook>
   </target>
 
@@ -369,21 +370,38 @@
       TARGETS FOR UPDATING THE PROJECT WEBSITE
  =================================================================== -->
 
-  <!-- Refresh the API documentation tree for the Watchmaker Framework website. -->
   <target name="website-docs"
           description="Re-builds the website Javadocs."
           depends="dist">
     <!-- Delete all existing HTML files and then regenerate the docs over the top. -->
     <delete>
-      <fileset dir="${web.dir}/api">
-        <include name="**/*.html" />
+      <fileset dir="${web.dir}">
+        <include name="api/**/*.html" />
+        <include name="manual/**/*" />
       </fileset>
     </delete>
+
+    <!-- Refresh the API documentation tree for the Watchmaker Framework website. -->
     <api.docs api.dir="${web.dir}/api" />
+
     <copy todir="${web.dir}" file="./CHANGELOG.txt" />
+
     <!-- Copy latest jars into website examples directory. -->
     <copy todir="${web.dir}/examples">
       <fileset dir="${dist.dir}" includes="*.jar" />
+    </copy>
+
+    <!-- Generate user manual from DocBook source. -->
+    <uncommons:docbook classpathref="base.path"
+                       source="book/${src.dir}/xml/website.xml"
+                       format="html"
+                       chunked="true"
+                       outputDir="${web.dir}/manual" >
+      <parameter name="highlight.source" value="1" />
+      <parameter name="img.src.path" value="./" />
+    </uncommons:docbook>
+    <copy todir="${web.dir}/manual">
+      <fileset dir="book/${src.dir}/images" includes="**/*"/>
     </copy>
   </target>
 

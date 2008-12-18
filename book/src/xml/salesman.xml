@@ -5,7 +5,7 @@
   <title>The Travelling Salesman</title>
   <mediaobject>
     <imageobject>
-      <imagedata fileref="../images/travelling_salesman_problem.png"
+      <imagedata fileref="travelling_salesman_problem.png"
                  format="PNG" scalefit="1" width="100%" />
     </imageobject>
     <caption>

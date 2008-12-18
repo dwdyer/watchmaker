@@ -6,6 +6,7 @@
       version="5.0">
   <info>
     <title>Evolutionary Computation in Java</title>
+    <subtitle>A Practical Guide to the Watchmaker Framework</subtitle>
     <author>
       <personname>
         <firstname>Daniel</firstname>
@@ -34,22 +35,8 @@
   <!-- Chapters -->
   <xi:include href="evolution.xml" />
   <xi:include href="watchmaker.xml" />
-  <xi:include href="salesman.xml" />
-  <xi:include href="selection.xml" />
-  <xi:include href="sudoku.xml" />
-  <xi:include href="islands.xml" />
-  <xi:include href="interactive.xml" />
-  <xi:include href="steadystate.xml" />
-  <xi:include href="geneticprogramming.xml" />
-  <xi:include href="classifiers.xml" />
-  <xi:include href="multiobjective.xml" />
 
   <!-- Appendices -->
   <xi:include href="performance.xml" />
-  <xi:include href="gui.xml" />
-  <xi:include href="distributed.xml" />
-  <xi:include href="furtherreading.xml" />
 
-  <index />
-  
 </book>

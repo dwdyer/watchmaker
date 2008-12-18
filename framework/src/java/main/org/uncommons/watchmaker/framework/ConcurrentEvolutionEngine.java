@@ -31,16 +31,18 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.NullFitnessEvaluator;
 
 /**
- * <p>Multi-threaded {@link EvolutionEngine}.  Fitness evaluations are performed
- * in parallel on multi-processor, multi-core and hyper-threaded machines.
+ * <p>Multi-threaded generational {@link EvolutionEngine}.  Fitness evaluations
+ * are performed in parallel on multi-processor, multi-core and hyper-threaded
+ * machines.
  * Evolution (mutation, cross-over, etc.) occurs on the request thread but
  * fitness evaluations are delegated to a pool of worker threads.
  * All of the host's available processing units are used (i.e. on a quad-core
  * machine, there will be four fitness evaluation worker threads).</p>
+ * 
  * <p>This evolution engine is the most suitable for typical evolutionary
  * algorithms.  Evolutionary programs that execute in a restricted/managed
  * environment (where it is not permitted for applications to manage their own
- * threads) should use the {@link SequentialEvolutionEngine}/
+ * threads) should use the {@link SequentialEvolutionEngine}.</p>
  * @param <T> The type of entity that is to be evolved.
  * @author Daniel Dyer
  * @see SequentialEvolutionEngine
