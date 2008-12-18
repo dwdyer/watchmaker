@@ -360,6 +360,7 @@
                        format="pdf"
                        outputDir="book/${build.dir}" >
       <parameter name="paper.type" value="A4" />
+      <parameter name="highlight.source" value="1" />
     </uncommons:docbook>
   </target>
 

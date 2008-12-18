@@ -13,10 +13,23 @@
         <othername>W.</othername>
       </personname>
       <email>dan@uncommons.org</email>
+      <personblurb>
+        Does this show up anywhere?
+      </personblurb>
     </author>
     <copyright>
       <year>2008</year>
     </copyright>
+    <keywordset>
+      <keyword>algorithms</keyword>
+      <keyword>evolution</keyword>
+      <keyword>evolutionary algorithms</keyword>
+      <keyword>evolutionary computation</keyword>
+      <keyword>genetic algorithms</keyword>
+      <keyword>Java</keyword>
+      <keyword>programming</keyword>
+      <keyword>software</keyword>
+    </keywordset>
   </info>
 
   <xi:include href="preface.xml" />

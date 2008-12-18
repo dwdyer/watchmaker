@@ -18,7 +18,7 @@
   </para>
   <section>
     <title>Optimising the Fitness Evaluator</title>
-    <indexterm><primary>fitness function</primary><secondary>optimising</secondary></indexterm>
+    <indexterm><primary>fitness function</primary><secondary>optimisation of</secondary></indexterm>
     <para>
       For most non-trivial evolutionary algorithms, the bulk of the work is the evaluation of
       candidate solutions.  For this reason the fitness function is often the obvious place to
@@ -38,6 +38,7 @@
   <section>
     <title>Random Number Generators</title>
     <indexterm><primary>random number generator</primary></indexterm>
+    <indexterm><primary>Random</primary></indexterm>
     <indexterm><primary>RNG</primary></indexterm>
     <indexterm><primary>SecureRandom</primary></indexterm>
     <para>

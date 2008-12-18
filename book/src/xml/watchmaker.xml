@@ -27,13 +27,13 @@
     </para>
     <para>
       The framework provides multiple implementations of the
-      <classname>EvolutionEngine</classname> interface, but the one that you will
+      <interfacename>EvolutionEngine</interfacename> interface, but the one that you will
       usually want to use is <classname>ConcurrentEvolutionEngine</classname>.  As its
       name suggests, it takes advantage of the parallel processing facilities of your
       computer in order to speed-up the evolutionary process.
     </para>
     <para>
-      An <classname>EvolutionEngine</classname> has a single generic type parameter
+      An <interfacename>EvolutionEngine</interfacename> has a single generic type parameter
       that indicates the type of object that it can evolve.
       For the "Hello World" program, we need to be able to evolve Java strings.
       Code that creates an engine that can evolve strings would look something like this:
@@ -49,12 +49,12 @@
       </programlisting>
     </informalexample>
     <para>
-      Once you have created an <classname>EvolutionEngine</classname>, your program is as
-      simple as calling the <methodname>evolve</methodname> method with appropriate
+      Once you have created an <interfacename>EvolutionEngine</interfacename>, your program
+      is as simple as calling the <methodname>evolve</methodname> method with appropriate
       arguments.
       However, as you can see from the code snippet above, there is a little bit of work to
-      be done first in order to create an <classname>EvolutionEngine</classname> that is
-      configured appropriately for the given problem.
+      be done first in order to create an <interfacename>EvolutionEngine</interfacename> that
+      is configured appropriately for the given problem.
       The constructor of the <classname>ConcurrentEvolutionEngine</classname> class requires
       five objects.  These are:
     </para>
@@ -82,14 +82,14 @@
     <para>
       The first object that needs to be plugged into the evolution engine is a candidate
       factory.  Every evolutionary simulation must start with an initial population of
-      candidate solutions and the <classname>CandidateFactory</classname> interface is
-      the mechanism by which the evolution engine creates this population.
+      candidate solutions and the <interfacename>CandidateFactory</interfacename> interface
+      is the mechanism by which the evolution engine creates this population.
     </para>
     <para>
       A candidate factory implementation has an associated type.  It can only create
       objects of that type.  The type must match the type of the evolution engine that
       it is plugged into.
-      You can write your own implementation of <classname>CandidateFactory</classname>
+      You can write your own implementation of <interfacename>CandidateFactory</interfacename>
       for your program or, if you are using a common type such as strings, lists or
       arrays, you may be able to use a ready-made factory from the
       <package>org.uncommons.watchmaker.framework.factories</package> package.
@@ -116,7 +116,7 @@ CandidateFactory<String> factory = new StringFactory(chars, 11);]]>
     <tip>
       <indexterm><primary>AbstractCandidateFactory</primary></indexterm>
       <para>
-        When writing your own <classname>CandidateFactory</classname> implementations,
+        When writing your own <interfacename>CandidateFactory</interfacename> implementations,
         it is easiest to extend the provided <classname>AbstractCandidateFactory</classname>
         base class since there is then only a single method that must be implemented.
       </para>
@@ -131,11 +131,11 @@ CandidateFactory<String> factory = new StringFactory(chars, 11);]]>
     </para>
     <para>
       In the Watchamker Framework, evolutionary operators are defined in terms of the
-      <classname>EvolutionaryOperator</classname> interface.  This interface declares a
-      single method that takes a list of selected individuals and returns a list of
-      evolved individuals.  Some operators (i.e. mutation) will process one individual
-      at a time, whereas others will process individuals in groups (cross-over processes
-      two individuals at a time).
+      <interfacename>EvolutionaryOperator</interfacename> interface.  This interface
+      declares a single method that takes a list of selected individuals and returns a
+      list of evolved individuals.  Some operators (i.e. mutation) will process one
+      individual at a time, whereas others will process individuals in groups
+      (cross-over processes two individuals at a time).
     </para>
     <indexterm><primary>StringCrossover</primary></indexterm>
     <indexterm><primary>StringMutation</primary></indexterm>
@@ -193,10 +193,10 @@ EvolutionaryOperator<String> pipeline
     </para>
     <para>
       In the Watchmaker Framework, a fitness function is written by implementing the
-      <classname>FitnessEvaluator</classname> interface.  The
+      <interfacename>FitnessEvaluator</interfacename> interface.  The
       <methodname>getFitness</methodname> of this interface takes a candidate solution
-      and returns its fitness score as a Java double.  Actually, the method takes two
-      parameters, but we can ignore the second for now.
+      and returns its fitness score as a Java double.  The method actually takes two
+      arguments, but we can ignore the second for now.
     </para>
     <para>
       Tbe listing below is a fitness evaluator for the "Hello World" program.  It
@@ -238,36 +238,252 @@ EvolutionaryOperator<String> pipeline
     <indexterm><primary>fitness function</primary><secondary>natural</secondary></indexterm>
     <indexterm><primary>natural fitness</primary></indexterm>
     <para>
-      By some fitness measures a higher value indicates a fitter solution.  In other
-      cases, a lower value is better.  The <methodname>isNatural</methodname> method
+      By some fitness measures, a higher value indicates a fitter solution.  In other
+      cases a lower value is better.  The <methodname>isNatural</methodname> method
       of a fitness evaluator simply specifies which scenario applies.  In Watchmaker
-      terminology a <emphasis>natural</emphasis> fitness function is one that returns
-      higher values for fitter individuals.
+      Framework terminology, a <emphasis>natural</emphasis> fitness function is one that
+      returns higher values for fitter individuals.
     </para>
   </section>
   <section>
     <title>Selection Strategy</title>
+    <indexterm><primary>selection</primary></indexterm>
     <indexterm><primary>SelectionStrategy</primary></indexterm>
-    <para>TODO</para>
+    <para>
+      Selection is a key ingredient in any evolutionary algorithm.  It's what determines
+      which individuals survive to reproduce and which are discarded.  All we've said about
+      selection so far is that it should favour fitter individuals.  This definition permits
+      several different implementations.  The Watchmaker Framework includes all of the most
+      common selection strategies in the
+      <package>org.uncommons.watchmaker.framework.selection</package> package.  These are
+      sufficient for most evolutionary algorithms but, if necessary, it is straightforward
+      to write your own implementation of the <interfacename>SelectionStrategy</interfacename>
+      interface.
+    </para>
+    <indexterm><primary>RouletteWheelSelection</primary></indexterm>
+    <para>
+      Some selection strategies work better than others for certain problems.  Often a little
+      trial-and-error is required to pick the best option.  We will delve into the details of
+      various selection strategies in chapter 4, but for now we will just create an instance
+      of the <classname>RouletteWheelSelection</classname> class and use that for our
+      "Hello World" application.
+    </para>
+    <indexterm><primary>fitness-proportionate selection</primary></indexterm>
+    <indexterm><primary>roulette wheel selection</primary></indexterm>
+    <indexterm><primary>selection</primary><secondary>fitness-proportionate</secondary></indexterm>
+    <indexterm><primary>selection</primary><secondary>roulette wheel</secondary></indexterm>
+    <para>
+      <emphasis>Roulette wheel selection</emphasis> is the most common type of
+      <emphasis>fitness-proportionate selection</emphasis>.
+      It gives all individuals a chance of being selected but favours the fitter
+      individuals since an individual's selection probability is dervived from its
+      fitness score.
+    </para>
   </section>
   <section>
     <title>Random Number Generator</title>
     <indexterm><primary>random number generator</primary></indexterm>
+    <indexterm><primary>Random</primary></indexterm>
     <indexterm><primary>RNG</primary></indexterm>
-    <para>TODO</para>
+    <indexterm><primary>SecureRandom</primary></indexterm>
+    <para>
+      The final dependency that must be satisfied in order to create an evolution engine
+      is the random number generator (RNG).  An evolution engine has a single RNG that it
+      passes to its candidate factory, evolutionary operator and selection strategy.
+      An ideal RNG is both fast and statistically random.  We <emphasis>could</emphasis>
+      use the standard Java RNG, <classname>java.util.Random</classname>, but its output
+      is not as random as it should be.  The other RNG in the standard libary,
+      <classname>java.security.SecureRandom</classname> is much better in this respect
+      but can be slow.
+    </para>
+    <indexterm><primary>MersenneTwisterRNG</primary></indexterm>
+    <para>
+      Fortunately, the Watchmaker Framework provides alternatives.  The
+      <classname>org.uncommons.maths.random.MersenneTwisterRNG</classname> random number
+      generator is both fast and statistically sound.  It is usually the best choice
+      when creating an evolution engine.
+    </para>
   </section>
   <section>
-    <title>Putting it all Together</title>
-    <para>TODO</para>
+    <title>Completing the Jigsaw</title>
+    <para>
+      We've now got all of the necessary pieces to complete the "Hello World" example
+      application.  Assuming that you've already created the
+      <classname>StringEvaluator</classname> class (defined above) in a separate file,
+      the code needed to create the evolution engine looks like this:
+    </para>
+    <informalexample>
+      <programlisting language="java">
+<![CDATA[// Create a factory to generate random 11-character Strings.
+char[] chars = new char[27];
+for (char c = 'A'; c <= 'Z'; c++)
+{
+    chars[c - 'A'] = c;
+}
+chars[26] = ' ';
+CandidateFactory<String> factory = new StringFactory(chars, 11);
+
+// Create a pipeline that applies cross-over then mutation.
+List<EvolutionaryOperator<String>> operators
+    = new LinkedList<EvolutionaryOperator<String>>();
+operators.add(new StringMutation(chars, new Probability(0.02)));
+operators.add(new StringCrossover())
+EvolutionaryOperator<String> pipeline
+    = new EvolutionPipeline<String>(operators);
+
+FitnessEvaluator<String> fitnessEvaluator = new StringEvaluator();
+SelectionStrategy<Object> selection = new RouletteWheelSelection();
+Random rng = new MersenneTwisterRNG();
+
+EvolutionEngine<String> engine
+    = new ConcurrentEvolutionEngine<String>(factory,
+                                            pipeline,
+                                            fitnessEvaluator,
+                                            selection,
+                                            rng);]]>
+      </programlisting>
+    </informalexample>
+    <indexterm><primary>evolve method</primary></indexterm>
+    <indexterm><primary>population</primary><secondary>size of</secondary></indexterm>
+    <para>
+      The listing above only creates the evolution engine, it does not perform any
+      evolution.  For that we need to call the <methodname>evolve</methodname> method.
+      The <methodname>evolve</methodname> method takes three parameters.  The first
+      is the size of the population.  This is the number of candidate solutions that
+      exist at any time.  A bigger population will often result in a satisfactory
+      solution being found in fewer generations.  On the other hand, the processing
+      of each generation will take longer because there are more individuals to deal
+      with.  For the "Hello World" program, a population size of 10 is fine.
+    </para>
+    <para>
+      The second parameter is concerned with <emphasis>elitism</emphasis>.  Elitism
+      is explained in chapter 4.  For now, just use a value of zero.
+      The final varargs parameter specifies one or more termination conditions.
+    </para>
     <section>
       <title>Termination Conditions</title>
       <indexterm><primary>TerminationCondition</primary></indexterm>
-      <para>TODO</para>
+      <indexterm><primary>TargetFitness</primary></indexterm>
+      <para>
+        Termination conditions make the evolution stop.  There are a few reasons why
+        we would like the evolution to stop.  The most obvious is when it has found the
+        solution that we are looking for.  In the case of the "Hello World" program, that
+        is when we have found the target string.  The target string has a fitness score of
+        11, so we use the <classname>TargetFitness</classname> condition.
+      </para>
+      <para>
+        To complete the evolutionary "Hello World" application, and the following two lines:
+      </para>
+      <informalexample>
+        <programlisting language="java">
+<![CDATA[String result = engine.evolve(10, 0, new TargetFitness(11));
+System.out.println(result);]]>
+        </programlisting>
+      </informalexample>
+      <note>
+        <indexterm><primary>ElapsedTime</primary></indexterm>
+        <indexterm><primary>GenerationCount</primary></indexterm>
+        <indexterm><primary>Stagnation</primary></indexterm>
+        <para>
+          When we move on to less trivial evolutionary programs, we will rarely be able to
+          specify the outcome so precisely.  The
+          <package>org.uncommons.watchmaker.framework.termination</package> package includes
+          other termination conditions that can be used.  For example, we may want the program
+          to run for a certain period of time, or a certain number of generations, and then
+          return the best solution it has found up until that point.  The
+          <classname>ElapsedTime</classname> and <classname>GenerationCount</classname>
+          conditions provide this functionality.  Alternatively, we may want the program to
+          continue as long as it is finding progressively better solutions.  The
+          <classname>Stagnation</classname> condition will terminate the evolution after a
+          set number of generations pass without any improvement in the fitness of the fittest
+          candidate.
+          If multiple termination conditions are specified, the evolution will stop as soon
+          as any one of them is satisfied.
+        </para>
+      </note>
     </section>
     <section>
       <title>Evolution Observers</title>
+      <para>
+        Compile and run the above code and, perhaps after a brief pause, you'll see the
+        following output:
+      </para>
+      <informalexample>
+        <programlisting>
+<![CDATA[  HELLO WORLD]]>
+        </programlisting>
+      </informalexample>
       <indexterm><primary>EvolutionObserver</primary></indexterm>
-      <para>TODO</para>
+      <para>
+        This is quite probably the most convoluted "Hello World" program you'll ever write.
+        It also gives no hints as to its evolutionary nature.  We can make the program more
+        interesting by adding an <interfacename>EvolutionObserver</interfacename> to report
+        on the progress of the evolution at the end of each generation.  Add the following
+        code to your program before the call to the <methodname>evolve</methodname> method:
+      </para>
+      <informalexample>
+        <programlisting language="java">
+<![CDATA[engine.addEvolutionObserver(new EvolutionObserver<String>()
+{
+    public void populationUpdate(PopulationData<? extends String> data)
+    {
+        System.out.printf("Generation %d: %s\n",
+                          data.getGenerationNumber(),
+                          data.getBestCandidate());
+    }
+});]]>
+        </programlisting>
+      </informalexample>
+      <para>
+        Re-compile the program and run it again.  This time you'll see all of the steps
+        taken to arrive at the target string:
+      </para>
+      <informalexample>
+        <programlisting>
+  Generation 0: JIKDORHOQZJ
+  Generation 1: ULLLFQWZPXG
+  Generation 2: UEULKFVFZLS
+  Generation 3: KLLLFKZGRLS
+  Generation 4: HLLLFKZGRLS
+  Generation 5: HEDPOYWOZLS
+  Generation 6: HEULKIWWZLD
+  Generation 7: HPRLOYWOZLS
+  Generation 8: HEULOYWOZLS
+  Generation 9: HEULOYWORLS
+  Generation 10: HEULOYWORLS
+  Generation 11: HPLLK WQRLH
+  Generation 12: HEBLOYWQRLS
+  Generation 13: HEULOYWOBLA
+  Generation 14: HEBLOIWMRLD
+  Generation 15: HEBLOIWMRLD
+  Generation 16: HEYLFNWQRLD
+  Generation 17: HEBLOIWORLS
+  Generation 18: HEBLOIWORLT
+  Generation 19: HEBLOKWGRLD
+  Generation 20: HELLAYWORLS
+  Generation 21: HELHOIWORLT
+  Generation 22: HEWLOIWORLS
+  Generation 23: HEBLOYCORLD
+  Generation 24: HELLKQWORLD
+  Generation 25: HELLOIWORLT
+  Generation 26: HELLOIWORLS
+  Generation 27: HELLKQWORLD
+  Generation 28: HELLFYWORLD
+  Generation 29: HELLOIWORLD
+  Generation 30: HELLOIWORLD
+  Generation 31: HELLOIWORLD
+  Generation 32: HELLOIWORLD
+  Generation 33: HELLOIWORLD
+  Generation 34: HELLOIWORLD
+  Generation 35: HELLOIWDRLD
+  Generation 36: HELLOIWORLD
+  Generation 37: HELLOIWORLD
+  Generation 38: HELLOPWORLD
+  Generation 39: HELLOIWORLD
+  Generation 40: HELLO WORLD
+  HELLO WORLD
+        </programlisting>
+      </informalexample>
     </section>
   </section>
 </chapter>

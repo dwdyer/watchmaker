@@ -150,10 +150,11 @@
       <indexterm><primary>fitness-proportionate selection</primary></indexterm>
       <indexterm><primary>selection</primary><secondary>fitness-proportionate</secondary></indexterm>
       <para>
-        If we use fitness-proportionate selection, none of the candidates with zero fitness will
-        be selected and the candidate with a fitness of 2 is twice as likely to be selected as
-        any of the candidates with a fitness of 1. For the next step we need to select 10 parents,
-        so it is obvious that some of the fit candidates are going to be selected multiple times.
+        If we use <emphasis>fitness-proportionate selection</emphasis>, none of the candidates
+        with zero fitness will be selected and the candidate with a fitness of 2 is twice as likely
+        to be selected as any of the candidates with a fitness of 1. For the next step we need to
+        select 10 parents, so it is obvious that some of the fit candidates are going to be selected
+        multiple times.
       </para>
       <indexterm><primary>cross-over</primary></indexterm>
       <para>

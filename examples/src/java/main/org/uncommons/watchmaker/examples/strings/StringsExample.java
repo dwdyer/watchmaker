@@ -111,7 +111,9 @@ public final class StringsExample
     {
         public void populationUpdate(PopulationData<? extends String> data)
         {
-            System.out.println("Generation " + data.getGenerationNumber() + ": " + data.getBestCandidate());
+            System.out.printf("Generation %d: %s\n",
+                              data.getGenerationNumber(),
+                              data.getBestCandidate());
         }
     }
 }

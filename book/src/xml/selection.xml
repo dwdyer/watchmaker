@@ -2,30 +2,69 @@
          xmlns:xi="http://www.w3.org/2001/XInclude"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
-  <title>Selection Strategies</title>
+  <title>Selection Strategies &amp; Elitism</title>
   <para>TODO</para>
   <section>
     <title>Truncation Selection</title>
-    <para>TODO</para>
+    <indexterm><primary>truncation selection</primary></indexterm>
+    <indexterm><primary>selection</primary><secondary>truncation</secondary></indexterm>
+    <para>
+      Truncation selection is the simplest, and arguably least useful, selection strategy.
+    </para>
   </section>
   <section>
     <title>Fitness-Proportionate Selection</title>
+    <indexterm><primary>fitness-proportionate selection</primary></indexterm>
+    <indexterm><primary>selection</primary><secondary>fitness-proportionate</secondary></indexterm>
     <para>TODO</para>
     <section>
       <title>Roulette Wheel Selection</title>
+      <indexterm><primary>roulette wheel selection</primary></indexterm>
+      <indexterm><primary>selection</primary><secondary>roulette wheel</secondary></indexterm>
       <para>TODO</para>
     </section>
     <section>
       <title>Stochastic Universal Sampling</title>
+      <indexterm><primary>stochastic universal sampling</primary></indexterm>
       <para>TODO</para>
     </section>
   </section>
   <section>
     <title>Rank Selection</title>
+    <indexterm><primary>rank selection</primary></indexterm>
+    <indexterm><primary>selection</primary><secondary>rank</secondary></indexterm>
     <para>TODO</para>
   </section>
   <section>
     <title>Tournament Selection</title>
+    <indexterm><primary>selection</primary><secondary>tournament</secondary></indexterm>
+    <indexterm><primary>tournament selection</primary></indexterm>
     <para>TODO</para>
+  </section>
+  <section>
+    <title>Elitism</title>
+    <indexterm><primary>elitism</primary></indexterm>
+    <para>
+      Sometimes good candidates can be lost when cross-over or mutation results in offspring
+      that are weaker than the parents.  Often the EA will re-discover these lost improvements
+      in a subsequent generation but there is no guarantee.  To combat this we can use a
+      feature known as <emphasis>elitism</emphasis>.  Elitism involves copying a small
+      propotion of the fittest candidates, unchanged, into the next generation.  This can
+      sometimes have a dramatic impact on performance by ensuring that the EA does not waste
+      time re-discovering previously discarded partial solutions.
+      Candidate solutions that are preserved unchanged through elitism remain eligible for
+      selection as parents when breeding the remainder of the next generation.
+    </para>
+    <tip>
+      <para>
+        The Watchmaker Framework supports elitism via the second parameter to the
+        <methodname>evolve</methodname> method of an <interfacename>EvolutionEngine</interfacename>.
+        This elite count is the number of candidates in a generation that should be copied
+        unchanged from the previous generation, rather than created via evolution.  Collectively
+        these candidates are the <emphasis>elite</emphasis>.  So for a population size of 100,
+        setting the elite count to 5 will result in the fittest 5% of each generation being copied,
+        without modification, into the next generation.
+      </para>
+    </tip>
   </section>
 </chapter>
