@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.maths.binary.BitString;
+import org.uncommons.maths.number.ConstantGenerator;
+import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 
@@ -30,13 +32,27 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class BitStringMutation implements EvolutionaryOperator<BitString>
 {
-    private final Probability mutationProbability;
+    private final NumberGenerator<Probability> mutationProbability;
 
 
     /**
+     * Creates a mutation operator for bit strings with the specified
+     * probability that any given bit will be flipped.
      * @param mutationProbability The probability of a single bit being flipped.
      */
     public BitStringMutation(Probability mutationProbability)
+    {
+        this(new ConstantGenerator<Probability>(mutationProbability));
+    }
+
+
+    /**
+     * Creates a mutation operator for bit strings, with the probability that any
+     * given bit will be flipped governed by the specified number generator.
+     * @param mutationProbability The (possibly variable) probability of a single
+     * bit being flipped.
+     */
+    public BitStringMutation(NumberGenerator<Probability> mutationProbability)
     {
         this.mutationProbability = mutationProbability;
     }
@@ -53,12 +69,20 @@ public class BitStringMutation implements EvolutionaryOperator<BitString>
     }
 
 
+    /**
+     * Mutate a single bit string.  Zero or more bits may be flipped.  The
+     * probability of any given bit being flipped is governed by the probability
+     * generator configured for this mutation operator.
+     * @param bitString The bit string to mutate.
+     * @param rng A source of randomness.
+     * @return The mutated bit string.
+     */
     private BitString mutateBitString(BitString bitString, Random rng)
     {
         BitString mutatedBitString = bitString.clone();
         for (int i = 0; i < mutatedBitString.getLength(); i++)
         {
-            if (mutationProbability.nextEvent(rng))
+            if (mutationProbability.nextValue().nextEvent(rng))
             {
                 mutatedBitString.flipBit(i);
             }

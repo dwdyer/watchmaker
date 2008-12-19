@@ -70,10 +70,10 @@ public class SudokuVerticalCrossover extends AbstractCrossover<Sudoku>
      * @param rng The RNG used to select the cross-over points.
      * @return A list containing a pair of offspring.
      */
-    protected List<? extends Sudoku> mate(Sudoku parent1,
-                                          Sudoku parent2,
-                                          int numberOfCrossoverPoints,
-                                          Random rng)
+    protected List<Sudoku> mate(Sudoku parent1,
+                                Sudoku parent2,
+                                int numberOfCrossoverPoints,
+                                Random rng)
     {
         Sudoku.Cell[][] offspring1 = new Sudoku.Cell[Sudoku.SIZE][];
         Sudoku.Cell[][] offspring2 = new Sudoku.Cell[Sudoku.SIZE][];

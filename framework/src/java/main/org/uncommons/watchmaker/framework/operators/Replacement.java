@@ -18,6 +18,8 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.maths.number.ConstantGenerator;
+import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
@@ -34,7 +36,7 @@ import org.uncommons.watchmaker.framework.Probability;
 public class Replacement<T> implements EvolutionaryOperator<T>
 {
     private final CandidateFactory<T> factory;
-    private final Probability replacementProbability;
+    private final NumberGenerator<Probability> replacementProbability;
 
 
     /**
@@ -48,6 +50,23 @@ public class Replacement<T> implements EvolutionaryOperator<T>
      */
     public Replacement(CandidateFactory<T> factory,
                        Probability replacementProbability)
+    {
+        this(factory, new ConstantGenerator<Probability>(replacementProbability));
+    }
+
+
+    /**
+     * Creates a replacement operator that replaces individuals according to
+     * a variable probability.  New individuals are obtained from the factory
+     * provided.
+     * @param factory A source of new individuals.
+     * @param replacementProbability A {@link NumberGenerator} that provides
+     * a probability of replacement.  The probablity may be constant, or it may change
+     * over time.  The probability should typically be quite low.  If it is too high,
+     * it will undermine the evolutionary progress.
+     */
+    public Replacement(CandidateFactory<T> factory,
+                       NumberGenerator<Probability> replacementProbability)
     {
         this.factory = factory;
         this.replacementProbability = replacementProbability;
@@ -68,7 +87,7 @@ public class Replacement<T> implements EvolutionaryOperator<T>
         List<T> output = new ArrayList<T>(selectedCandidates.size());
         for (T candidate : selectedCandidates)
         {
-            output.add(replacementProbability.nextEvent(rng)
+            output.add(replacementProbability.nextValue().nextEvent(rng)
                        ? factory.generateRandomCandidate(rng)
                        : candidate);
         }

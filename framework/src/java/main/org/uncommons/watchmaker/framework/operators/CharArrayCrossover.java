@@ -92,6 +92,9 @@ public class CharArrayCrossover extends AbstractCrossover<char[]>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected List<char[]> mate(char[] parent1,
                                 char[] parent2,
                                 int numberOfCrossoverPoints,

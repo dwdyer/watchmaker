@@ -94,6 +94,9 @@ public class StringCrossover extends AbstractCrossover<String>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected List<String> mate(String parent1,
                                 String parent2,
                                 int numberOfCrossoverPoints,

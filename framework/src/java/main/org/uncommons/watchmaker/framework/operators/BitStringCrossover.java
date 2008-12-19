@@ -94,6 +94,9 @@ public class BitStringCrossover extends AbstractCrossover<BitString>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected List<BitString> mate(BitString parent1,
                                    BitString parent2,
                                    int numberOfCrossoverPoints,

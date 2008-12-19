@@ -51,6 +51,9 @@ public class ListOrderCrossover<T> extends AbstractCrossover<List<T>>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected List<List<T>> mate(List<T> parent1,
                                  List<T> parent2,
                                  int numberOfCrossoverPoints,

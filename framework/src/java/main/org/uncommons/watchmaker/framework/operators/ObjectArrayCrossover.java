@@ -94,6 +94,9 @@ public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     protected List<T[]> mate(T[] parent1,
                              T[] parent2,

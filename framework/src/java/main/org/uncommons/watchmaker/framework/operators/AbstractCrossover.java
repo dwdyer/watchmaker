@@ -161,13 +161,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
 
 
     /**
-     * Implementing classes should return the list elements of the most specific
-     * type possible (derived from the actual types of the arguments).  In other
-     * words, if {@code parent1} and {@code parent2} are instances of
-     * a sub-class of T, then the elements returned returned in the list must
-     * also be instances of the same sub-class.  This is to ensure that the
-     * cross-over implementation can correctly deal with populations of
-     * sub-classes of T.
+     * Perform cross-over on a pair of parents to generate a pair of offspring.
      * @param parent1 One of two individuals that provides the source material
      * for generating offspring.
      * @param parent2 One of two individuals that provides the source material
@@ -178,8 +172,8 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
      * cross-over points.
      * @return A list containing two evolved offspring.
      */
-    protected abstract List<? extends T> mate(T parent1,
-                                              T parent2,
-                                              int numberOfCrossoverPoints,
-                                              Random rng);
+    protected abstract List<T> mate(T parent1,
+                                    T parent2,
+                                    int numberOfCrossoverPoints,
+                                    Random rng);
 }

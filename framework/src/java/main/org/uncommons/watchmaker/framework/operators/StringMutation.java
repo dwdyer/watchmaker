@@ -18,6 +18,8 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.maths.number.ConstantGenerator;
+import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 
@@ -29,14 +31,30 @@ import org.uncommons.watchmaker.framework.Probability;
 public class StringMutation implements EvolutionaryOperator<String>
 {
     private final char[] alphabet;
-    private final Probability mutationProbability;
+    private final NumberGenerator<Probability> mutationProbability;
 
     /**
+     * Creates a mutation operator that is applied with the given
+     * probability and draws its characters from the specified alphabet.
      * @param alphabet The permitted values for each character in a string.
      * @param mutationProbability The probability that a given character
      * is changed.
      */
     public StringMutation(char[] alphabet, Probability mutationProbability)
+    {
+        this(alphabet, new ConstantGenerator<Probability>(mutationProbability));
+    }
+
+
+    /**
+     * Creates a mutation operator that is applied with the given
+     * probability and draws its characters from the specified alphabet.
+     * @param alphabet The permitted values for each character in a string.
+     * @param mutationProbability The (possibly variable) probability that a
+     * given character is changed.
+     */
+    public StringMutation(char[] alphabet,
+                          NumberGenerator<Probability> mutationProbability)
     {
         this.alphabet = alphabet.clone();
         this.mutationProbability = mutationProbability;
@@ -54,12 +72,20 @@ public class StringMutation implements EvolutionaryOperator<String>
     }
 
 
+    /**
+     * Mutate a single string.  Zero or more characters may be modified.  The
+     * probability of any given character being modified is governed by the
+     * probability generator configured for this mutation operator.
+     * @param s The string to mutate.
+     * @param rng A source of randomness.
+     * @return The mutated string.
+     */
     private String mutateString(String s, Random rng)
     {
         StringBuilder buffer = new StringBuilder(s);
         for (int i = 0; i < buffer.length(); i++)
         {
-            if (mutationProbability.nextEvent(rng))
+            if (mutationProbability.nextValue().nextEvent(rng))
             {
                 buffer.setCharAt(i, alphabet[rng.nextInt(alphabet.length)]);
             }

@@ -30,8 +30,6 @@
     </keywordset>
   </info>
 
-  <xi:include href="preface.xml" />
-
   <!-- Chapters -->
   <xi:include href="evolution.xml" />
   <xi:include href="watchmaker.xml" />
