@@ -16,7 +16,6 @@
 package org.uncommons.watchmaker.swing;
 
 import javax.swing.JComponent;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 
@@ -42,8 +41,6 @@ public class ObjectSwingRenderer implements Renderer<Object, JComponent>
         text.setBackground(null);
         text.setLineWrap(true);
         text.setWrapStyleWord(true);
-        JScrollPane scroller = new JScrollPane(text);
-        scroller.setBackground(null);
-        return scroller;
+        return text;
     }
 }
