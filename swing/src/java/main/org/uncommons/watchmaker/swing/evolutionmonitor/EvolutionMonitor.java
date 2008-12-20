@@ -74,6 +74,9 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
         tabs.add("Population Fitness", fitnessView);
         views.add(fitnessView);
 
+        JVMView jvmView = new JVMView();
+        tabs.add("JVM Memory", jvmView);
+
         StatusBar statusBar = new StatusBar();
         monitorComponent.add(statusBar, BorderLayout.SOUTH);
         views.add(statusBar);

@@ -21,7 +21,6 @@ import java.awt.FlowLayout;
 import java.awt.Paint;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -79,7 +78,7 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
      */
     private JComponent createControls()
     {
-        JPanel controls = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         final JCheckBox deviationCheckBox = new JCheckBox("Standard Deviation", true);
         deviationCheckBox.addItemListener(new ItemListener()
         {
@@ -101,7 +100,6 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
         });
         controls.add(invertCheckBox);
 
-        controls.setBorder(BorderFactory.createTitledBorder("Display Options"));
         return controls;
     }
 
