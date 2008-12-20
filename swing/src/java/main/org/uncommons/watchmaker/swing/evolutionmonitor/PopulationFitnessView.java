@@ -109,11 +109,11 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
     /**
      * {@inheritDoc}
      */
-    public void populationUpdate(PopulationData<? extends Object> populationData)
+    public void populationUpdate(final PopulationData<? extends Object> populationData)
     {
         int generation = populationData.getGenerationNumber();
         double mean = populationData.getMeanFitness();
-        double meanMin = mean - populationData.getFitnessStandardDeviation();
+        double meanMin = Math.max(0, mean - populationData.getFitnessStandardDeviation());
         double meanMax = mean + populationData.getFitnessStandardDeviation();
         meanSeries.add(generation, generation, generation, mean, meanMin, meanMax);
         double best = populationData.getBestCandidateFitness();

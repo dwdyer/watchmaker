@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
+import org.uncommons.watchmaker.swing.ObjectSwingRenderer;
 
 /**
  * The Evolution Monitor is a component that can be attached to an
@@ -52,15 +53,7 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
      */
     public EvolutionMonitor()
     {
-        monitorComponent.add(tabs, BorderLayout.CENTER);
-
-        PopulationFitnessView fitnessView = new PopulationFitnessView();
-        tabs.add("Population Fitness", fitnessView);
-        views.add(fitnessView);
-
-        StatusBar statusBar = new StatusBar();
-        monitorComponent.add(statusBar, BorderLayout.SOUTH);
-        views.add(statusBar);
+        this(new ObjectSwingRenderer());
     }
 
 
@@ -69,12 +62,21 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
      * representation of the fittest candidate in the population.
      * @param renderer Renders a candidate solution as a JComponent.
      */
-    public EvolutionMonitor(Renderer<T, JComponent> renderer)
+    public EvolutionMonitor(Renderer<? super T, JComponent> renderer)
     {
-        this();
+        monitorComponent.add(tabs, BorderLayout.CENTER);
+
         FittestCandidateView<T> candidateView = new FittestCandidateView<T>(renderer);
         tabs.add("Fittest Individual", candidateView);
         views.add(candidateView);
+
+        PopulationFitnessView fitnessView = new PopulationFitnessView();
+        tabs.add("Population Fitness", fitnessView);
+        views.add(fitnessView);
+
+        StatusBar statusBar = new StatusBar();
+        monitorComponent.add(statusBar, BorderLayout.SOUTH);
+        views.add(statusBar);
     }
 
 

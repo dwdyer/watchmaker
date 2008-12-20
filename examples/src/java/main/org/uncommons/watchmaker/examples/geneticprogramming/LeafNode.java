@@ -78,4 +78,11 @@ abstract class LeafNode implements Node
             return this;
         }
     }
+
+
+    @Override
+    public String toString()
+    {
+        return print();
+    }
 }

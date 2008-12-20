@@ -153,4 +153,11 @@ abstract class BinaryNode implements Node
             }
         }
     }
+
+
+    @Override
+    public String toString()
+    {
+        return print();
+    }
 }

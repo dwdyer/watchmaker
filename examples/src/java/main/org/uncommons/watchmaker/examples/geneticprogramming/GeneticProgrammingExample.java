@@ -29,6 +29,7 @@ import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
+import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
 
 /**
  * Simple tree-based genetic programming application based on the first example
@@ -80,6 +81,9 @@ public class GeneticProgrammingExample
                                                                            new RouletteWheelSelection(),
                                                                            new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
+        EvolutionMonitor<Node> evolutionMonitor = new EvolutionMonitor<Node>();
+        engine.addEvolutionObserver(evolutionMonitor);
+        evolutionMonitor.showInFrame("GP");
         return engine.evolve(1000, 5, new TargetFitness(0d, evaluator.isNatural()));
     }
 

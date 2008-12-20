@@ -167,4 +167,11 @@ public class IfThenElse implements Node
         }
 
     }
+
+
+    @Override
+    public String toString()
+    {
+        return print();
+    }
 }

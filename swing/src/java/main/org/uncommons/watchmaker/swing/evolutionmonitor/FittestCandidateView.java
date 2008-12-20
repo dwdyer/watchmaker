@@ -16,6 +16,8 @@
 package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,12 +35,35 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  */
 class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
 {
-    private final Renderer<T, JComponent> renderer;
+    private static final Font BIG_FONT = new Font("Dialog", Font.BOLD, 16);
 
-    public FittestCandidateView(Renderer<T, JComponent> renderer)
+    private final Renderer<? super T, JComponent> renderer;
+    private final JLabel fitnessLabel = new JLabel("N/A", JLabel.CENTER);
+    private final JPanel view = new JPanel(new GridLayout(1, 1));
+
+    /**
+     * Creates a Swing view that uses the specified renderer to display
+     * evolved entities.
+     * @param renderer A renderer that convert evolved entities of the type
+     * recognised by this view into Swing components.
+     */
+    public FittestCandidateView(Renderer<? super T, JComponent> renderer)
     {
-        super(new BorderLayout());
+        super(new BorderLayout(0, 10));
         this.renderer = renderer;
+
+        JPanel header = new JPanel(new GridLayout(2, 1));
+        JLabel label = new JLabel("Fitness", JLabel.CENTER);
+        header.add(label);
+        fitnessLabel.setFont(BIG_FONT);
+        header.add(fitnessLabel);
+
+        add(header, BorderLayout.NORTH);
+        add(view);
+        
+        // Set names for easier indentification in unit tests.
+        fitnessLabel.setName("FitnessLabel");
+        view.setName("ViewPanel");
     }
 
     
@@ -48,11 +73,9 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
         {
             public void run()
             {
-                removeAll();
-                add(new JLabel("Fitness: " + populationData.getBestCandidateFitness(), JLabel.CENTER),
-                    BorderLayout.NORTH);
-                add(renderer.render(populationData.getBestCandidate()), BorderLayout.CENTER);
-                revalidate();
+                fitnessLabel.setText(String.valueOf(populationData.getBestCandidateFitness()));
+                view.removeAll();
+                view.add(renderer.render(populationData.getBestCandidate()));
             }
         });
     }
