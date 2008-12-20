@@ -15,6 +15,7 @@
 // ============================================================================
 package org.uncommons.watchmaker.swing.evolutionmonitor;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -27,19 +28,30 @@ import org.uncommons.watchmaker.framework.PopulationData;
  */
 class StatusBar extends Box implements EvolutionObserver<Object>
 {
-    private final JLabel timeLabel = new JLabel("00:00:00", JLabel.RIGHT);
+    private final JLabel generationsLabel = new JLabel("N/A", JLabel.RIGHT);
+    private final JLabel timeLabel = new JLabel("N/A", JLabel.RIGHT);
 
     public StatusBar()
     {
         super(BoxLayout.X_AXIS);
+        add(new JLabel("Generations: "));
+        add(generationsLabel);
+        add(createHorizontalStrut(20));
         add(new JLabel("Elapsed Time: "));
         add(timeLabel);
+        setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     }
 
 
     public void populationUpdate(PopulationData<? extends Object> populationData)
     {
-        long time = populationData.getElapsedTime();
+        timeLabel.setText(formatTime(populationData.getElapsedTime()));
+        generationsLabel.setText(String.valueOf(populationData.getGenerationNumber()));
+    }
+
+
+    private String formatTime(long time)
+    {
         long seconds = time / 1000;
         long minutes = seconds / 60;
         seconds %= 60;
@@ -63,6 +75,6 @@ class StatusBar extends Box implements EvolutionObserver<Object>
             buffer.append('0');
         }
         buffer.append(seconds);
-        timeLabel.setText(buffer.toString());
+        return buffer.toString();
     }
 }

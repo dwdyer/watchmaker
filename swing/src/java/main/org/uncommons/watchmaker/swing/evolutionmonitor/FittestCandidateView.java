@@ -52,11 +52,11 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
         super(new BorderLayout(0, 10));
         this.renderer = renderer;
 
-        JPanel header = new JPanel(new GridLayout(2, 1));
+        JPanel header = new JPanel(new BorderLayout());
         JLabel label = new JLabel("Fitness", JLabel.CENTER);
-        header.add(label);
+        header.add(label, BorderLayout.NORTH);
         fitnessLabel.setFont(BIG_FONT);
-        header.add(fitnessLabel);
+        header.add(fitnessLabel, BorderLayout.CENTER);
 
         add(header, BorderLayout.NORTH);
         add(view);
