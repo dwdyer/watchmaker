@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -16,6 +18,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.chart.title.Title;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -56,12 +60,13 @@ class JVMView extends JPanel
     }
 
     
+    @SuppressWarnings("unchecked")
     private JFreeChart createHeapChart(double maxMemory)
     {
         TimeSeriesCollection dataSet = new TimeSeriesCollection();
         dataSet.addSeries(memoryUsageSeries);
         dataSet.addSeries(heapSizeSeries);
-        JFreeChart chart = ChartFactory.createXYAreaChart("JVM Heap",
+        JFreeChart chart = ChartFactory.createXYAreaChart("JVM Heap Usage",
                                                           "Time",
                                                           "Megabytes",
                                                            dataSet,
@@ -86,6 +91,9 @@ class JVMView extends JPanel
         chart.getXYPlot().getRenderer().setSeriesPaint(0, Color.RED);
         chart.getXYPlot().getRenderer().setSeriesPaint(1, new Color(0, 128, 0, 128));
 
+        List<Title> subtitleList = new LinkedList<Title>(chart.getSubtitles());
+        subtitleList.add(new TextTitle("(5-second poll interval)"));
+        chart.setSubtitles(subtitleList);
         return chart;
     }
 

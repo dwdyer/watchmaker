@@ -46,7 +46,7 @@ class StatusBar extends Box implements EvolutionObserver<Object>
     public void populationUpdate(PopulationData<? extends Object> populationData)
     {
         timeLabel.setText(formatTime(populationData.getElapsedTime()));
-        generationsLabel.setText(String.valueOf(populationData.getGenerationNumber()));
+        generationsLabel.setText(String.valueOf(populationData.getGenerationNumber() + 1));
     }
 
 

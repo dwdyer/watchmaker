@@ -16,9 +16,7 @@
 package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Paint;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JCheckBox;
@@ -29,9 +27,8 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.xy.DeviationRenderer;
-import org.jfree.data.xy.XYIntervalSeries;
-import org.jfree.data.xy.XYIntervalSeriesCollection;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.PopulationData;
 
@@ -42,17 +39,17 @@ import org.uncommons.watchmaker.framework.PopulationData;
  */
 class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
 {
-    private final XYIntervalSeries meanSeries = new XYIntervalSeries("Mean Fitness");
-    private final XYIntervalSeries bestSeries = new XYIntervalSeries("Fittest Individual");
-    private final DeviationRenderer renderer = new DeviationRenderer(true, false);
+    private final XYSeries bestSeries = new XYSeries("Fittest Individual");
+    private final XYSeries meanSeries = new XYSeries("Mean Fitness");
     private final JFreeChart chart;
+    private final XYSeriesCollection dataSet = new XYSeriesCollection();
+
 
     PopulationFitnessView()
     {
         super(new BorderLayout());
-        XYIntervalSeriesCollection dataSet = new XYIntervalSeriesCollection();
-        dataSet.addSeries(meanSeries);
         dataSet.addSeries(bestSeries);
+        dataSet.addSeries(meanSeries);
         chart = ChartFactory.createXYLineChart("Population Fitness",
                                                "Generations",
                                                "Fitness",
@@ -61,11 +58,7 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
                                                true, // Legend.
                                                false, // Tooltips.
                                                false); // URLs.
-        renderer.setSeriesPaint(0, Color.BLUE);
-        renderer.setSeriesFillPaint(0, Color.BLUE.brighter());
-        renderer.setSeriesPaint(1, Color.RED);
-        renderer.setAlpha(0.1f);
-        chart.getXYPlot().setRenderer(renderer);
+
         chart.getXYPlot().getDomainAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         add(createControls(), BorderLayout.SOUTH);
         add(new ChartPanel(chart), BorderLayout.CENTER);
@@ -79,13 +72,19 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
     private JComponent createControls()
     {
         JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        final JCheckBox deviationCheckBox = new JCheckBox("Standard Deviation", true);
+        final JCheckBox deviationCheckBox = new JCheckBox("Show Mean", true);
         deviationCheckBox.addItemListener(new ItemListener()
         {
             public void itemStateChanged(ItemEvent itemEvent)
             {
-                Paint paint = deviationCheckBox.isSelected() ? Color.BLUE.brighter() : null;
-                renderer.setSeriesFillPaint(0, paint);
+                if (itemEvent.getStateChange() == ItemEvent.SELECTED)
+                {
+                    dataSet.addSeries(meanSeries);
+                }
+                else
+                {
+                    dataSet.removeSeries(meanSeries);
+                }
             }
         });
         controls.add(deviationCheckBox);
@@ -111,10 +110,8 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
     {
         int generation = populationData.getGenerationNumber();
         double mean = populationData.getMeanFitness();
-        double meanMin = Math.max(0, mean - populationData.getFitnessStandardDeviation());
-        double meanMax = mean + populationData.getFitnessStandardDeviation();
-        meanSeries.add(generation, generation, generation, mean, meanMin, meanMax);
+        meanSeries.add(generation, mean);
         double best = populationData.getBestCandidateFitness();
-        bestSeries.add(generation, generation, generation, best, best, best);
+        bestSeries.add(generation, best);
     }
 }
