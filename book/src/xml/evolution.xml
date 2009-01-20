@@ -46,8 +46,8 @@
     <para>
       Species change over the course of many generations.
       Mutations occur randomly.  Some mutations will be advantageous, but many will be
-      useless or detrimental.  Progress comes from the feedback provided by natural
-      selection.
+      useless or detrimental.  Progress comes from the feedback provided by non-random
+      natural selection.
       For example, organisms that can survive for long periods without water will be
       more likely to thrive in dry conditions than those that can't.
       Likewise, animals that can run fast will be more successful at evading predators
@@ -198,7 +198,7 @@
         selection and will quickly spread throughout the population.
       </para>
       <para>
-        After repeating this process for dozens, or perhaps even hundreds, of generations we will
+        After repeating this process for dozens or perhaps even hundreds of generations we will
         eventually converge on our desired solution.
       </para>
       <para>
@@ -257,7 +257,7 @@
           <title>Iteration</title>
           <para>
             Repeat steps 2-4 until a satisfactory solution is found or some other termination
-            condition is met (such as number of generations or elapsed time).
+            condition is met (such as the number of generations or elapsed time).
           </para>
         </step>
       </procedure>
@@ -350,7 +350,7 @@
         indicate <emphasis>how right</emphasis> or, if your glass is half empty,
         <emphasis>how wrong</emphasis> a candidate solution is.  So a function that returns
         either 0 or 1 is useless.  A function that returns a score on a scale of 1 - 100 is
-        much better.  We need shades of grey, not just black and white, since this is how the
+        better.  We need shades of grey, not just black and white, since this is how the
         algorithm guides the random evolution to find increasingly better solutions.
       </para>
     </section>
