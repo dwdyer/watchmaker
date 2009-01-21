@@ -1,7 +1,7 @@
 ===============================================================================
 The Watchmaker Framework for Evolutionary Computation
  (https://watchmaker.dev.java.net)
-Copyright 2006, 2007, 2008 Daniel W. Dyer (http://www.dandyer.co.uk)
+Copyright 2006, 2007, 2008, 2009 Daniel W. Dyer (http://www.dandyer.co.uk)
 
 Acknowledgements:
 -----------------
@@ -18,7 +18,7 @@ below.
 
 ===============================================================================
 Uncommons Maths (https://uncommons-maths.dev.java.net)
-Copyright 2006, 2007 Daniel W. Dyer (http://www.dandyer.co.uk)
+Copyright 2006, 2007, 2008 Daniel W. Dyer (http://www.dandyer.co.uk)
 
 Acknowledgements:
 -----------------
