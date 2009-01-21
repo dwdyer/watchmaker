@@ -194,12 +194,12 @@ EvolutionaryOperator<String> pipeline
     <para>
       In the Watchmaker Framework, a fitness function is written by implementing the
       <interfacename>FitnessEvaluator</interfacename> interface.  The
-      <methodname>getFitness</methodname> of this interface takes a candidate solution
+      <methodname>getFitness</methodname> method of this interface takes a candidate solution
       and returns its fitness score as a Java double.  The method actually takes two
       arguments, but we can ignore the second for now.
     </para>
     <para>
-      Tbe listing below is a fitness evaluator for the "Hello World" program.  It
+      The listing below is a fitness evaluator for the "Hello World" program.  It
       simply assigns one point for each character in the candidate string that
       matches the corresponding position in the target string.
     </para>
