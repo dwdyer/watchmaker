@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 import org.uncommons.maths.random.CellularAutomatonRNG;
 import org.uncommons.maths.random.DiscreteUniformGenerator;
 import org.uncommons.maths.random.PoissonGenerator;
@@ -124,7 +125,9 @@ public class SudokuApplet extends JApplet
         = new TournamentSelection(selectionPressure.getNumberGenerator());
     private final AbortControl abortControl = new AbortControl();
 
-    public SudokuApplet()
+
+    @Override
+    public void init()
     {
         add(createControls(), BorderLayout.NORTH);
         add(sudokuView, BorderLayout.CENTER);
@@ -247,11 +250,17 @@ public class SudokuApplet extends JApplet
      */
     private class GridViewUpdater implements EvolutionObserver<Sudoku>
     {
-        public void populationUpdate(PopulationData<? extends Sudoku> data)
+        public void populationUpdate(final PopulationData<? extends Sudoku> data)
         {
-            sudokuView.setSolution(data.getBestCandidate());
-            generationsLabel.setText(String.valueOf(data.getGenerationNumber() + 1));
-            timeLabel.setText(TIME_FORMAT.format(((double) data.getElapsedTime()) / 1000));
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    sudokuView.setSolution(data.getBestCandidate());
+                    generationsLabel.setText(String.valueOf(data.getGenerationNumber() + 1));
+                    timeLabel.setText(TIME_FORMAT.format(((double) data.getElapsedTime()) / 1000));
+                }
+            });
         }
     }
 }

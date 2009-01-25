@@ -60,10 +60,9 @@ public class BiomorphApplet extends JApplet
     private final JDialog selectionDialog = new JDialog((JFrame) null, "Biomorph Selection", true);
     private final JPanel biomorphHolder = new JPanel(new GridLayout(1, 1));
 
-    /**
-     * Creates the applet and lays out its GUI.
-     */
-    public BiomorphApplet()
+
+    @Override
+    public void init()
     {
         setLayout(new BorderLayout());
         add(new ControlPanel(), BorderLayout.WEST);

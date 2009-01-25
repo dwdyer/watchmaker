@@ -50,12 +50,18 @@ public final class TravellingSalesmanApplet extends JApplet
         itineraryPanel = new ItineraryPanel(distances.getKnownCities());
         strategyPanel = new StrategyPanel(distances);
         executionPanel = new ExecutionPanel();
+    }
+
+
+    @Override
+    public void init()
+    {
         add(itineraryPanel, BorderLayout.WEST);
         JPanel innerPanel = new JPanel(new BorderLayout());
         innerPanel.add(strategyPanel, BorderLayout.NORTH);
         innerPanel.add(executionPanel, BorderLayout.CENTER);
         add(innerPanel, BorderLayout.CENTER);
-        
+
         executionPanel.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent actionEvent)
@@ -89,7 +95,7 @@ public final class TravellingSalesmanApplet extends JApplet
         validate();
     }
 
-
+    
     /**
      * Helper method to create a background task for running the travelling
      * salesman algorithm.

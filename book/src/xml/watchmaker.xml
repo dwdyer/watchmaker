@@ -372,7 +372,7 @@ EvolutionEngine<String> engine
         11, so we use the <classname>TargetFitness</classname> condition.
       </para>
       <para>
-        To complete the evolutionary "Hello World" application, and the following two lines:
+        To complete the evolutionary "Hello World" application, add the following two lines:
       </para>
       <informalexample>
         <programlisting language="java">
