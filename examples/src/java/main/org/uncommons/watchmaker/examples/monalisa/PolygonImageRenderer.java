@@ -18,8 +18,10 @@ package org.uncommons.watchmaker.examples.monalisa;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
+import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -35,13 +37,17 @@ public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, Buf
         = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
     private final Dimension targetSize;
+    private final boolean antialias;
 
     /**
      * @param targetSize The size of the canvas on which the polygons will be rendered.
+     * @param antialias Whether or not to enable anti-aliasing for the rendered image.
      */
-    public PolygonImageRenderer(Dimension targetSize)
+    public PolygonImageRenderer(Dimension targetSize,
+                                boolean antialias)
     {
         this.targetSize = targetSize;
+        this.antialias = antialias;
     }
 
 
@@ -56,6 +62,12 @@ public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, Buf
                                                                     targetSize.height,
                                                                     Transparency.OPAQUE);
         Graphics graphics = image.getGraphics();
+        if (antialias && graphics instanceof Graphics2D)
+        {
+            ((Graphics2D) graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                                     RenderingHints.VALUE_ANTIALIAS_ON);
+        }
+
         graphics.setColor(Color.GRAY);
         graphics.fillRect(0, 0, targetSize.width, targetSize.height);
         for (ColouredPolygon polygon : entity)

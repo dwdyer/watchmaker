@@ -41,7 +41,9 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
     public PolygonImageSwingRenderer(BufferedImage targetImage)
     {
         this.targetImage = targetImage;
-        this.delegate = new PolygonImageRenderer(new Dimension(targetImage.getWidth(), targetImage.getHeight()));
+        this.delegate = new PolygonImageRenderer(new Dimension(targetImage.getWidth(),
+                                                               targetImage.getHeight()),
+                                                 true); // Anti-alias.
     }
 
 
@@ -88,13 +90,13 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
 
 
         @Override
-        protected void paintComponent(Graphics g)
+        protected void paintComponent(Graphics graphics)
         {
             int x = Math.max(0, (getWidth() - minimumSize.width) / 2);
             int y = Math.max(0, (getHeight() - minimumSize.height) / 2);
-            g.drawImage(targetImage, x, y, this);
+            graphics.drawImage(targetImage, x, y, this);
             BufferedImage candidateImage = delegate.render(candidate);
-            Graphics clip = g.create(x + targetImage.getWidth() + gap,
+            Graphics clip = graphics.create(x + targetImage.getWidth() + gap,
                                      y,
                                      candidateImage.getWidth(),
                                      candidateImage.getHeight() + footer);

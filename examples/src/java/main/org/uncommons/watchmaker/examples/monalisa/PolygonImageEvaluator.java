@@ -42,7 +42,9 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
 
     public PolygonImageEvaluator(BufferedImage targetImage)
     {
-        this.renderer = new PolygonImageRenderer(new Dimension(targetImage.getWidth(), targetImage.getHeight()));
+        this.renderer = new PolygonImageRenderer(new Dimension(targetImage.getWidth(),
+                                                               targetImage.getHeight()),
+                                                 false);
         int width = targetImage.getWidth();
         int height = targetImage.getWidth();
         // Scale the image down so that its smallest dimension is 100 pixels.  For large images this drastically
