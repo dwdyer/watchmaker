@@ -45,10 +45,28 @@ public class PolygonColourMutationTest
                                                                           new Point(0, 75)));
         List<ColouredPolygon> image = Arrays.asList(polygon);
         List<ColouredPolygon> mutatedImage = mutation.apply(image, rng);
-        Color mutatedColor = mutatedImage.get(0).getColour();
-        assert mutatedColor.getRed() == 129 : "Red component should have been incremented, is " + mutatedColor.getRed();
-        assert mutatedColor.getGreen() == 129 : "Green component should have been incremented, is " + mutatedColor.getGreen();
-        assert mutatedColor.getBlue() == 129 : "Blue component should have been incremented, is " + mutatedColor.getBlue();
-        assert mutatedColor.getAlpha() == 129 : "Alpha component should have been incremented, is " + mutatedColor.getAlpha();
+        Color mutatedColour = mutatedImage.get(0).getColour();
+        assert mutatedColour.getRed() == 129 : "Red component should have been incremented, is " + mutatedColour.getRed();
+        assert mutatedColour.getGreen() == 129 : "Green component should have been incremented, is " + mutatedColour.getGreen();
+        assert mutatedColour.getBlue() == 129 : "Blue component should have been incremented, is " + mutatedColour.getBlue();
+        assert mutatedColour.getAlpha() == 129 : "Alpha component should have been incremented, is " + mutatedColour.getAlpha();
+    }
+
+
+    @Test
+    public void testZeroProbability()
+    {
+        PolygonColourMutation mutation = new PolygonColourMutation(Probability.ZERO,
+                                                                   new ConstantGenerator<Double>(1d));
+        // A grey triangle.
+        Color originalColour = new Color(128, 128, 128, 128);
+        final ColouredPolygon polygon = new ColouredPolygon(originalColour,
+                                                            Arrays.asList(new Point(0, 0),
+                                                                          new Point(50, 50),
+                                                                          new Point(0, 75)));
+        List<ColouredPolygon> image = Arrays.asList(polygon);
+        List<ColouredPolygon> mutatedImage = mutation.apply(image, rng);
+        assert mutatedImage.get(0) == polygon : "Polygon should not have changed at all.";
+        assert mutatedImage.get(0).getColour() == originalColour : "Colour should not have changed at all.";
     }
 }

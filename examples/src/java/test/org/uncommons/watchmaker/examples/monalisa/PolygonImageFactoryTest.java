@@ -39,20 +39,18 @@ public class PolygonImageFactoryTest
     @Test
     public void testConstraints()
     {
-        final int polygonCount = 5;
-        final int vertexCount = 3;
         final int width = 100;
         final int height = 50;
-        CandidateFactory<List<ColouredPolygon>> factory = new PolygonImageFactory(new Dimension(width, height),
-                                                                                  polygonCount,
-                                                                                  vertexCount);
+        CandidateFactory<List<ColouredPolygon>> factory = new PolygonImageFactory(new Dimension(width, height));
         List<List<ColouredPolygon>> candidates = factory.generateInitialPopulation(20, rng);
         for (List<ColouredPolygon> image : candidates)
         {
-            assert image.size() == polygonCount : "Wrong number of polygons: " + image.size();
+            assert image.size() == PolygonImageFactory.MINIMUM_POLYGON_COUNT
+                : "Wrong number of polygons: " + image.size();
             for (ColouredPolygon polygon : image)
             {
-                assert polygon.getVertices().size() == vertexCount : "Wrong number of vertices: " + polygon.getVertices().size();
+                assert polygon.getVertices().size() == PolygonImageFactory.MINIMUM_VERTEX_COUNT
+                    : "Wrong number of vertices: " + polygon.getVertices().size();
                 for (Point point : polygon.getVertices())
                 {
                     assert point.x >= 0 && point.x < width : "X out-of-range: " + point.x;

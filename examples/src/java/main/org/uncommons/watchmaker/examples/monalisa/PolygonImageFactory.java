@@ -29,35 +29,32 @@ import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
  */
 public class PolygonImageFactory extends AbstractCandidateFactory<List<ColouredPolygon>>
 {
+    /**
+     * Each image must have at least 2 polygons.
+     */
+    static final int MINIMUM_POLYGON_COUNT = 2;
+
+    /**
+     * Each polygon must have at least 3 points.
+     */
+    static final int MINIMUM_VERTEX_COUNT = 3;
+
     private final Dimension canvasSize;
-    private final int polygonCount;
-    private final int vertexCount;
 
     /**
      * @param canvasSize The size of the canvas on which the image will be rendered.
      * All polygons must fit within its bounds. 
-     * @param polygonCount The number of polygons that make up a single image.
-     * @param vertexCount The maximum number of vertices that each polygon has.
-     * Must be at least 3.
      */
-    public PolygonImageFactory(Dimension canvasSize,
-                               int polygonCount,
-                               int vertexCount)
+    public PolygonImageFactory(Dimension canvasSize)
     {
-        if (vertexCount < 3)
-        {
-            throw new IllegalArgumentException("Polygons must have at least 3 points.");
-        }
         this.canvasSize = canvasSize;
-        this.polygonCount = polygonCount;
-        this.vertexCount = vertexCount;
     }
 
     
     public List<ColouredPolygon> generateRandomCandidate(Random rng)
     {
-        List<ColouredPolygon> polygons = new ArrayList<ColouredPolygon>(polygonCount);
-        for (int i = 0; i < polygonCount; i++)
+        List<ColouredPolygon> polygons = new ArrayList<ColouredPolygon>(MINIMUM_POLYGON_COUNT);
+        for (int i = 0; i < MINIMUM_POLYGON_COUNT; i++)
         {
             polygons.add(createRandomPolygon(rng));
         }
@@ -67,9 +64,8 @@ public class PolygonImageFactory extends AbstractCandidateFactory<List<ColouredP
 
     ColouredPolygon createRandomPolygon(Random rng)
     {
-        List<Point> vertices = new ArrayList<Point>(vertexCount);
-        int count = 3 + (vertexCount > 3 ? rng.nextInt(vertexCount - 3) : 0);
-        for (int j = 0; j < count; j++)
+        List<Point> vertices = new ArrayList<Point>(MINIMUM_VERTEX_COUNT);
+        for (int j = 0; j < MINIMUM_VERTEX_COUNT; j++)
         {
             vertices.add(new Point(rng.nextInt(canvasSize.width), rng.nextInt(canvasSize.height)));
         }

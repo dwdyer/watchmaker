@@ -38,7 +38,7 @@ public class PolygonImageEvaluatorTest
     public void testPerfectMatch()
     {
         Dimension canvasSize = new Dimension(100, 100);
-        PolygonImageFactory factory = new PolygonImageFactory(canvasSize, 5, 3);
+        PolygonImageFactory factory = new PolygonImageFactory(canvasSize);
         List<ColouredPolygon> image = factory.generateRandomCandidate(new MersenneTwisterRNG());
 
         BufferedImage targetImage = new PolygonImageRenderer(canvasSize).render(image);

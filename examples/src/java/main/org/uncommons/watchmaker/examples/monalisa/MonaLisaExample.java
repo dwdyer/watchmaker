@@ -19,7 +19,7 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
@@ -59,7 +59,7 @@ public class MonaLisaExample
 
         Random rng = new MersenneTwisterRNG();
         PolygonImageEvaluator evaluator = new PolygonImageEvaluator(targetImage);
-        PolygonImageFactory factory = new PolygonImageFactory(canvasSize, 2, 10);
+        PolygonImageFactory factory = new PolygonImageFactory(canvasSize);
         EvolutionaryOperator<List<ColouredPolygon>> pipeline = createEvolutionPipeline(factory, canvasSize, rng);
 
         EvolutionEngine<List<ColouredPolygon>> engine
@@ -92,9 +92,11 @@ public class MonaLisaExample
                                                                                        Random rng)
     {
         List<EvolutionaryOperator<List<ColouredPolygon>>> operators
-            = new ArrayList<EvolutionaryOperator<List<ColouredPolygon>>>();
+            = new LinkedList<EvolutionaryOperator<List<ColouredPolygon>>>();
         operators.add(new ListCrossover<ColouredPolygon>());
-        operators.add(new PolygonImageMutation(new Probability(0.05), factory, 50));
+        operators.add(new RemovePolygonMutation(new Probability(0.02)));
+        operators.add(new MovePolygonMutation(new Probability(0.02)));
+        operators.add(new AddPolygonMutation(new Probability(0.02), factory, 50));
         operators.add(new ListOperator<ColouredPolygon>(new PolygonColourMutation(new Probability(0.01),
                                                                                   new GaussianGenerator(0, 10, rng))));
         operators.add(new ListOperator<ColouredPolygon>(new PolygonVertexMutation(canvasSize, new Probability(0.02))));
