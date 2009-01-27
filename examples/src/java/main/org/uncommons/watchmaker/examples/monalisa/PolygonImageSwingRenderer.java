@@ -100,13 +100,31 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
                                      candidateImage.getHeight() + footer);
             clip.drawImage(candidateImage, 0, 0, this);
             clip.setColor(getForeground());
-            String info = candidate.size() + " polygons";
+
+            String info = candidate.size() + " polygons, " + countVertices(candidate) + " vertices";
             FontMetrics fontMetrics = clip.getFontMetrics();
             int width = fontMetrics.stringWidth(info);
             int height = Math.round(fontMetrics.getLineMetrics(info, clip).getHeight());
             clip.drawString(info,
                             candidateImage.getWidth() - width,
                             candidateImage.getHeight() + height);
+        }
+
+
+        /**
+         * Count the number of vertices in each polygon in the image and return
+         * the total.
+         * @param image The image to inspect.
+         * @return The total number of vertices in all polygons in the image.
+         */
+        private int countVertices(List<ColouredPolygon> image)
+        {
+            int count = 0;
+            for (ColouredPolygon polygon : image)
+            {
+                count += polygon.getVertices().size();
+            }
+            return count;
         }
     }
 }

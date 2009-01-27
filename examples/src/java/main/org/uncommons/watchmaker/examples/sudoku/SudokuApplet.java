@@ -35,12 +35,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 import org.uncommons.maths.random.CellularAutomatonRNG;
 import org.uncommons.maths.random.DiscreteUniformGenerator;
 import org.uncommons.maths.random.PoissonGenerator;
-import org.uncommons.swing.SpringUtilities;
+import org.uncommons.swing.LabelledComponentsPanel;
 import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
@@ -139,9 +138,8 @@ public class SudokuApplet extends JApplet
     private JComponent createControls()
     {
         JPanel controls = new JPanel(new BorderLayout());
-        JPanel innerPanel = new JPanel(new SpringLayout());
-        innerPanel.add(new JLabel("Puzzle: "));
-        innerPanel.add(puzzleCombo);
+        LabelledComponentsPanel innerPanel = new LabelledComponentsPanel();
+        innerPanel.addLabelledComponent("Puzzle: ", puzzleCombo);
         puzzleCombo.addItemListener(new ItemListener()
         {
             public void itemStateChanged(ItemEvent ev)
@@ -149,11 +147,8 @@ public class SudokuApplet extends JApplet
                 sudokuView.setPuzzle(PUZZLES[puzzleCombo.getSelectedIndex()]);
             }
         });
-        innerPanel.add(new JLabel("Selection Pressure: "));
-        innerPanel.add(selectionPressure.getControl());
-        innerPanel.add(new JLabel("Population Size: "));
-        innerPanel.add(populationSizeSpinner);
-        SpringUtilities.makeCompactGrid(innerPanel, 3, 2, 0, 6, 6, 6);
+        innerPanel.addLabelledComponent("Selection Pressure: ", selectionPressure.getControl());
+        innerPanel.addLabelledComponent("Population Size: ", populationSizeSpinner);
         innerPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
         controls.add(innerPanel, BorderLayout.CENTER);
         controls.add(createButtonPanel(), BorderLayout.SOUTH);
