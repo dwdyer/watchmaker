@@ -31,7 +31,7 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class AdjustVertexMutation extends AbstractVertexMutation
 {
-    private final NumberGenerator<Integer> changeAmount;
+    private final NumberGenerator<? extends Number> changeAmount;
 
     /**
      * @param mutationProbability A {@link NumberGenerator} that controls the
@@ -39,11 +39,12 @@ public class AdjustVertexMutation extends AbstractVertexMutation
      * @param canvasSize The size of the canvas.  Used to constrain the positions
      * of the points.
      * @param changeAmount A {@link NumberGenerator} that controls the distance
-     * that points are moved.
+     * that points are moved (in pixels).  Should generate both positive and
+     * negative values.
      */
     public AdjustVertexMutation(Dimension canvasSize,
                                 NumberGenerator<Probability> mutationProbability,
-                                NumberGenerator<Integer> changeAmount)
+                                NumberGenerator<? extends Number> changeAmount)
     {
         super(mutationProbability, canvasSize);
         this.changeAmount = changeAmount;
@@ -55,11 +56,12 @@ public class AdjustVertexMutation extends AbstractVertexMutation
      * @param canvasSize The size of the canvas.  Used to constrain the positions
      * of the points.
      * @param changeAmount A {@link NumberGenerator} that controls the distance
-     * that points are moved.
+     * that points are moved (in pixels).  Should generate both positive and
+     * negative values.
      */
     public AdjustVertexMutation(Dimension canvasSize,
                                 Probability mutationProbability,
-                                NumberGenerator<Integer> changeAmount)
+                                NumberGenerator<? extends Number> changeAmount)
     {
         this(canvasSize, new ConstantGenerator<Probability>(mutationProbability), changeAmount);
     }
@@ -71,10 +73,8 @@ public class AdjustVertexMutation extends AbstractVertexMutation
         if (mutationProbability.nextValue().nextEvent(rng))
         {
             List<Point> newVertices = new ArrayList<Point>(vertices);
-            int xDelta = changeAmount.nextValue();
-            int yDelta = changeAmount.nextValue();
-            xDelta = rng.nextBoolean() ? -xDelta : xDelta;
-            yDelta = rng.nextBoolean() ? -yDelta : yDelta;
+            int xDelta = (int) Math.round(changeAmount.nextValue().doubleValue());
+            int yDelta = (int) Math.round(changeAmount.nextValue().doubleValue());
             int index = rng.nextInt(newVertices.size());
             Point oldPoint = newVertices.get(index);
             int newX = oldPoint.x + xDelta;

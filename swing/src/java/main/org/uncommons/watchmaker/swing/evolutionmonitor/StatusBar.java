@@ -30,10 +30,14 @@ class StatusBar extends Box implements EvolutionObserver<Object>
 {
     private final JLabel generationsLabel = new JLabel("N/A", JLabel.RIGHT);
     private final JLabel timeLabel = new JLabel("N/A", JLabel.RIGHT);
+    private final JLabel populationLabel = new JLabel("N/A", JLabel.RIGHT);
 
     public StatusBar()
     {
         super(BoxLayout.X_AXIS);
+        add(new JLabel("Population Size: "));
+        add(populationLabel);
+        add(createHorizontalStrut(20));
         add(new JLabel("Generations: "));
         add(generationsLabel);
         add(createHorizontalStrut(20));
@@ -45,8 +49,9 @@ class StatusBar extends Box implements EvolutionObserver<Object>
 
     public void populationUpdate(PopulationData<? extends Object> populationData)
     {
-        timeLabel.setText(formatTime(populationData.getElapsedTime()));
+        populationLabel.setText(String.valueOf(populationData.getPopulationSize()));
         generationsLabel.setText(String.valueOf(populationData.getGenerationNumber() + 1));
+        timeLabel.setText(formatTime(populationData.getElapsedTime()));
     }
 
 

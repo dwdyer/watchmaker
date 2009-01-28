@@ -26,7 +26,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import org.uncommons.maths.random.GaussianGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
-import org.uncommons.maths.random.PoissonGenerator;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
@@ -99,8 +98,8 @@ public class MonaLisaExample
         operators.add(new MovePolygonMutation(new Probability(0.02)));
         operators.add(new ListOperator<ColouredPolygon>(new RemoveVertexMutation(canvasSize, new Probability(0.01))));
         operators.add(new ListOperator<ColouredPolygon>(new AdjustVertexMutation(canvasSize,
-                                                                                 new Probability(0.01),
-                                                                                 new PoissonGenerator(3, rng))));
+                                                                                 new Probability(0.02),
+                                                                                 new GaussianGenerator(0, 3, rng))));
         operators.add(new ListOperator<ColouredPolygon>(new AddVertexMutation(canvasSize, new Probability(0.01))));
         operators.add(new ListOperator<ColouredPolygon>(new PolygonColourMutation(new Probability(0.01),
                                                                                   new GaussianGenerator(0, 10, rng))));

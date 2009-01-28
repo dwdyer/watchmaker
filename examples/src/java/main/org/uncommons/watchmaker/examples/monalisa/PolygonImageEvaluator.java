@@ -36,7 +36,7 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  */
 public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPolygon>>
 {
-    private final BufferedImage targetImage;
+    private final Raster targetImageData;
     private final Renderer<List<ColouredPolygon>, BufferedImage> renderer;
     private final AffineTransformOp transform;
 
@@ -56,8 +56,9 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
         }
         this.transform = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio),
                                                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        this.targetImage = convertImage(transform.filter(targetImage, null));
-        assert this.targetImage.getType() == BufferedImage.TYPE_INT_RGB : "Inefficient image type.";
+        targetImage = convertImage(transform.filter(targetImage, null));
+        assert targetImage.getType() == BufferedImage.TYPE_INT_RGB : "Inefficient image type.";
+        targetImageData = targetImage.getData();
     }
 
 
@@ -100,17 +101,16 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
     public double getFitness(List<ColouredPolygon> candidate,
                              List<? extends List<ColouredPolygon>> population)
     {
-        Raster targetImageData = targetImage.getData();
         BufferedImage candidateImage = renderer.render(candidate);
         candidateImage = transform.filter(candidateImage, null);
         Raster candidateImageData = candidateImage.getData();
-        assert candidateImageData.getWidth() == targetImage.getWidth() : "Image width mismatch.";
-        assert candidateImageData.getHeight() == targetImage.getHeight() : "Image height mismatch.";
+        assert candidateImageData.getWidth() == targetImageData.getWidth() : "Image width mismatch.";
+        assert candidateImageData.getHeight() == targetImageData.getHeight() : "Image height mismatch.";
 
         double fitness = 0;
-        int[] targetPixelValues = new int[targetImage.getWidth()];
-        int[] candidatePixelValues = new int[targetImage.getWidth()];
-        for (int row = 0; row < targetImage.getHeight(); row++)
+        int[] targetPixelValues = new int[targetImageData.getWidth()];
+        int[] candidatePixelValues = new int[targetImageData.getWidth()];
+        for (int row = 0; row < targetImageData.getHeight(); row++)
         {
             targetPixelValues = (int[]) targetImageData.getDataElements(0,
                                                                         row,
