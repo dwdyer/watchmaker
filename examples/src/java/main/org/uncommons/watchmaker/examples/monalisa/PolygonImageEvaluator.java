@@ -108,28 +108,39 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
         assert candidateImageData.getHeight() == targetImage.getHeight() : "Image height mismatch.";
 
         double fitness = 0;
-        int[] targetPixelValues = new int[3];
-        int[] candidatePixelValues = new int[3];
+        int[] targetPixelValues = new int[targetImage.getWidth()];
+        int[] candidatePixelValues = new int[targetImage.getWidth()];
         for (int row = 0; row < targetImage.getHeight(); row++)
         {
-            for (int column = 0; column < targetImage.getWidth(); column++)
+            targetPixelValues = (int[]) targetImageData.getDataElements(0,
+                                                                        row,
+                                                                        targetPixelValues.length,
+                                                                        1,
+                                                                        targetPixelValues);
+            candidatePixelValues = (int[]) candidateImageData.getDataElements(0,
+                                                                              row,
+                                                                              candidatePixelValues.length,
+                                                                              1,
+                                                                              candidatePixelValues);
+            for (int i = 0; i < targetPixelValues.length; i++)
             {
-                targetPixelValues = targetImageData.getPixel(column, row, targetPixelValues);
-                candidatePixelValues = candidateImageData.getPixel(column, row, candidatePixelValues);
-                long error = 0;
-                for (int i = 0; i < targetPixelValues.length; i++)
-                {
-                    int delta = targetPixelValues[i] - candidatePixelValues[i];
-                    error += (delta * delta);
-                }
-                fitness += Math.sqrt(error);
+                fitness += comparePixels(targetPixelValues[i], candidatePixelValues[i]);
             }
         }
 
         return fitness;
     }
 
-    
+
+    private double comparePixels(int p1, int p2)
+    {
+        int deltaR = (p1 >>> 16) - (p2 >>> 16);
+        int deltaG = ((p1 >>> 8) & 0xFF) - ((p2 >>> 8) & 0xFF);
+        int deltaB = (p1 & 0xFF) - (p2 & 0xFF);
+        return Math.sqrt(deltaR * deltaR + deltaG * deltaG + deltaB * deltaB);
+    }
+
+
     public boolean isNatural()
     {
         return false;

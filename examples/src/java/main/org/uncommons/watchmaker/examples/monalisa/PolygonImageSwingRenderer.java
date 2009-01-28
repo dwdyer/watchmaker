@@ -101,8 +101,8 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
                                      candidateImage.getWidth(),
                                      candidateImage.getHeight() + footer);
             clip.drawImage(candidateImage, 0, 0, this);
-            clip.setColor(getForeground());
 
+            clip.setColor(getForeground());
             String info = candidate.size() + " polygons, " + countVertices(candidate) + " vertices";
             FontMetrics fontMetrics = clip.getFontMetrics();
             int width = fontMetrics.stringWidth(info);
