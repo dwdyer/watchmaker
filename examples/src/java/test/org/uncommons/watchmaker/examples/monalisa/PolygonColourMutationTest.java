@@ -26,7 +26,7 @@ import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.Probability;
 
 /**
- * Unit test for the {@link PolygonVertexMutation} evolutionary operator.
+ * Unit test for the {@link PolygonColourMutation} evolutionary operator.
  * @author Daniel Dyer
  */
 public class PolygonColourMutationTest

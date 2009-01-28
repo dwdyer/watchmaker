@@ -36,6 +36,12 @@ public class PolygonColourMutation implements EvolutionaryOperator<ColouredPolyg
     private final NumberGenerator<Double> mutationAmount;
 
 
+    /**
+     * @param mutationProbability A {@link NumberGenerator} that controls the
+     * probability that the colour will be modified.
+     * @param mutationAmount A {@link NumberGenerator} that controls the amount
+     * that the colour's components are adjusted by.
+     */
     public PolygonColourMutation(NumberGenerator<Probability> mutationProbability,
                                  NumberGenerator<Double> mutationAmount)
     {
@@ -44,6 +50,11 @@ public class PolygonColourMutation implements EvolutionaryOperator<ColouredPolyg
     }
 
 
+    /**
+     * @param mutationProbability The probability that the colour will be modified.
+     * @param mutationAmount A {@link NumberGenerator} that controls the amount
+     * that the colour's components are adjusted by.
+     */
     public PolygonColourMutation(Probability mutationProbability,
                                  NumberGenerator<Double> mutationAmount)
     {

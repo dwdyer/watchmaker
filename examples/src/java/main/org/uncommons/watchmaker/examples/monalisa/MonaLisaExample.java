@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import org.uncommons.maths.random.GaussianGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.maths.random.PoissonGenerator;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
@@ -96,11 +97,14 @@ public class MonaLisaExample
         operators.add(new ListCrossover<ColouredPolygon>());
         operators.add(new RemovePolygonMutation(new Probability(0.02)));
         operators.add(new MovePolygonMutation(new Probability(0.02)));
-        operators.add(new AddPolygonMutation(new Probability(0.02), factory, 50));
+        operators.add(new ListOperator<ColouredPolygon>(new RemoveVertexMutation(canvasSize, new Probability(0.01))));
+        operators.add(new ListOperator<ColouredPolygon>(new AdjustVertexMutation(canvasSize,
+                                                                                 new Probability(0.01),
+                                                                                 new PoissonGenerator(3, rng))));
+        operators.add(new ListOperator<ColouredPolygon>(new AddVertexMutation(canvasSize, new Probability(0.01))));
         operators.add(new ListOperator<ColouredPolygon>(new PolygonColourMutation(new Probability(0.01),
                                                                                   new GaussianGenerator(0, 10, rng))));
-        operators.add(new ListOperator<ColouredPolygon>(new PolygonVertexMutation(canvasSize, new Probability(0.02))));
-
+        operators.add(new AddPolygonMutation(new Probability(0.02), factory, 50));
         return new EvolutionPipeline<List<ColouredPolygon>>(operators);
     }
 }

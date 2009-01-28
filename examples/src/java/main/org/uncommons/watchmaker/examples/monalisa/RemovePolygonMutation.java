@@ -31,8 +31,6 @@ import org.uncommons.watchmaker.framework.Probability;
 public class RemovePolygonMutation implements EvolutionaryOperator<List<ColouredPolygon>>
 {
     private final NumberGenerator<Probability> removePolygonProbability;
-    private final int minPolygons = 2;
-
 
     /**
      * @param removePolygonProbability A {@link NumberGenerator} that controls the probability
@@ -58,7 +56,10 @@ public class RemovePolygonMutation implements EvolutionaryOperator<List<Coloured
         List<List<ColouredPolygon>> mutatedCandidates = new ArrayList<List<ColouredPolygon>>(selectedCandidates.size());
         for (List<ColouredPolygon> candidate : selectedCandidates)
         {
-            if (candidate.size() > minPolygons && removePolygonProbability.nextValue().nextEvent(rng))
+            // A single polygon is removed with the configured probability, unless
+            // we already have the minimum permitted number of polygons.
+            if (candidate.size() > PolygonImageFactory.MINIMUM_POLYGON_COUNT
+                && removePolygonProbability.nextValue().nextEvent(rng))
             {
                 List<ColouredPolygon> newPolygons = new ArrayList<ColouredPolygon>(candidate);
                 newPolygons.remove(rng.nextInt(newPolygons.size()));
