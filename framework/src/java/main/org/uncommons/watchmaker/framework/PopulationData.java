@@ -31,6 +31,7 @@ public final class PopulationData<T>
     private final double meanFitness;
     private final double fitnessStandardDeviation;
     private final int populationSize;
+    private final int eliteCount;
     private final int generationNumber;
     private final long elapsedTime;
 
@@ -43,6 +44,7 @@ public final class PopulationData<T>
      * @param fitnessStandardDeviation A measure of the variation in fitness
      * scores.
      * @param populationSize The number of individuals in the population.
+     * @param eliteCount The number of candidates preserved via elitism.
      * @param generationNumber The (zero-based) number of the last generation
      * that was processed.
      * @param elapsedTime The number of milliseconds since the start of the
@@ -53,6 +55,7 @@ public final class PopulationData<T>
                           double meanFitness,
                           double fitnessStandardDeviation,
                           int populationSize,
+                          int eliteCount,
                           int generationNumber,
                           long elapsedTime)
     {
@@ -61,6 +64,7 @@ public final class PopulationData<T>
         this.meanFitness = meanFitness;
         this.fitnessStandardDeviation = fitnessStandardDeviation;
         this.populationSize = populationSize;
+        this.eliteCount = eliteCount;
         this.generationNumber = generationNumber;
         this.elapsedTime = elapsedTime;
     }
@@ -113,6 +117,15 @@ public final class PopulationData<T>
     public int getPopulationSize()
     {
         return populationSize;
+    }
+
+
+    /**
+     * @return The number of candidates preserved via elitism.
+     */
+    public int getEliteCount()
+    {
+        return eliteCount;
     }
 
 

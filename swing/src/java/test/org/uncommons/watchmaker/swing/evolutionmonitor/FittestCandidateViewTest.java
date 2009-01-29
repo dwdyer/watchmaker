@@ -71,6 +71,7 @@ public class FittestCandidateViewTest
                                                                          5,
                                                                          2,
                                                                          5,
+                                                                         0,
                                                                          1,
                                                                          100);
         view.populationUpdate(data);

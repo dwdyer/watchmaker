@@ -140,7 +140,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         // Calculate the fitness scores for each member of the initial population.
         List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
         sortEvaluatedPopulation(evaluatedPopulation);
-        PopulationData<T> data = getPopulationData(evaluatedPopulation);
+        PopulationData<T> data = getPopulationData(evaluatedPopulation, eliteCount);
         // Notify observers of the state of the population.
         notifyPopulationChange(data);
 
@@ -150,7 +150,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
             population = createNextGeneration(evaluatedPopulation, eliteCount);
             evaluatedPopulation = evaluatePopulation(population);
             sortEvaluatedPopulation(evaluatedPopulation);
-            data = getPopulationData(evaluatedPopulation);
+            data = getPopulationData(evaluatedPopulation, eliteCount);
             // Notify observers of the state of the population.
             notifyPopulationChange(data);
         }
@@ -325,9 +325,11 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      * and statistics about the population as a whole.
      * @param evaluatedPopulation Population of candidate solutions with their
      * associated fitness scores.
+     * @param eliteCount The number of candidates preserved via elitism.
      * @return Statistics about the current generation of evolved individuals.
      */
-    private PopulationData<T> getPopulationData(List<EvaluatedCandidate<T>> evaluatedPopulation)
+    private PopulationData<T> getPopulationData(List<EvaluatedCandidate<T>> evaluatedPopulation,
+                                                int eliteCount)
     {
         DataSet stats = new DataSet(evaluatedPopulation.size());
         for (EvaluatedCandidate<T> candidate : evaluatedPopulation)
@@ -339,6 +341,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                                      stats.getArithmeticMean(),
                                      stats.getStandardDeviation(),
                                      stats.getSize(),
+                                     eliteCount,
                                      currentGenerationIndex,
                                      System.currentTimeMillis() - startTime);
     }

@@ -31,7 +31,7 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class AddVertexMutation extends AbstractVertexMutation
 {
-    private static final int MAX_VERTEX_COUNT = 10;
+    static final int MAX_VERTEX_COUNT = 10;
 
     /**
      * @param mutationProbability A {@link NumberGenerator} that controls the probability
