@@ -465,20 +465,6 @@
     <option name="shortCycleTableSpecificationString" value="" />
   </component>
   <component name="libraryTable">
-    <library name="jfreechart-1.0.6">
-      <CLASSES>
-        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/jfreechart-1.0.6.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="jcommon-1.0.10">
-      <CLASSES>
-        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/jcommon-1.0.10.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="fest-swing-1.0b1">
       <CLASSES>
         <root url="jar:///Users/dan/Projects/watchmaker/lib/compiletime/fest/fest-swing-1.0b1.jar!/" />
@@ -496,6 +482,20 @@
     <library name="testng-5.7-jdk15">
       <CLASSES>
         <root url="jar:///Users/dan/Projects/watchmaker/lib/compiletime/testng/testng-5.7-jdk15.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="jfreechart-1.0.12">
+      <CLASSES>
+        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/jfreechart-1.0.12.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="jcommon-1.0.15">
+      <CLASSES>
+        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/jcommon-1.0.15.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

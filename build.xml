@@ -56,7 +56,7 @@
            classpathref="base.path"/>  
 
 
-  <property name="version" value="0.5.1"/>
+  <property name="version" value="0.5.2pre"/>
   <property name="artifact.identifier" value="watchmaker-framework-${version}"/>
 
   <!-- This is the minimum coverage percentage (for both lines and
@@ -145,7 +145,7 @@
     <uncommons:compile module="swing" />
     <uncommons:jar module="swing"
                    jarfile="watchmaker-swing-${version}.jar"
-                   classpath="${artifact.identifier}.jar uncommons-maths-1.1.jar jfreechart-1.0.6.jar jcommon-1.0.10.jar" />
+                   classpath="${artifact.identifier}.jar uncommons-maths-1.1.jar jfreechart-1.0.12.jar jcommon-1.0.15.jar" />
   </target>
 
 

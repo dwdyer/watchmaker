@@ -1,3 +1,14 @@
+Changes in version 0.5.2
+------------------------
+
+* Added the option to view only the most recent 200 generations on the
+  population fitness graph of the evolution monitor.
+
+* Added more information to the evolution monitor status bar.
+
+* Enhancements to the Mona Lisa example application.
+
+
 Changes in version 0.5.1
 ------------------------
 

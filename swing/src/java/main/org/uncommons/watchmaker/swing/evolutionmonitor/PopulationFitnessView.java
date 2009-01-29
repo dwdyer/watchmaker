@@ -19,13 +19,16 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -39,27 +42,32 @@ import org.uncommons.watchmaker.framework.PopulationData;
  */
 class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
 {
-    private final XYSeries bestSeries = new XYSeries("Fittest Individual");
-    private final XYSeries meanSeries = new XYSeries("Mean Fitness");
-    private final JFreeChart chart;
-    private final XYSeriesCollection dataSet = new XYSeriesCollection();
+    private static final int SHOW_FIXED_GENERATIONS = 200;
 
+    private final XYSeries bestSeries = new XYSeries("Fittest Individual");
+    private final XYSeries meanSeries = new XYSeries("Population Mean Fitness");
+    private final XYSeriesCollection dataSet = new XYSeriesCollection();
+    private final ValueAxis domainAxis;
+    private final ValueAxis rangeAxis;
+    private final JRadioButton allDataButton = new JRadioButton("All Data", false);
 
     PopulationFitnessView()
     {
         super(new BorderLayout());
         dataSet.addSeries(bestSeries);
         dataSet.addSeries(meanSeries);
-        chart = ChartFactory.createXYLineChart("Population Fitness",
-                                               "Generations",
-                                               "Fitness",
-                                               dataSet,
-                                               PlotOrientation.VERTICAL,
-                                               true, // Legend.
-                                               false, // Tooltips.
-                                               false); // URLs.
-
-        chart.getXYPlot().getDomainAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        JFreeChart chart = ChartFactory.createXYLineChart("Population Fitness",
+                                                          "Generations",
+                                                          "Fitness",
+                                                          dataSet,
+                                                          PlotOrientation.VERTICAL,
+                                                          true, // Legend.
+                                                          false, // Tooltips.
+                                                          false); // URLs.
+        this.domainAxis = chart.getXYPlot().getDomainAxis();
+        this.rangeAxis = chart.getXYPlot().getRangeAxis();
+        domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        domainAxis.setRange(0, SHOW_FIXED_GENERATIONS);
         add(createControls(), BorderLayout.SOUTH);
         add(new ChartPanel(chart), BorderLayout.CENTER);
     }
@@ -72,8 +80,36 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
     private JComponent createControls()
     {
         JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        final JCheckBox deviationCheckBox = new JCheckBox("Show Mean", true);
-        deviationCheckBox.addItemListener(new ItemListener()
+
+        allDataButton.addItemListener(new ItemListener()
+        {
+            public void itemStateChanged(ItemEvent ev)
+            {
+                if (allDataButton.isSelected())
+                {
+                    domainAxis.setAutoRange(true);
+                    domainAxis.setFixedAutoRange(0);
+                }
+                else if (dataSet.getSeries(0).getItemCount() >= SHOW_FIXED_GENERATIONS)
+                {
+                    domainAxis.setFixedAutoRange(SHOW_FIXED_GENERATIONS);
+                }
+                else
+                {
+                    domainAxis.setRange(0, SHOW_FIXED_GENERATIONS);
+                }
+            }
+        });
+        JRadioButton recentDataButton = new JRadioButton("Last " + SHOW_FIXED_GENERATIONS + " Generations", true);
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(allDataButton);
+        buttonGroup.add(recentDataButton);
+
+        controls.add(allDataButton);
+        controls.add(recentDataButton);
+
+        final JCheckBox meanCheckBox = new JCheckBox("Show Mean", true);
+        meanCheckBox.addItemListener(new ItemListener()
         {
             public void itemStateChanged(ItemEvent itemEvent)
             {
@@ -87,14 +123,14 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
                 }
             }
         });
-        controls.add(deviationCheckBox);
+        controls.add(meanCheckBox);
 
         final JCheckBox invertCheckBox = new JCheckBox("Invert Range Axis", false);
         invertCheckBox.addItemListener(new ItemListener()
         {
             public void itemStateChanged(ItemEvent itemEvent)
             {
-                chart.getXYPlot().getRangeAxis().setInverted(invertCheckBox.isSelected());
+                rangeAxis.setInverted(invertCheckBox.isSelected());
             }
         });
         controls.add(invertCheckBox);
@@ -113,5 +149,11 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
         meanSeries.add(generation, mean);
         double best = populationData.getBestCandidateFitness();
         bestSeries.add(generation, best);
+        // Once we have 200 data points, we can switch to auto-range.
+        if (!allDataButton.isSelected() && generation == SHOW_FIXED_GENERATIONS)
+        {
+            domainAxis.setAutoRange(true);
+            domainAxis.setFixedAutoRange(SHOW_FIXED_GENERATIONS);
+        }
     }
 }

@@ -25,6 +25,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.StandardChartTheme;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
@@ -64,6 +66,10 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
      */
     public EvolutionMonitor(Renderer<? super T, JComponent> renderer)
     {
+        // Make sure all JFreeChart charts are created with the legacy theme
+        // (grey surround and white data area).
+        ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
+
         monitorComponent.add(tabs, BorderLayout.CENTER);
 
         FittestCandidateView<T> candidateView = new FittestCandidateView<T>(renderer);
