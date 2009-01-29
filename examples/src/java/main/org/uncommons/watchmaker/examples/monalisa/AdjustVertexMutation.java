@@ -70,7 +70,7 @@ public class AdjustVertexMutation extends AbstractVertexMutation
     protected List<Point> mutateVertices(List<Point> vertices, Random rng)
     {
         // A single point is modified with the configured probability.
-        if (mutationProbability.nextValue().nextEvent(rng))
+        if (getMutationProbability().nextValue().nextEvent(rng))
         {
             List<Point> newVertices = new ArrayList<Point>(vertices);
             int xDelta = (int) Math.round(changeAmount.nextValue().doubleValue());
@@ -79,8 +79,8 @@ public class AdjustVertexMutation extends AbstractVertexMutation
             Point oldPoint = newVertices.get(index);
             int newX = oldPoint.x + xDelta;
             int newY = oldPoint.y + yDelta;
-            newX = Math.max(0, Math.min(newX, canvasSize.width));
-            newY = Math.max(0, Math.min(newY, canvasSize.height));
+            newX = Math.max(0, Math.min(newX, getCanvasSize().width));
+            newY = Math.max(0, Math.min(newY, getCanvasSize().height));
             newVertices.set(index, new Point(newX, newY));
             return newVertices;
         }

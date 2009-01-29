@@ -61,7 +61,7 @@ public class RemoveVertexMutation extends AbstractVertexMutation
         // A single point is removed with the configured probability, unless
         // we already have the minimum permitted number of points.
         if (vertices.size() > PolygonImageFactory.MINIMUM_VERTEX_COUNT
-            && mutationProbability.nextValue().nextEvent(rng))
+            && getMutationProbability().nextValue().nextEvent(rng))
         {
             List<Point> newVertices = new ArrayList<Point>(vertices);
             newVertices.remove(rng.nextInt(newVertices.size()));
