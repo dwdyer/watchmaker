@@ -48,7 +48,11 @@
       <property name="severity" value="warning"/>
     </module>
     <module name="MethodLength"/>
-    <module name="ParameterNumber"/>
+    <module name="ParameterNumber">
+      <!-- Constuctors can have as many as needed, only check methods. -->
+      <property name="tokens" value="METHOD_DEF"/>
+      <property name="severity" value="warning"/>
+    </module>
 
 
     <!-- Naming conventions. -->

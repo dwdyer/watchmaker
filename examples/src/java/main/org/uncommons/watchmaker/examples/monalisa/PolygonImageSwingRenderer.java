@@ -51,6 +51,7 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
      * Renders the specified image as a JComponent with the image on the
      * right and the pre-specified target image on the left.
      * @param entity The image to render on the right side of the component.
+     * @return A Swing component that displays the rendered image.
      */
     public JComponent render(List<ColouredPolygon> entity)
     {

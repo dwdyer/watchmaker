@@ -162,6 +162,7 @@ public final class ReflectionUtils
      * be used for constructors that definitely exist.  It does not throw the checked
      * NoSuchMethodException.  If the constructor does not exist, it will instead fail
      * with an unchecked IllegalArgumentException.
+     * @param <T> The type of object that the constructor creates.
      * @param aClass The class in which the constructor exists.
      * @param paramTypes The types of the constructor's parameters.
      * @return The identified constructor.

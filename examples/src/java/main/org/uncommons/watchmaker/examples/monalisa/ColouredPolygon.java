@@ -31,7 +31,13 @@ public class ColouredPolygon
     private final List<Point> vertices;
     private final Polygon polygon;
 
-    
+
+    /**
+     * Creates a new filled polygon with the specified points and colour.
+     * @param colour The colour of this polygon.  The alpha channel is used
+     * to specify the polygons translucency.
+     * @param vertices The points that define the polygon's outline.
+     */
     public ColouredPolygon(Color colour, List<Point> vertices)
     {
         this.colour = colour;

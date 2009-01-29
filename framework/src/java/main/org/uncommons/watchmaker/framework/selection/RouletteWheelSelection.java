@@ -39,6 +39,18 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  */
 public class RouletteWheelSelection implements SelectionStrategy<Object>
 {
+    /**
+     * Selects the required number of candidates from the population with
+     * the probability of any particular candidate being selected is proportional
+     * to its fitness score.  Selection is with replacement (the same candidate
+     * may be selected multiple times).
+     * @param population The candidates to select from.
+     * @param naturalFitnessScores True if higher fitness scores indicate fitter
+     * individuals, false if lower fitness scores indicate fitter individuals.
+     * @param selectionSize The number of selections to make.
+     * @param rng A source of randomness.
+     * @return The selected candidates. 
+     */
     public <S> List<S> select(List<EvaluatedCandidate<S>> population,
                               boolean naturalFitnessScores,
                               int selectionSize,

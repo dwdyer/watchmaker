@@ -40,6 +40,12 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
     private final Renderer<List<ColouredPolygon>, BufferedImage> renderer;
     private final AffineTransformOp transform;
 
+
+    /**
+     * Creates an evaluator that assigns fitness scores to images based on how
+     * close they are to the specified target image. 
+     * @param targetImage The image that all others are compared to.
+     */
     public PolygonImageEvaluator(BufferedImage targetImage)
     {
         this.renderer = new PolygonImageRenderer(new Dimension(targetImage.getWidth(),

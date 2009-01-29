@@ -49,6 +49,11 @@ public class Parameter extends LeafNode
     }
 
 
+    /**
+     * {@inheritDoc}
+     * For a parameter node the String representation is simply "arg0", "arg1", etc.
+     * depending on which program parameter it refers to.
+     */
     public String print()
     {
         return "arg" + parameterIndex;

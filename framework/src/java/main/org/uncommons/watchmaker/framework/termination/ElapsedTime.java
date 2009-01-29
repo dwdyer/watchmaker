@@ -39,6 +39,12 @@ public class ElapsedTime implements TerminationCondition
         this.maxDuration = maxDuration;
     }
 
+
+    /**
+     * {@inheritDoc}
+     * This implementation terminates evolution if the pre-configured maximum
+     * permitted time has elapsed.
+     */
     public boolean shouldTerminate(PopulationData<?> populationData)
     {
         return populationData.getElapsedTime() >= maxDuration;

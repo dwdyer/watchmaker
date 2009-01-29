@@ -53,13 +53,19 @@ public class IfThenElse implements Node
         return Math.max(condition.getDepth(), Math.max(then.getDepth(), otherwise.getDepth()));
     }
 
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public int countNodes()
     {
         return 1 + condition.countNodes() + then.countNodes() + otherwise.countNodes();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Node getNode(int index)
     {
         if (index == 0)
@@ -86,6 +92,9 @@ public class IfThenElse implements Node
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Node replaceNode(int index, Node newNode)
     {
         if (index == 0)

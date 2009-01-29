@@ -31,8 +31,8 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 abstract class AbstractVertexMutation implements EvolutionaryOperator<ColouredPolygon>
 {
-    protected final Dimension canvasSize;
-    protected final NumberGenerator<Probability> mutationProbability;
+    private final Dimension canvasSize;
+    private final NumberGenerator<Probability> mutationProbability;
 
 
     /**
@@ -48,6 +48,35 @@ abstract class AbstractVertexMutation implements EvolutionaryOperator<ColouredPo
     }
 
 
+    /**
+     * @return The dimensions of the target image.
+     */
+    protected Dimension getCanvasSize()
+    {
+        return canvasSize;
+    }
+
+
+    /**
+     * @return The {@link NumberGenerator} that provides the mutation probability.
+     */
+    protected NumberGenerator<Probability> getMutationProbability()
+    {
+        return mutationProbability;
+    }
+
+
+    /**
+     * Applies the mutation to each polygon in the list provided according to the
+     * pre-configured mutation probability.  If the probability is 0.1, approximately
+     * 10% of the individuals will be mutated.  The actual mutation operation is
+     * defined in the sub-class implementation of the
+     * {@link #mutateVertices(java.util.List, java.util.Random)} method.
+     * @param polygons The list of polygons to be mutated.
+     * @param rng A source of randomness.
+     * @return The polygons after mutation.  None, some or all will have been
+     * modified. 
+     */
     public List<ColouredPolygon> apply(List<ColouredPolygon> polygons, Random rng)
     {
         List<ColouredPolygon> newPolygons = new ArrayList<ColouredPolygon>(polygons.size());

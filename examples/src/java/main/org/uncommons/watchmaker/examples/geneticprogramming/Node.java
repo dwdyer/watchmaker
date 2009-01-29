@@ -59,6 +59,14 @@ public interface Node
      */
     Node getNode(int index);
 
+    /**
+     * Returns a new tree that is identical to this tree except with the specified node
+     * replaced. 
+     * @param index The index of the node to replace.
+     * @param newNode The replacement node.
+     * @return A new tree with the node at the specified index replaced by
+     * {@code newNode}.
+     */
     Node replaceNode(int index, Node newNode);
 
     /**

@@ -60,11 +60,12 @@ public class AddVertexMutation extends AbstractVertexMutation
     {
         // A single point is added with the configured probability, unless
         // we already have the maximum permitted number of points.
-        if (vertices.size() < MAX_VERTEX_COUNT && mutationProbability.nextValue().nextEvent(rng))
+        if (vertices.size() < MAX_VERTEX_COUNT && getMutationProbability().nextValue().nextEvent(rng))
         {
             List<Point> newVertices = new ArrayList<Point>(vertices);
             newVertices.add(rng.nextInt(newVertices.size()),
-                            new Point(rng.nextInt(canvasSize.width), rng.nextInt(canvasSize.height)));
+                            new Point(rng.nextInt(getCanvasSize().width),
+                                      rng.nextInt(getCanvasSize().height)));
             return newVertices;
         }
         else // Nothing changed.
