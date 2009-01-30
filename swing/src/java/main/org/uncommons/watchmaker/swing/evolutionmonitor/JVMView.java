@@ -18,11 +18,15 @@ package org.uncommons.watchmaker.swing.evolutionmonitor;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -31,10 +35,10 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
-import org.jfree.chart.title.TextTitle;
-import org.jfree.chart.title.Title;
+import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -48,29 +52,51 @@ import org.jfree.ui.TextAnchor;
  */
 class JVMView extends JPanel
 {
-    private static final int MEGABYTE = 1024 * 1024;
+    private static final int MEGABYTE = 1048576;
+
+    private static final String MAIN_THREAD = "Evolution Main";
+    private static final String FITNESS_THREADS = "Fitness Evaluations";
+    private static final String AWT_THREADS = "AWT/Swing";
+    private static final String OTHER_THREADS = "Other";
+
     private final TimeSeries memoryUsageSeries = new TimeSeries("Memory Usage", Second.class);
     private final TimeSeries heapSizeSeries = new TimeSeries("Heap Size", Second.class);
+    private final DefaultPieDataset threadDataset = new DefaultPieDataset();
 
-    private final Runtime runtime = Runtime.getRuntime();
+    private final MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+    private final ThreadMXBean threadBean = ManagementFactory.getThreadMXBean();
 
     JVMView()
     {
         super(new BorderLayout());
-        double maxMemory = (double) runtime.maxMemory() / MEGABYTE;
-        JFreeChart chart = createHeapChart(maxMemory);
-        add(new ChartPanel(chart), BorderLayout.CENTER);
-        add(createControls(), BorderLayout.SOUTH);
+        double maxMemory = (double) memoryBean.getHeapMemoryUsage().getMax() / MEGABYTE;
+
+        JPanel inner = new JPanel(new BorderLayout());
+        ChartPanel heapPanel = new ChartPanel(createHeapChart(maxMemory));
+        heapPanel.setPreferredSize(new Dimension(ChartPanel.DEFAULT_MINIMUM_DRAW_WIDTH,
+                                                 ChartPanel.DEFAULT_MINIMUM_DRAW_HEIGHT + 50));
+        inner.add(heapPanel, BorderLayout.CENTER);
+        inner.add(createControls(), BorderLayout.SOUTH);
+        add(inner, BorderLayout.CENTER);
+
+        ChartPanel threadsPanel = new ChartPanel(createThreadChart());
+        threadsPanel.setPreferredSize(new Dimension(ChartPanel.DEFAULT_MINIMUM_DRAW_WIDTH,
+                                                    ChartPanel.DEFAULT_MINIMUM_DRAW_HEIGHT));
+        add(threadsPanel, BorderLayout.SOUTH);
 
         Timer timer = new Timer(5000, new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                 addMemoryDataPoint();
+                updateThreadData();
             }
         });
 
-        addMemoryDataPoint(); // Plot start values.
+        // Plot start values.
+        addMemoryDataPoint();
+        updateThreadData();
+        
         timer.start();
     }
 
@@ -81,7 +107,7 @@ class JVMView extends JPanel
         TimeSeriesCollection dataSet = new TimeSeriesCollection();
         dataSet.addSeries(memoryUsageSeries);
         dataSet.addSeries(heapSizeSeries);
-        JFreeChart chart = ChartFactory.createXYAreaChart("JVM Heap Usage",
+        JFreeChart chart = ChartFactory.createXYAreaChart("JVM Heap",
                                                           "Time",
                                                           "Megabytes",
                                                            dataSet,
@@ -94,7 +120,7 @@ class JVMView extends JPanel
         timeAxis.setUpperMargin(0);
         chart.getXYPlot().setDomainAxis(timeAxis);
         chart.getXYPlot().getRangeAxis().setLowerBound(0);
-        chart.getXYPlot().getRangeAxis().setUpperBound(maxMemory * 1.05); // Add 5% to leave room for marker.
+        chart.getXYPlot().getRangeAxis().setUpperBound(maxMemory * 1.1); // Add 10% to leave room for marker.
 
         // Add a horizontal marker to indicate the heap growth limit.
         ValueMarker marker = new ValueMarker(maxMemory, Color.BLACK, new BasicStroke(1));
@@ -106,9 +132,26 @@ class JVMView extends JPanel
         chart.getXYPlot().getRenderer().setSeriesPaint(0, Color.RED);
         chart.getXYPlot().getRenderer().setSeriesPaint(1, new Color(0, 128, 0, 128));
 
-        List<Title> subtitleList = new LinkedList<Title>(chart.getSubtitles());
-        subtitleList.add(new TextTitle("(5-second poll interval)"));
-        chart.setSubtitles(subtitleList);
+        return chart;
+    }
+
+
+    private JFreeChart createThreadChart()
+    {
+        JFreeChart chart = ChartFactory.createPieChart("CPU Utilisation by Task",
+                                                       threadDataset,
+                                                       true, // Legend.
+                                                       true, // Tooltips.
+                                                       false); // URLs.
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setSectionPaint(MAIN_THREAD, Color.GREEN.darker());
+        plot.setSectionPaint(FITNESS_THREADS, Color.GREEN);
+        plot.setSectionPaint(AWT_THREADS, Color.ORANGE);
+        plot.setSectionPaint(OTHER_THREADS, Color.ORANGE.darker());
+        plot.setLabelGenerator(null);
+        plot.setBackgroundPaint(null);
+        plot.setOutlinePaint(null);
+        plot.setIgnoreZeroValues(true);
         return chart;
     }
 
@@ -126,7 +169,7 @@ class JVMView extends JPanel
         {
             public void actionPerformed(ActionEvent ev)
             {
-                System.gc();
+                memoryBean.gc();
             }
         });
         controls.add(gcButton);
@@ -137,9 +180,43 @@ class JVMView extends JPanel
 
     private void addMemoryDataPoint()
     {
-        double usedMegabytes = (double) (runtime.totalMemory() - runtime.freeMemory()) / MEGABYTE;
+        MemoryUsage heapUsage = memoryBean.getHeapMemoryUsage();
+        double usedMegabytes = (double) heapUsage.getUsed() / MEGABYTE;
         Second second = new Second();
         memoryUsageSeries.add(second, usedMegabytes);
-        heapSizeSeries.add(second, (double) runtime.totalMemory() / MEGABYTE);
+        heapSizeSeries.add(second, (double) heapUsage.getCommitted() / MEGABYTE);
+    }
+
+
+    private void updateThreadData()
+    {
+        ThreadInfo[] infos = threadBean.getThreadInfo(threadBean.getAllThreadIds());
+        long mainTime = 0;
+        long fitnessTime = 0;
+        long awtTime = 0;
+        long otherTime = 0;
+        for (ThreadInfo info : infos)
+        {
+            if (info.getThreadName().equals("main"))
+            {
+                mainTime += threadBean.getThreadCpuTime(info.getThreadId());
+            }
+            else if (info.getThreadName().startsWith("EvolutionEngine"))
+            {
+                fitnessTime += threadBean.getThreadCpuTime(info.getThreadId());
+            }
+            else if (info.getThreadName().startsWith("AWT"))
+            {
+                awtTime += threadBean.getThreadCpuTime(info.getThreadId());
+            }
+            else
+            {
+                otherTime += threadBean.getThreadCpuTime(info.getThreadId());
+            }
+        }
+        threadDataset.setValue(MAIN_THREAD, mainTime);
+        threadDataset.setValue(FITNESS_THREADS, fitnessTime);
+        threadDataset.setValue(AWT_THREADS, awtTime);
+        threadDataset.setValue(OTHER_THREADS, otherTime);
     }
 }

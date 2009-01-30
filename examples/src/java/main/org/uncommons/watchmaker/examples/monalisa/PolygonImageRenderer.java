@@ -17,7 +17,6 @@ package org.uncommons.watchmaker.examples.monalisa;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
@@ -61,11 +60,11 @@ public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, Buf
         BufferedImage image = GRAPHICS_CONFIG.createCompatibleImage(targetSize.width,
                                                                     targetSize.height,
                                                                     Transparency.OPAQUE);
-        Graphics graphics = image.getGraphics();
-        if (antialias && graphics instanceof Graphics2D)
+        Graphics2D graphics = image.createGraphics();
+        if (antialias)
         {
-            ((Graphics2D) graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                                     RenderingHints.VALUE_ANTIALIAS_ON);
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                      RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
         graphics.setColor(Color.GRAY);
@@ -75,6 +74,7 @@ public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, Buf
             graphics.setColor(polygon.getColour());
             graphics.fillPolygon(polygon.getPolygon());
         }
+        graphics.dispose();
         return image;
     }
 }
