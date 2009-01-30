@@ -340,6 +340,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                                      evaluatedPopulation.get(0).getFitness(),
                                      stats.getArithmeticMean(),
                                      stats.getStandardDeviation(),
+                                     getFitnessEvaluator().isNatural(),
                                      stats.getSize(),
                                      eliteCount,
                                      currentGenerationIndex,

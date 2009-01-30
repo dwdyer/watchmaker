@@ -30,6 +30,7 @@ public final class PopulationData<T>
     private final double bestCandidateFitness;
     private final double meanFitness;
     private final double fitnessStandardDeviation;
+    private final boolean naturalFitness;
     private final int populationSize;
     private final int eliteCount;
     private final int generationNumber;
@@ -43,17 +44,19 @@ public final class PopulationData<T>
      * of the population.
      * @param fitnessStandardDeviation A measure of the variation in fitness
      * scores.
+     * @param naturalFitness True if higher fitness scores are better, false
+     * otherwise. 
      * @param populationSize The number of individuals in the population.
      * @param eliteCount The number of candidates preserved via elitism.
      * @param generationNumber The (zero-based) number of the last generation
      * that was processed.
      * @param elapsedTime The number of milliseconds since the start of the
-     * evolutionary algorithm.
      */
     public PopulationData(T bestCandidate,
                           double bestCandidateFitness,
                           double meanFitness,
                           double fitnessStandardDeviation,
+                          boolean naturalFitness,
                           int populationSize,
                           int eliteCount,
                           int generationNumber,
@@ -63,6 +66,7 @@ public final class PopulationData<T>
         this.bestCandidateFitness = bestCandidateFitness;
         this.meanFitness = meanFitness;
         this.fitnessStandardDeviation = fitnessStandardDeviation;
+        this.naturalFitness = naturalFitness;
         this.populationSize = populationSize;
         this.eliteCount = eliteCount;
         this.generationNumber = generationNumber;
@@ -111,6 +115,17 @@ public final class PopulationData<T>
     }
 
 
+    /**
+     * Indicates whether the fitness scores are natural or non-natural.
+     * @return True if higher fitness scores indicate fitter individuals, false
+     * otherwise.
+     */
+    public boolean isNaturalFitness()
+    {
+        return naturalFitness;
+    }
+
+    
     /**
      * @return The number of individuals in the current population.
      */

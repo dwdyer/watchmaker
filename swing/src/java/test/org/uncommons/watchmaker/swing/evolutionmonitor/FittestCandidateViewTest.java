@@ -70,6 +70,7 @@ public class FittestCandidateViewTest
                                                                          10,
                                                                          5,
                                                                          2,
+                                                                         true,
                                                                          5,
                                                                          0,
                                                                          1,

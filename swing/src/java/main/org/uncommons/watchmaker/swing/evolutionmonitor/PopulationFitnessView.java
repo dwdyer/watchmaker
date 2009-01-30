@@ -24,6 +24,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.SwingUtilities;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -49,7 +50,9 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
     private final XYSeriesCollection dataSet = new XYSeriesCollection();
     private final ValueAxis domainAxis;
     private final ValueAxis rangeAxis;
+
     private final JRadioButton allDataButton = new JRadioButton("All Data", false);
+    private final JCheckBox invertCheckBox = new JCheckBox("Invert Range Axis", false);
 
     PopulationFitnessView()
     {
@@ -68,6 +71,7 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
         this.rangeAxis = chart.getXYPlot().getRangeAxis();
         domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         domainAxis.setRange(0, SHOW_FIXED_GENERATIONS);
+        rangeAxis.setAutoRange(true);
         add(createControls(), BorderLayout.SOUTH);
         add(new ChartPanel(chart), BorderLayout.CENTER);
     }
@@ -89,14 +93,19 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
                 {
                     domainAxis.setAutoRange(true);
                     domainAxis.setFixedAutoRange(0);
-                }
-                else if (dataSet.getSeries(0).getItemCount() >= SHOW_FIXED_GENERATIONS)
-                {
-                    domainAxis.setFixedAutoRange(SHOW_FIXED_GENERATIONS);
+                    rangeAxis.setAutoRange(false);
                 }
                 else
                 {
-                    domainAxis.setRange(0, SHOW_FIXED_GENERATIONS);
+                    if (dataSet.getSeries(0).getItemCount() >= SHOW_FIXED_GENERATIONS)
+                    {
+                        domainAxis.setFixedAutoRange(SHOW_FIXED_GENERATIONS);
+                    }
+                    else
+                    {
+                        domainAxis.setRange(0, SHOW_FIXED_GENERATIONS);
+                    }
+                    rangeAxis.setAutoRange(true);
                 }
             }
         });
@@ -125,7 +134,6 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
         });
         controls.add(meanCheckBox);
 
-        final JCheckBox invertCheckBox = new JCheckBox("Invert Range Axis", false);
         invertCheckBox.addItemListener(new ItemListener()
         {
             public void itemStateChanged(ItemEvent itemEvent)
@@ -144,16 +152,24 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
      */
     public void populationUpdate(final PopulationData<? extends Object> populationData)
     {
-        int generation = populationData.getGenerationNumber();
-        double mean = populationData.getMeanFitness();
-        meanSeries.add(generation, mean);
-        double best = populationData.getBestCandidateFitness();
-        bestSeries.add(generation, best);
-        // Once we have 200 data points, we can switch to auto-range.
-        if (!allDataButton.isSelected() && generation == SHOW_FIXED_GENERATIONS)
+        SwingUtilities.invokeLater(new Runnable()
         {
-            domainAxis.setAutoRange(true);
-            domainAxis.setFixedAutoRange(SHOW_FIXED_GENERATIONS);
-        }
+            public void run()
+            {
+                if (populationData.getGenerationNumber() == 0 && !populationData.isNaturalFitness())
+                {
+                    invertCheckBox.setSelected(true);
+                }
+                meanSeries.add(populationData.getGenerationNumber(), populationData.getMeanFitness());
+                double best = populationData.getBestCandidateFitness();
+                bestSeries.add(populationData.getGenerationNumber(), best);
+                // Once we have 200 data points, we can switch to auto-range.
+                if (!allDataButton.isSelected() && populationData.getGenerationNumber() == SHOW_FIXED_GENERATIONS)
+                {
+                    domainAxis.setAutoRange(true);
+                    domainAxis.setFixedAutoRange(SHOW_FIXED_GENERATIONS);                    
+                }
+            }
+        });
     }
 }
