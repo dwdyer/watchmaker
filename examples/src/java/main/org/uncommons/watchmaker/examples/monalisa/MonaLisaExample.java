@@ -75,7 +75,7 @@ public class MonaLisaExample
         engine.addEvolutionObserver(monitor);
         monitor.showInFrame("Mona Lisa");
 
-        engine.evolve(20, 1, new Stagnation(500, evaluator.isNatural()));
+        engine.evolve(15, 3, new Stagnation(500, evaluator.isNatural()));
     }
 
 
@@ -93,12 +93,12 @@ public class MonaLisaExample
     {
         List<EvolutionaryOperator<List<ColouredPolygon>>> operators
             = new LinkedList<EvolutionaryOperator<List<ColouredPolygon>>>();
-        operators.add(new ListCrossover<ColouredPolygon>());
+        operators.add(new ListCrossover<ColouredPolygon>(2));
         operators.add(new RemovePolygonMutation(new Probability(0.02)));
         operators.add(new MovePolygonMutation(new Probability(0.02)));
         operators.add(new ListOperator<ColouredPolygon>(new RemoveVertexMutation(canvasSize, new Probability(0.01))));
         operators.add(new ListOperator<ColouredPolygon>(new AdjustVertexMutation(canvasSize,
-                                                                                 new Probability(0.02),
+                                                                                 new Probability(0.03),
                                                                                  new GaussianGenerator(0, 3, rng))));
         operators.add(new ListOperator<ColouredPolygon>(new AddVertexMutation(canvasSize, new Probability(0.01))));
         operators.add(new ListOperator<ColouredPolygon>(new PolygonColourMutation(new Probability(0.01),
