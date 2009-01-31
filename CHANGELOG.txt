@@ -6,6 +6,9 @@ Changes in version 0.5.2
 
 * Added more information to the evolution monitor status bar.
 
+* Added a boolean parameter to the evolution monitor showInFrame method so that
+  you can specify whether closing the frame should terminate the program.
+
 * Enhancements to the Mona Lisa example application.
 
 

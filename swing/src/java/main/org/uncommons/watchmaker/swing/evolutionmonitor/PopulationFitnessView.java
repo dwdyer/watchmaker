@@ -73,7 +73,9 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
         this.domainAxis = chart.getXYPlot().getDomainAxis();
         this.rangeAxis = chart.getXYPlot().getRangeAxis();
         domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        domainAxis.setRange(0, SHOW_FIXED_GENERATIONS);
+        domainAxis.setLowerMargin(0);
+        domainAxis.setUpperMargin(0.05);
+        domainAxis.setRangeWithMargins(0, SHOW_FIXED_GENERATIONS);
         rangeAxis.setRange(minY, maxY);
         add(createControls(), BorderLayout.SOUTH);
         add(new ChartPanel(chart), BorderLayout.CENTER);
@@ -92,22 +94,7 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
         {
             public void itemStateChanged(ItemEvent ev)
             {
-                if (allDataButton.isSelected())
-                {
-                    domainAxis.setAutoRange(true);
-                    domainAxis.setFixedAutoRange(0);
-                }
-                else
-                {
-                    if (dataSet.getSeries(0).getItemCount() >= SHOW_FIXED_GENERATIONS)
-                    {
-                        domainAxis.setFixedAutoRange(SHOW_FIXED_GENERATIONS);
-                    }
-                    else
-                    {
-                        domainAxis.setRange(0, SHOW_FIXED_GENERATIONS);
-                    }
-                }
+                updateDomainAxisRange();
             }
         });
         JRadioButton recentDataButton = new JRadioButton("Last " + SHOW_FIXED_GENERATIONS + " Generations", true);
@@ -149,6 +136,31 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
 
 
     /**
+     * If "all data" is selected, set the range of the domain axis to include all
+     * values.  Otherwise set it to show the most recent 200 generations.
+     */
+    private void updateDomainAxisRange()
+    {
+        int count = dataSet.getSeries(0).getItemCount();
+        if (allDataButton.isSelected())
+        {
+            domainAxis.setRangeWithMargins(0, Math.max(SHOW_FIXED_GENERATIONS, count));
+        }
+        else
+        {
+            if (count >= SHOW_FIXED_GENERATIONS)
+            {
+                domainAxis.setRangeWithMargins(count - SHOW_FIXED_GENERATIONS, count);
+            }
+            else
+            {
+                domainAxis.setRangeWithMargins(0, SHOW_FIXED_GENERATIONS);
+            }
+        }
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     public void populationUpdate(final PopulationData<? extends Object> populationData)
@@ -165,14 +177,8 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
                 double best = populationData.getBestCandidateFitness();
                 bestSeries.add(populationData.getGenerationNumber(), best);
 
-                // Once we have 200 data points, we can switch to fixed auto-range for the domain axis.
-                if (!allDataButton.isSelected() && populationData.getGenerationNumber() == SHOW_FIXED_GENERATIONS)
-                {
-                    domainAxis.setAutoRange(true);
-                    domainAxis.setFixedAutoRange(SHOW_FIXED_GENERATIONS);                    
-                }
 
-                // We don't use JFreeChart's auto-range for the range axis because it is inefficient
+                // We don't use JFreeChart's auto-range for the axes because it is inefficient
                 // (it degrades linearly with the number of items in the data set).  Instead we track
                 // the minimum and maximum ourselves.
                 double high = Math.max(populationData.getMeanFitness(), populationData.getBestCandidateFitness());
@@ -187,6 +193,8 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
                     minY = low;
                     rangeAxis.setRange(minY, maxY);
                 }
+
+                updateDomainAxisRange();
             }
         });
     }
