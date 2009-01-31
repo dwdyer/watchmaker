@@ -32,9 +32,9 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  */
 public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPolygon>>
 {
-    private final Raster targetImageData;
     private final Renderer<List<ColouredPolygon>, BufferedImage> renderer;
     private final AffineTransformOp transform;
+    private final int[] targetPixels;
 
 
     /**
@@ -54,12 +54,18 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
         double ratio = 1;
         if (width > 100 && height > 100)
         {
-            ratio = 100d / (width > height ? width : height);
+            ratio = 100d / (width > height ? height : width);
         }
         this.transform = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio),
                                                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        targetImage = convertImage(transform.filter(targetImage, null));
-        targetImageData = targetImage.getData();
+        BufferedImage convertedImage = convertImage(transform.filter(targetImage, null));
+        Raster targetImageData = convertedImage.getData();
+        int[] pixelArray = new int[targetImageData.getWidth() * targetImageData.getHeight()];
+        targetPixels = (int[]) targetImageData.getDataElements(0,
+                                                               0,
+                                                               targetImageData.getWidth(),
+                                                               targetImageData.getHeight(),
+                                                               pixelArray);
     }
 
 
@@ -101,28 +107,17 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
         BufferedImage candidateImage = renderer.render(candidate);
         candidateImage = transform.filter(candidateImage, null);
         Raster candidateImageData = candidateImage.getData();
-        assert candidateImageData.getWidth() == targetImageData.getWidth() : "Image width mismatch.";
-        assert candidateImageData.getHeight() == targetImageData.getHeight() : "Image height mismatch.";
 
+        int[] candidatePixelValues = new int[targetPixels.length];
+        candidatePixelValues = (int[]) candidateImageData.getDataElements(0,
+                                                                          0,
+                                                                          candidateImageData.getWidth(),
+                                                                          candidateImageData.getHeight(),
+                                                                          candidatePixelValues);
         double fitness = 0;
-        int[] targetPixelValues = new int[targetImageData.getWidth()];
-        int[] candidatePixelValues = new int[targetImageData.getWidth()];
-        for (int row = 0; row < targetImageData.getHeight(); row++)
+        for (int i = 0; i < targetPixels.length; i++)
         {
-            targetPixelValues = (int[]) targetImageData.getDataElements(0,
-                                                                        row,
-                                                                        targetPixelValues.length,
-                                                                        1,
-                                                                        targetPixelValues);
-            candidatePixelValues = (int[]) candidateImageData.getDataElements(0,
-                                                                              row,
-                                                                              candidatePixelValues.length,
-                                                                              1,
-                                                                              candidatePixelValues);
-            for (int i = 0; i < targetPixelValues.length; i++)
-            {
-                fitness += comparePixels(targetPixelValues[i], candidatePixelValues[i]);
-            }
+            fitness += comparePixels(targetPixels[i], candidatePixelValues[i]);
         }
 
         return fitness;

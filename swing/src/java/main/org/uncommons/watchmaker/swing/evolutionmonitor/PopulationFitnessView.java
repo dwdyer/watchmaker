@@ -54,6 +54,9 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
     private final JRadioButton allDataButton = new JRadioButton("All Data", false);
     private final JCheckBox invertCheckBox = new JCheckBox("Invert Range Axis", false);
 
+    private double maxY = 1;
+    private double minY = 0;
+
     PopulationFitnessView()
     {
         super(new BorderLayout());
@@ -71,7 +74,7 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
         this.rangeAxis = chart.getXYPlot().getRangeAxis();
         domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         domainAxis.setRange(0, SHOW_FIXED_GENERATIONS);
-        rangeAxis.setAutoRange(true);
+        rangeAxis.setRange(minY, maxY);
         add(createControls(), BorderLayout.SOUTH);
         add(new ChartPanel(chart), BorderLayout.CENTER);
     }
@@ -93,7 +96,6 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
                 {
                     domainAxis.setAutoRange(true);
                     domainAxis.setFixedAutoRange(0);
-                    rangeAxis.setAutoRange(false);
                 }
                 else
                 {
@@ -105,7 +107,6 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
                     {
                         domainAxis.setRange(0, SHOW_FIXED_GENERATIONS);
                     }
-                    rangeAxis.setAutoRange(true);
                 }
             }
         });
@@ -163,11 +164,28 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
                 meanSeries.add(populationData.getGenerationNumber(), populationData.getMeanFitness());
                 double best = populationData.getBestCandidateFitness();
                 bestSeries.add(populationData.getGenerationNumber(), best);
-                // Once we have 200 data points, we can switch to auto-range.
+
+                // Once we have 200 data points, we can switch to fixed auto-range for the domain axis.
                 if (!allDataButton.isSelected() && populationData.getGenerationNumber() == SHOW_FIXED_GENERATIONS)
                 {
                     domainAxis.setAutoRange(true);
                     domainAxis.setFixedAutoRange(SHOW_FIXED_GENERATIONS);                    
+                }
+
+                // We don't use JFreeChart's auto-range for the range axis because it is inefficient
+                // (it degrades linearly with the number of items in the data set).  Instead we track
+                // the minimum and maximum ourselves.
+                double high = Math.max(populationData.getMeanFitness(), populationData.getBestCandidateFitness());
+                double low = Math.min(populationData.getMeanFitness(), populationData.getBestCandidateFitness());
+                if (high > maxY)
+                {
+                    maxY = high;
+                    rangeAxis.setRange(minY, maxY);
+                }
+                if (low < minY)
+                {
+                    minY = low;
+                    rangeAxis.setRange(minY, maxY);
                 }
             }
         });
