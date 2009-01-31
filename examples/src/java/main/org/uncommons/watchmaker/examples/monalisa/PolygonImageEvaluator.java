@@ -16,10 +16,6 @@
 package org.uncommons.watchmaker.examples.monalisa;
 
 import java.awt.Dimension;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Transparency;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -63,16 +59,13 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
         this.transform = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio),
                                                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
         targetImage = convertImage(transform.filter(targetImage, null));
-        assert targetImage.getType() == BufferedImage.TYPE_INT_RGB : "Inefficient image type.";
         targetImageData = targetImage.getData();
     }
 
 
     /**
      * Make sure that the image is in the most efficient format for reading from.
-     * This avoids having to convert pixels every time we access them.  This method also reduces
-     * the image to thumbnail size so that we don't have so many pixels to check when evaluating
-     * fitness.
+     * This avoids having to convert pixels every time we access them.
      * @param image The image to convert.
      * @return The image converted to INT_RGB format.
      */
@@ -80,11 +73,9 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
     {
         if (image.getType() != BufferedImage.TYPE_INT_RGB)
         {
-            GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-            GraphicsConfiguration config = graphicsDevice.getDefaultConfiguration();
-            BufferedImage newImage = config.createCompatibleImage(image.getWidth(),
-                                                                  image.getHeight(),
-                                                                  Transparency.OPAQUE);
+            BufferedImage newImage = new BufferedImage(image.getWidth(),
+                                                       image.getHeight(),
+                                                       BufferedImage.TYPE_INT_RGB);
             newImage.getGraphics().drawImage(image, 0, 0, null);
             return newImage;
         }
@@ -140,7 +131,7 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
 
     private double comparePixels(int p1, int p2)
     {
-        int deltaR = (p1 >>> 16) - (p2 >>> 16);
+        int deltaR = ((p1 >>> 16) & 0xFF) - ((p2 >>> 16) & 0xFF);
         int deltaG = ((p1 >>> 8) & 0xFF) - ((p2 >>> 8) & 0xFF);
         int deltaB = (p1 & 0xFF) - (p2 & 0xFF);
         return Math.sqrt(deltaR * deltaR + deltaG * deltaG + deltaB * deltaB);

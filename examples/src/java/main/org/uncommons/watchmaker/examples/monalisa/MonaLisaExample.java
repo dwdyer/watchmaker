@@ -75,7 +75,7 @@ public class MonaLisaExample
         engine.addEvolutionObserver(monitor);
         monitor.showInFrame("Mona Lisa");
 
-        engine.evolve(15, 3, new Stagnation(500, evaluator.isNatural()));
+        engine.evolve(15, 3, new Stagnation(1000, evaluator.isNatural()));
     }
 
 

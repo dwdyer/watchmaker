@@ -17,6 +17,7 @@ package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.awt.BorderLayout;
 import java.awt.Window;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JComponent;
@@ -43,9 +44,8 @@ import org.uncommons.watchmaker.swing.ObjectSwingRenderer;
 public class EvolutionMonitor<T> implements EvolutionObserver<T>
 {
     private final List<EvolutionObserver<? super T>> views = new LinkedList<EvolutionObserver<? super T>>();
-    private final JTabbedPane tabs = new JTabbedPane();
-    private final JComponent monitorComponent = new JPanel(new BorderLayout());
-
+    
+    private JComponent monitorComponent;
     private Window window = null;
 
 
@@ -64,12 +64,44 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
      * representation of the fittest candidate in the population.
      * @param renderer Renders a candidate solution as a JComponent.
      */
-    public EvolutionMonitor(Renderer<? super T, JComponent> renderer)
+    public EvolutionMonitor(final Renderer<? super T, JComponent> renderer)
+    {
+        if (SwingUtilities.isEventDispatchThread())
+        {
+            init(renderer);
+        }
+        else
+        {
+            try
+            {
+                SwingUtilities.invokeAndWait(new Runnable()
+                {
+                    public void run()
+                    {
+                        init(renderer);
+                    }
+                });
+            }
+            catch (InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+            }
+            catch (InvocationTargetException ex)
+            {
+                throw new IllegalStateException("Failed to initialise evolution monitor.", ex);
+            }
+        }
+    }
+
+    
+    private void init(Renderer<? super T, JComponent> renderer)
     {
         // Make sure all JFreeChart charts are created with the legacy theme
         // (grey surround and white data area).
         ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
 
+        JTabbedPane tabs = new JTabbedPane();
+        monitorComponent = new JPanel(new BorderLayout());
         monitorComponent.add(tabs, BorderLayout.CENTER);
 
         FittestCandidateView<T> candidateView = new FittestCandidateView<T>(renderer);
