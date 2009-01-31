@@ -73,7 +73,7 @@ public class MonaLisaExample
 
         EvolutionMonitor<List<ColouredPolygon>> monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer);
         engine.addEvolutionObserver(monitor);
-        monitor.showInFrame("Mona Lisa");
+        monitor.showInFrame("Mona Lisa", true);
 
         engine.evolve(15, 3, new Stagnation(1000, evaluator.isNatural()));
     }

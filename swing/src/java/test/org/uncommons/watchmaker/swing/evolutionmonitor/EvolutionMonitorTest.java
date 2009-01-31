@@ -53,7 +53,7 @@ public class EvolutionMonitorTest
     public void testShowInFrame()
     {
         EvolutionMonitor<String> monitor = new EvolutionMonitor<String>();
-        monitor.showInFrame("MonitorFrame");
+        monitor.showInFrame("MonitorFrame", false);
         robot.waitForIdle();
         // There ought to be a visible frame containing the evolution monitor.
         Frame frame = robot.finder().find(FrameByTitleMatcher.withTitleAndShowing("MonitorFrame"));
@@ -90,7 +90,7 @@ public class EvolutionMonitorTest
     public void testShowInFrameThenShowInDialog()
     {
         EvolutionMonitor<String> monitor = new EvolutionMonitor<String>();
-        monitor.showInFrame("MonitorFrame");
+        monitor.showInFrame("MonitorFrame", false);
         robot.waitForIdle();
         // There ought to be a visible frame containing the evolution monitor.
         Frame frame = robot.finder().find(FrameByTitleMatcher.withTitleAndShowing("MonitorFrame"));

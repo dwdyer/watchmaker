@@ -142,15 +142,18 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
     /**
      * Displays the evolution monitor component in a new {@link JFrame}.
      * @param title The title for the new frame.
+     * @param exitOnClose Whether the JVM should exit when the frame is closed.  Useful
+     * if this is the only application window.
      */
-    public void showInFrame(final String title)
+    public void showInFrame(final String title,
+                            final boolean exitOnClose)
     {        
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()
             {
                 JFrame frame = new JFrame(title);
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setDefaultCloseOperation(exitOnClose ? JFrame.EXIT_ON_CLOSE : JFrame.DISPOSE_ON_CLOSE);
                 showWindow(frame);
             }
         });

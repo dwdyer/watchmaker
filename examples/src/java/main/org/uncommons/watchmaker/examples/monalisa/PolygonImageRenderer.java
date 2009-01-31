@@ -37,7 +37,7 @@ public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, Buf
     /**
      * @param targetSize The size of the canvas on which the polygons will be rendered.
      * @param antialias Whether or not to enable anti-aliasing for the rendered image.
-     * @param transform A translation applied to the vertices of an image's polygons
+     * @param transform A transformation applied to the vertices of an image's polygons
      * before drawing to the destination image.  This transformation adjusts the image
      * so that it fits on a canvas of the specified {@code targetSize}. 
      */
