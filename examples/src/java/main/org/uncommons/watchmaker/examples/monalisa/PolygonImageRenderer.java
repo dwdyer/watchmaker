@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
@@ -31,16 +32,22 @@ public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, Buf
 {
     private final Dimension targetSize;
     private final boolean antialias;
+    private final AffineTransform transform;
 
     /**
      * @param targetSize The size of the canvas on which the polygons will be rendered.
      * @param antialias Whether or not to enable anti-aliasing for the rendered image.
+     * @param transform A translation applied to the vertices of an image's polygons
+     * before drawing to the destination image.  This transformation adjusts the image
+     * so that it fits on a canvas of the specified {@code targetSize}. 
      */
     public PolygonImageRenderer(Dimension targetSize,
-                                boolean antialias)
+                                boolean antialias,
+                                AffineTransform transform)
     {
         this.targetSize = targetSize;
         this.antialias = antialias;
+        this.transform = transform;
     }
 
 
@@ -56,12 +63,15 @@ public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, Buf
                                                 BufferedImage.TYPE_INT_RGB);
 
         Graphics2D graphics = image.createGraphics();
+        if (transform != null)
+        {
+            graphics.transform(transform);
+        }
         if (antialias)
         {
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                                       RenderingHints.VALUE_ANTIALIAS_ON);
         }
-
         graphics.setColor(Color.GRAY);
         graphics.fillRect(0, 0, targetSize.width, targetSize.height);
         for (ColouredPolygon polygon : entity)

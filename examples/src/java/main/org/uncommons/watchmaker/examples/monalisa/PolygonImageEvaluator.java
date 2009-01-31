@@ -33,7 +33,6 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
 public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPolygon>>
 {
     private final Renderer<List<ColouredPolygon>, BufferedImage> renderer;
-    private final AffineTransformOp transform;
     private final int[] targetPixels;
 
 
@@ -44,9 +43,6 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
      */
     public PolygonImageEvaluator(BufferedImage targetImage)
     {
-        this.renderer = new PolygonImageRenderer(new Dimension(targetImage.getWidth(),
-                                                               targetImage.getHeight()),
-                                                 false);
         int width = targetImage.getWidth();
         int height = targetImage.getWidth();
         // Scale the image down so that its smallest dimension is 100 pixels.  For large images this drastically
@@ -56,9 +52,15 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
         {
             ratio = 100d / (width > height ? height : width);
         }
-        this.transform = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio),
-                                               AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        BufferedImage convertedImage = convertImage(transform.filter(targetImage, null));
+        AffineTransform transform = AffineTransform.getScaleInstance(ratio, ratio);
+        AffineTransformOp transformOp = new AffineTransformOp(transform,
+                                                              AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        BufferedImage convertedImage = convertImage(transformOp.filter(targetImage, null));
+        this.renderer = new PolygonImageRenderer(new Dimension(convertedImage.getWidth(),
+                                                               convertedImage.getHeight()),
+                                                 false,
+                                                 transform);
+
         Raster targetImageData = convertedImage.getData();
         int[] pixelArray = new int[targetImageData.getWidth() * targetImageData.getHeight()];
         targetPixels = (int[]) targetImageData.getDataElements(0,
@@ -105,7 +107,6 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
                              List<? extends List<ColouredPolygon>> population)
     {
         BufferedImage candidateImage = renderer.render(candidate);
-        candidateImage = transform.filter(candidateImage, null);
         Raster candidateImageData = candidateImage.getData();
 
         int[] candidatePixelValues = new int[targetPixels.length];

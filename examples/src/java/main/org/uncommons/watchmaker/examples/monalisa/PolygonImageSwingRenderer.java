@@ -43,7 +43,8 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
         this.targetImage = targetImage;
         this.delegate = new PolygonImageRenderer(new Dimension(targetImage.getWidth(),
                                                                targetImage.getHeight()),
-                                                 true); // Anti-alias.
+                                                 true, // Anti-alias.
+                                                 null);
     }
 
 
