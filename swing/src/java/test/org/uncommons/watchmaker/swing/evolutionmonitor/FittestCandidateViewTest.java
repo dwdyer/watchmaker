@@ -63,9 +63,6 @@ public class FittestCandidateViewTest
         frame.validate();
         frame.setVisible(true);
 
-        // View should initially display nothing.
-        assert frameFixture.panel("ViewPanel").component().getComponentCount() == 0 : "View should be empty.";
-
         PopulationData<BigDecimal> data = new PopulationData<BigDecimal>(BigDecimal.TEN,
                                                                          10,
                                                                          5,
@@ -76,8 +73,8 @@ public class FittestCandidateViewTest
                                                                          1,
                                                                          100);
         view.populationUpdate(data);
-        frameFixture.panel("ViewPanel").textBox().requireNotEditable();
-        String text = frameFixture.panel("ViewPanel").textBox().component().getText();
+        frameFixture.textBox().requireNotEditable();
+        String text = frameFixture.textBox().component().getText();
         assert text.equals("10") : "Candidate rendered incorrectly.";
     }
 }

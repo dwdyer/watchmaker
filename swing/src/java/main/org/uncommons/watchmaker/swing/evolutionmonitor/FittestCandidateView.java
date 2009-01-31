@@ -17,7 +17,6 @@ package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,7 +38,9 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
 
     private final Renderer<? super T, JComponent> renderer;
     private final JLabel fitnessLabel = new JLabel("N/A", JLabel.CENTER);
-    private final JPanel view = new JPanel(new GridLayout(1, 1));
+
+    private T fittestCandidate = null;
+    private JComponent renderedCandidate = null;
 
     /**
      * Creates a Swing view that uses the specified renderer to display
@@ -59,11 +60,9 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
         header.add(fitnessLabel, BorderLayout.CENTER);
 
         add(header, BorderLayout.NORTH);
-        add(view);
-        
+
         // Set names for easier indentification in unit tests.
         fitnessLabel.setName("FitnessLabel");
-        view.setName("ViewPanel");
     }
 
     
@@ -74,8 +73,21 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
             public void run()
             {
                 fitnessLabel.setText(String.valueOf(populationData.getBestCandidateFitness()));
-                view.removeAll();
-                view.add(renderer.render(populationData.getBestCandidate()));
+                // If the fittest candidate is already displayed (because it was the fittest
+                // candidate in the previous generation), don't incur the expense of rendering
+                // it again.  Note that we still have to update the fitness score label above
+                // because the fitness may be different even if the candidate isn't (in the
+                // case where fitness is evaluated against other members of the population).
+                if (populationData.getBestCandidate() != fittestCandidate)
+                {
+                    fittestCandidate = populationData.getBestCandidate();
+                    if (renderedCandidate != null)
+                    {
+                        remove(renderedCandidate);
+                    }
+                    renderedCandidate = renderer.render(fittestCandidate);
+                    add(renderedCandidate, BorderLayout.CENTER);
+                }
             }
         });
     }
