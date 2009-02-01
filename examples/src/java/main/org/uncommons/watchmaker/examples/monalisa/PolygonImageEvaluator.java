@@ -47,15 +47,16 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
         int height = targetImage.getWidth();
         // Scale the image down so that its smallest dimension is 100 pixels.  For large images this drastically
         // reduces the number of pixels that we need to check for fitness evaluation.
-        double ratio = 1;
+        BufferedImage convertedImage = targetImage;
+        AffineTransform transform = null;
         if (width > 100 && height > 100)
         {
-            ratio = 100d / (width > height ? height : width);
+            double ratio = 100d / (width > height ? height : width);
+            transform = AffineTransform.getScaleInstance(ratio, ratio);
+            AffineTransformOp transformOp = new AffineTransformOp(transform,
+                                                                  AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+            convertedImage = convertImage(transformOp.filter(targetImage, null));
         }
-        AffineTransform transform = AffineTransform.getScaleInstance(ratio, ratio);
-        AffineTransformOp transformOp = new AffineTransformOp(transform,
-                                                              AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        BufferedImage convertedImage = convertImage(transformOp.filter(targetImage, null));
         this.renderer = new PolygonImageRenderer(new Dimension(convertedImage.getWidth(),
                                                                convertedImage.getHeight()),
                                                  false,

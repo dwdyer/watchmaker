@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import org.testng.annotations.Test;
+import org.uncommons.maths.number.ConstantGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
@@ -83,5 +84,46 @@ public class ListCrossoverTest
         assert (offspring.get(0).size() == parent1.size() && offspring.get(1).size() == parent2.size())
                || (offspring.get(0).size() == parent2.size() && offspring.get(1).size() == parent1.size())
                : "Offspring are wrong lengths after cross-over.";
+    }
+
+
+    /**
+     * When the probability determines that no cross-over should be performed, the two parents
+     * should just be copied into the next generation unchanged.
+     */
+    @Test
+    public void testZeroProbability()
+    {
+        EvolutionaryOperator<List<Integer>> crossover = new ListCrossover<Integer>(new ConstantGenerator<Integer>(1),
+                                                                                   Probability.ZERO);
+        List<List<Integer>> population = new ArrayList<List<Integer>>(4);
+        List<Integer> parent1 = Arrays.asList(1, 2, 3, 4, 5);
+        List<Integer> parent2 = Arrays.asList(6, 7, 8, 9, 10);
+        population.add(parent1);
+        population.add(parent2);
+        population = crossover.apply(population, rng);
+        assert population.contains(parent1) : "Parent should survive unaltered.";
+        assert population.contains(parent2) : "Parent should survive unaltered.";
+    }
+
+
+    /**
+     * If one or both of the parent lists has only one element, it can't participate in
+     * meaningful cross-over.  In practice this situation is unlikely to occur (most
+     * programs won't be evolving single-element lists), but the operator should handle
+     * it gracefully.
+     */
+    @Test
+    public void testParentTooShort()
+    {
+        EvolutionaryOperator<List<Integer>> crossover = new ListCrossover<Integer>(new ConstantGenerator<Integer>(1));
+        List<List<Integer>> population = new ArrayList<List<Integer>>(2);
+        List<Integer> parent1 = Arrays.asList(1, 2, 3);
+        List<Integer> parent2 = Arrays.asList(4); // Too short for cross-over.
+        population.add(parent1);
+        population.add(parent2);
+        population = crossover.apply(population, rng);
+        assert population.contains(parent1) : "Parent should survive unaltered.";
+        assert population.contains(parent2) : "Parent should survive unaltered.";
     }
 }

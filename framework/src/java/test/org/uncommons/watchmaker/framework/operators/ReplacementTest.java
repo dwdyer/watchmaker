@@ -47,6 +47,22 @@ public class ReplacementTest
     }
 
 
+    @Test
+    public void testZeroProbability()
+    {
+        IntegerFactory factory = new IntegerFactory();
+        List<Integer> candidates = Arrays.asList(10, 11, 12);
+        Replacement<Integer> replacement = new Replacement<Integer>(factory,
+                                                                    Probability.ZERO);
+        // Numbers will be replaced with lower ones.
+        List<Integer> output = replacement.apply(candidates, rng);
+        assert output.size() == candidates.size() : "Candidate list should be same size.";
+        assert output.contains(10) : "Candidate should not have been replaced.";
+        assert output.contains(11) : "Candidate should not have been replaced.";
+        assert output.contains(12) : "Candidate should not have been replaced.";
+    }
+
+
     /**
      *  Non-random factory, for test purposes.
      */

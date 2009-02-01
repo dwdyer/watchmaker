@@ -75,7 +75,7 @@ public class DoubleArrayCrossoverTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDifferentLengthParents()
     {
-        EvolutionaryOperator<double[]> crossover = new DoubleArrayCrossover(1, Probability.ONE);
+        EvolutionaryOperator<double[]> crossover = new DoubleArrayCrossover();
         List<double[]> population = new ArrayList<double[]>(2);
         population.add(new double[]{1.1d, 2.2d, 3.3d, 4.4d, 5.5d});
         population.add(new double[]{6.6d, 7.7d, 8.8d});

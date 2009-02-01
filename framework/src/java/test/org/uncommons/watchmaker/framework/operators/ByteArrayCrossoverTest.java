@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import org.testng.annotations.Test;
-import org.uncommons.maths.number.ConstantGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
@@ -37,7 +36,7 @@ public class ByteArrayCrossoverTest
     @Test
     public void testCrossover()
     {
-        EvolutionaryOperator<byte[]> crossover = new ByteArrayCrossover(new ConstantGenerator<Integer>(1));
+        EvolutionaryOperator<byte[]> crossover = new ByteArrayCrossover();
         List<byte[]> population = new ArrayList<byte[]>(4);
         population.add(new byte[]{1, 2, 3, 4, 5});
         population.add(new byte[]{6, 7, 8, 9, 10});

@@ -24,7 +24,7 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 
 /**
- * Randomly mutates the polygons that make up an image by adding a polygon
+ * Randomly mutates an image by swapping the z-order of two of its polygons
  * according to some probability.
  * @author Daniel Dyer
  */

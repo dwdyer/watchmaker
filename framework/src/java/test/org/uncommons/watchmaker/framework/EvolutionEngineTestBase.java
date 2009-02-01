@@ -88,6 +88,13 @@ public abstract class EvolutionEngineTestBase
 
 
     @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testEliteCountTooLow()
+    {
+        engine.evolvePopulation(10, -1, new GenerationCount(10)); // Should throw exception because elite is negative.
+    }
+
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void testNoTerminationConditions()
     {
         engine.evolve(10, 0); // Should throw exception because there are no termination conditions.

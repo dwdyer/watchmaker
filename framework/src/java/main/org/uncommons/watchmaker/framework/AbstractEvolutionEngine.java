@@ -223,11 +223,10 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         currentGenerationIndex = 0;
         startTime = System.currentTimeMillis();
 
-        // Don't use the list returned by the factory, because the type might be too specific.
-        // Instead copy the contents into a list of the desired type.
-        List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize,
-                                                                                         seedCandidates,
-                                                                                         rng));
+        List<T> population = candidateFactory.generateInitialPopulation(populationSize,
+                                                                        seedCandidates,
+                                                                        rng);
+        
         // Calculate the fitness scores for each member of the initial population.
         List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
         sortEvaluatedPopulation(evaluatedPopulation);

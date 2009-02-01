@@ -500,6 +500,13 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="google-collect-snapshot-20080820">
+      <CLASSES>
+        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/google-collect-snapshot-20080820.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
   </component>
   <component name="uidesigner-configuration">
     <option name="INSTRUMENT_CLASSES" value="true" />

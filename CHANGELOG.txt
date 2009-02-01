@@ -15,6 +15,14 @@ Changes in version 0.6.0
   to be returned from an evolutionary algorithm rather than just the fittest
   candidate.
 
+* Introduced CachingFitnessEvaluator, a decorator for standard fitness
+  functions that caches the results of its calculations.  If the evaluator is
+  invoked twice for the same candidate, the cached value is returned by the
+  second invocation thus avoiding the expense of recalculating the fitness
+  score.  This is a useful optimisation in scenarios where some canidates
+  survive from generation to generation unmodified (elitism is one example of
+  this).
+
 
 Changes in version 0.5.1
 ------------------------

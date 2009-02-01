@@ -26,9 +26,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import org.uncommons.maths.random.GaussianGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.CachingFitnessEvaluator;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.FitnessEvaluator;
 import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
@@ -58,7 +60,8 @@ public class MonaLisaExample
         Dimension canvasSize = new Dimension(targetImage.getWidth(), targetImage.getHeight());
 
         Random rng = new MersenneTwisterRNG();
-        PolygonImageEvaluator evaluator = new PolygonImageEvaluator(targetImage);
+        FitnessEvaluator<List<ColouredPolygon>> evaluator
+            = new CachingFitnessEvaluator<List<ColouredPolygon>>(new PolygonImageEvaluator(targetImage));
         PolygonImageFactory factory = new PolygonImageFactory(canvasSize);
         EvolutionaryOperator<List<ColouredPolygon>> pipeline = createEvolutionPipeline(factory, canvasSize, rng);
 
