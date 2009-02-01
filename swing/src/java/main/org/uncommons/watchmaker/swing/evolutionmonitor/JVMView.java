@@ -35,6 +35,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
@@ -72,14 +73,25 @@ class JVMView extends JPanel
         double maxMemory = (double) memoryBean.getHeapMemoryUsage().getMax() / MEGABYTE;
 
         JPanel inner = new JPanel(new BorderLayout());
-        ChartPanel heapPanel = new ChartPanel(createHeapChart(maxMemory));
+        ChartPanel heapPanel = new ChartPanel(createHeapChart(maxMemory),
+                                              false, // Properties
+                                              true, // Save
+                                              true, // Print
+                                              false, // Zoom
+                                              true); // Tooltips
         heapPanel.setPreferredSize(new Dimension(ChartPanel.DEFAULT_MINIMUM_DRAW_WIDTH,
                                                  ChartPanel.DEFAULT_MINIMUM_DRAW_HEIGHT + 50));
+        heapPanel.setMouseZoomable(false);
         inner.add(heapPanel, BorderLayout.CENTER);
         inner.add(createControls(), BorderLayout.SOUTH);
         add(inner, BorderLayout.CENTER);
 
-        ChartPanel threadsPanel = new ChartPanel(createThreadChart());
+        ChartPanel threadsPanel = new ChartPanel(createThreadChart(),
+                                                 false, // Properties
+                                                 true, // Save
+                                                 true, // Print
+                                                 false, // Zoom
+                                                 true); // Tooltips
         threadsPanel.setPreferredSize(new Dimension(ChartPanel.DEFAULT_MINIMUM_DRAW_WIDTH,
                                                     ChartPanel.DEFAULT_MINIMUM_DRAW_HEIGHT));
         add(threadsPanel, BorderLayout.SOUTH);
@@ -152,6 +164,7 @@ class JVMView extends JPanel
         plot.setBackgroundPaint(null);
         plot.setOutlinePaint(null);
         plot.setIgnoreZeroValues(true);
+        plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0}: {2}"));
         return chart;
     }
 
@@ -197,10 +210,15 @@ class JVMView extends JPanel
         long otherTime = 0;
         for (ThreadInfo info : infos)
         {
+            // TO DO: This makes the rather dubious assumption that the EvolutionEngine was
+            // invoked from the main thread.
             if (info.getThreadName().equals("main"))
             {
                 mainTime += threadBean.getThreadCpuTime(info.getThreadId());
             }
+            // TO DO: It also assumes that we are using ConcurrentEvolutionEngine and not
+            // some other implementation that names its threads differently (if it even has
+            // more than one thread).
             else if (info.getThreadName().startsWith("EvolutionEngine"))
             {
                 fitnessTime += threadBean.getThreadCpuTime(info.getThreadId());

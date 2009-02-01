@@ -77,8 +77,21 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
         domainAxis.setUpperMargin(0.05);
         domainAxis.setRangeWithMargins(0, SHOW_FIXED_GENERATIONS);
         rangeAxis.setRange(minY, maxY);
+        ChartPanel chartPanel = new ChartPanel(chart,
+                                               ChartPanel.DEFAULT_WIDTH,
+                                               ChartPanel.DEFAULT_HEIGHT,
+                                               ChartPanel.DEFAULT_MINIMUM_DRAW_WIDTH,
+                                               ChartPanel.DEFAULT_MINIMUM_DRAW_HEIGHT,
+                                               ChartPanel.DEFAULT_MAXIMUM_DRAW_WIDTH,
+                                               ChartPanel.DEFAULT_MAXIMUM_DRAW_HEIGHT,
+                                               true, // Buffered
+                                               false, // Properties
+                                               true, // Save
+                                               true, // Print
+                                               false, // Zoom
+                                               true); // Tooltips
+        add(chartPanel, BorderLayout.CENTER);
         add(createControls(), BorderLayout.SOUTH);
-        add(new ChartPanel(chart), BorderLayout.CENTER);
     }
 
 
