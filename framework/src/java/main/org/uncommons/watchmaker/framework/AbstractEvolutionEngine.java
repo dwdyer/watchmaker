@@ -120,40 +120,10 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                     Collection<T> seedCandidates,
                     TerminationCondition... conditions)
     {
-        if (eliteCount < 0 || eliteCount >= populationSize)
-        {
-            throw new IllegalArgumentException("Elite count must be non-negative and less than population size.");
-        }
-        if (conditions.length == 0)
-        {
-            throw new IllegalArgumentException("At least one TerminationCondition must be specified.");
-        }
-
-        currentGenerationIndex = 0;
-        startTime = System.currentTimeMillis();
-
-        // Don't use the list returned by the factory, because the type might be too specific.
-        // Instead copy the contents into a list of the desired type.
-        List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize,
-                                                                                         seedCandidates,
-                                                                                         rng));
-        // Calculate the fitness scores for each member of the initial population.
-        List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
-        sortEvaluatedPopulation(evaluatedPopulation);
-        PopulationData<T> data = getPopulationData(evaluatedPopulation, eliteCount);
-        // Notify observers of the state of the population.
-        notifyPopulationChange(data);
-
-        while (shouldContinue(data, conditions))
-        {
-            ++currentGenerationIndex;
-            population = createNextGeneration(evaluatedPopulation, eliteCount);
-            evaluatedPopulation = evaluatePopulation(population);
-            sortEvaluatedPopulation(evaluatedPopulation);
-            data = getPopulationData(evaluatedPopulation, eliteCount);
-            // Notify observers of the state of the population.
-            notifyPopulationChange(data);
-        }
+        List<EvaluatedCandidate<T>> evaluatedPopulation = evolvePopulation(populationSize,
+                                                                           eliteCount,
+                                                                           seedCandidates,
+                                                                           conditions);
         // Once we have completed the final generation, we need to pick one of
         // the individuals in the population to return as the result of the
         // algorithm.  Usually we would just need to pick the fittest individual
@@ -199,6 +169,85 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         }
         return selectionStrategy.select(fittest, fitnessEvaluator.isNatural(), 1, rng).get(0);
     }
+
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * <em>If you interrupt the request thread before this method returns, the
+     * method will return prematurely (with the members of the most recent
+     * generation).
+     * After returning in this way, the current thread's interrupted flag
+     * will be set.  It is preferable to use an appropritate
+     * {@link TerminationCondition} rather than interrupting the evolution in
+     * this way.</em>
+     */
+    public List<EvaluatedCandidate<T>> evolvePopulation(int populationSize,
+                                                        int eliteCount,
+                                                        TerminationCondition... conditions)
+    {
+        return evolvePopulation(populationSize,
+                                eliteCount,
+                                Collections.<T>emptySet(),
+                                conditions);
+    }
+
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * <em>If you interrupt the request thread before this method returns, the
+     * method will return prematurely (with the members of the most recent
+     * generation).
+     * After returning in this way, the current thread's interrupted flag
+     * will be set.  It is preferable to use an appropritate
+     * {@link TerminationCondition} rather than interrupting the evolution in
+     * this way.</em>
+     */
+    public List<EvaluatedCandidate<T>> evolvePopulation(int populationSize,
+                                                        int eliteCount,
+                                                        Collection<T> seedCandidates,
+                                                        TerminationCondition... conditions)
+    {
+        if (eliteCount < 0 || eliteCount >= populationSize)
+        {
+            throw new IllegalArgumentException("Elite count must be non-negative and less than population size.");
+        }
+        if (conditions.length == 0)
+        {
+            throw new IllegalArgumentException("At least one TerminationCondition must be specified.");
+        }
+
+        currentGenerationIndex = 0;
+        startTime = System.currentTimeMillis();
+
+        // Don't use the list returned by the factory, because the type might be too specific.
+        // Instead copy the contents into a list of the desired type.
+        List<T> population = new ArrayList<T>(candidateFactory.generateInitialPopulation(populationSize,
+                                                                                         seedCandidates,
+                                                                                         rng));
+        // Calculate the fitness scores for each member of the initial population.
+        List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
+        sortEvaluatedPopulation(evaluatedPopulation);
+        PopulationData<T> data = getPopulationData(evaluatedPopulation, eliteCount);
+        // Notify observers of the state of the population.
+        notifyPopulationChange(data);
+
+        while (shouldContinue(data, conditions))
+        {
+            ++currentGenerationIndex;
+            population = createNextGeneration(evaluatedPopulation, eliteCount);
+            evaluatedPopulation = evaluatePopulation(population);
+            sortEvaluatedPopulation(evaluatedPopulation);
+            data = getPopulationData(evaluatedPopulation, eliteCount);
+            // Notify observers of the state of the population.
+            notifyPopulationChange(data);
+        }
+        return evaluatedPopulation;
+    }
+
 
 
     private boolean shouldContinue(PopulationData<T> data,

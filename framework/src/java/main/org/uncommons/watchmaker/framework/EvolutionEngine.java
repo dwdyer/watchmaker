@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.framework;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Operations for classes that provide an evolution implementation.
@@ -25,6 +26,10 @@ import java.util.Collection;
 public interface EvolutionEngine<T>
 {
     /**
+     * Execute the evolutionary algorithm until one of the termination conditions is met,
+     * then return the fittest candidate from the final generation.  To return the
+     * entire population rather than just the fittest candidate, use the
+     * {@link #evolvePopulation(int, int, TerminationCondition[])} method instead.
      * @param populationSize The number of candidate solutions present in the population
      * at any point in time.
      * @param eliteCount The number of candidates preserved via elitism.  In elitism, a
@@ -35,6 +40,7 @@ public interface EvolutionEngine<T>
      * means that no elitism will be applied.
      * @param conditions One or more conditions that may cause the evolution to terminate.
      * @return The fittest solution found by the evolutionary process.
+     * @see #evolve(int, int, java.util.Collection, TerminationCondition[])
      */
     T evolve(int populationSize,
              int eliteCount,
@@ -42,6 +48,36 @@ public interface EvolutionEngine<T>
 
 
     /**
+     * Execute the evolutionary algorithm until one of the termination conditions is met,
+     * then return the fittest candidate from the final generation.  To return the
+     * entire population rather than just the fittest candidate, use the
+     * {@link #evolvePopulation(int, int, java.util.Collection, TerminationCondition[])}
+     * method instead.
+     * @param populationSize The number of candidate solutions present in the population
+     * at any point in time.
+     * @param eliteCount The number of candidates preserved via elitism.  In elitism, a
+     * sub-set of the population with the best fitness scores are preserved unchanged in
+     * the subsequent generation.  Candidate solutions that are preserved unchanged through
+     * elitism remain eligible for selection for breeding the remainder of the next generation.
+     * This value must be non-negative and less than the population size.  A value of zero
+     * means that no elitism will be applied.
+     * @param seedCandidates A set of candidates to seed the population with.  The size of
+     * this collection must be no greater than the specified population size.
+     * @param conditions One or more conditions that may cause the evolution to terminate.
+     * @return The fittest solution found by the evolutionary process.
+     * @see #evolve(int,int,TerminationCondition[])
+     */
+    T evolve(int populationSize,
+             int eliteCount,
+             Collection<T> seedCandidates,
+             TerminationCondition... conditions);
+
+
+    /**
+     * Execute the evolutionary algorithm until one of the termination conditions is met,
+     * then return all of the candidates from the final generation.  To return just the
+     * fittest candidate rather than the entire population, use the
+     * {@link #evolve(int, int, TerminationCondition[])} method instead.
      * @param populationSize The number of candidate solutions present in the population
      * at any point in time.
      * @param eliteCount The number of candidates preserved via elitism.  In elitism, a
@@ -51,15 +87,39 @@ public interface EvolutionEngine<T>
      * This value must be non-negative and less than the population size.  A value of zero
      * means that no elitism will be applied.
      * @param conditions One or more conditions that may cause the evolution to terminate.
+     * @return The fittest solution found by the evolutionary process.
+     * @see #evolve(int, int, java.util.Collection, TerminationCondition[])
+     * @see #evolvePopulation(int, int, java.util.Collection, TerminationCondition[])
+     */
+    List<EvaluatedCandidate<T>> evolvePopulation(int populationSize,
+                                                 int eliteCount,
+                                                 TerminationCondition... conditions);
+
+
+    /**
+     * Execute the evolutionary algorithm until one of the termination conditions is met,
+     * then return all of the candidates from the final generation.  To return just the
+     * fittest candidate rather than the entire population, use the
+     * {@link #evolve(int, int, java.util.Collection, TerminationCondition[])} method instead.
+     * @param populationSize The number of candidate solutions present in the population
+     * at any point in time.
+     * @param eliteCount The number of candidates preserved via elitism.  In elitism, a
+     * sub-set of the population with the best fitness scores are preserved unchanged in
+     * the subsequent generation.  Candidate solutions that are preserved unchanged through
+     * elitism remain eligible for selection for breeding the remainder of the next generation.
+     * This value must be non-negative and less than the population size.  A value of zero
+     * means that no elitism will be applied.
      * @param seedCandidates A set of candidates to seed the population with.  The size of
      * this collection must be no greater than the specified population size.
+     * @param conditions One or more conditions that may cause the evolution to terminate.
      * @return The fittest solution found by the evolutionary process.
-     * @see #evolve(int,int,TerminationCondition[])
+     * @see #evolve(int, int, java.util.Collection, TerminationCondition[])
+     * @see #evolvePopulation(int, int, java.util.Collection, TerminationCondition[])
      */
-    T evolve(int populationSize,
-             int eliteCount,
-             Collection<T> seedCandidates,
-             TerminationCondition... conditions);
+    List<EvaluatedCandidate<T>> evolvePopulation(int populationSize,
+                                                 int eliteCount,
+                                                 Collection<T> seedCandidates,
+                                                 TerminationCondition... conditions);
 
 
     /**

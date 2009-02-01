@@ -1,4 +1,4 @@
-Changes in version 0.5.2
+Changes in version 0.6.0
 ------------------------
 
 * Added the option to view only the most recent 200 generations on the
@@ -10,6 +10,10 @@ Changes in version 0.5.2
   you can specify whether closing the frame should terminate the program.
 
 * Enhancements to the Mona Lisa example application.
+
+* Added methods to the EvolutionEngine interface to allow the entire population
+  to be returned from an evolutionary algorithm rather than just the fittest
+  candidate.
 
 
 Changes in version 0.5.1
