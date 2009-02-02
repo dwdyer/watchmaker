@@ -81,6 +81,7 @@ public class ProbabilityParameterControl implements EvolutionControl
         int min = (int) Math.round(range * minimum.doubleValue());
         int max = (int) Math.round(range * maximum.doubleValue());
         final JSlider slider = new JSlider(min, max, value);
+        slider.setToolTipText(defaultValue.toString());
         slider.addChangeListener(new ChangeListener()
         {
             public void stateChanged(ChangeEvent changeEvent)
@@ -96,7 +97,6 @@ public class ProbabilityParameterControl implements EvolutionControl
         slider.setLabelTable(labels);
         slider.setPaintLabels(true);
         slider.setMajorTickSpacing(range / 10);
-        slider.setExtent(range / 20);
         slider.setPaintTicks(true);
         return slider;
     }
@@ -118,6 +118,7 @@ public class ProbabilityParameterControl implements EvolutionControl
     {
         int value = (int) Math.round(range * defaultValue.doubleValue());
         control.setValue(value);
+        control.setToolTipText(defaultValue.toString());
         numberGenerator.setValue(defaultValue);
     }
 

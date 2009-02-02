@@ -105,7 +105,7 @@ public class MonaLisaExample
                                                                                  new GaussianGenerator(0, 3, rng))));
         operators.add(new ListOperator<ColouredPolygon>(new AddVertexMutation(canvasSize, new Probability(0.01))));
         operators.add(new ListOperator<ColouredPolygon>(new PolygonColourMutation(new Probability(0.01),
-                                                                                  new GaussianGenerator(0, 10, rng))));
+                                                                                  new GaussianGenerator(0, 20, rng))));
         operators.add(new AddPolygonMutation(new Probability(0.02), factory, 50));
         return new EvolutionPipeline<List<ColouredPolygon>>(operators);
     }
