@@ -19,9 +19,8 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 
@@ -31,13 +30,12 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class AddPolygonMutationTest
 {
-    private final Random rng = new MersenneTwisterRNG();
     private final PolygonImageFactory factory = new PolygonImageFactory(new Dimension(200, 200));
 
     @Test
     public void testAddPolygon()
     {
-        List<ColouredPolygon> image = factory.generateRandomCandidate(rng);
+        List<ColouredPolygon> image = factory.generateRandomCandidate(ExamplesTestUtils.getRNG());
         assert image.size() == 2 : "Image should have 2 polygons";
         List<List<ColouredPolygon>> list = new ArrayList<List<ColouredPolygon>>(1);
         list.add(image);
@@ -46,7 +44,7 @@ public class AddPolygonMutationTest
                                                                                       factory,
                                                                                       5);
 
-        List<List<ColouredPolygon>> evolved = mutation.apply(list, rng);
+        List<List<ColouredPolygon>> evolved = mutation.apply(list, ExamplesTestUtils.getRNG());
         assert evolved.size() == 1 : "Population size should not be altered by mutation.";
         assert evolved.get(0).size() == image.size() + 1 : "Image should have 1 extra polygon after mutation.";
     }
@@ -55,7 +53,7 @@ public class AddPolygonMutationTest
     @Test
     public void testZeroProbability()
     {
-        List<ColouredPolygon> image = factory.generateRandomCandidate(rng);
+        List<ColouredPolygon> image = factory.generateRandomCandidate(ExamplesTestUtils.getRNG());
         assert image.size() == 2 : "Image should have 2 polygons";
         List<List<ColouredPolygon>> list = new ArrayList<List<ColouredPolygon>>(1);
         list.add(image);
@@ -64,7 +62,7 @@ public class AddPolygonMutationTest
                                                                                       factory,
                                                                                       5);
 
-        List<List<ColouredPolygon>> evolved = mutation.apply(list, rng);
+        List<List<ColouredPolygon>> evolved = mutation.apply(list, ExamplesTestUtils.getRNG());
         assert evolved.size() == 1 : "Population size should not be altered by mutation.";
         assert evolved.get(0).size() == image.size() : "Image should have same number of polygons.";
         assert evolved.get(0) == image : "Image should not have been changed at all.";
@@ -78,9 +76,9 @@ public class AddPolygonMutationTest
     @Test
     public void testAddMaxPolygons()
     {
-        List<ColouredPolygon> image = Arrays.asList(factory.createRandomPolygon(rng),
-                                                    factory.createRandomPolygon(rng),
-                                                    factory.createRandomPolygon(rng));
+        List<ColouredPolygon> image = Arrays.asList(factory.createRandomPolygon(ExamplesTestUtils.getRNG()),
+                                                    factory.createRandomPolygon(ExamplesTestUtils.getRNG()),
+                                                    factory.createRandomPolygon(ExamplesTestUtils.getRNG()));
         List<List<ColouredPolygon>> list = new ArrayList<List<ColouredPolygon>>(1);
         list.add(image);
 
@@ -88,7 +86,7 @@ public class AddPolygonMutationTest
                                                                                       factory,
                                                                                       3);
 
-        List<List<ColouredPolygon>> evolved = mutation.apply(list, rng);
+        List<List<ColouredPolygon>> evolved = mutation.apply(list, ExamplesTestUtils.getRNG());
         assert evolved.size() == 1 : "Population size should not be altered by mutation.";
         assert evolved.get(0).size() == image.size() : "Image should have no more than the maximum number of polygons.";
         assert evolved.get(0) == image : "Image should not have been changed at all.";

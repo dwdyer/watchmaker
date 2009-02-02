@@ -19,10 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.CandidateFactory;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 
 /**
  * Unit test for the list permutation candidate factory.  Checks that it
@@ -31,7 +30,6 @@ import org.uncommons.watchmaker.framework.CandidateFactory;
  */
 public class ListPermutationFactoryTest
 {
-    private final Random rng = new MersenneTwisterRNG();
     private final int candidateLength = 10;
     private final int populationSize = 5;
     private final List<Integer> elements = new ArrayList<Integer>(candidateLength);
@@ -52,7 +50,7 @@ public class ListPermutationFactoryTest
     public void testUnseededPopulation()
     {
         CandidateFactory<List<Integer>> factory = new ListPermutationFactory<Integer>(elements);
-        List<List<Integer>> population = factory.generateInitialPopulation(populationSize, rng);
+        List<List<Integer>> population = factory.generateInitialPopulation(populationSize, FrameworkTestUtils.getRNG());
         assert population.size() == populationSize : "Wrong size population generated: " + population.size();
 
         validatePopulation(population);
@@ -78,7 +76,7 @@ public class ListPermutationFactoryTest
 
         List<List<Integer>> population = factory.generateInitialPopulation(populationSize,
                                                                            seeds,
-                                                                           rng);
+                                                                           FrameworkTestUtils.getRNG());
         // Check that the seed candidates appear in the generated population.
         assert population.contains(seed1) : "Population does not contain seed candidate 1.";
         assert population.contains(seed2) : "Population does not contain seed candidate 2.";
@@ -104,7 +102,7 @@ public class ListPermutationFactoryTest
         seeds.add(elements);
         // The following call should cause an exception since the 3 seed candidates
         // won't fit into a population of size 2.
-        factory.generateInitialPopulation(2, seeds, rng);
+        factory.generateInitialPopulation(2, seeds, FrameworkTestUtils.getRNG());
     }
 
 

@@ -18,7 +18,7 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 import java.util.Arrays;
 import java.util.List;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 
 /**
  * Unit test for the {@link TreeCrossover} evolutionary operator used by
@@ -39,7 +39,7 @@ public class TreeCrossoverTest
         Node tree1 = new Multiplication(new Constant(1), new Constant(2));
         Node tree2 = new Subtraction(new Parameter(0), new Parameter(1));
 
-        List<Node> offspring = crossover.apply(Arrays.asList(tree1, tree2), new MersenneTwisterRNG());
+        List<Node> offspring = crossover.apply(Arrays.asList(tree1, tree2), ExamplesTestUtils.getRNG());
         assert offspring.size() == 2 : "Should be 2 offspring after cross-over.";
         int totalNodeCount = offspring.get(0).countNodes() + offspring.get(1).countNodes();
         assert totalNodeCount == 6 : "Should be exactly 6 nodes in total, is " + totalNodeCount; 

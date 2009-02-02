@@ -19,12 +19,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import org.testng.annotations.Test;
 import org.uncommons.maths.number.ConstantGenerator;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 import org.uncommons.watchmaker.framework.Probability;
 
 /**
@@ -33,8 +32,6 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class ListCrossoverTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-
     @Test
     public void testCrossover()
     {
@@ -47,7 +44,7 @@ public class ListCrossoverTest
         Set<Integer> values = new HashSet<Integer>(20);
         for (int i = 0; i < 20; i++)
         {
-            population = crossover.apply(population, rng);
+            population = crossover.apply(population, FrameworkTestUtils.getRNG());
             assert population.size() == 4 : "Population size changed after cross-over.";
             for (List<Integer> individual : population)
             {
@@ -77,7 +74,7 @@ public class ListCrossoverTest
         List<Integer> parent2 = Arrays.asList(9, 10, 11);
         population.add(parent2);
 
-        List<List<Integer>> offspring = crossover.apply(population, rng);
+        List<List<Integer>> offspring = crossover.apply(population, FrameworkTestUtils.getRNG());
         assert offspring.size() == 2 : "Should be 2 offspring, is " + offspring.size();
         // Should be 1 child of length 8 and one of length 3.  Don't know which order though
         // as parents are shuffled before cross-over is applied.
@@ -101,7 +98,7 @@ public class ListCrossoverTest
         List<Integer> parent2 = Arrays.asList(6, 7, 8, 9, 10);
         population.add(parent1);
         population.add(parent2);
-        population = crossover.apply(population, rng);
+        population = crossover.apply(population, FrameworkTestUtils.getRNG());
         assert population.contains(parent1) : "Parent should survive unaltered.";
         assert population.contains(parent2) : "Parent should survive unaltered.";
     }
@@ -122,7 +119,7 @@ public class ListCrossoverTest
         List<Integer> parent2 = Arrays.asList(4); // Too short for cross-over.
         population.add(parent1);
         population.add(parent2);
-        population = crossover.apply(population, rng);
+        population = crossover.apply(population, FrameworkTestUtils.getRNG());
         assert population.contains(parent1) : "Parent should survive unaltered.";
         assert population.contains(parent2) : "Parent should survive unaltered.";
     }

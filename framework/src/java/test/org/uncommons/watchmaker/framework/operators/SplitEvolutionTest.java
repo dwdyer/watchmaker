@@ -18,7 +18,7 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.ArrayList;
 import java.util.List;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 
 /**
  * Unit test for forked evolutionary schemes.
@@ -41,7 +41,7 @@ public class SplitEvolutionTest
         SplitEvolution<Integer> evolutionScheme = new SplitEvolution<Integer>(new IntegerAdjuster(1),
                                                                               new IntegerAdjuster(-1),
                                                                               0.3d);
-        population = evolutionScheme.apply(population, new MersenneTwisterRNG());
+        population = evolutionScheme.apply(population, FrameworkTestUtils.getRNG());
         int aggregate = 0;
         int incrementedCount = 0;
         int decrementedCount = 0;

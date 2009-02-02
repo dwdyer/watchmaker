@@ -15,22 +15,34 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework;
 
-import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
+import java.util.Random;
+import org.uncommons.maths.random.MersenneTwisterRNG;
 
 /**
- * Unit-test for the multi-threaded evolution engine.
+ * Utility methods for Watchmaker Framework unit tests.  Provides
+ * access to shared resources used by tests.
  * @author Daniel Dyer
  */
-public class ConcurrentEvolutionEngineTest extends EvolutionEngineTestBase
+public final class FrameworkTestUtils
 {
-    // All test cases are provided by the super-class.
-    
-    public ConcurrentEvolutionEngineTest()
+    private static final Random RNG = new MersenneTwisterRNG();
+
+    private FrameworkTestUtils()
     {
-        super(new ConcurrentEvolutionEngine<Integer>(new IntegerFactory(),
-                                                     new IntegerZeroMaker(),
-                                                     new IntegerEvaluator(),
-                                                     new RouletteWheelSelection(),
-                                                     FrameworkTestUtils.getRNG()));
+        // Prevent instantiation.
+    }
+
+
+    /**
+     * Returns the singleton RNG shared by all tests.  It might be preferable
+     * to have a separate RNG for each test (for true separation) but this
+     * causes problems.  Seeding dozens of RNGs can exhaust the system's
+     * available entropy (the Uncommons Maths RNGs seed themselves from
+     * /dev/random by default).
+     * @return A random number generator.
+     */
+    public static Random getRNG()
+    {
+        return RNG;
     }
 }

@@ -18,10 +18,9 @@ package org.uncommons.watchmaker.framework.selection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
@@ -31,8 +30,6 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  */
 public class StochasticUniversalSamplingTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-
     /**
      * Test selection when fitness scoring is natural (higher is better).
      */
@@ -50,7 +47,7 @@ public class StochasticUniversalSamplingTest
         population.add(john);
         population.add(mary);
         population.add(gary);
-        List<String> selection = selector.select(population, true, 4, rng);
+        List<String> selection = selector.select(population, true, 4, FrameworkTestUtils.getRNG());
         assert selection.size() == 4 : "Selection size is " + selection.size() + ", should be 4.";
         int steveCount = Collections.frequency(selection, steve.getCandidate());
         int johnCount = Collections.frequency(selection, john.getCandidate());
@@ -80,7 +77,7 @@ public class StochasticUniversalSamplingTest
         population.add(mary);
         population.add(john);
         population.add(steve);
-        List<String> selection = selector.select(population, false, 4, rng);
+        List<String> selection = selector.select(population, false, 4, FrameworkTestUtils.getRNG());
         assert selection.size() == 4 : "Selection size is " + selection.size() + ", should be 4.";
         int garyCount = Collections.frequency(selection, gary.getCandidate());
         int maryCount = Collections.frequency(selection, mary.getCandidate());

@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 
 /**
  * Unit test for compound, sequential evolutionary schemes.
@@ -45,7 +45,7 @@ public class EvolutionPipelineTest
         operators.add(new IntegerAdjuster(1));
         operators.add(new IntegerAdjuster(3));
         EvolutionPipeline<Integer> evolutionScheme = new EvolutionPipeline<Integer>(operators);
-        population = evolutionScheme.apply(population, new MersenneTwisterRNG());
+        population = evolutionScheme.apply(population, FrameworkTestUtils.getRNG());
         // Net result should be each candidate increased by 4.
         int aggregate = 0;
         for (Integer i : population)

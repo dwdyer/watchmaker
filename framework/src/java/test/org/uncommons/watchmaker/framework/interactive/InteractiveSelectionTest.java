@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
@@ -29,8 +29,6 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  */
 public class InteractiveSelectionTest
 {
-    private final MersenneTwisterRNG rng = new MersenneTwisterRNG();
-
     @Test
     public void testSingleSelectionPerGeneration()
     {
@@ -46,7 +44,7 @@ public class InteractiveSelectionTest
         population.add(new EvaluatedCandidate<Integer>(4, 0));
         population.add(new EvaluatedCandidate<Integer>(5, 0));
         
-        List<Integer> selection = strategy.select(population, true, 3, rng);
+        List<Integer> selection = strategy.select(population, true, 3, FrameworkTestUtils.getRNG());
         assert selection.size() == 3 : "Incorrect selection size: " + selection.size();
         assert console.getSelectionCount() == 1 : "Wrong number of user selections: " + console.getSelectionCount();
         // All 3 selected individuals should be the same since the strategy doubles up
@@ -72,7 +70,7 @@ public class InteractiveSelectionTest
         population.add(new EvaluatedCandidate<Integer>(4, 0));
         population.add(new EvaluatedCandidate<Integer>(5, 0));
         
-        List<Integer> selection = strategy.select(population, true, 3, rng);
+        List<Integer> selection = strategy.select(population, true, 3, FrameworkTestUtils.getRNG());
         assert selection.size() == 3 : "Incorrect selection size.";
         assert console.getSelectionCount() == 3 : "Wrong number of user selections: " + console.getSelectionCount();
     }
@@ -111,7 +109,7 @@ public class InteractiveSelectionTest
         population.add(new EvaluatedCandidate<Integer>(1, 2.0));
         // This should fail because a population of 2 is not big enough with a
         // group size of 5.
-        strategy.select(population, true, 2, rng);
+        strategy.select(population, true, 2, FrameworkTestUtils.getRNG());
     }
 
     
@@ -136,7 +134,7 @@ public class InteractiveSelectionTest
         {
             assert renderedEntities.size() == expectedGroupSize : "Wrong selection group size.";
             ++selectionCount;
-            return rng.nextInt(renderedEntities.size());
+            return FrameworkTestUtils.getRNG().nextInt(renderedEntities.size());
         }
 
 

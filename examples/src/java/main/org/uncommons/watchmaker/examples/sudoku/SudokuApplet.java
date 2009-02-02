@@ -36,8 +36,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
-import org.uncommons.maths.random.CellularAutomatonRNG;
 import org.uncommons.maths.random.DiscreteUniformGenerator;
+import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.PoissonGenerator;
 import org.uncommons.swing.LabelledComponentsPanel;
 import org.uncommons.swing.SwingBackgroundTask;
@@ -205,7 +205,7 @@ public class SudokuApplet extends JApplet
         {
             protected Sudoku performTask()
             {
-                Random rng = new CellularAutomatonRNG();
+                Random rng = new MersenneTwisterRNG();
                 List<EvolutionaryOperator<Sudoku>> operators = new ArrayList<EvolutionaryOperator<Sudoku>>(2);
                 // Cross-over rows between parents (so offspring is x rows from parent1 and
                 // y rows from parent2).

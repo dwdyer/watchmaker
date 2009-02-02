@@ -15,7 +15,6 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework;
 
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 
 /**
@@ -32,6 +31,6 @@ public class SequentialEvolutionEngineTest extends EvolutionEngineTestBase
                                                      new IntegerZeroMaker(),
                                                      new IntegerEvaluator(),
                                                      new RouletteWheelSelection(),
-                                                     new MersenneTwisterRNG()));
+                                                     FrameworkTestUtils.getRNG()));
     }
 }

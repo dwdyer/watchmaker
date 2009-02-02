@@ -17,10 +17,9 @@ package org.uncommons.watchmaker.framework.factories;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.CandidateFactory;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 
 /**
  * Unit test for the array permutation candidate factory.  Checks that it
@@ -29,7 +28,6 @@ import org.uncommons.watchmaker.framework.CandidateFactory;
  */
 public class ObjectArrayPermutationFactoryTest
 {
-    private final Random rng = new MersenneTwisterRNG();
     private final int candidateLength = 10;
     private final int populationSize = 5;
     private final Integer[] elements = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -44,7 +42,7 @@ public class ObjectArrayPermutationFactoryTest
     public void testUnseededPopulation()
     {
         CandidateFactory<Integer[]> factory = new ObjectArrayPermutationFactory<Integer>(elements);
-        List<Integer[]> population = factory.generateInitialPopulation(populationSize, rng);
+        List<Integer[]> population = factory.generateInitialPopulation(populationSize, FrameworkTestUtils.getRNG());
         assert population.size() == populationSize : "Wrong size population generated: " + population.size();
 
         validatePopulation(population);
@@ -66,7 +64,7 @@ public class ObjectArrayPermutationFactoryTest
 
         List<Integer[]> population = factory.generateInitialPopulation(populationSize,
                                                                        Arrays.asList(seed1, seed2),
-                                                                       rng);
+                                                                       FrameworkTestUtils.getRNG());
         // Check that the seed candidates appear in the generated population.
         assert population.contains(seed1) : "Population does not contain seed candidate 1.";
         assert population.contains(seed2) : "Population does not contain seed candidate 2.";
@@ -89,7 +87,7 @@ public class ObjectArrayPermutationFactoryTest
         // won't fit into a population of size 2.
         factory.generateInitialPopulation(2,
                                           Arrays.asList(elements, elements, elements),
-                                          rng);
+                                          FrameworkTestUtils.getRNG());
     }
 
 

@@ -17,7 +17,7 @@ package org.uncommons.watchmaker.examples.biomorphs;
 
 import java.util.List;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 
 /**
@@ -33,7 +33,7 @@ public class BiomorphFactoryTest
     public void testValidity()
     {
         CandidateFactory<Biomorph> factory = new BiomorphFactory();
-        List<Biomorph> biomorphs = factory.generateInitialPopulation(20, new MersenneTwisterRNG());
+        List<Biomorph> biomorphs = factory.generateInitialPopulation(20, ExamplesTestUtils.getRNG());
         for (Biomorph biomorph : biomorphs)
         {
             // Returns 9 genes, last one is the length gene.

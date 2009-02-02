@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 
@@ -29,8 +29,6 @@ import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
  */
 public class ReplacementTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-    
     @Test
     public void testReplacement()
     {
@@ -39,7 +37,7 @@ public class ReplacementTest
         Replacement<Integer> replacement = new Replacement<Integer>(factory,
                                                                     Probability.ONE);
         // Numbers will be replaced with lower ones.
-        List<Integer> output = replacement.apply(candidates, rng);
+        List<Integer> output = replacement.apply(candidates, FrameworkTestUtils.getRNG());
         assert output.size() == candidates.size() : "Candidate list should be same size.";
         assert !output.contains(10) : "Candidate should have been replaced.";
         assert !output.contains(11) : "Candidate should have been replaced.";
@@ -55,7 +53,7 @@ public class ReplacementTest
         Replacement<Integer> replacement = new Replacement<Integer>(factory,
                                                                     Probability.ZERO);
         // Numbers will be replaced with lower ones.
-        List<Integer> output = replacement.apply(candidates, rng);
+        List<Integer> output = replacement.apply(candidates, FrameworkTestUtils.getRNG());
         assert output.size() == candidates.size() : "Candidate list should be same size.";
         assert output.contains(10) : "Candidate should not have been replaced.";
         assert output.contains(11) : "Candidate should not have been replaced.";

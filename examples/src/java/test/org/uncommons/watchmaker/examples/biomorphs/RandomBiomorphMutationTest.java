@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 
@@ -37,7 +37,7 @@ public class RandomBiomorphMutationTest
         population.add(new Biomorph(new int[]{5, -4, -3, -2, -1, 0, 1, 2, 8}));
         population.add(new Biomorph(new int[]{-5, 4, 4, -5, 5, 3, 0, 2, 2}));
         population.add(new Biomorph(new int[]{-4, -1, 0, 0, 3, 0, 4, 5, 4}));
-        Random rng = new MersenneTwisterRNG();
+        Random rng = ExamplesTestUtils.getRNG();
         for (int i = 0; i < 20; i++) // Perform several mutations to cover more possibilties.
         {
             population = mutation.apply(population, rng);

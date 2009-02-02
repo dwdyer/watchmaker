@@ -18,10 +18,9 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 
@@ -31,8 +30,6 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class TreeMutationTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-    
     /**
      * If the mutation doesn't happen, the candidates should be returned unaltered. 
      */
@@ -43,7 +40,7 @@ public class TreeMutationTest
         EvolutionaryOperator<Node> mutation = new TreeMutation(treeFactory,
                                                                Probability.ZERO); // Zero probability means no mutations.
         List<Node> candidates = Arrays.<Node>asList(new Addition(new Constant(3), new Constant(4)));
-        List<Node> result = mutation.apply(candidates, rng);
+        List<Node> result = mutation.apply(candidates, ExamplesTestUtils.getRNG());
         assert result.size() == 1 : "Wrong number of trees returned: " + result.size();
         assert candidates.get(0) == result.get(0) : "Tree should have been returned unmodified.";
     }
@@ -58,11 +55,11 @@ public class TreeMutationTest
         TreeFactory treeFactory = new TreeFactory(1, 4, new Probability(0.6d), new Probability(0.2d));
         EvolutionaryOperator<Node> mutation = new TreeMutation(treeFactory,
                                                                Probability.ONE); // Probability of 1 means guaranteed mutations.
-        List<Node> candidates = treeFactory.generateInitialPopulation(20, rng);
+        List<Node> candidates = treeFactory.generateInitialPopulation(20, ExamplesTestUtils.getRNG());
 
         Set<Node> distinctTrees = new HashSet<Node>(candidates);
 
-        List<Node> result = mutation.apply(candidates, rng);
+        List<Node> result = mutation.apply(candidates, ExamplesTestUtils.getRNG());
         assert result.size() == 20 : "Wrong number of trees returned: " + result.size();
 
         distinctTrees.addAll(result);

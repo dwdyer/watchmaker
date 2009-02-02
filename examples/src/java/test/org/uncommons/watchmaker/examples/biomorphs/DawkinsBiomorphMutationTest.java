@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
@@ -43,7 +43,7 @@ public class DawkinsBiomorphMutationTest
         }
         EvolutionaryOperator<Biomorph> mutation = new DawkinsBiomorphMutation();
         List<Biomorph> mutatedPopulation = mutation.apply(originalPopulation,
-                                                          new MersenneTwisterRNG()); // RNG should be ignored.
+                                                          ExamplesTestUtils.getRNG()); // RNG should be ignored.
         assert mutatedPopulation.size() == originalPopulation.size() : "Mutated population is wrong size.";
         // Lazy way of checking for duplicates.  Add all mutations to a set.  If there are any
         // duplicates, the size of the set will be shorter than the list.

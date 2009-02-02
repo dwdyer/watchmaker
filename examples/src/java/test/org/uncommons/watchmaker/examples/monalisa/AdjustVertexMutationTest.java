@@ -21,10 +21,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
 import org.uncommons.maths.number.ConstantGenerator;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 
@@ -34,7 +33,6 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class AdjustVertexMutationTest
 {
-    private final Random rng = new MersenneTwisterRNG();
     private final Dimension canvasSize = new Dimension(200, 200);
 
     @Test
@@ -53,7 +51,7 @@ public class AdjustVertexMutationTest
                                                                                   Probability.ONE,
                                                                                   new ConstantGenerator<Integer>(amount));
 
-        List<ColouredPolygon> evolved = mutation.apply(image, rng);
+        List<ColouredPolygon> evolved = mutation.apply(image, ExamplesTestUtils.getRNG());
         assert evolved.size() == 1 : "Polygon count should not be altered by mutation.";
         ColouredPolygon evolvedPolygon = evolved.get(0);
         List<Point> vertices = evolvedPolygon.getVertices();
@@ -104,7 +102,7 @@ public class AdjustVertexMutationTest
                                                                                   Probability.ZERO,
                                                                                   new ConstantGenerator<Integer>(1));
 
-        List<ColouredPolygon> evolved = mutation.apply(image, rng);
+        List<ColouredPolygon> evolved = mutation.apply(image, ExamplesTestUtils.getRNG());
         assert evolved.size() == 1 : "Polygon count should not be altered by mutation.";
         ColouredPolygon evolvedPolygon = evolved.get(0);
         List<Point> vertices = evolvedPolygon.getVertices();

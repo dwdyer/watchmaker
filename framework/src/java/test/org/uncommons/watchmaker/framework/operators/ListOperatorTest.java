@@ -18,9 +18,8 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 
 /**
  * Unit test for the {@link ListOperator} high-order evolutionary operator.
@@ -28,8 +27,6 @@ import org.uncommons.maths.random.MersenneTwisterRNG;
  */
 public class ListOperatorTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-    
     /**
      * Make sure that the delegate operator is applied to each list in the
      * population.
@@ -43,7 +40,7 @@ public class ListOperatorTest
         selection.add(Arrays.asList(4, 5, 6));
         selection.add(Arrays.asList(7, 8, 9));
 
-        List<List<Integer>> mutations = operator.apply(selection, rng);
+        List<List<Integer>> mutations = operator.apply(selection, FrameworkTestUtils.getRNG());
         assert mutations.size() == 3 : "Wrong number of candidates after list operation: " + selection.size();
 
         // Each element in each candidate list should have been incremented by the delegate operator.

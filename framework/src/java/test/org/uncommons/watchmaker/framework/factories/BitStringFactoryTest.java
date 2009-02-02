@@ -18,11 +18,10 @@ package org.uncommons.watchmaker.framework.factories;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
 import org.uncommons.maths.binary.BitString;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.CandidateFactory;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 
 /**
  * Unit test for bit string candidate factory.
@@ -30,7 +29,6 @@ import org.uncommons.watchmaker.framework.CandidateFactory;
  */
 public class BitStringFactoryTest
 {
-    private final Random rng = new MersenneTwisterRNG();
     private final int candidateLength = 10;
     private final int populationSize = 5;
     
@@ -38,7 +36,7 @@ public class BitStringFactoryTest
     public void testUnseededPopulation()
     {
         CandidateFactory<BitString> factory = new BitStringFactory(candidateLength);
-        List<BitString> population = factory.generateInitialPopulation(populationSize, rng);
+        List<BitString> population = factory.generateInitialPopulation(populationSize, FrameworkTestUtils.getRNG());
         validatePopulation(population);
     }
 
@@ -54,7 +52,7 @@ public class BitStringFactoryTest
         seeds.add(seed2);
         List<BitString> population = factory.generateInitialPopulation(populationSize,
                                                                        seeds,
-                                                                       rng);
+                                                                       FrameworkTestUtils.getRNG());
 
         // Check that the seed candidates appear in the generated population.
         assert population.contains(seed1) : "Population does not contain seed candidate 1.";
@@ -78,7 +76,7 @@ public class BitStringFactoryTest
         // won't fit into a population of size 2.
         factory.generateInitialPopulation(2,
                                           Arrays.asList(candidate, candidate, candidate),
-                                          rng);
+                                          FrameworkTestUtils.getRNG());
     }
 
 

@@ -15,11 +15,9 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework;
 
-import java.util.Random;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 import org.uncommons.maths.Maths;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 
 /**
  * Unit test for {@link Probability} value type.
@@ -27,8 +25,6 @@ import org.uncommons.maths.random.MersenneTwisterRNG;
  */
 public class ProbabilityTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-
     /**
      * Negative probabilities are invalid.
      */
@@ -127,7 +123,7 @@ public class ProbabilityTest
     {
         for (int i = 0; i < 1000; i++)
         {
-            assert !Probability.ZERO.nextEvent(rng) : "Impossible event occurred."; 
+            assert !Probability.ZERO.nextEvent(FrameworkTestUtils.getRNG()) : "Impossible event occurred.";
         }
     }
 
@@ -141,7 +137,7 @@ public class ProbabilityTest
     {
         for (int i = 0; i < 1000; i++)
         {
-            assert Probability.ONE.nextEvent(rng) : "Certainty failed to happen.";
+            assert Probability.ONE.nextEvent(FrameworkTestUtils.getRNG()) : "Certainty failed to happen.";
         }
     }
 
@@ -156,7 +152,7 @@ public class ProbabilityTest
         int count = 0;
         for (int i = 0; i < iterations; i++)
         {
-            if (Probability.EVENS.nextEvent(rng))
+            if (Probability.EVENS.nextEvent(FrameworkTestUtils.getRNG()))
             {
                 ++count;
             }

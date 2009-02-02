@@ -20,9 +20,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 
@@ -32,21 +31,20 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class AddVertexMutationTest
 {
-    private final Random rng = new MersenneTwisterRNG();
     private final Dimension canvasSize = new Dimension(200, 200);
     private final PolygonImageFactory factory = new PolygonImageFactory(canvasSize);
 
     @Test
     public void testAddVertex()
     {
-        ColouredPolygon polygon = factory.createRandomPolygon(rng);
+        ColouredPolygon polygon = factory.createRandomPolygon(ExamplesTestUtils.getRNG());
         List<ColouredPolygon> image = new ArrayList<ColouredPolygon>(1);
         image.add(polygon);
 
         EvolutionaryOperator<ColouredPolygon> mutation = new AddVertexMutation(canvasSize,
                                                                                Probability.ONE);
 
-        List<ColouredPolygon> evolved = mutation.apply(image, rng);
+        List<ColouredPolygon> evolved = mutation.apply(image, ExamplesTestUtils.getRNG());
         assert evolved.size() == 1 : "Polygon count should not be altered by mutation.";
         List<Point> vertices = evolved.get(0).getVertices();
         assert vertices.size() == polygon.getVertices().size() + 1
@@ -57,14 +55,14 @@ public class AddVertexMutationTest
     @Test
     public void testZeroProbability()
     {
-        ColouredPolygon polygon = factory.createRandomPolygon(rng);
+        ColouredPolygon polygon = factory.createRandomPolygon(ExamplesTestUtils.getRNG());
         List<ColouredPolygon> image = new ArrayList<ColouredPolygon>(1);
         image.add(polygon);
 
         EvolutionaryOperator<ColouredPolygon> mutation = new AddVertexMutation(canvasSize,
                                                                                Probability.ZERO);
 
-        List<ColouredPolygon> evolved = mutation.apply(image, rng);
+        List<ColouredPolygon> evolved = mutation.apply(image, ExamplesTestUtils.getRNG());
         assert evolved.size() == 1 : "Polygon count should not be altered by mutation.";
         ColouredPolygon evolvedPolygon = evolved.get(0);
         List<Point> vertices = evolvedPolygon.getVertices();
@@ -92,7 +90,7 @@ public class AddVertexMutationTest
         EvolutionaryOperator<ColouredPolygon> mutation = new AddVertexMutation(canvasSize,
                                                                                Probability.ONE);
 
-        List<ColouredPolygon> evolved = mutation.apply(image, rng);
+        List<ColouredPolygon> evolved = mutation.apply(image, ExamplesTestUtils.getRNG());
         assert evolved.size() == 1 : "Polygon count should not be altered by mutation.";
         ColouredPolygon evolvedPolygon = evolved.get(0);
         List<Point> vertices = evolvedPolygon.getVertices();

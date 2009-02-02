@@ -19,10 +19,9 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
 import org.uncommons.maths.number.ConstantGenerator;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.Probability;
 
 /**
@@ -31,8 +30,6 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class PolygonColourMutationTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-
     @Test
     public void testColourMutation()
     {
@@ -44,7 +41,7 @@ public class PolygonColourMutationTest
                                                                           new Point(50, 50),
                                                                           new Point(0, 75)));
         List<ColouredPolygon> image = Arrays.asList(polygon);
-        List<ColouredPolygon> mutatedImage = mutation.apply(image, rng);
+        List<ColouredPolygon> mutatedImage = mutation.apply(image, ExamplesTestUtils.getRNG());
         Color mutatedColour = mutatedImage.get(0).getColour();
         assert mutatedColour.getRed() == 129 : "Red component should have been incremented, is " + mutatedColour.getRed();
         assert mutatedColour.getGreen() == 129 : "Green component should have been incremented, is " + mutatedColour.getGreen();
@@ -65,7 +62,7 @@ public class PolygonColourMutationTest
                                                                           new Point(50, 50),
                                                                           new Point(0, 75)));
         List<ColouredPolygon> image = Arrays.asList(polygon);
-        List<ColouredPolygon> mutatedImage = mutation.apply(image, rng);
+        List<ColouredPolygon> mutatedImage = mutation.apply(image, ExamplesTestUtils.getRNG());
         assert mutatedImage.get(0) == polygon : "Polygon should not have changed at all.";
         assert mutatedImage.get(0).getColour() == originalColour : "Colour should not have changed at all.";
     }

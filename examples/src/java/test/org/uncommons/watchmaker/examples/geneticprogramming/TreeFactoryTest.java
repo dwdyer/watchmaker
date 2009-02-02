@@ -17,7 +17,7 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import java.util.List;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 import org.uncommons.watchmaker.framework.Probability;
 
@@ -36,7 +36,7 @@ public class TreeFactoryTest
                                                          maxDepth,
                                                          new Probability(0.6),
                                                          Probability.EVENS);
-        List<Node> trees = factory.generateInitialPopulation(20, new MersenneTwisterRNG());
+        List<Node> trees = factory.generateInitialPopulation(20, ExamplesTestUtils.getRNG());
         for (Node tree : trees)
         {
             // Make sure that each tree is no bigger than the maximum permitted.

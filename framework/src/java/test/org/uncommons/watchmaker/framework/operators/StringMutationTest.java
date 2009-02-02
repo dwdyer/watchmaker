@@ -17,9 +17,8 @@ package org.uncommons.watchmaker.framework.operators;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 import org.uncommons.watchmaker.framework.Probability;
 
 /**
@@ -38,10 +37,9 @@ public class StringMutationTest
         String individual2 = "abab";
         String individual3 = "cccc";
         List<String> population = Arrays.asList(individual1, individual2, individual3);
-        Random rng = new MersenneTwisterRNG();
         for (int i = 0; i < 20; i++) // Perform several iterations.
         {
-            population = mutation.apply(population, rng);
+            population = mutation.apply(population, FrameworkTestUtils.getRNG());
             assert population.size() == 3 : "Population size changed after mutation: " + population.size();
             for (String individual : population) // Check that each individual is still valid.
             {

@@ -17,11 +17,10 @@ package org.uncommons.watchmaker.framework.operators;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
 import org.uncommons.maths.binary.BitString;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 import org.uncommons.watchmaker.framework.Probability;
 
 /**
@@ -30,8 +29,6 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class BitStringMutationTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-
     /**
      * Ensures that mutation occurs correctly.  Because of the random
      * aspect we can't actually make many assertions.  This just ensures
@@ -46,7 +43,7 @@ public class BitStringMutationTest
         List<BitString> population = Arrays.asList(original);
         for (int i = 0; i < 20; i++) // Perform several iterations to get different mutations.
         {
-            population = mutation.apply(population, rng);
+            population = mutation.apply(population, FrameworkTestUtils.getRNG());
             BitString mutated = population.get(0);
             assert mutated.getLength() == 9 : "Mutated bit string changed length.";
         }
@@ -63,7 +60,7 @@ public class BitStringMutationTest
         EvolutionaryOperator<BitString> mutation = new BitStringMutation(Probability.ONE);
         BitString original = new BitString("111100101");
         List<BitString> population = Arrays.asList(original);
-        population = mutation.apply(population, rng);
+        population = mutation.apply(population, FrameworkTestUtils.getRNG());
         BitString mutated = population.get(0);
         assert !mutated.equals(original) : "Mutation should be different from original.";
         assert mutated.getLength() == 9 : "Mutated bit string changed length.";

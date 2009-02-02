@@ -17,17 +17,15 @@ package org.uncommons.watchmaker.framework.factories;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.CandidateFactory;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 
 /**
  * @author Daniel Dyer
  */
 public class StringFactoryTest
 {
-    private final Random rng = new MersenneTwisterRNG();
     private final int candidateLength = 8;
     private final int populationSize = 5;
 
@@ -43,7 +41,7 @@ public class StringFactoryTest
     public void testUnseededPopulation()
     {
         CandidateFactory<String> factory = new StringFactory(alphabet, candidateLength);
-        List<String> population = factory.generateInitialPopulation(populationSize, rng);
+        List<String> population = factory.generateInitialPopulation(populationSize, FrameworkTestUtils.getRNG());
         assert population.size() == populationSize : "Wrong size population generated: " + population.size();
 
         validatePopulation(population);
@@ -65,7 +63,7 @@ public class StringFactoryTest
 
         List<String> population = factory.generateInitialPopulation(populationSize,
                                                                     Arrays.asList(seed1, seed2),
-                                                                    rng);
+                                                                    FrameworkTestUtils.getRNG());
         // Check that the seed candidates appear in the generated population.
         assert population.contains(seed1) : "Population does not contain seed candidate 1.";
         assert population.contains(seed2) : "Population does not contain seed candidate 2.";
@@ -88,7 +86,7 @@ public class StringFactoryTest
         // won't fit into a population of size 2.
         factory.generateInitialPopulation(2,
                                           Arrays.asList("abcdefgh", "ijklmnop", "qrstuvwx"),
-                                          rng);
+                                          FrameworkTestUtils.getRNG());
     }
 
 

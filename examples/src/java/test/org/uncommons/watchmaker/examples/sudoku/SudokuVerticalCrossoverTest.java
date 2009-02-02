@@ -17,9 +17,8 @@ package org.uncommons.watchmaker.examples.sudoku;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
@@ -35,7 +34,6 @@ public class SudokuVerticalCrossoverTest
     @Test
     public void testSinglePointCrossover()
     {
-        Random rng = new MersenneTwisterRNG();
         EvolutionaryOperator<Sudoku> crossover = new SudokuVerticalCrossover();
         int[] forwards = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
         int[] backwards = new int[]{9, 8, 7, 6, 5, 4, 3, 2, 1};
@@ -48,7 +46,7 @@ public class SudokuVerticalCrossoverTest
         }
         List<Sudoku> population = Arrays.asList(SudokuTestUtils.createSudoku(parent1),
                                                 SudokuTestUtils.createSudoku(parent2));
-        population = crossover.apply(population, rng);
+        population = crossover.apply(population, ExamplesTestUtils.getRNG());
         assert population.size() == 2 : "Population size changed after cross-over.";
         Sudoku offspring1 = population.get(0);
         Sudoku offspring2 = population.get(1);

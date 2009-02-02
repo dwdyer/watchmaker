@@ -18,11 +18,10 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 import org.uncommons.watchmaker.framework.Probability;
 
 /**
@@ -31,8 +30,6 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class IntArrayCrossoverTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-
     @Test
     public void testCrossover()
     {
@@ -45,7 +42,7 @@ public class IntArrayCrossoverTest
         Set<Integer> values = new HashSet<Integer>(20);
         for (int i = 0; i < 20; i++)
         {
-            population = crossover.apply(population, rng);
+            population = crossover.apply(population, FrameworkTestUtils.getRNG());
             assert population.size() == 4 : "Population size changed after cross-over.";
             for (int[] individual : population)
             {
@@ -78,6 +75,6 @@ public class IntArrayCrossoverTest
         population.add(new int[]{1, 2, 3, 4, 5});
         population.add(new int[]{2});
         // This should cause an exception since the parents are different lengths.
-        crossover.apply(population, rng);
+        crossover.apply(population, FrameworkTestUtils.getRNG());
     }
 }

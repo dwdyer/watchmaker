@@ -18,10 +18,9 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 
 /**
  * Unit test to validate the operation of the {@link ListOrderMutation} operator.
@@ -29,8 +28,6 @@ import org.uncommons.maths.random.MersenneTwisterRNG;
  */
 public class ListOrderMutationTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-    
     @Test
     public void testMutation()
     {
@@ -43,7 +40,7 @@ public class ListOrderMutationTest
         candidate.add('e');
         List<List<Character>> population = new ArrayList<List<Character>>(1);
         population.add(candidate);
-        List<List<Character>> mutatedPopulation = operator.apply(population, rng);
+        List<List<Character>> mutatedPopulation = operator.apply(population, FrameworkTestUtils.getRNG());
         assert mutatedPopulation.size() == population.size() : "Population size should be unchanged.";
         List<Character> mutatedCandidate = mutatedPopulation.get(0);
         Reporter.log("Original: " + Arrays.toString(candidate.toArray(new Character[candidate.size()])));

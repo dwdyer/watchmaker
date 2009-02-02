@@ -20,9 +20,9 @@ import java.util.List;
 import org.testng.annotations.Test;
 import org.uncommons.maths.binary.BitString;
 import org.uncommons.maths.number.ConstantGenerator;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 import org.uncommons.watchmaker.framework.factories.BitStringFactory;
 
 /**
@@ -31,20 +31,18 @@ import org.uncommons.watchmaker.framework.factories.BitStringFactory;
  */
 public class BitStringCrossoverTest
 {
-    private final MersenneTwisterRNG rng = new MersenneTwisterRNG();
-
     @Test
     public void testCrossover()
     {
         EvolutionaryOperator<BitString> operator = new BitStringCrossover();
         CandidateFactory<BitString> factory = new BitStringFactory(50);
-        List<BitString> population = factory.generateInitialPopulation(2, rng);
+        List<BitString> population = factory.generateInitialPopulation(2, FrameworkTestUtils.getRNG());
         // Test to make sure that cross-over correctly preserves all genetic material
         // originally present in the population and does not introduce anything new.
         int totalSetBits = population.get(0).countSetBits() + population.get(1).countSetBits();
         for (int i = 0; i < 50; i++) // Test several generations.
         {
-            population = operator.apply(population, rng);
+            population = operator.apply(population, FrameworkTestUtils.getRNG());
             int setBits = population.get(0).countSetBits() + population.get(1).countSetBits();
             assert setBits == totalSetBits : "Total number of set bits in population changed during cross-over.";
         }
@@ -63,10 +61,10 @@ public class BitStringCrossoverTest
     {
         EvolutionaryOperator<BitString> crossover = new BitStringCrossover(new ConstantGenerator<Integer>(1));
         List<BitString> population = new ArrayList<BitString>(2);
-        population.add(new BitString(32, rng));
-        population.add(new BitString(33, rng));
+        population.add(new BitString(32, FrameworkTestUtils.getRNG()));
+        population.add(new BitString(33, FrameworkTestUtils.getRNG()));
         // This should cause an exception since the parents are different lengths.
-        crossover.apply(population, rng);
+        crossover.apply(population, FrameworkTestUtils.getRNG());
     }
 
 }

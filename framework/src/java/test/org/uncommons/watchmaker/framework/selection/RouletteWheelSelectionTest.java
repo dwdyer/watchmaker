@@ -17,10 +17,9 @@ package org.uncommons.watchmaker.framework.selection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
+import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
@@ -32,8 +31,6 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  */
 public class RouletteWheelSelectionTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-
     @Test
     public void testNaturalFitnessSelection()
     {
@@ -49,7 +46,7 @@ public class RouletteWheelSelectionTest
         population.add(gary);
         for (int i = 0; i < 20; i++) // Run several iterations to get different outcomes from the "roulette wheel".
         {
-            List<String> selection = selector.select(population, true, 2, rng);
+            List<String> selection = selector.select(population, true, 2, FrameworkTestUtils.getRNG());
             assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
         }
     }
@@ -70,7 +67,7 @@ public class RouletteWheelSelectionTest
         population.add(steve);
         for (int i = 0; i < 20; i++) // Run several iterations to get different outcomes from the "roulette wheel".
         {
-            List<String> selection = selector.select(population, false, 2, rng);
+            List<String> selection = selector.select(population, false, 2, FrameworkTestUtils.getRNG());
             assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
         }
     }

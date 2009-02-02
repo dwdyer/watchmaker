@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 
 /**
@@ -45,7 +45,7 @@ public class SudokuFactoryTest
                                                              "...1.....",
                                                              "........9");
 
-        List<Sudoku> population = factory.generateInitialPopulation(20, new MersenneTwisterRNG());
+        List<Sudoku> population = factory.generateInitialPopulation(20, ExamplesTestUtils.getRNG());
         for (Sudoku sudoku : population)
         {
             // Check givens are correctly placed.

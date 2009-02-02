@@ -19,9 +19,8 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.Probability;
 
@@ -31,22 +30,21 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class MovePolygonMutationTest
 {
-    private final Random rng = new MersenneTwisterRNG();
     private final PolygonImageFactory factory = new PolygonImageFactory(new Dimension(200, 200));
 
     @Test
     public void testMovePolygon()
     {
-        List<ColouredPolygon> image = Arrays.asList(factory.createRandomPolygon(rng),
-                                                    factory.createRandomPolygon(rng),
-                                                    factory.createRandomPolygon(rng),
-                                                    factory.createRandomPolygon(rng));
+        List<ColouredPolygon> image = Arrays.asList(factory.createRandomPolygon(ExamplesTestUtils.getRNG()),
+                                                    factory.createRandomPolygon(ExamplesTestUtils.getRNG()),
+                                                    factory.createRandomPolygon(ExamplesTestUtils.getRNG()),
+                                                    factory.createRandomPolygon(ExamplesTestUtils.getRNG()));
         List<List<ColouredPolygon>> list = new ArrayList<List<ColouredPolygon>>(1);
         list.add(image);
 
         EvolutionaryOperator<List<ColouredPolygon>> mutation = new MovePolygonMutation(Probability.ONE);
 
-        List<List<ColouredPolygon>> evolved = mutation.apply(list, rng);
+        List<List<ColouredPolygon>> evolved = mutation.apply(list, ExamplesTestUtils.getRNG());
         assert evolved.size() == 1 : "Population size should not be altered by mutation.";
         assert evolved.get(0).size() == image.size() : "Image should have same number of polygons after mutation.";
         // Can't reliably test that the order was mutated because the random selection may have moved
@@ -57,16 +55,16 @@ public class MovePolygonMutationTest
     @Test
     public void testZeroProbability()
     {
-        ColouredPolygon polygon1 = factory.createRandomPolygon(rng);
-        ColouredPolygon polygon2 = factory.createRandomPolygon(rng);
-        ColouredPolygon polygon3 = factory.createRandomPolygon(rng);
+        ColouredPolygon polygon1 = factory.createRandomPolygon(ExamplesTestUtils.getRNG());
+        ColouredPolygon polygon2 = factory.createRandomPolygon(ExamplesTestUtils.getRNG());
+        ColouredPolygon polygon3 = factory.createRandomPolygon(ExamplesTestUtils.getRNG());
         List<ColouredPolygon> image = Arrays.asList(polygon1, polygon2, polygon3);
         List<List<ColouredPolygon>> list = new ArrayList<List<ColouredPolygon>>(1);
         list.add(image);
 
         EvolutionaryOperator<List<ColouredPolygon>> mutation = new MovePolygonMutation(Probability.ZERO);
 
-        List<List<ColouredPolygon>> evolved = mutation.apply(list, rng);
+        List<List<ColouredPolygon>> evolved = mutation.apply(list, ExamplesTestUtils.getRNG());
         assert evolved.size() == 1 : "Population size should not be altered by mutation.";
         assert evolved.get(0).size() == image.size() : "Image should have same number of polygons.";
         assert evolved.get(0) == image : "Image should not have been changed at all.";

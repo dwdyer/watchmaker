@@ -18,9 +18,8 @@ package org.uncommons.watchmaker.examples.monalisa;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.List;
-import java.util.Random;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 
 /**
@@ -29,8 +28,6 @@ import org.uncommons.watchmaker.framework.CandidateFactory;
  */
 public class PolygonImageFactoryTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-    
     /**
      * Make sure that the generated images have the correct number of polygons,
      * that each polygon has the correct number of points and that all of the
@@ -42,7 +39,7 @@ public class PolygonImageFactoryTest
         final int width = 100;
         final int height = 50;
         CandidateFactory<List<ColouredPolygon>> factory = new PolygonImageFactory(new Dimension(width, height));
-        List<List<ColouredPolygon>> candidates = factory.generateInitialPopulation(20, rng);
+        List<List<ColouredPolygon>> candidates = factory.generateInitialPopulation(20, ExamplesTestUtils.getRNG());
         for (List<ColouredPolygon> image : candidates)
         {
             assert image.size() == PolygonImageFactory.MINIMUM_POLYGON_COUNT

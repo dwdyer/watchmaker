@@ -18,10 +18,9 @@ package org.uncommons.watchmaker.examples.sudoku;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import org.testng.annotations.Test;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
@@ -30,8 +29,6 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  */
 public class SudokuRowMutationTest
 {
-    private final Random rng = new MersenneTwisterRNG();
-
     /**
      * Tests to ensure that rows are still valid after mutation.  Each row
      * should contain each value 1-9 exactly once.
@@ -55,7 +52,7 @@ public class SudokuRowMutationTest
         final Set<Integer> counts = new HashSet<Integer>(Sudoku.SIZE);
         for (int i = 0; i < 20; i++)
         {
-            population = mutation.apply(population, rng);
+            population = mutation.apply(population, ExamplesTestUtils.getRNG());
             assert population.size() == 1 : "Population size changed after mutation(s).";
             Sudoku mutatedSudoku = population.get(0);
             for (int j = 0; j < Sudoku.SIZE; j++)
@@ -94,7 +91,7 @@ public class SudokuRowMutationTest
         List<Sudoku> population = Arrays.asList(new Sudoku(cells));
         for (int i = 0; i < 100; i++) // 100 generations of mutation.
         {
-            population = mutation.apply(population, rng);
+            population = mutation.apply(population, ExamplesTestUtils.getRNG());
             Sudoku sudoku = population.get(0);
             for (int row = 0; row < Sudoku.SIZE; row++)
             {
