@@ -15,10 +15,11 @@
 // ============================================================================
 package org.uncommons.watchmaker.swing;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.awt.BorderLayout;
+import java.text.DecimalFormat;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -36,8 +37,11 @@ public class ProbabilityParameterControl implements EvolutionControl
 {
     private final Probability defaultValue;
     private final int range;
-    private final JSlider control;
+    private final JComponent control;
+    private final JSlider slider;
+    private final JLabel valueLabel = new JLabel();
     private final AdjustableNumberGenerator<Probability> numberGenerator;
+    private final DecimalFormat format;
 
 
     /**
@@ -66,10 +70,31 @@ public class ProbabilityParameterControl implements EvolutionControl
         {
             throw new IllegalArgumentException("Initial value must respect minimum and maximum.");
         }
+        if (decimalPlaces < 1)
+        {
+            throw new IllegalArgumentException("Number of decimal places must be >= 1.");
+        }
+        this.format = createFormat(decimalPlaces);
         this.defaultValue = initialValue;
         this.numberGenerator = new AdjustableNumberGenerator<Probability>(this.defaultValue);
         this.range = (int) Maths.raiseToPower(10, decimalPlaces);
-        this.control = createSlider(initialValue, minimum, maximum);
+        this.slider = createSlider(initialValue, minimum, maximum);
+        slider.setName("Slider"); // For easy look-up in unit tests.
+        this.control = new JPanel(new BorderLayout());
+        control.add(slider, BorderLayout.CENTER);
+        valueLabel.setText(format.format(defaultValue));
+        control.add(valueLabel, BorderLayout.WEST);
+    }
+
+
+    private DecimalFormat createFormat(int decimalPlaces)
+    {
+        StringBuilder formatString = new StringBuilder("0.");
+        for (int i = 0; i < decimalPlaces; i++)
+        {
+            formatString.append('0');
+        }
+        return new DecimalFormat(formatString.toString());
     }
 
     
@@ -81,22 +106,17 @@ public class ProbabilityParameterControl implements EvolutionControl
         int min = (int) Math.round(range * minimum.doubleValue());
         int max = (int) Math.round(range * maximum.doubleValue());
         final JSlider slider = new JSlider(min, max, value);
-        slider.setToolTipText(defaultValue.toString());
         slider.addChangeListener(new ChangeListener()
         {
             public void stateChanged(ChangeEvent changeEvent)
             {
                 Probability probability = new Probability((double) slider.getValue() / range);
                 numberGenerator.setValue(probability);
-                slider.setToolTipText(probability.toString());
+                valueLabel.setText(format.format(probability));
             }
         });
-        Dictionary<Integer, JComponent> labels = new Hashtable<Integer, JComponent>();
-        labels.put(min, new JLabel(minimum.toString()));
-        labels.put(max, new JLabel(maximum.toString()));
-        slider.setLabelTable(labels);
-        slider.setPaintLabels(true);
         slider.setMajorTickSpacing(range / 10);
+        slider.setMinorTickSpacing(range / 20);
         slider.setPaintTicks(true);
         return slider;
     }
@@ -117,8 +137,8 @@ public class ProbabilityParameterControl implements EvolutionControl
     public void reset()
     {
         int value = (int) Math.round(range * defaultValue.doubleValue());
-        control.setValue(value);
-        control.setToolTipText(defaultValue.toString());
+        slider.setValue(value);
+        valueLabel.setText(format.format(defaultValue));
         numberGenerator.setValue(defaultValue);
     }
 

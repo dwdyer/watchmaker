@@ -15,7 +15,13 @@
 // ============================================================================
 package org.uncommons.watchmaker.swing;
 
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
 import javax.swing.JSlider;
+import org.fest.swing.core.RobotFixture;
+import org.fest.swing.fixture.FrameFixture;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.Probability;
 
@@ -25,6 +31,23 @@ import org.uncommons.watchmaker.framework.Probability;
  */
 public class ProbabilityParameterControlTest
 {
+    private RobotFixture robot;
+
+    @BeforeMethod
+    public void prepare()
+    {
+        robot = RobotFixture.robotWithNewAwtHierarchy();
+    }
+
+
+    @AfterMethod
+    public void cleanUp()
+    {
+        robot.cleanUp();
+        robot = null;
+    }
+
+    
     @Test
     public void testDefaultValue()
     {
@@ -73,29 +96,67 @@ public class ProbabilityParameterControlTest
     }
 
 
-    @Test(dependsOnMethods = "testDefaultValue")
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testInvalidDecimalPlaces()
+    {
+        new ProbabilityParameterControl(Probability.ZERO,
+                                        Probability.ONE,
+                                        0, // Invalid, should trigger IllegalArgumentException.
+                                        Probability.EVENS);
+    }
+
+
+    @Test(dependsOnMethods = "testDefaultValue",
+          groups = "display-required")
     public void testSlider()
     {
         Probability defaultValue = new Probability(0.75d);
         ProbabilityParameterControl control = new ProbabilityParameterControl(defaultValue);
-        JSlider slider = (JSlider) control.getControl();
+
+        JFrame frame = new JFrame();
+        frame.add(control.getControl(), BorderLayout.CENTER);
+        FrameFixture frameFixture = new FrameFixture(robot, frame);
+        frame.setSize(300, 50);
+        frame.validate();
+        frame.setVisible(true);
+
+        JSlider slider = frameFixture.slider().component();
         assert slider.getValue() == 75 : "Wrong slider position: " + slider.getValue();
-        slider.setValue(80); // 80 ticks is a probability of 0.8.
+        String displayedValue = frameFixture.label().text();
+        assert displayedValue.equals("0.75") : "Wrong value displayed: " + displayedValue;
+
+
+        frameFixture.slider().slideTo(80); // 80 ticks is a probability of 0.8.
+        robot.waitForIdle();
         double probability = control.getNumberGenerator().nextValue().doubleValue();
         assert probability == 0.8 : "Wrong probability: " + probability;
+        displayedValue = frameFixture.label().text();
+        assert displayedValue.equals("0.80") : "Wrong value displayed: " + displayedValue;
     }
 
 
-    @Test(dependsOnMethods = "testSlider")
+    @Test(dependsOnMethods = "testSlider",
+          groups = "display-required")
     public void testReset()
     {
         Probability defaultValue = new Probability(0.75d);
         ProbabilityParameterControl control = new ProbabilityParameterControl(defaultValue);
-        JSlider slider = (JSlider) control.getControl();
-        slider.setValue(80); // 80 ticks is a probability of 0.8.
+
+        JFrame frame = new JFrame();
+        frame.add(control.getControl(), BorderLayout.CENTER);
+        FrameFixture frameFixture = new FrameFixture(robot, frame);
+        frame.setSize(300, 50);
+        frame.validate();
+        frame.setVisible(true);
+
+        JSlider slider = frameFixture.slider().component();
+        frameFixture.slider().slideTo(80); // 80 ticks is a probability of 0.8.
 
         control.reset();
         assert control.getNumberGenerator().nextValue().equals(defaultValue) : "NumberGenerator reset failed.";
         assert slider.getValue() == 75 : "JSlider reset failed.";
+
+        String displayedValue = frameFixture.label().text();
+        assert displayedValue.equals("0.75") : "Wrong value displayed: " + displayedValue;
     }
 }
