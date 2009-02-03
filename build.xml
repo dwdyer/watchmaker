@@ -114,27 +114,17 @@
     <uncommons:clean module="examples" />
     <uncommons:clean module="framework" />
     <uncommons:clean module="swing" />
-    <uncommons:clean module="util" />
     <uncommons:clean module="book" />
-  </target>
-
-
-  <!-- Builds the util module. -->
-  <target name="util"
-          description="Build the utilities module.">
-    <uncommons:compile module="util" />
-    <uncommons:jar module="util" jarfile="uncommons-util.jar"/>
   </target>
 
 
   <!-- Builds the framework JAR, which depends on the maths module. -->
   <target name="framework"
-          depends="util"
           description="Build the framework module.">
     <uncommons:compile module="framework" />
     <uncommons:jar module="framework"
                    jarfile="${artifact.identifier}.jar"
-                   classpath="uncommons-util.jar uncommons-maths-1.1.jar google-collect-snapshot-20080820.jar" />
+                   classpath="uncommons-maths-1.1.jar google-collect-snapshot-20080820.jar" />
   </target>
 
 
@@ -151,12 +141,12 @@
 
   <!-- Builds the examples JAR, which depends on each of the other modules. -->
   <target name="examples"
-          depends="framework, util, swing"
+          depends="framework, swing"
           description="Build the examples.">
     <uncommons:compile module="examples" />
     <uncommons:jar module="examples"
                    jarfile="watchmaker-examples-${version}.jar"
-                   classpath="${artifact.identifier}.jar uncommons-maths-1.1.jar uncommons-util.jar watchmaker-swing-${version}.jar">
+                   classpath="${artifact.identifier}.jar uncommons-maths-1.1.jar watchmaker-swing-${version}.jar">
       <additionalcontents>
         <fileset dir="${modules.dir}/examples/resources" includes="**/*" />
       </additionalcontents>
@@ -166,7 +156,7 @@
 
   <!-- Copy all necessary files to distribution directory. -->
   <target name="dist"
-          depends="util, framework, swing, examples"
+          depends="framework, swing, examples"
           description="Generate the project distribution." >
     <mkdir dir="${dist.dir}" />
     <!-- Copy all application JARs and 3rd party libraries. -->
@@ -240,7 +230,7 @@
     <taskdef resource="tasks.properties" classpathref="base.path" />
     <cobertura-instrument todir="${temp.dir}"
                           datafile="${temp.dir}/cobertura.ser">
-      <fileset dir="${dist.dir}" includes="watchmaker*.jar,uncommons-util.jar"/>
+      <fileset dir="${dist.dir}" includes="watchmaker*.jar"/>
     </cobertura-instrument>
 
     <!-- Run the unit tests on the instrumented classes. -->
@@ -287,9 +277,6 @@
       <fileset dir="swing/${java.dir}/main">
         <include name="**/*.java" />
       </fileset>
-      <fileset dir="util/${java.dir}/main">
-        <include name="**/*.java" />
-      </fileset>
     </cobertura-report>
     <!-- Generate an XML coverage report so that Hudson can graph trends. -->
     <cobertura-report format="xml"
@@ -302,9 +289,6 @@
         <include name="**/*.java" />
       </fileset>
       <fileset dir="swing/${java.dir}/main">
-        <include name="**/*.java" />
-      </fileset>
-      <fileset dir="util/${java.dir}/main">
         <include name="**/*.java" />
       </fileset>
     </cobertura-report>
