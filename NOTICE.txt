@@ -1,7 +1,9 @@
-===============================================================================
-The Watchmaker Framework for Evolutionary Computation
- (https://watchmaker.dev.java.net)
-Copyright 2006-2009 Daniel W. Dyer (http://www.dandyer.co.uk)
+_______________________________________________________________________________
+
+  The Watchmaker Framework for Evolutionary Computation - Version @VERSION@
+   (https://watchmaker.dev.java.net)
+  Copyright 2006-2009 Daniel W. Dyer (http://www.dandyer.co.uk)
+_______________________________________________________________________________
 
 Acknowledgements:
 -----------------
@@ -20,9 +22,11 @@ Uncommons Maths is also licensed under the terms of the Apache Licence Version
 2.0.  The NOTICE.txt file from the Uncommons Maths distribution is reproduced
 below.
 
-===============================================================================
-Uncommons Maths (https://uncommons-maths.dev.java.net)
-Copyright 2006, 2007, 2008 Daniel W. Dyer (http://www.dandyer.co.uk)
+_______________________________________________________________________________
+
+  Uncommons Maths (https://uncommons-maths.dev.java.net)
+  Copyright 2006-2009 Daniel W. Dyer (http://www.dandyer.co.uk)
+_______________________________________________________________________________
 
 Acknowledgements:
 -----------------

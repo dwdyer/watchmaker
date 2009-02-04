@@ -224,62 +224,14 @@
   <target name="test"
           depends="dist"
           description="Run the unit test suite.">
-    <mkdir dir="${temp.dir}" />
-
-    <!-- Bytecode instrumentation to enable collection of test coverage data. -->
-    <taskdef resource="tasks.properties" classpathref="base.path" />
-    <cobertura-instrument todir="${temp.dir}"
-                          datafile="${temp.dir}/cobertura.ser">
-      <fileset dir="${dist.dir}" includes="watchmaker*.jar"/>
-    </cobertura-instrument>
-
-    <!-- Run the unit tests on the instrumented classes. -->
-    <taskdef resource="testngtasks" classpathref="base.path"/>
-    <path id="test.path">
-      <dirset dir="." includes="**/${classes.dir}/test" />
-      <fileset dir="${temp.dir}" includes="*.jar"/>
-      <fileset dir="." includes="**/${lib.dir}/*.jar"/>
-      <path refid="base.path" />
-    </path>
-    <mkdir dir="${test-results.dir}" />
     <!-- Don't run FEST tests in a headless environment (they will fail) -->
     <condition property="tests.file" value="testng-headless.xml" else="testng.xml">
       <isset property="headless" />
     </condition>
-    <testng classpathref="test.path"
-            outputdir="${test-results.dir}"
-            haltonfailure="false"
-            useDefaultListeners="false"
-            listeners="org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter">
-      <xmlfileset dir="${conf.dir}" includes="${tests.file}"/>
-      <sysproperty key="java.awt.headless" value="${headless}" />
-      <sysproperty key="net.sourceforge.cobertura.datafile"
-                   file="${temp.dir}/cobertura.ser" />
-      <sysproperty key="org.uncommons.reportng.title"
-                   value="Watchmaker Framework Unit Test Report" />
-      <sysproperty key="org.uncommons.reportng.coverage-report"
-                   value="../../coverage/index.html" />
-    </testng>
-
-    <!-- Generate the HTML coverage report. -->
-    <mkdir dir="${coverage.dir}" />
-    <cobertura-report format="html"
-                      destdir="${coverage.dir}"
-                      datafile="${temp.dir}/cobertura.ser">
-      <dirset dir="." includes="**/${java.dir}/main" />
-    </cobertura-report>
-    <!-- Generate an XML coverage report so that Hudson can graph trends. -->
-    <cobertura-report format="xml"
-                      destdir="${coverage.dir}"
-                      datafile="${temp.dir}/cobertura.ser">
-      <dirset dir="." includes="**/${java.dir}/main" />
-    </cobertura-report>
-
-    <!-- If the coverage is poor, fail. -->
-    <cobertura-check totallinerate="${minimum.coverage}"
-                     totalbranchrate="${minimum.coverage}"
-                     datafile="${temp.dir}/cobertura.ser"/>
-    
+    <uncommons:test suites="${conf.dir}/${tests.file}"
+                    headless="${headless}"
+                    title="Watchmaker Framework Unit Test Report"
+                    mincoverage="${minimum.coverage}" />
   </target>
 
 
@@ -353,6 +305,9 @@
     <!-- Copy latest jars into website examples directory. -->
     <copy todir="${web.dir}/examples">
       <fileset dir="${dist.dir}" includes="*.jar" />
+      <filterset>
+        <filter token="VERSION" value="${version}"/>
+      </filterset>
     </copy>
 
     <!-- Generate user manual from DocBook source. -->
