@@ -35,6 +35,8 @@ public class TournamentSelection implements SelectionStrategy<Object>
 {
     private final NumberGenerator<Probability> selectionProbability;
 
+    private String description = "Tournament Selection";
+
     /**
      * Creates a tournament selection strategy that is controlled by the
      * variable selection probability provided by the specified
@@ -65,6 +67,7 @@ public class TournamentSelection implements SelectionStrategy<Object>
         {
             throw new IllegalArgumentException("Selection threshold must be greater than 0.5.");
         }
+        this.description = "Tournament Selection (p = " + selectionProbability.toString() + ")";
     }
 
 
@@ -108,5 +111,15 @@ public class TournamentSelection implements SelectionStrategy<Object>
             }
         }
         return selection;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+        return description;
     }
 }

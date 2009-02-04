@@ -100,4 +100,14 @@ public class RankSelection implements SelectionStrategy<Object>
     {
         return populationSize - rank;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+        return "Rank Selection";
+    }
 }

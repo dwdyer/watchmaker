@@ -97,7 +97,6 @@ public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     protected List<T[]> mate(T[] parent1,
                              T[] parent2,
                              int numberOfCrossoverPoints,
@@ -108,8 +107,10 @@ public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
             throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
         }
         // Create the most specific-type arrays possible.
+        @SuppressWarnings("unchecked")
         T[] offspring1 = (T[]) Array.newInstance(parent1.getClass().getComponentType(), parent1.length);
         System.arraycopy(parent1, 0, offspring1, 0, parent1.length);
+        @SuppressWarnings("unchecked")
         T[] offspring2 = (T[]) Array.newInstance(parent2.getClass().getComponentType(), parent2.length);
         System.arraycopy(parent2, 0, offspring2, 0, parent2.length);
         // Apply as many cross-overs as required.

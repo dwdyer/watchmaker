@@ -82,4 +82,14 @@ public class StochasticUniversalSampling implements SelectionStrategy<Object>
             return rawFitness == 0 ? Double.POSITIVE_INFINITY : 1 / rawFitness;
         }
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+        return "Stochastic Universal Sampling";
+    }
 }

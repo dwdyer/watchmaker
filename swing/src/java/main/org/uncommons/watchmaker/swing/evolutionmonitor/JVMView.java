@@ -113,7 +113,6 @@ class JVMView extends JPanel
     }
 
     
-    @SuppressWarnings("unchecked")
     private JFreeChart createHeapChart(double maxMemory)
     {
         TimeSeriesCollection dataSet = new TimeSeriesCollection();

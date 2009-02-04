@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 /**
+ * A program node that evaluates to a constant value. 
  * @author Daniel Dyer
  */
 public class Constant extends LeafNode
@@ -28,12 +29,19 @@ public class Constant extends LeafNode
     }
 
 
+    /**
+     * @param programParameters The parameters passed to the program (ignored by this node).
+     * @return The numeric value of this constant.
+     */
     public double evaluate(double[] programParameters)
     {
         return constant;
     }
 
 
+    /**
+     * @return The String representation of this constant.
+     */
     public String print()
     {
         return String.valueOf(constant);

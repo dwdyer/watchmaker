@@ -15,6 +15,7 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework.selection;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -31,8 +32,10 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
  */
 public class TruncationSelection implements SelectionStrategy<Object>
 {
+    private static final DecimalFormat PERCENT_FORMAT = new DecimalFormat("#0.###%");
     private final NumberGenerator<Double> selectionRatio;
 
+    private String description = "Truncation Selection";
 
     /**
      * Creates a truncation selection strategy that is controlled by the
@@ -59,6 +62,7 @@ public class TruncationSelection implements SelectionStrategy<Object>
         {
             throw new IllegalArgumentException("Selection ratio must be greater than 0 and less than 1.");
         }
+        this.description = "Truncation Selection (" + PERCENT_FORMAT.format(selectionRatio) + ")";
     }
 
 
@@ -99,5 +103,15 @@ public class TruncationSelection implements SelectionStrategy<Object>
             }
         } while (selection.size() < selectionSize);
         return selection;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+        return description;
     }
 }

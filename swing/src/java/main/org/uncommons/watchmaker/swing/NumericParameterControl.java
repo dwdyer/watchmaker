@@ -47,10 +47,11 @@ public class NumericParameterControl<T extends Number & Comparable<T>> implement
                                                       stepSize));
         control.addChangeListener(new ChangeListener()
         {
-            @SuppressWarnings("unchecked")
             public void stateChanged(ChangeEvent changeEvent)
             {
-                numberGenerator.setValue((T) control.getValue());
+                @SuppressWarnings("unchecked")
+                T value = (T) control.getValue();
+                numberGenerator.setValue(value);
             }
         });
     }

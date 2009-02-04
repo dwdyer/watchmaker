@@ -29,6 +29,9 @@ Changes in version @VERSION@
 * Moved classes from Uncommons Utils module into the main framework module and
   removed the util module.
 
+* Added SelectionStrategyControl to the Swing module.  This control enables the
+  user to change the selection strategy even while the evolution is running.
+
 
 Changes in version 0.5.1
 ------------------------

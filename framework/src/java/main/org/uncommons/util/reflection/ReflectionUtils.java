@@ -48,12 +48,13 @@ public final class ReflectionUtils
      * correct type.
      * @return The result of invoking the method, or null if the method is void.
      */
-    @SuppressWarnings("unchecked")
     public static <T> T invokeUnchecked(Method method, Object target, Object... arguments)
     {
         try
         {
-            return (T) method.invoke(target, arguments);
+            @SuppressWarnings("unchecked")
+            T result = (T) method.invoke(target, arguments);
+            return result;
         }
         catch (IllegalAccessException ex)
         {
@@ -93,7 +94,6 @@ public final class ReflectionUtils
      * @return The object created by invoking the specified constructor with the specified
      * arguments.
      */
-    @SuppressWarnings("unchecked")
     public static <T> T invokeUnchecked(Constructor<T> constructor, Object... arguments)
     {
         try

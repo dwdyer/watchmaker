@@ -15,14 +15,10 @@
 // ============================================================================
 package org.uncommons.watchmaker.examples.travellingsalesman;
 
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.util.List;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -30,11 +26,7 @@ import javax.swing.SpringLayout;
 import org.uncommons.swing.SpringUtilities;
 import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
-import org.uncommons.watchmaker.framework.selection.RankSelection;
-import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
-import org.uncommons.watchmaker.framework.selection.StochasticUniversalSampling;
-import org.uncommons.watchmaker.framework.selection.TournamentSelection;
-import org.uncommons.watchmaker.framework.selection.TruncationSelection;
+import org.uncommons.watchmaker.swing.SelectionStrategyControl;
 
 /**
  * Controls for configuring an {@link EvolutionaryTravellingSalesman} object.
@@ -42,12 +34,6 @@ import org.uncommons.watchmaker.framework.selection.TruncationSelection;
  */
 final class EvolutionPanel extends JPanel
 {
-    private final SelectionStrategy<?>[] selectionStrategies = {new RankSelection(),
-                                                                new RouletteWheelSelection(),
-                                                                new StochasticUniversalSampling(),
-                                                                new TournamentSelection(new Probability(0.95d)),
-                                                                new TruncationSelection(0.5d)};
-
     private final JLabel populationLabel;
     private final JSpinner populationSpinner;
     private final JLabel elitismLabel;
@@ -55,7 +41,7 @@ final class EvolutionPanel extends JPanel
     private final JLabel generationsLabel;
     private final JSpinner generationsSpinner;
     private final JLabel selectionLabel;
-    private final JComboBox selectionCombo;
+    private final SelectionStrategyControl<List<String>> selectionControl;
     private final JCheckBox crossoverCheckbox;
     private final JCheckBox mutationCheckbox;
     private final DistanceLookup distances;
@@ -85,24 +71,12 @@ final class EvolutionPanel extends JPanel
         innerPanel.add(generationsSpinner);
 
         selectionLabel = new JLabel("Selection Strategy: ");
+        List<SelectionStrategy<? super List<String>>> strategies
+            = SelectionStrategyControl.createDefaultOptions(new Probability(0.95d), 0.5d);
+        this.selectionControl = new SelectionStrategyControl<List<String>>(strategies);
         innerPanel.add(selectionLabel);
-        selectionCombo = new JComboBox(selectionStrategies);
-        selectionCombo.setRenderer(new DefaultListCellRenderer()
-        {
-            @Override
-            public Component getListCellRendererComponent(JList list,
-                                                          Object value,
-                                                          int index,
-                                                          boolean isSelected,
-                                                          boolean hasFocus)
-            {
-                SelectionStrategy<?> strategy = (SelectionStrategy<?>) value;
-                String text = strategy.getClass().getSimpleName();
-                return super.getListCellRendererComponent(list, text, index, isSelected, hasFocus);
-            }
-        });
-        selectionCombo.setSelectedIndex(selectionCombo.getItemCount() - 1);
-        innerPanel.add(selectionCombo);
+        selectionControl.getControl().setSelectedIndex(selectionControl.getControl().getItemCount() - 1);
+        innerPanel.add(selectionControl.getControl());
 
         crossoverCheckbox = new JCheckBox("Cross-over", true);
         mutationCheckbox = new JCheckBox("Mutation", true);
@@ -125,18 +99,17 @@ final class EvolutionPanel extends JPanel
         generationsLabel.setEnabled(b);
         generationsSpinner.setEnabled(b);
         selectionLabel.setEnabled(b);
-        selectionCombo.setEnabled(b);
+        selectionControl.getControl().setEnabled(b);
         crossoverCheckbox.setEnabled(b);
         mutationCheckbox.setEnabled(b);
         super.setEnabled(b);
     }
 
 
-    @SuppressWarnings("unchecked")
     public TravellingSalesmanStrategy getStrategy()
     {
         return new EvolutionaryTravellingSalesman(distances,
-                                                  (SelectionStrategy<? super List<String>>) selectionCombo.getSelectedItem(),
+                                                  selectionControl.getSelectionStrategy(),
                                                   (Integer) populationSpinner.getValue(),
                                                   (Integer) elitismSpinner.getValue(),
                                                   (Integer) generationsSpinner.getValue(),

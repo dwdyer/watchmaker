@@ -104,4 +104,14 @@ public class RouletteWheelSelection implements SelectionStrategy<Object>
             return rawFitness == 0 ? Double.POSITIVE_INFINITY : 1 / rawFitness;
         }
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+        return "Roulette Wheel Selection";
+    }
 }
