@@ -26,6 +26,9 @@ Changes in version 0.6.0
 * Fixed ProbabilityParameterControl so that it allows the slider to move all
   the way to the maximum permitted value (ISSUE#10).
 
+* Moved classes from Uncommons Utils module into the main framework module and
+  removed the utils module.
+
 
 Changes in version 0.5.1
 ------------------------

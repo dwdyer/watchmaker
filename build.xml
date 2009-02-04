@@ -80,8 +80,8 @@
                windowtitle="Watchmaker Framework API"
                classpathref="base.path">
         <fileset dir="." defaultexcludes="yes">
-          <include name="**/${java.dir}/main/org/uncommons/**/*.java"/>
-          <exclude name="examples/${java.dir}/main/org/uncommons/**/*.java"/>
+          <include name="**/${java.dir}/main/**/*.java"/>
+          <exclude name="examples/**/*"/>
         </fileset>
         <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
         <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
@@ -236,9 +236,7 @@
     <!-- Run the unit tests on the instrumented classes. -->
     <taskdef resource="testngtasks" classpathref="base.path"/>
     <path id="test.path">
-      <dirset dir=".">
-        <include name="**/${classes.dir}/test" />
-      </dirset>
+      <dirset dir="." includes="**/${classes.dir}/test" />
       <fileset dir="${temp.dir}" includes="*.jar"/>
       <fileset dir="." includes="**/${lib.dir}/*.jar"/>
       <path refid="base.path" />
@@ -268,29 +266,13 @@
     <cobertura-report format="html"
                       destdir="${coverage.dir}"
                       datafile="${temp.dir}/cobertura.ser">
-      <fileset dir="examples/${java.dir}/main">
-        <include name="**/*.java" />
-      </fileset>
-      <fileset dir="framework/${java.dir}/main">
-        <include name="**/*.java" />
-      </fileset>
-      <fileset dir="swing/${java.dir}/main">
-        <include name="**/*.java" />
-      </fileset>
+      <dirset dir="." includes="**/${java.dir}/main" />
     </cobertura-report>
     <!-- Generate an XML coverage report so that Hudson can graph trends. -->
     <cobertura-report format="xml"
                       destdir="${coverage.dir}"
                       datafile="${temp.dir}/cobertura.ser">
-      <fileset dir="examples/${java.dir}/main">
-        <include name="**/*.java" />
-      </fileset>
-      <fileset dir="framework/${java.dir}/main">
-        <include name="**/*.java" />
-      </fileset>
-      <fileset dir="swing/${java.dir}/main">
-        <include name="**/*.java" />
-      </fileset>
+      <dirset dir="." includes="**/${java.dir}/main" />
     </cobertura-report>
 
     <!-- If the coverage is poor, fail. -->
@@ -311,9 +293,7 @@
          bug (http://jira.codehaus.org/browse/MPCHECKSTYLE-20).  That is why this
          target depends on the 'dist' target. -->
     <path id="checkstyle.path">
-      <fileset dir="${dist.dir}">
-        <include name="**/*.jar" />
-      </fileset>
+      <fileset dir="${dist.dir}" includes="**/*.jar" />
     </path>
 
     <checkstyle config="${conf.dir}/checks.xml"
