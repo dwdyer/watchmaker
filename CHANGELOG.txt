@@ -27,7 +27,7 @@ Changes in version 0.6.0
   the way to the maximum permitted value (ISSUE#10).
 
 * Moved classes from Uncommons Utils module into the main framework module and
-  removed the utils module.
+  removed the util module.
 
 
 Changes in version 0.5.1
