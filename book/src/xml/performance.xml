@@ -5,7 +5,7 @@
   <title>Optimising for Performance</title>
   <para>
     This appendix lists some suggestions on how to get the best possible performance from your
-    evolutionary Java programs.  Most of the advice here applies whether or not you are using the
+    evolutionary Java programs.  Much of the advice here applies whether or not you are using the
     Watchmaker Framework to develop your evolutionary programs.
   </para>
   <para>
@@ -30,6 +30,40 @@
       small optimisations to the fitness function may add up to substantial reductions in running
       time.
     </para>
+    <section>
+      <title>The Caching Fitness Evaluator</title>
+      <indexterm><primary>CachingFitnessEvaluator</primary></indexterm>
+      <indexterm><primary>fitness function</primary><secondary>caching</secondary></indexterm>
+      <indexterm><primary>elitism</primary></indexterm>
+      <para>
+        In some evolutionary programs individuals can survive from generation to generation unmodified.
+        The most obvious example of this is elitism.  Individuals that are preserved through elitism
+        will appear unaltered in the next generation and may survive for many generations.  Individuals
+        may also survive without modification if the evolutionary operators in use are probabilistic and
+        don't always affect every candidate.
+      </para>
+      <para>
+        If fitness evaluations are expensive, it is wasteful to repeatedly recalculate fitness values
+        for unaltered individuals.  The Watchmaker Framework provides the
+        <classname>org.uncommons.watchmaker.framework.CachingFitnessEvaluator</classname> class to
+        address this problem.  It acts as a wrapper for your fitness evaluator and caches the results
+        of fitness calculations.  If the same candidate is evaluated twice, the cached value is returned
+        the second time thus avoiding the cost of recalculating the fitness score.  The cache uses Java's
+        weak references to avoid memory leakage (if the candidate does not survive, the associated cache
+        entry will also be garbage collected).
+      </para>
+      <note>
+        <para>
+          Caching of fitness scores is provided as an option rather than as the default Watchmaker
+          Framework behaviour because caching is only valid when fitness evaluations are
+          <emphasis>isolated</emphasis> and <emphasis>repeatable</emphasis>.  An isolated fitness
+          evaluation is one where the result depends only upon the candidate being evaluated.  This is
+          not the case when candidates are evaluated against the other members of the population.
+          Caching should not be used if it is possible for multiple evaluations of the same candidate
+          to return different scores.
+        </para>
+      </note>
+    </section>
   </section>
   <section>
     <title>Minimising the Search Space</title>
