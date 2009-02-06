@@ -18,15 +18,12 @@ package org.uncommons.watchmaker.swing.evolutionmonitor;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
-import java.lang.management.ThreadInfo;
-import java.lang.management.ThreadMXBean;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -35,11 +32,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
-import org.jfree.chart.labels.StandardPieToolTipGenerator;
-import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
-import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -55,60 +49,37 @@ class JVMView extends JPanel
 {
     private static final int MEGABYTE = 1048576;
 
-    private static final String MAIN_THREAD = "Evolution Main";
-    private static final String FITNESS_THREADS = "Fitness Evaluations";
-    private static final String AWT_THREADS = "AWT/Swing";
-    private static final String OTHER_THREADS = "Other";
-
     private final TimeSeries memoryUsageSeries = new TimeSeries("Memory Usage", Second.class);
     private final TimeSeries heapSizeSeries = new TimeSeries("Heap Size", Second.class);
-    private final DefaultPieDataset threadDataset = new DefaultPieDataset();
 
     private final MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
-    private final ThreadMXBean threadBean = ManagementFactory.getThreadMXBean();
 
     JVMView()
     {
         super(new BorderLayout());
         double maxMemory = (double) memoryBean.getHeapMemoryUsage().getMax() / MEGABYTE;
 
-        JPanel inner = new JPanel(new BorderLayout());
         ChartPanel heapPanel = new ChartPanel(createHeapChart(maxMemory),
                                               false, // Properties
                                               true, // Save
                                               true, // Print
                                               false, // Zoom
                                               true); // Tooltips
-        heapPanel.setPreferredSize(new Dimension(ChartPanel.DEFAULT_MINIMUM_DRAW_WIDTH,
-                                                 ChartPanel.DEFAULT_MINIMUM_DRAW_HEIGHT + 50));
         heapPanel.setMouseZoomable(false);
-        inner.add(heapPanel, BorderLayout.CENTER);
-        inner.add(createControls(), BorderLayout.SOUTH);
-        add(inner, BorderLayout.CENTER);
-
-        ChartPanel threadsPanel = new ChartPanel(createThreadChart(),
-                                                 false, // Properties
-                                                 true, // Save
-                                                 true, // Print
-                                                 false, // Zoom
-                                                 true); // Tooltips
-        threadsPanel.setPreferredSize(new Dimension(ChartPanel.DEFAULT_MINIMUM_DRAW_WIDTH,
-                                                    ChartPanel.DEFAULT_MINIMUM_DRAW_HEIGHT));
-        add(threadsPanel, BorderLayout.SOUTH);
+        add(heapPanel, BorderLayout.CENTER);
+        add(createControls(), BorderLayout.SOUTH);
 
         Timer timer = new Timer(5000, new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                 addMemoryDataPoint();
-                updateThreadData();
             }
         });
 
         // Plot start values.
         addMemoryDataPoint();
-        updateThreadData();
-        
+
         timer.start();
     }
 
@@ -147,27 +118,6 @@ class JVMView extends JPanel
     }
 
 
-    private JFreeChart createThreadChart()
-    {
-        JFreeChart chart = ChartFactory.createPieChart("CPU Utilisation by Task",
-                                                       threadDataset,
-                                                       true, // Legend.
-                                                       true, // Tooltips.
-                                                       false); // URLs.
-        PiePlot plot = (PiePlot) chart.getPlot();
-        plot.setSectionPaint(MAIN_THREAD, Color.GREEN.darker());
-        plot.setSectionPaint(FITNESS_THREADS, Color.GREEN);
-        plot.setSectionPaint(AWT_THREADS, Color.ORANGE);
-        plot.setSectionPaint(OTHER_THREADS, Color.ORANGE.darker());
-        plot.setLabelGenerator(null);
-        plot.setBackgroundPaint(null);
-        plot.setOutlinePaint(null);
-        plot.setIgnoreZeroValues(true);
-        plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0}: {2}"));
-        return chart;
-    }
-
-
     /**
      * Creates the GUI controls for toggling graph display options.
      * @return A component that can be added to the main panel.
@@ -197,43 +147,5 @@ class JVMView extends JPanel
         Second second = new Second();
         memoryUsageSeries.add(second, usedMegabytes);
         heapSizeSeries.add(second, (double) heapUsage.getCommitted() / MEGABYTE);
-    }
-
-
-    private void updateThreadData()
-    {
-        ThreadInfo[] infos = threadBean.getThreadInfo(threadBean.getAllThreadIds());
-        long mainTime = 0;
-        long fitnessTime = 0;
-        long awtTime = 0;
-        long otherTime = 0;
-        for (ThreadInfo info : infos)
-        {
-            // TO DO: This makes the rather dubious assumption that the EvolutionEngine was
-            // invoked from the main thread.
-            if (info.getThreadName().equals("main"))
-            {
-                mainTime += threadBean.getThreadCpuTime(info.getThreadId());
-            }
-            // TO DO: It also assumes that we are using ConcurrentEvolutionEngine and not
-            // some other implementation that names its threads differently (if it even has
-            // more than one thread).
-            else if (info.getThreadName().startsWith("EvolutionEngine"))
-            {
-                fitnessTime += threadBean.getThreadCpuTime(info.getThreadId());
-            }
-            else if (info.getThreadName().startsWith("AWT"))
-            {
-                awtTime += threadBean.getThreadCpuTime(info.getThreadId());
-            }
-            else
-            {
-                otherTime += threadBean.getThreadCpuTime(info.getThreadId());
-            }
-        }
-        threadDataset.setValue(MAIN_THREAD, mainTime);
-        threadDataset.setValue(FITNESS_THREADS, fitnessTime);
-        threadDataset.setValue(AWT_THREADS, awtTime);
-        threadDataset.setValue(OTHER_THREADS, otherTime);
     }
 }

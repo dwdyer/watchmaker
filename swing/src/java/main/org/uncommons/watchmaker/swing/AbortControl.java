@@ -40,6 +40,7 @@ public class AbortControl implements EvolutionControl
                 abortCondition.abort();
             }
         });
+        setDescription("Terminate the evolution on completion of the current generation.");
     }
 
 
@@ -73,4 +74,13 @@ public class AbortControl implements EvolutionControl
     {
         return abortCondition;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public final void setDescription(String description)
+    {
+        control.setToolTipText(description);
+    }    
 }

@@ -32,4 +32,11 @@ public interface EvolutionControl
      * Resets the control to its initial configuration.
      */
     void reset();
+
+    /**
+     * Provides a textual description of the purpose of the control.  This may be displayed
+     * somewhere on the GUI component (typically as tooltip text).
+     * @param description The description of the control.
+     */
+    void setDescription(String description);
 }

@@ -85,4 +85,13 @@ public class NumericParameterControl<T extends Number & Comparable<T>> implement
     {
         return numberGenerator;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setDescription(String description)
+    {
+        control.setToolTipText(description);
+    }
 }

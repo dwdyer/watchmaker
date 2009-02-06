@@ -115,8 +115,9 @@ public class ProbabilityParameterControl implements EvolutionControl
                 valueLabel.setText(format.format(probability));
             }
         });
-        slider.setMajorTickSpacing(range / 10);
-        slider.setMinorTickSpacing(range / 20);
+        int ticks = (int) Math.round(range * (maximum.doubleValue() - minimum.doubleValue()));
+        slider.setMajorTickSpacing(ticks / 10);
+        slider.setMinorTickSpacing(ticks / 20);
         slider.setPaintTicks(true);
         return slider;
     }
@@ -151,5 +152,15 @@ public class ProbabilityParameterControl implements EvolutionControl
     public NumberGenerator<Probability> getNumberGenerator()
     {
         return numberGenerator;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setDescription(String description)
+    {
+        slider.setToolTipText(description);
+        valueLabel.setToolTipText(description);
     }
 }

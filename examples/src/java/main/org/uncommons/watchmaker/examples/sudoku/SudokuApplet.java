@@ -128,10 +128,16 @@ public class SudokuApplet extends JApplet
     @Override
     public void init()
     {
-        add(createControls(), BorderLayout.NORTH);
-        add(sudokuView, BorderLayout.CENTER);
-        add(createStatusBar(), BorderLayout.SOUTH);
-        sudokuView.setPuzzle(EASY_PUZZLE);
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                add(createControls(), BorderLayout.NORTH);
+                add(sudokuView, BorderLayout.CENTER);
+                add(createStatusBar(), BorderLayout.SOUTH);
+                sudokuView.setPuzzle(EASY_PUZZLE);
+            }
+        });
     }
 
 

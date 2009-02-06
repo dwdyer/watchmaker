@@ -109,6 +109,15 @@ public class SelectionStrategyControl<T> implements EvolutionControl
 
 
     /**
+     * {@inheritDoc}
+     */
+    public void setDescription(String description)
+    {
+        control.setToolTipText(description);
+    }    
+
+
+    /**
      * @return A proxied {@link SelectionStrategy} that delegates to whichever
      * concrete selection strategy is currently selected.
      */

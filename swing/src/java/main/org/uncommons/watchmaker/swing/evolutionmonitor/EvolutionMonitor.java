@@ -85,10 +85,11 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
             catch (InterruptedException ex)
             {
                 Thread.currentThread().interrupt();
+                throw new InstantiationError(ex.getMessage());
             }
             catch (InvocationTargetException ex)
             {
-                throw new IllegalStateException("Failed to initialise evolution monitor.", ex);
+                throw new InstantiationError(ex.getMessage());
             }
         }
     }
@@ -113,7 +114,7 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
         views.add(fitnessView);
 
         JVMView jvmView = new JVMView();
-        tabs.add("JVM Monitor", jvmView);
+        tabs.add("JVM Memory", jvmView);
 
         StatusBar statusBar = new StatusBar();
         monitorComponent.add(statusBar, BorderLayout.SOUTH);
@@ -140,7 +141,9 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
 
 
     /**
-     * Displays the evolution monitor component in a new {@link JFrame}.
+     * Displays the evolution monitor component in a new {@link JFrame}.  There is no
+     * need to make sure this method is invoked from the Event Dispatch Thread, the
+     * method itself ensures that the window is created and displayed from the EDT.
      * @param title The title for the new frame.
      * @param exitOnClose Whether the JVM should exit when the frame is closed.  Useful
      * if this is the only application window.
@@ -161,7 +164,9 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
 
 
     /**
-     * Displays the evolution monitor component in a new {@link JDialog}.
+     * Displays the evolution monitor component in a new {@link JDialog}.  There is no
+     * need to make sure this method is invoked from the Event Dispatch Thread, the
+     * method itself ensures that the window is created and displayed from the EDT.
      * @param owner The owning frame for the new dialog.
      * @param title The title for the new dialog.
      * @param modal Whether the 
