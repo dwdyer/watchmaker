@@ -16,7 +16,7 @@
 package org.uncommons.watchmaker.framework;
 
 import java.util.Random;
-import org.uncommons.maths.random.MersenneTwisterRNG;
+import org.uncommons.maths.random.XORShiftRNG;
 
 /**
  * Utility methods for Watchmaker Framework unit tests.  Provides
@@ -25,7 +25,7 @@ import org.uncommons.maths.random.MersenneTwisterRNG;
  */
 public final class FrameworkTestUtils
 {
-    private static final Random RNG = new MersenneTwisterRNG();
+    private static final Random RNG = new XORShiftRNG();
 
     private FrameworkTestUtils()
     {

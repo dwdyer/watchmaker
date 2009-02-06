@@ -18,8 +18,8 @@ package org.uncommons.watchmaker.framework.operators;
 import java.util.Arrays;
 import java.util.List;
 import org.testng.annotations.Test;
+import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.FrameworkTestUtils;
-import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for string mutation operator.

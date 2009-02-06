@@ -21,9 +21,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import org.testng.annotations.Test;
+import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for the {@link AddVertexMutation} evolutionary operator.

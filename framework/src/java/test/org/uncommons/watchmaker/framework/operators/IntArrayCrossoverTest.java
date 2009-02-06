@@ -20,9 +20,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.testng.annotations.Test;
+import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.FrameworkTestUtils;
-import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for cross-over with integer arrays.

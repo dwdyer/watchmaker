@@ -18,8 +18,8 @@ package org.uncommons.watchmaker.examples.biomorphs;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Mutation operator for biomorphs.  Mutates each individual gene

@@ -16,7 +16,7 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import java.util.Random;
-import org.uncommons.watchmaker.framework.Probability;
+import org.uncommons.maths.random.Probability;
 
 /**
  * Operations supported by the different types of nodes that make up

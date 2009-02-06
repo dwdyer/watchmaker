@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.maths.number.NumberGenerator;
-import org.uncommons.watchmaker.framework.Probability;
+import org.uncommons.maths.random.Probability;
 
 /**
  * Cross-over with a configurable number of points (fixed or random) for

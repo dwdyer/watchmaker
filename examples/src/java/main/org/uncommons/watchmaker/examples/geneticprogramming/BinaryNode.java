@@ -17,8 +17,8 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import java.lang.reflect.Constructor;
 import java.util.Random;
+import org.uncommons.maths.random.Probability;
 import org.uncommons.util.reflection.ReflectionUtils;
-import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Convenient base class for {@link Node}s that have two sub-trees.

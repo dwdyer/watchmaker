@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Random;
 import org.uncommons.maths.number.ConstantGenerator;
 import org.uncommons.maths.number.NumberGenerator;
-import org.uncommons.watchmaker.framework.Probability;
+import org.uncommons.maths.random.Probability;
 
 /**
  * Evolutionary operator for mutating individual polygons.  Polygons are mutated

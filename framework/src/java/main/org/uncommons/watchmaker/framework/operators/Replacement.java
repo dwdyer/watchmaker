@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.Random;
 import org.uncommons.maths.number.ConstantGenerator;
 import org.uncommons.maths.number.NumberGenerator;
+import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * An evolutionary operator that replaces individuals with randomly-generated

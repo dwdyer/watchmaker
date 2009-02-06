@@ -19,9 +19,9 @@ import java.util.Arrays;
 import java.util.List;
 import org.testng.annotations.Test;
 import org.uncommons.maths.binary.BitString;
+import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.FrameworkTestUtils;
-import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Unit test for mutation of bit strings.

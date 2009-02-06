@@ -18,9 +18,9 @@ package org.uncommons.watchmaker.framework.selection;
 import java.util.ArrayList;
 import java.util.List;
 import org.testng.annotations.Test;
+import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.FrameworkTestUtils;
-import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**

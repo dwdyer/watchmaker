@@ -32,6 +32,10 @@ Changes in version @VERSION@
 * Added SelectionStrategyControl to the Swing module.  This control enables the
   user to change the selection strategy even while the evolution is running.
 
+* Upgraded to Uncommons Maths 1.2, which has its own Probability type, so we
+  now use that and the Probability class in the framework package has been
+  removed.
+
 
 Changes in version 0.5.1
 ------------------------

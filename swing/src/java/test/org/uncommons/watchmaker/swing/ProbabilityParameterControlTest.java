@@ -23,7 +23,7 @@ import org.fest.swing.fixture.FrameFixture;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.uncommons.watchmaker.framework.Probability;
+import org.uncommons.maths.random.Probability;
 
 /**
  * Unit test for the {@link ProbabilityParameterControl} component.

@@ -19,10 +19,11 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.maths.Maths;
 import org.uncommons.maths.number.ConstantGenerator;
 import org.uncommons.maths.number.NumberGenerator;
+import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.watchmaker.framework.Probability;
 
 /**
  * Evolutionary operator for mutating individual polygons.  Polygons are mutated
@@ -106,7 +107,7 @@ public class PolygonColourMutation implements EvolutionaryOperator<ColouredPolyg
     private int mutateColourComponent(int component)
     {
         int mutatedComponent = (int) Math.round(component + mutationAmount.nextValue());
-        mutatedComponent = Math.max(0, Math.min(255, mutatedComponent)); // Make sure value is in range 0-255.
+        mutatedComponent = Maths.restrictRange(mutatedComponent, 0, 255);
         return mutatedComponent;
     }
 }

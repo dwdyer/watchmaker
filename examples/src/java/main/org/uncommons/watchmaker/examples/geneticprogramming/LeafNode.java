@@ -16,7 +16,7 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import java.util.Random;
-import org.uncommons.watchmaker.framework.Probability;
+import org.uncommons.maths.random.Probability;
 
 /**
  * Convenient base class for {@link Node}s that have no sub-trees.

@@ -471,13 +471,6 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="uncommons-maths-1.1">
-      <CLASSES>
-        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/uncommons-maths-1.1.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="testng-5.7-jdk15">
       <CLASSES>
         <root url="jar:///Users/dan/Projects/watchmaker/lib/compiletime/testng/testng-5.7-jdk15.jar!/" />
@@ -502,6 +495,13 @@
     <library name="google-collect-snapshot-20080820">
       <CLASSES>
         <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/google-collect-snapshot-20080820.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="uncommons-maths-1.2">
+      <CLASSES>
+        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/uncommons-maths-1.2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

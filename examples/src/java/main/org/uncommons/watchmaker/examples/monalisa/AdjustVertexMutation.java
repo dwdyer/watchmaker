@@ -20,9 +20,10 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.maths.Maths;
 import org.uncommons.maths.number.ConstantGenerator;
 import org.uncommons.maths.number.NumberGenerator;
-import org.uncommons.watchmaker.framework.Probability;
+import org.uncommons.maths.random.Probability;
 
 /**
  * Evolutionary operator for mutating individual polygons.  Polygons are mutated
@@ -79,8 +80,8 @@ public class AdjustVertexMutation extends AbstractVertexMutation
             Point oldPoint = newVertices.get(index);
             int newX = oldPoint.x + xDelta;
             int newY = oldPoint.y + yDelta;
-            newX = Math.max(0, Math.min(newX, getCanvasSize().width));
-            newY = Math.max(0, Math.min(newY, getCanvasSize().height));
+            newX = Maths.restrictRange(newX, 0, getCanvasSize().width - 1);
+            newY = Maths.restrictRange(newY, 0, getCanvasSize().height - 1);
             newVertices.set(index, new Point(newX, newY));
             return newVertices;
         }

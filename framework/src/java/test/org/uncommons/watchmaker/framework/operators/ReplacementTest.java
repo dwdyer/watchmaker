@@ -19,8 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import org.testng.annotations.Test;
+import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.FrameworkTestUtils;
-import org.uncommons.watchmaker.framework.Probability;
 import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 
 /**

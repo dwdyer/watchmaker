@@ -26,7 +26,7 @@ import javax.swing.event.ChangeListener;
 import org.uncommons.maths.Maths;
 import org.uncommons.maths.number.AdjustableNumberGenerator;
 import org.uncommons.maths.number.NumberGenerator;
-import org.uncommons.watchmaker.framework.Probability;
+import org.uncommons.maths.random.Probability;
 
 /**
  * A GUI control that allows the user to set/update the value of a
