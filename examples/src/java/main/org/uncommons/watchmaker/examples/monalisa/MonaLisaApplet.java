@@ -38,8 +38,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 import org.uncommons.maths.random.GaussianGenerator;
-import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
+import org.uncommons.maths.random.XORShiftRNG;
 import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.framework.CachingFitnessEvaluator;
@@ -234,7 +234,7 @@ public class MonaLisaApplet extends JApplet
             {
                 Dimension canvasSize = new Dimension(targetImage.getWidth(), targetImage.getHeight());
 
-                Random rng = new MersenneTwisterRNG();
+                Random rng = new XORShiftRNG();
                 FitnessEvaluator<List<ColouredPolygon>> evaluator
                     = new CachingFitnessEvaluator<List<ColouredPolygon>>(new PolygonImageEvaluator(targetImage));
                 PolygonImageFactory factory = new PolygonImageFactory(canvasSize);

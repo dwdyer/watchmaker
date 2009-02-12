@@ -33,10 +33,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
-import org.uncommons.swing.LabelledComponentsPanel;
+import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
@@ -155,14 +156,19 @@ public class BiomorphApplet extends JApplet
 
         private JComponent createInputPanel()
         {
-            LabelledComponentsPanel inputPanel = new LabelledComponentsPanel();
+            JPanel inputPanel = new JPanel(new SpringLayout());
+            JLabel populationLabel = new JLabel("Population Size: ");
             populationSpinner = new JSpinner(new SpinnerNumberModel(18, 2, 25, 1));
             populationSpinner.setEnabled(false);
-            inputPanel.addLabelledComponent("Population Size: ", populationSpinner);
-
+            populationLabel.setLabelFor(populationSpinner);
+            inputPanel.add(populationLabel);
+            inputPanel.add(populationSpinner);
+            JLabel generationsLabel = new JLabel("Number of Generations: ");
             generationsSpinner = new JSpinner(new SpinnerNumberModel(20, 1, 100, 1));
-            inputPanel.addLabelledComponent("Number of Generations: ", generationsSpinner);
-
+            generationsLabel.setLabelFor(generationsSpinner);
+            inputPanel.add(generationsLabel);
+            inputPanel.add(generationsSpinner);
+            JLabel mutationLabel = new JLabel("Mutation Type: ");
             mutationCombo = new JComboBox(new String[]{"Dawkins (Non-random)", "Random"});
             mutationCombo.addItemListener(new ItemListener()
             {
@@ -179,7 +185,10 @@ public class BiomorphApplet extends JApplet
                     }
                 }
             });
-            inputPanel.addLabelledComponent("Mutation Type: ", mutationCombo);
+            inputPanel.add(mutationLabel);
+            inputPanel.add(mutationCombo);
+
+            SpringUtilities.makeCompactGrid(inputPanel, 3, 2, 30, 6, 6, 6);
 
             return inputPanel;
         }

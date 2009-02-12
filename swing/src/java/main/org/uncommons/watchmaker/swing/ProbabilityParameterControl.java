@@ -115,9 +115,8 @@ public class ProbabilityParameterControl implements EvolutionControl
                 valueLabel.setText(format.format(probability));
             }
         });
-        int ticks = (int) Math.round(range * (maximum.doubleValue() - minimum.doubleValue()));
-        slider.setMajorTickSpacing(ticks / 10);
-        slider.setMinorTickSpacing(ticks / 20);
+        slider.setMajorTickSpacing(10);
+        slider.setMinorTickSpacing(5);
         slider.setPaintTicks(true);
         return slider;
     }
