@@ -9,7 +9,7 @@ Changes in version @VERSION@
 * Added a boolean parameter to the evolution monitor showInFrame method so that
   you can specify whether closing the frame should terminate the program.
 
-* Enhancements to the Mona Lisa example application.
+* Enhancements to the Mona Lisa example application (it's now an applet).
 
 * Added methods to the EvolutionEngine interface to allow the entire population
   to be returned from an evolutionary algorithm rather than just the fittest

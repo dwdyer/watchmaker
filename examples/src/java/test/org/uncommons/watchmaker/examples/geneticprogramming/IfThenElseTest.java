@@ -16,6 +16,8 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import org.testng.annotations.Test;
+import org.uncommons.maths.random.Probability;
+import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 
 /**
  * Unit test for the {@link IfThenElse} node type.
@@ -145,5 +147,19 @@ public class IfThenElseTest
         newNode = newNode.replaceNode(5, new Constant(6));
         assert newNode instanceof IfThenElse : "Replacing sub-nodes should not change type of root node.";
         assert newNode.evaluate(new double[0]) == 11d : "Changing sub-nodes should change evaluation.";
+    }
+
+
+    @Test
+    public void testZeroProbabilityMutation()
+    {
+        Node node = new IfThenElse(new Constant(0), new Constant(2), new Addition(new Constant(3), new Constant(4)));
+        double value = node.evaluate(new double[0]);
+        String string = node.print();
+
+        Node mutated = node.mutate(ExamplesTestUtils.getRNG(), Probability.ZERO, null);
+        assert mutated == node : "Node should not have changed.";
+        assert value == mutated.evaluate(new double[0]) : "Node should not have been altered.";
+        assert string.equals(mutated.print()) : "Node should not have been altered.";
     }
 }
