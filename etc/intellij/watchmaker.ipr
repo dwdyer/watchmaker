@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="4" relativePaths="false">
+<project version="4" relativePaths="true">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
-    <buildFile url="file:///Users/dan/Projects/watchmaker/build.xml">
+    <buildFile url="file://$PROJECT_DIR$/../../build.xml">
       <additionalClassPath />
       <antReference name="Apache Ant version 1.7.1" />
       <customJdkName value="" />
@@ -41,7 +41,7 @@
       <entry name="?*.tld" />
     </wildcardResourcePatterns>
   </component>
-  <component name="CppTools.Loader" reportImplicitCastToBool="false" warnedAboutFileOutOfSourceRoot="true" version="1" currentProject="/Users/dan/Projects/watchmaker/etc/docbook/Makefile" />
+  <component name="CppTools.Loader" reportImplicitCastToBool="false" warnedAboutFileOutOfSourceRoot="true" version="1" currentProject="$PROJECT_DIR$/../docbook/Makefile" />
   <component name="DataSourceManagerImpl" />
   <component name="DependenciesAnalyzeManager">
     <option name="myForwardDirection" value="false" />
@@ -435,7 +435,7 @@
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">
-    <output url="file:///Users/dan/Projects/watchmaker/framework/build/classes/main" />
+    <output url="file://$PROJECT_DIR$/../../framework/build/classes/main" />
   </component>
   <component name="ProjectRunConfigurationManager" />
   <component name="RmicSettings">
@@ -466,42 +466,42 @@
   <component name="libraryTable">
     <library name="fest-swing-1.0b1">
       <CLASSES>
-        <root url="jar:///Users/dan/Projects/watchmaker/lib/compiletime/fest/fest-swing-1.0b1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/compiletime/fest/fest-swing-1.0b1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="testng-5.7-jdk15">
       <CLASSES>
-        <root url="jar:///Users/dan/Projects/watchmaker/lib/compiletime/testng/testng-5.7-jdk15.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/compiletime/testng/testng-5.7-jdk15.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="jfreechart-1.0.12">
       <CLASSES>
-        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/jfreechart-1.0.12.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/runtime/jfreechart-1.0.12.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="jcommon-1.0.15">
       <CLASSES>
-        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/jcommon-1.0.15.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/runtime/jcommon-1.0.15.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="google-collect-snapshot-20080820">
       <CLASSES>
-        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/google-collect-snapshot-20080820.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/runtime/google-collect-snapshot-20080820.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="uncommons-maths-1.2">
       <CLASSES>
-        <root url="jar:///Users/dan/Projects/watchmaker/lib/runtime/uncommons-maths-1.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/runtime/uncommons-maths-1.2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
