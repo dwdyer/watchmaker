@@ -129,8 +129,7 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                             TimeUnit.SECONDS,
                                             new LinkedBlockingQueue<Runnable>(),
                                             threadFactory);
-        int noOfThreads = threadPool.prestartAllCoreThreads();
-        System.out.println("Standalone evolution engine initialised with " + noOfThreads + " threads.");
+        threadPool.prestartAllCoreThreads();
     }
 
 

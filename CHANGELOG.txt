@@ -36,6 +36,8 @@ Changes in version @VERSION@
   now use that and the Probability class in the framework package has been
   removed.
 
+* Removed call to System.out.println in ConcurrentEvoltionEngine (ISSUE#12).
+
 
 Changes in version 0.5.1
 ------------------------
@@ -59,7 +61,7 @@ Changes in version 0.5.1
 * Improved ListCrossover operator so that it can work with parents of variable
   lengths.
 
-* Added high-order evolutionary operator, ListOperator that converts an
+* Added higher-order evolutionary operator, ListOperator that converts an
   operator of a given type into a operator that works with lists of that type.
 
 * Enhancements to the Evolution Monitor component.
