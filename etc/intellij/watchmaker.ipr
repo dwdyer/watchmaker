@@ -492,16 +492,16 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="google-collect-snapshot-20080820">
+    <library name="uncommons-maths-1.2">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../lib/runtime/google-collect-snapshot-20080820.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/runtime/uncommons-maths-1.2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="uncommons-maths-1.2">
+    <library name="google-collect-snapshot-20090211">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../lib/runtime/uncommons-maths-1.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/runtime/google-collect-snapshot-20090211.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

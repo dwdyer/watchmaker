@@ -124,7 +124,7 @@
     <uncommons:compile module="framework" />
     <uncommons:jar module="framework"
                    jarfile="${artifact.identifier}.jar"
-                   classpath="uncommons-maths-1.2.jar google-collect-snapshot-20080820.jar" />
+                   classpath="uncommons-maths-1.2.jar google-collect-snapshot-20090211.jar" />
   </target>
 
 

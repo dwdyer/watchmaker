@@ -23,6 +23,9 @@ Changes in version @VERSION@
   survive from generation to generation unmodified (elitism is one example of
   this).
 
+* Introduced dependency on Google Collections (to support the
+  CachingFitnessEvaluator).
+
 * Fixed ProbabilityParameterControl so that it allows the slider to move all
   the way to the maximum permitted value (ISSUE#10).
 

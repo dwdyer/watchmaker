@@ -15,9 +15,9 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework;
 
-import com.google.common.base.ReferenceType;
-import com.google.common.collect.ReferenceMap;
+import com.google.common.collect.MapMaker;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * <p>A wrapper that provides caching for {@link FitnessEvaluator} implementations.  The
@@ -52,7 +52,7 @@ import java.util.List;
 public class CachingFitnessEvaluator<T> implements FitnessEvaluator<T>
 {
     private final FitnessEvaluator<T> delegate;
-    private final ReferenceMap<T, Double> cache = new ReferenceMap<T, Double>(ReferenceType.WEAK, ReferenceType.STRONG);
+    private final ConcurrentMap<T, Double> cache = new MapMaker().weakKeys().makeMap();
 
 
     /**

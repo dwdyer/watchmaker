@@ -15,6 +15,7 @@
     <orderEntry type="library" exported="" name="uncommons-maths-1.2" level="project" />
     <orderEntry type="library" name="testng-5.7-jdk15" level="project" />
     <orderEntry type="library" name="google-collect-snapshot-20080820" level="project" />
+    <orderEntry type="library" name="google-collect-snapshot-20090211" level="project" />
     <orderEntryProperties />
   </component>
 </module>
