@@ -16,6 +16,7 @@
 package org.uncommons.swing;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.SwingUtilities;
 
 /**
@@ -27,18 +28,14 @@ import javax.swing.SwingUtilities;
 public abstract class SwingBackgroundTask<V>
 {
     // Used to assign thread IDs to make threads easier to identify when debugging.
-    private static int instanceCount = 0;
+    private static final AtomicInteger instanceCount = new AtomicInteger(0);
 
     private final CountDownLatch latch = new CountDownLatch(1);
     private final int id;
 
     protected SwingBackgroundTask()
     {
-        synchronized (SwingBackgroundTask.class)
-        {
-            this.id = instanceCount;
-            ++instanceCount;
-        }
+        this.id = instanceCount.getAndIncrement();
     }
 
 

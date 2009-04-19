@@ -29,7 +29,7 @@ public class StringFactoryTest
     private final int candidateLength = 8;
     private final int populationSize = 5;
 
-    private final char[] alphabet = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+    private final char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
 
 
     /**

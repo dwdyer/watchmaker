@@ -56,6 +56,7 @@ public class AddVertexMutation extends AbstractVertexMutation
     }
 
 
+    @Override
     protected List<Point> mutateVertices(List<Point> vertices, Random rng)
     {
         // A single point is added with the configured probability, unless

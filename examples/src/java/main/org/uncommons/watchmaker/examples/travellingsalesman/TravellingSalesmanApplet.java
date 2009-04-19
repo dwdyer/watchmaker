@@ -110,6 +110,7 @@ public final class TravellingSalesmanApplet extends JApplet
         {
             private long elapsedTime = 0;
 
+            @Override
             protected List<String> performTask()
             {
                 long startTime = System.currentTimeMillis();
@@ -118,6 +119,7 @@ public final class TravellingSalesmanApplet extends JApplet
                 return result;
             }
 
+            @Override
             protected void postProcessing(List<String> result)
             {
                 executionPanel.appendOutput(createResultString(strategy.getDescription(),

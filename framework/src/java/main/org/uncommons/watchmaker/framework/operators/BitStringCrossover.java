@@ -25,7 +25,7 @@ import org.uncommons.maths.random.Probability;
 /**
  * Cross-over with a configurable number of points (fixed or random) for
  * bit strings.
- * @see org.uncommons.maths.binary.BitString
+ * @see BitString
  * @author Daniel Dyer
  */
 public class BitStringCrossover extends AbstractCrossover<BitString>
@@ -97,6 +97,7 @@ public class BitStringCrossover extends AbstractCrossover<BitString>
     /**
      * {@inheritDoc}
      */
+    @Override
     protected List<BitString> mate(BitString parent1,
                                    BitString parent2,
                                    int numberOfCrossoverPoints,

@@ -95,6 +95,7 @@ public class DoubleArrayCrossover extends AbstractCrossover<double[]>
     /**
      * {@inheritDoc}
      */
+    @Override
     protected List<double[]> mate(double[] parent1,
                                   double[] parent2,
                                   int numberOfCrossoverPoints,

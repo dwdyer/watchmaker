@@ -35,8 +35,8 @@ public class SudokuVerticalCrossoverTest
     public void testSinglePointCrossover()
     {
         EvolutionaryOperator<Sudoku> crossover = new SudokuVerticalCrossover();
-        int[] forwards = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
-        int[] backwards = new int[]{9, 8, 7, 6, 5, 4, 3, 2, 1};
+        int[] forwards = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int[] backwards = {9, 8, 7, 6, 5, 4, 3, 2, 1};
         int[][] parent1 = new int[Sudoku.SIZE][];
         int[][] parent2 = new int[Sudoku.SIZE][];
         for (int i = 0; i < Sudoku.SIZE; i++)

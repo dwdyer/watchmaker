@@ -97,6 +97,7 @@ public class SequentialEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     /**
      * {@inheritDoc} 
      */
+    @Override
     protected List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population)
     {
         List<EvaluatedCandidate<T>> evaluatedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());

@@ -87,6 +87,7 @@ public class BiomorphApplet extends JApplet
     {
         return new SwingBackgroundTask<Biomorph>()
         {
+            @Override
             protected Biomorph performTask()
             {
                 EvolutionaryOperator<Biomorph> mutation = random ? new RandomBiomorphMutation(new Probability(0.12d))
@@ -105,6 +106,7 @@ public class BiomorphApplet extends JApplet
                                      new GenerationCount(generationCount));
             }
 
+            @Override
             protected void postProcessing(Biomorph result)
             {
                 selectionDialog.setVisible(false);

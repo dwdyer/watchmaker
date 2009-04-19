@@ -169,6 +169,7 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
      * @return The evaluated population (a list of candidates with attached fitness
      * scores).
      */
+    @Override
     protected List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population)
     {
         List<EvaluatedCandidate<T>> evaluatedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());

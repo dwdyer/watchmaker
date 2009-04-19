@@ -44,7 +44,7 @@ import java.util.concurrent.ConcurrentMap;
  * result depends only upon the candidate being evaluated.  This is not the case when
  * candidates are evaluated against the other members of the population.  So unless the
  * fitness evaluator ignores the second parameter to the
- * {@link #getFitness(Object, java.util.List)} method, caching must not be used.</p>
+ * {@link #getFitness(Object, List)} method, caching must not be used.</p>
  * @param <T> The type of evolvable entity that can be evaluated.
  * 
  * @author Daniel Dyer
@@ -70,7 +70,7 @@ public class CachingFitnessEvaluator<T> implements FitnessEvaluator<T>
      *
      * <p>This implementation performs a cache look-up every time it is invoked.  If the
      * fitness evaluator has already calculated the fitness score for the specified
-     * candidate that score is returned without invoking to the wrapped evaluator.</p>
+     * candidate that score is returned without delegating to the wrapped evaluator.</p>
      */
     public double getFitness(T candidate, List<? extends T> population)
     {

@@ -37,6 +37,7 @@ public class SwingBackgroundTaskTest
     {
         SwingBackgroundTask<Object> testTask = new SwingBackgroundTask<Object>()
         {
+            @Override
             protected Object performTask()
             {
                 taskExecuted = true;
@@ -71,6 +72,7 @@ public class SwingBackgroundTaskTest
     {
         SwingBackgroundTask<Object> testTask = new SwingBackgroundTask<Object>()
         {
+            @Override
             protected Object performTask()
             {
                 throw new UnsupportedOperationException("Task failed.");

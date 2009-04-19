@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module version="4" relativePaths="true" type="JAVA_MODULE">
-  <component name="ModuleRootManager" />
+<module relativePaths="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../framework/build/classes/main" />
-    <exclude-output />
     <output-test url="file://$MODULE_DIR$/../../framework/build/classes/test" />
+    <exclude-output />
     <content url="file://$MODULE_DIR$/../../framework">
       <sourceFolder url="file://$MODULE_DIR$/../../framework/src/java/main" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../framework/src/java/test" isTestSource="true" />
@@ -13,10 +12,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="uncommons-maths-1.2" level="project" />
-    <orderEntry type="library" name="testng-5.7-jdk15" level="project" />
-    <orderEntry type="library" name="google-collect-snapshot-20080820" level="project" />
     <orderEntry type="library" name="google-collect-snapshot-20090211" level="project" />
-    <orderEntryProperties />
+    <orderEntry type="library" name="testng-5.9-jdk15" level="project" />
   </component>
 </module>
 

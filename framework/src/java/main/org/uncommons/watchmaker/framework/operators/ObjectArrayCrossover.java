@@ -97,6 +97,7 @@ public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
     /**
      * {@inheritDoc}
      */
+    @Override
     protected List<T[]> mate(T[] parent1,
                              T[] parent2,
                              int numberOfCrossoverPoints,

@@ -30,7 +30,7 @@ public class ObjectArrayPermutationFactoryTest
 {
     private final int candidateLength = 10;
     private final int populationSize = 5;
-    private final Integer[] elements = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    private final Integer[] elements = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 
     /**
@@ -60,7 +60,7 @@ public class ObjectArrayPermutationFactoryTest
         CandidateFactory<Integer[]> factory = new ObjectArrayPermutationFactory<Integer>(elements);
 
         Integer[] seed1 = elements.clone();
-        Integer[] seed2 = new Integer[]{10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+        Integer[] seed2 = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 
         List<Integer[]> population = factory.generateInitialPopulation(populationSize,
                                                                        Arrays.asList(seed1, seed2),

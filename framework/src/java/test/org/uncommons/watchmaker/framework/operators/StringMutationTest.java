@@ -27,7 +27,7 @@ import org.uncommons.watchmaker.framework.FrameworkTestUtils;
  */
 public class StringMutationTest
 {
-    private final char[] alphabet = new char[]{'a', 'b', 'c', 'd'};
+    private final char[] alphabet = {'a', 'b', 'c', 'd'};
 
     @Test
     public void testMutation()

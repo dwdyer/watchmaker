@@ -230,6 +230,7 @@ public class MonaLisaApplet extends JApplet
     {
         return new SwingBackgroundTask<List<ColouredPolygon>>()
         {
+            @Override
             protected List<ColouredPolygon> performTask() throws Exception
             {
                 Dimension canvasSize = new Dimension(targetImage.getWidth(), targetImage.getHeight());

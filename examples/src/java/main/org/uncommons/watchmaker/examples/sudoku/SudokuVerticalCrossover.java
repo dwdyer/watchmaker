@@ -70,6 +70,7 @@ public class SudokuVerticalCrossover extends AbstractCrossover<Sudoku>
      * @param rng The RNG used to select the cross-over points.
      * @return A list containing a pair of offspring.
      */
+    @Override
     protected List<Sudoku> mate(Sudoku parent1,
                                 Sudoku parent2,
                                 int numberOfCrossoverPoints,

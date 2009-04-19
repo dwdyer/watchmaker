@@ -49,9 +49,9 @@ public class InteractiveSelectionTest
         assert console.getSelectionCount() == 1 : "Wrong number of user selections: " + console.getSelectionCount();
         // All 3 selected individuals should be the same since the strategy doubles up
         // selections when configured to restrict the number of user choices per generation.
-        assert selection.get(0) == selection.get(1) : "Incorrect selection.";
-        assert selection.get(1) == selection.get(2) : "Incorrect selection.";
-        assert selection.get(0) == selection.get(2) : "Incorrect selection.";
+        assert selection.get(0).equals(selection.get(1)) : "Incorrect selection.";
+        assert selection.get(1).equals(selection.get(2)) : "Incorrect selection.";
+        assert selection.get(0).equals(selection.get(2)) : "Incorrect selection.";
     }
 
 

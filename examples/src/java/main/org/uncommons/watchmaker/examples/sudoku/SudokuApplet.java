@@ -61,50 +61,50 @@ import org.uncommons.watchmaker.swing.ProbabilityParameterControl;
  */
 public class SudokuApplet extends JApplet
 {
-    private static final String[] BLANK_PUZZLE = new String[]{".........",
-                                                              ".........",
-                                                              ".........",
-                                                              ".........",
-                                                              ".........",
-                                                              ".........",
-                                                              ".........",
-                                                              ".........",
-                                                              "........."};
+    private static final String[] BLANK_PUZZLE = {".........",
+                                                  ".........",
+                                                  ".........",
+                                                  ".........",
+                                                  ".........",
+                                                  ".........",
+                                                  ".........",
+                                                  ".........",
+                                                  "........."};
 
-    private static final String[] EASY_PUZZLE = new String[]{"4.5...9.7",
-                                                             ".2..9..6.",
-                                                             "39.6.7.28",
-                                                             "9..3.2..6",
-                                                             "7..9.6..3",
-                                                             "5..4.8..1",
-                                                             "28.1.5.49",
-                                                             ".7..3..8.",
-                                                             "6.4...3.2"};
+    private static final String[] EASY_PUZZLE = {"4.5...9.7",
+                                                 ".2..9..6.",
+                                                 "39.6.7.28",
+                                                 "9..3.2..6",
+                                                 "7..9.6..3",
+                                                 "5..4.8..1",
+                                                 "28.1.5.49",
+                                                 ".7..3..8.",
+                                                 "6.4...3.2"};
 
-    private static final String[] MEDIUM_PUZZLE = new String[]{"....3....",
-                                                               ".....6293",
-                                                               ".2.9.48..",
-                                                               ".754...38",
-                                                               "..46.71..",
-                                                               "91...547.",
-                                                               "..38.9.1.",
-                                                               "1567.....",
-                                                               "....1...."};
+    private static final String[] MEDIUM_PUZZLE = {"....3....",
+                                                   ".....6293",
+                                                   ".2.9.48..",
+                                                   ".754...38",
+                                                   "..46.71..",
+                                                   "91...547.",
+                                                   "..38.9.1.",
+                                                   "1567.....",
+                                                   "....1...."};
 
-    private static final String[] HARD_PUZZLE = new String[]{"...891...",
-                                                             "....5.8..",
-                                                             ".....6.2.",
-                                                             "5....4..8",
-                                                             "49....67.",
-                                                             "8.13....5",
-                                                             ".6..8..9.",
-                                                             "..5.4.2.7",
-                                                             "...1.3.8."};
+    private static final String[] HARD_PUZZLE = {"...891...",
+                                                 "....5.8..",
+                                                 ".....6.2.",
+                                                 "5....4..8",
+                                                 "49....67.",
+                                                 "8.13....5",
+                                                 ".6..8..9.",
+                                                 "..5.4.2.7",
+                                                 "...1.3.8."};
 
-    private static final String[][] PUZZLES = new String[][]{EASY_PUZZLE,
-                                                             MEDIUM_PUZZLE,
-                                                             HARD_PUZZLE,
-                                                             BLANK_PUZZLE};
+    private static final String[][] PUZZLES = {EASY_PUZZLE,
+                                               MEDIUM_PUZZLE,
+                                               HARD_PUZZLE,
+                                               BLANK_PUZZLE};
 
     private static final DecimalFormat TIME_FORMAT = new DecimalFormat("#.###s");
 
@@ -213,6 +213,7 @@ public class SudokuApplet extends JApplet
     {
         return new SwingBackgroundTask<Sudoku>()
         {
+            @Override
             protected Sudoku performTask()
             {
                 Random rng = new MersenneTwisterRNG();
@@ -239,6 +240,7 @@ public class SudokuApplet extends JApplet
             }
 
             
+            @Override
             protected void postProcessing(Sudoku result)
             {
                 solveButton.setEnabled(true);

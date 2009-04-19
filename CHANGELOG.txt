@@ -39,7 +39,7 @@ Changes in version @VERSION@
   now use that and the Probability class in the framework package has been
   removed.
 
-* Removed call to System.out.println in ConcurrentEvoltionEngine (ISSUE#12).
+* Removed call to System.out.println in ConcurrentEvolutionEngine (ISSUE#12).
 
 
 Changes in version 0.5.1

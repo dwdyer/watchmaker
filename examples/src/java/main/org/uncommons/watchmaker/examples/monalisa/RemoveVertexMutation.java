@@ -56,6 +56,7 @@ public class RemoveVertexMutation extends AbstractVertexMutation
     }
 
 
+    @Override
     protected List<Point> mutateVertices(List<Point> vertices, Random rng)
     {
         // A single point is removed with the configured probability, unless

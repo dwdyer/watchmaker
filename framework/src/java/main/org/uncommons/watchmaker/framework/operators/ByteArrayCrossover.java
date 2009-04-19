@@ -95,6 +95,7 @@ public class ByteArrayCrossover extends AbstractCrossover<byte[]>
     /**
      * {@inheritDoc}
      */
+    @Override
     protected List<byte[]> mate(byte[] parent1,
                                 byte[] parent2,
                                 int numberOfCrossoverPoints,

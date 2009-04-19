@@ -103,7 +103,7 @@ public class FittestCandidateViewTest
 
         // Render the same candidate for the second generation.
         PopulationData<BigDecimal> data2 = new PopulationData<BigDecimal>(BigDecimal.TEN, 10, 5, 2, true, 5, 0, 2, 100);
-        view.populationUpdate(data1);
+        view.populationUpdate(data2);
         robot.waitForIdle();
         JTextComponent component2 = frameFixture.textBox().component();
 

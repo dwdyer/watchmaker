@@ -38,7 +38,7 @@ class SudokuCellRenderer extends DefaultTableCellRenderer
     private static final Color VARIABLE_TEXT_COLOUR = Color.DARK_GRAY;
     private static final Color FIXED_TEXT_COLOUR = Color.BLACK;
 
-    private static final Color[] CONFLICT_COLOURS = new Color[]{Color.WHITE, Color.YELLOW, Color.ORANGE, Color.RED};
+    private static final Color[] CONFLICT_COLOURS = {Color.WHITE, Color.YELLOW, Color.ORANGE, Color.RED};
 
     private static final Border TOP_BORDER = new ConfigurableLineBorder(true, false, false, false, 1);
     private static final Border BOTTOM_BORDER = new ConfigurableLineBorder(false, false, true, false, 1);

@@ -68,6 +68,7 @@ public class AdjustVertexMutation extends AbstractVertexMutation
     }
 
 
+    @Override
     protected List<Point> mutateVertices(List<Point> vertices, Random rng)
     {
         // A single point is modified with the configured probability.

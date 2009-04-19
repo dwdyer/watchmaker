@@ -23,15 +23,15 @@ import org.testng.annotations.Test;
  */
 public class SudokuTableModelTest
 {
-    private static final String[] TEST_PUZZLE = new String[]{"4.5...9.7",
-                                                             ".2..9..6.",
-                                                             "39.6.7.28",
-                                                             "9..3.2..6",
-                                                             "7..9.6..3",
-                                                             "5..4.8..1",
-                                                             "28.1.5.49",
-                                                             ".7..3..8.",
-                                                             "6.4...3.2"};
+    private static final String[] TEST_PUZZLE = {"4.5...9.7",
+                                                 ".2..9..6.",
+                                                 "39.6.7.28",
+                                                 "9..3.2..6",
+                                                 "7..9.6..3",
+                                                 "5..4.8..1",
+                                                 "28.1.5.49",
+                                                 ".7..3..8.",
+                                                 "6.4...3.2"};
 
     /**
      * Makes sure that the table model class correctly converts to and from the

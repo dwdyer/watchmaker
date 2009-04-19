@@ -152,7 +152,7 @@ public class ReflectionUtilsTest
     }
 
 
-    private static abstract class Unconstructable
+    private abstract static class Unconstructable
     {
         public Unconstructable()
         {
