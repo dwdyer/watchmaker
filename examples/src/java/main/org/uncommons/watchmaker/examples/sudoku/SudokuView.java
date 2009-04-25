@@ -35,7 +35,7 @@ class SudokuView extends JPanel
 {
     private final SudokuTableModel sudokuTableModel = new SudokuTableModel();
 
-    public SudokuView()
+    SudokuView()
     {
         super(new BorderLayout());
         JTable sudokuTable = new JTable(sudokuTableModel);

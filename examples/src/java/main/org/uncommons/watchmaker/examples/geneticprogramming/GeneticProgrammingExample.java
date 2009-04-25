@@ -43,11 +43,11 @@ public class GeneticProgrammingExample
     private static final Map<double[], Double> TEST_DATA = new HashMap<double[], Double>();
     static
     {
-        TEST_DATA.put(new double[]{26, 35}, 829d);
-        TEST_DATA.put(new double[]{8, 24}, 141d);
-        TEST_DATA.put(new double[]{20, 1}, 467d);
-        TEST_DATA.put(new double[]{33, 11}, 1215d);
-        TEST_DATA.put(new double[]{37, 16}, 1517d);
+        TEST_DATA.put(new double[]{26, 35}, 829.0d);
+        TEST_DATA.put(new double[]{8, 24}, 141.0d);
+        TEST_DATA.put(new double[]{20, 1}, 467.0d);
+        TEST_DATA.put(new double[]{33, 11}, 1215.0d);
+        TEST_DATA.put(new double[]{37, 16}, 1517.0d);
     }
 
 

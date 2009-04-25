@@ -48,7 +48,7 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
      * @param renderer A renderer that convert evolved entities of the type
      * recognised by this view into Swing components.
      */
-    public FittestCandidateView(Renderer<? super T, JComponent> renderer)
+    FittestCandidateView(Renderer<? super T, JComponent> renderer)
     {
         super(new BorderLayout(0, 10));
         this.renderer = renderer;

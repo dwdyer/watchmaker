@@ -46,7 +46,7 @@ final class EvolutionPanel extends JPanel
     private final JCheckBox mutationCheckbox;
     private final DistanceLookup distances;
 
-    public EvolutionPanel(DistanceLookup distances)
+    EvolutionPanel(DistanceLookup distances)
     {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         this.distances = distances;

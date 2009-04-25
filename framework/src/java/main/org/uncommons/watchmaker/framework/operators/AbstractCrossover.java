@@ -131,13 +131,7 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
         while (iterator.hasNext())
         {
             T parent1 = iterator.next();
-            if (!iterator.hasNext())
-            {
-                // If we have an odd number of selected candidates, we can't pair up
-                // the last one so just leave it unmodified.
-                result.add(parent1);
-            }
-            else
+            if (iterator.hasNext())
             {
                 T parent2 = iterator.next();
                 // Randomly decide (according to the pre-configured cross-over probability)
@@ -154,6 +148,12 @@ public abstract class AbstractCrossover<T> implements EvolutionaryOperator<T>
                     result.add(parent1);
                     result.add(parent2);
                 }
+            }
+            else
+            {
+                // If we have an odd number of selected candidates, we can't pair up
+                // the last one so just leave it unmodified.
+                result.add(parent1);
             }
         }
         return result;

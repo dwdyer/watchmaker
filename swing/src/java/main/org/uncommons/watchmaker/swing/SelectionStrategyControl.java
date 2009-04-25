@@ -135,7 +135,7 @@ public class SelectionStrategyControl<T> implements EvolutionControl
     {
         private volatile SelectionStrategy<? super T> delegate;
 
-        public ProxySelectionStrategy(SelectionStrategy<? super T> delegate)
+        ProxySelectionStrategy(SelectionStrategy<? super T> delegate)
         {
             this.delegate = delegate;
         }

@@ -50,9 +50,9 @@ public final class CompositeIDSource implements IDSource<Long>
      */
     public Long nextID()
     {
+        lock.lock();
         try
         {
-            lock.lock();
             // Top part is value provided in constructor, lower 32 bits are from the sequence.
             return (top32bits + sequence.nextID());
         }

@@ -66,16 +66,18 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
      */
     private final class ImageComponent extends JComponent
     {
+        private static final int GAP = 10;
+        private static final int FOOTER = 20;
+
         private final List<ColouredPolygon> candidate;
         private final Dimension minimumSize;
-        private final int gap = 10;
-        private final int footer = 20;
 
-        public ImageComponent(List<ColouredPolygon> candidate)
+
+        ImageComponent(List<ColouredPolygon> candidate)
         {
             this.candidate = candidate;
-            this.minimumSize = new Dimension(targetImage.getWidth() * 2 + gap,
-                                             targetImage.getHeight() + footer);
+            this.minimumSize = new Dimension(targetImage.getWidth() * 2 + GAP,
+                                             targetImage.getHeight() + FOOTER);
         }
 
         @Override
@@ -98,10 +100,10 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
             int y = Math.max(0, (getHeight() - minimumSize.height) / 2);
             graphics.drawImage(targetImage, x, y, this);
             BufferedImage candidateImage = delegate.render(candidate);
-            Graphics clip = graphics.create(x + targetImage.getWidth() + gap,
+            Graphics clip = graphics.create(x + targetImage.getWidth() + GAP,
                                      y,
                                      candidateImage.getWidth(),
-                                     candidateImage.getHeight() + footer);
+                                     candidateImage.getHeight() + FOOTER);
             clip.drawImage(candidateImage, 0, 0, this);
 
             clip.setColor(getForeground());

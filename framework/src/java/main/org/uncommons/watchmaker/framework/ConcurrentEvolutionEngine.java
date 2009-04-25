@@ -233,8 +233,8 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
          * of the candidates to evaluate along with any other individuals that are
          * not being evaluated by this task.
          */
-        public FitnessEvalutationTask(List<T> candidates,
-                                      List<T> population)
+        FitnessEvalutationTask(List<T> candidates,
+                               List<T> population)
         {
             this.candidates = candidates;
             this.population = population;

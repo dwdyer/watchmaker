@@ -33,7 +33,7 @@ class StatusBar extends Box implements EvolutionObserver<Object>
     private final JLabel populationLabel = new JLabel("N/A", JLabel.RIGHT);
     private final JLabel elitismLabel = new JLabel("N/A", JLabel.RIGHT);
 
-    public StatusBar()
+    StatusBar()
     {
         super(BoxLayout.X_AXIS);
         add(new JLabel("Population Size: "));
@@ -51,7 +51,7 @@ class StatusBar extends Box implements EvolutionObserver<Object>
     }
 
 
-    public void populationUpdate(PopulationData<? extends Object> populationData)
+    public void populationUpdate(PopulationData<?> populationData)
     {
         populationLabel.setText(String.valueOf(populationData.getPopulationSize()));
         elitismLabel.setText(String.valueOf(populationData.getEliteCount()));

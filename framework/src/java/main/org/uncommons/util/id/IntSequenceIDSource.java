@@ -62,9 +62,9 @@ public final class IntSequenceIDSource implements IDSource<Integer>
      */
     public Integer nextID()
     {
+        lock.lock();
         try
         {
-            lock.lock();
             if (lastID == Integer.MAX_VALUE)
             {
                 long hours = (System.currentTimeMillis() - startTime) / SECONDS_IN_HOUR;

@@ -147,7 +147,7 @@ public class BiomorphApplet extends JApplet
         private JSpinner generationsSpinner;
         private JComboBox mutationCombo;
 
-        public ControlPanel()
+        ControlPanel()
         {
             super(new BorderLayout());
             add(createInputPanel(), BorderLayout.NORTH);

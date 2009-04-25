@@ -50,7 +50,7 @@ class SudokuCellRenderer extends DefaultTableCellRenderer
     private static final Border BOTTOM_RIGHT_BORDER = new ConfigurableLineBorder(false, false, true, true, 1);
 
 
-    public SudokuCellRenderer()
+    SudokuCellRenderer()
     {
         setHorizontalAlignment(JLabel.CENTER);
     }

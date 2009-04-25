@@ -99,7 +99,7 @@ public final class EvaluatedCandidate<T> implements Comparable<EvaluatedCandidat
     @Override
     public int hashCode()
     {
-        final long temp = fitness != +0.0d ? Double.doubleToLongBits(fitness) : 0L;
+        final long temp = fitness == 0.0d ? 0L : Double.doubleToLongBits(fitness);
         return (int) (temp ^ (temp >>> 32));
     }
 }

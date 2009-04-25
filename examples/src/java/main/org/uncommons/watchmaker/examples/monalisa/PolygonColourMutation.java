@@ -69,9 +69,9 @@ public class PolygonColourMutation implements EvolutionaryOperator<ColouredPolyg
         for (ColouredPolygon polygon : polygons)
         {
             Color newColour = mutateColour(polygon.getColour(), rng);
-            newPolygons.add(newColour != polygon.getColour()
-                            ? new ColouredPolygon(newColour, polygon.getVertices())
-                            : polygon);
+            newPolygons.add(newColour == polygon.getColour()
+                            ? polygon
+                            : new ColouredPolygon(newColour, polygon.getVertices()));
         }
         return newPolygons;
     }

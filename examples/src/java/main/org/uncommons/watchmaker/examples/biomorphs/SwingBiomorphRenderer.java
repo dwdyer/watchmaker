@@ -49,7 +49,7 @@ public class SwingBiomorphRenderer implements Renderer<Biomorph, JComponent>
     {
         private final Biomorph biomorph;
 
-        public BiomorphView(Biomorph biomorph)
+        BiomorphView(Biomorph biomorph)
         {
             this.biomorph = biomorph;
             Dimension size = new Dimension(200, 200);

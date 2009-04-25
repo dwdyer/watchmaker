@@ -51,7 +51,7 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
         AffineTransform transform = null;
         if (width > 100 && height > 100)
         {
-            double ratio = 100d / (width > height ? height : width);
+            double ratio = 100.0d / (width > height ? height : width);
             transform = AffineTransform.getScaleInstance(ratio, ratio);
             AffineTransformOp transformOp = new AffineTransformOp(transform,
                                                                   AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
@@ -80,17 +80,17 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
      */
     private BufferedImage convertImage(BufferedImage image)
     {
-        if (image.getType() != BufferedImage.TYPE_INT_RGB)
+        if (image.getType() == BufferedImage.TYPE_INT_RGB)
+        {
+            return image;
+        }
+        else
         {
             BufferedImage newImage = new BufferedImage(image.getWidth(),
                                                        image.getHeight(),
                                                        BufferedImage.TYPE_INT_RGB);
             newImage.getGraphics().drawImage(image, 0, 0, null);
             return newImage;
-        }
-        else
-        {
-            return image;
         }
     }
 

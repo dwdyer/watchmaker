@@ -28,7 +28,7 @@ final class IntegerAdjuster implements EvolutionaryOperator<Integer>
 {
     private final int adjustment;
 
-    public IntegerAdjuster(int adjustment)
+    IntegerAdjuster(int adjustment)
     {
         this.adjustment = adjustment;
     }

@@ -104,6 +104,10 @@ class SudokuTableModel extends AbstractTableModel
     /**
      * Sets all cells at once using the same patterns as supported by
      * {@link SudokuFactory}.
+     * @param pattern A String representation of a Sudoku puzzle.  Each element
+     * in the array represents a single row.  There are 9 elements and each has 9
+     * characters, one per cell.  Number cells are represented by the characters
+     * '0' to '9' and blank cells are represented by dots.
      */
     public void setPattern(String[] pattern)
     {

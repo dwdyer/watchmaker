@@ -93,9 +93,9 @@ public class SwingConsole extends JPanel implements Console<JComponent>
      */
     private void waitForSelection()
     {
+        lock.lock();
         try
         {
-            lock.lock();
             while (selectedIndex.get() < 0)
             {
                 selected.awaitUninterruptibly();
@@ -114,8 +114,7 @@ public class SwingConsole extends JPanel implements Console<JComponent>
      */
     private class EntityPanel extends JPanel
     {
-        public EntityPanel(JComponent entityComponent,
-                           final int index)
+        EntityPanel(JComponent entityComponent, final int index)
         {
             super(new BorderLayout());
             add(entityComponent, BorderLayout.CENTER);
@@ -125,9 +124,9 @@ public class SwingConsole extends JPanel implements Console<JComponent>
             {
                 public void actionPerformed(ActionEvent actionEvent)
                 {
+                    lock.lock();
                     try
                     {
-                        lock.lock();
                         selectedIndex.set(index);
                         selected.signalAll();
                     }

@@ -40,7 +40,7 @@ final class ExecutionPanel extends JPanel implements ProgressListener
     private final JProgressBar progressBar;
 
 
-    public ExecutionPanel()
+    ExecutionPanel()
     {
         super(new BorderLayout());        
         JPanel controlPanel = new JPanel(new BorderLayout());

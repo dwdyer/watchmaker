@@ -170,7 +170,7 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
     /**
      * {@inheritDoc}
      */
-    public void populationUpdate(final PopulationData<? extends Object> populationData)
+    public void populationUpdate(final PopulationData<?> populationData)
     {
         SwingUtilities.invokeLater(new Runnable()
         {

@@ -45,9 +45,9 @@ public class StringPrefixIDSource implements IDSource<String>
      */
     public String nextID()
     {
+        lock.lock();
         try
         {
-            lock.lock();
             StringBuilder output = new StringBuilder(prefix);
             output.append(source.nextID());
             return output.toString();

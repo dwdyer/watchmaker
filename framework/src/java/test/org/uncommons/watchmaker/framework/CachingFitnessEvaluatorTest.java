@@ -76,7 +76,7 @@ public class CachingFitnessEvaluatorTest
         private final boolean natural;
         private int count = 0;
 
-        public IncrementingEvaluator(boolean natural)
+        IncrementingEvaluator(boolean natural)
         {
             this.natural = natural;
         }

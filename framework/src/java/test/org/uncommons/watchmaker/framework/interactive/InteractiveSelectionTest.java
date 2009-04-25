@@ -124,7 +124,7 @@ public class InteractiveSelectionTest
         /** Count how many times the select method is called. */
         private int selectionCount = 0;
 
-        public RandomConsole(int expectedGroupSize)
+        RandomConsole(int expectedGroupSize)
         {
             this.expectedGroupSize = expectedGroupSize;
         }

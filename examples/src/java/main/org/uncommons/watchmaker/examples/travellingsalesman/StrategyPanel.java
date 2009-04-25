@@ -41,7 +41,7 @@ final class StrategyPanel extends JPanel
      * @param distances Data used by the strategy in order to calculate
      * shortest routes.
      */
-    public StrategyPanel(DistanceLookup distances)
+    StrategyPanel(DistanceLookup distances)
     {
         super(new BorderLayout());
         this.distances = distances;

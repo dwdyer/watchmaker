@@ -32,7 +32,7 @@ public class NullFitnessEvaluator implements FitnessEvaluator<Object>
      * @return Zero.
      */
     public double getFitness(Object candidate,
-                             List<? extends Object> population)
+                             List<?> population)
     {
         return 0;
     }

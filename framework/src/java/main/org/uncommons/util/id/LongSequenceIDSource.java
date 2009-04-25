@@ -62,9 +62,9 @@ public final class LongSequenceIDSource implements IDSource<Long>
      */
     public Long nextID()
     {
+        lock.lock();
         try
         {
-            lock.lock();
             if (lastID == Long.MAX_VALUE)
             {
                 long days = (System.currentTimeMillis() - startTime) / SECONDS_IN_DAY;
