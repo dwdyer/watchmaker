@@ -49,8 +49,8 @@ class JVMView extends JPanel
 {
     private static final int MEGABYTE = 1048576;
 
-    private final TimeSeries memoryUsageSeries = new TimeSeries("Memory Usage", Second.class);
-    private final TimeSeries heapSizeSeries = new TimeSeries("Heap Size", Second.class);
+    private final TimeSeries memoryUsageSeries = new TimeSeries("Memory Usage");
+    private final TimeSeries heapSizeSeries = new TimeSeries("Heap Size");
 
     private final MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
 

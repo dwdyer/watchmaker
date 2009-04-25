@@ -216,7 +216,6 @@
           <option name="m_minLength" value="3" />
           <option name="m_maxLength" value="64" />
         </inspection_tool>
-        <inspection_tool class="MethodNameSameAsClassName" level="WARNING" enabled="true" />
         <inspection_tool class="DollarSignInName" level="WARNING" enabled="true" />
         <inspection_tool class="DivideByZero" level="WARNING" enabled="true" />
         <inspection_tool class="FloatingPointEquality" level="WARNING" enabled="true" />
@@ -277,13 +276,100 @@
         <inspection_tool class="SystemGC" level="WARNING" enabled="true" />
         <inspection_tool class="ZeroLengthArrayInitialization" level="WARNING" enabled="true" />
         <inspection_tool class="RedundantSuppression" level="WARNING" enabled="true" />
-        <inspection_tool class="WrongPackageStatement" level="ERROR" enabled="true" />
         <inspection_tool class="AntMissingPropertiesFileInspection" level="WARNING" enabled="true" />
         <inspection_tool class="EnumeratedClassNamingConvention" level="WARNING" enabled="true">
           <option name="m_regex" value="[A-Z][A-Za-z\d]*" />
           <option name="m_minLength" value="3" />
           <option name="m_maxLength" value="64" />
         </inspection_tool>
+        <inspection_tool class="HtmlDeprecatedTag" level="WARNING" enabled="false" />
+        <inspection_tool class="CheckEmptyScriptTag" level="WARNING" enabled="false" />
+        <inspection_tool class="HtmlExtraClosingTag" level="ERROR" enabled="false" />
+        <inspection_tool class="CheckImageSize" level="WARNING" enabled="false" />
+        <inspection_tool class="CheckValidXmlInScriptTagBody" level="ERROR" enabled="false" />
+        <inspection_tool class="RequiredAttributes" level="WARNING" enabled="false">
+          <option name="myAdditionalRequiredHtmlAttributes" value="" />
+        </inspection_tool>
+        <inspection_tool class="HtmlUnknownTag" level="WARNING" enabled="false">
+          <option name="myValues">
+            <value>
+              <list size="5">
+                <item index="0" class="java.lang.String" itemvalue="embed" />
+                <item index="1" class="java.lang.String" itemvalue="nobr" />
+                <item index="2" class="java.lang.String" itemvalue="noembed" />
+                <item index="3" class="java.lang.String" itemvalue="comment" />
+                <item index="4" class="java.lang.String" itemvalue="script" />
+              </list>
+            </value>
+          </option>
+          <option name="myCustomValuesEnabled" value="true" />
+        </inspection_tool>
+        <inspection_tool class="HtmlUnknownAttribute" level="WARNING" enabled="false">
+          <option name="myValues">
+            <value>
+              <list size="5">
+                <item index="0" class="java.lang.String" itemvalue="type" />
+                <item index="1" class="java.lang.String" itemvalue="wmode" />
+                <item index="2" class="java.lang.String" itemvalue="src" />
+                <item index="3" class="java.lang.String" itemvalue="width" />
+                <item index="4" class="java.lang.String" itemvalue="height" />
+              </list>
+            </value>
+          </option>
+          <option name="myCustomValuesEnabled" value="true" />
+        </inspection_tool>
+        <inspection_tool class="HibernateMappingDatasourceDomInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="HibernateConfigDomInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="HibernateMappingDomInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="NonJREEmulationClassesInClientCode" level="ERROR" enabled="false" />
+        <inspection_tool class="GwtDeprecatedPropertyKeyJavadocTag" level="WARNING" enabled="false" />
+        <inspection_tool class="GwtObsoleteTypeArgsJavadocTag" level="WARNING" enabled="false" />
+        <inspection_tool class="GwtServiceNotRegistered" level="ERROR" enabled="false" />
+        <inspection_tool class="GwtInconsistentI18nInterface" level="ERROR" enabled="false" />
+        <inspection_tool class="GWTRemoteServiceAsyncCheck" level="ERROR" enabled="false" />
+        <inspection_tool class="GwtInconsistentSerializableClass" level="ERROR" enabled="false" />
+        <inspection_tool class="GwtMethodWithParametersInConstantsInterface" level="ERROR" enabled="false" />
+        <inspection_tool class="NonSerializableServiceParameters" level="ERROR" enabled="false" />
+        <inspection_tool class="gwtRawAsyncCallback" level="WARNING" enabled="false" />
+        <inspection_tool class="GwtJavaScriptReferences" level="ERROR" enabled="false" />
+        <inspection_tool class="GWTStyleCheck" level="ERROR" enabled="false" />
+        <inspection_tool class="GwtToHtmlReferences" level="ERROR" enabled="false" />
+        <inspection_tool class="JSUntypedDeclaration" level="WARNING" enabled="false" />
+        <inspection_tool class="JSDeprecatedSymbols" level="INFO" enabled="false" />
+        <inspection_tool class="JSDuplicatedDeclaration" level="WARNING" enabled="false" />
+        <inspection_tool class="JSUndeclaredVariable" level="INFO" enabled="false" />
+        <inspection_tool class="JSUnresolvedFunction" level="INFO" enabled="false" />
+        <inspection_tool class="JSUnresolvedVariable" level="INFO" enabled="false" />
+        <inspection_tool class="JSUnusedLocalSymbols" level="WARNING" enabled="false" />
+        <inspection_tool class="ELValidationInJSP" level="WARNING" enabled="false" />
+        <inspection_tool class="JspDirectiveInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="ELSpecValidationInJSP" level="WARNING" enabled="false" />
+        <inspection_tool class="JspPropertiesInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="ReferencesToClassesFromDefaultPackagesInJSPFile" level="ERROR" enabled="false" />
+        <inspection_tool class="SelfIncludingJspFiles" level="ERROR" enabled="false" />
+        <inspection_tool class="DuplicateCaseLabelJS" level="WARNING" enabled="false" />
+        <inspection_tool class="DuplicatePropertyOnObjectJS" level="WARNING" enabled="false" />
+        <inspection_tool class="BadExpressionStatementJS" level="WARNING" enabled="false" />
+        <inspection_tool class="FunctionWithInconsistentReturnsJS" level="WARNING" enabled="false" />
+        <inspection_tool class="ReservedWordUsedAsNameJS" level="WARNING" enabled="false" />
+        <inspection_tool class="ThisExpressionReferencesGlobalObjectJS" level="WARNING" enabled="false" />
+        <inspection_tool class="UnreachableCodeJS" level="WARNING" enabled="false" />
+        <inspection_tool class="AssertEqualsBetweenInconvertibleTypes" level="WARNING" enabled="false" />
+        <inspection_tool class="MavenModelInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="CheckNodeTest" level="WARNING" enabled="false" />
+        <inspection_tool class="HardwiredNamespacePrefix" level="WARNING" enabled="false" />
+        <inspection_tool class="ImplicitTypeConversion" level="WARNING" enabled="false">
+          <option name="BITS" value="1720" />
+          <option name="FLAG_EXPLICIT_CONVERSION" value="true" />
+          <option name="IGNORE_NODESET_TO_BOOLEAN_VIA_STRING" value="true" />
+        </inspection_tool>
+        <inspection_tool class="RedundantTypeConversion" level="WARNING" enabled="false">
+          <option name="CHECK_ANY" value="true" />
+        </inspection_tool>
+        <inspection_tool class="IndexZeroUsage" level="WARNING" enabled="false" />
+        <inspection_tool class="XsltDeclarations" level="ERROR" enabled="false" />
+        <inspection_tool class="XsltTemplateInvocation" level="ERROR" enabled="false" />
+        <inspection_tool class="XsltUnusedDeclaration" level="WARNING" enabled="false" />
       </profile>
     </profiles>
     <list size="4">
@@ -571,11 +657,6 @@
       <JAVADOC />
       <SOURCES />
     </library>
-  </component>
-  <component name="uidesigner-configuration">
-    <option name="INSTRUMENT_CLASSES" value="true" />
-    <option name="COPY_FORMS_RUNTIME_TO_OUTPUT" value="true" />
-    <option name="DEFAULT_LAYOUT_MANAGER" value="GridLayoutManager" />
   </component>
 </project>
 

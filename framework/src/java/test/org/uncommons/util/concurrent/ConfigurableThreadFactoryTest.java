@@ -122,7 +122,7 @@ public class ConfigurableThreadFactoryTest
 
     private static final class ExceptionHandler implements Thread.UncaughtExceptionHandler
     {
-        private AtomicInteger count = new AtomicInteger();
+        private final AtomicInteger count = new AtomicInteger();
 
         public void uncaughtException(Thread thread, Throwable throwable)
         {

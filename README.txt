@@ -25,14 +25,14 @@ Watchmaker Framework:
 
   watchmaker-framework-@VERSION@.jar        (Apache Licence 2.0)
   uncommons-maths-1.1.jar               (Apache Licence 2.0)
-  google-collect-snapshot-20080820.jar  (Apache Licence 2.0)
+  google-collect-snapshot-20090211.jar  (Apache Licence 2.0)
 
 These additional JAR files are required to use the Watchmaker Framework Swing
 components:
 
   watchmaker-swing-@VERSION@.jar            (Apache Licence 2.0)
-  jfreechart-1.0.12.jar                 (GNU LGPL 2.1)
-  jcommon-1.0.15.jar                    (GNU LGPL 2.1)
+  jfreechart-1.0.13.jar                 (GNU LGPL 2.1)
+  jcommon-1.0.16.jar                    (GNU LGPL 2.1)
 
 Example applications are included in the watchmaker-examples-@VERSION@.jar file.
 This file is not required by other applications that use the Watchmaker

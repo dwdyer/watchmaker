@@ -37,10 +37,10 @@ import javax.swing.JPanel;
 final class ItineraryPanel extends JPanel
 {
     private final Collection<JCheckBox> checkBoxes;
-    private JButton selectAllButton;
-    private JButton clearButton;
+    private final JButton selectAllButton;
+    private final JButton clearButton;
 
-    public ItineraryPanel(List<String> cities)
+    ItineraryPanel(List<String> cities)
     {
         super(new BorderLayout());
 

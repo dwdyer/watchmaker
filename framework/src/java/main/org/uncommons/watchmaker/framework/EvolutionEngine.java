@@ -40,7 +40,7 @@ public interface EvolutionEngine<T>
      * means that no elitism will be applied.
      * @param conditions One or more conditions that may cause the evolution to terminate.
      * @return The fittest solution found by the evolutionary process.
-     * @see #evolve(int, int, java.util.Collection, TerminationCondition[])
+     * @see #evolve(int, int, Collection, TerminationCondition[])
      */
     T evolve(int populationSize,
              int eliteCount,
@@ -51,7 +51,7 @@ public interface EvolutionEngine<T>
      * Execute the evolutionary algorithm until one of the termination conditions is met,
      * then return the fittest candidate from the final generation.  To return the
      * entire population rather than just the fittest candidate, use the
-     * {@link #evolvePopulation(int, int, java.util.Collection, TerminationCondition[])}
+     * {@link #evolvePopulation(int, int, Collection, TerminationCondition[])}
      * method instead.
      * @param populationSize The number of candidate solutions present in the population
      * at any point in time.
@@ -88,8 +88,8 @@ public interface EvolutionEngine<T>
      * means that no elitism will be applied.
      * @param conditions One or more conditions that may cause the evolution to terminate.
      * @return The fittest solution found by the evolutionary process.
-     * @see #evolve(int, int, java.util.Collection, TerminationCondition[])
-     * @see #evolvePopulation(int, int, java.util.Collection, TerminationCondition[])
+     * @see #evolve(int, int, Collection, TerminationCondition[])
+     * @see #evolvePopulation(int, int, Collection, TerminationCondition[])
      */
     List<EvaluatedCandidate<T>> evolvePopulation(int populationSize,
                                                  int eliteCount,
@@ -100,7 +100,7 @@ public interface EvolutionEngine<T>
      * Execute the evolutionary algorithm until one of the termination conditions is met,
      * then return all of the candidates from the final generation.  To return just the
      * fittest candidate rather than the entire population, use the
-     * {@link #evolve(int, int, java.util.Collection, TerminationCondition[])} method instead.
+     * {@link #evolve(int, int, Collection, TerminationCondition[])} method instead.
      * @param populationSize The number of candidate solutions present in the population
      * at any point in time.
      * @param eliteCount The number of candidates preserved via elitism.  In elitism, a
@@ -113,8 +113,8 @@ public interface EvolutionEngine<T>
      * this collection must be no greater than the specified population size.
      * @param conditions One or more conditions that may cause the evolution to terminate.
      * @return The fittest solution found by the evolutionary process.
-     * @see #evolve(int, int, java.util.Collection, TerminationCondition[])
-     * @see #evolvePopulation(int, int, java.util.Collection, TerminationCondition[])
+     * @see #evolve(int, int, Collection, TerminationCondition[])
+     * @see #evolvePopulation(int, int, Collection, TerminationCondition[])
      */
     List<EvaluatedCandidate<T>> evolvePopulation(int populationSize,
                                                  int eliteCount,

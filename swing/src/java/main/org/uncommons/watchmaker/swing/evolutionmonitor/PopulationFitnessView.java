@@ -54,9 +54,6 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
     private final JRadioButton allDataButton = new JRadioButton("All Data", false);
     private final JCheckBox invertCheckBox = new JCheckBox("Invert Range Axis", false);
 
-    private double maxY = 1;
-    private double minY = 0;
-
     PopulationFitnessView()
     {
         super(new BorderLayout());
@@ -76,7 +73,7 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
         domainAxis.setLowerMargin(0);
         domainAxis.setUpperMargin(0.05);
         domainAxis.setRangeWithMargins(0, SHOW_FIXED_GENERATIONS);
-        rangeAxis.setRange(minY, maxY);
+        rangeAxis.setAutoRange(true);
         ChartPanel chartPanel = new ChartPanel(chart,
                                                ChartPanel.DEFAULT_WIDTH,
                                                ChartPanel.DEFAULT_HEIGHT,
@@ -155,20 +152,17 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
     private void updateDomainAxisRange()
     {
         int count = dataSet.getSeries(0).getItemCount();
-        if (allDataButton.isSelected())
+        if (count < SHOW_FIXED_GENERATIONS)
+        {
+            domainAxis.setRangeWithMargins(0, SHOW_FIXED_GENERATIONS);
+        }
+        else if (allDataButton.isSelected())
         {
             domainAxis.setRangeWithMargins(0, Math.max(SHOW_FIXED_GENERATIONS, count));
         }
         else
         {
-            if (count >= SHOW_FIXED_GENERATIONS)
-            {
-                domainAxis.setRangeWithMargins(count - SHOW_FIXED_GENERATIONS, count);
-            }
-            else
-            {
-                domainAxis.setRangeWithMargins(0, SHOW_FIXED_GENERATIONS);
-            }
+            domainAxis.setRangeWithMargins(count - SHOW_FIXED_GENERATIONS, count);
         }
     }
 
@@ -182,30 +176,19 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
         {
             public void run()
             {
-                if (populationData.getGenerationNumber() == 0 && !populationData.isNaturalFitness())
+                if (populationData.getGenerationNumber() == 0)
                 {
-                    invertCheckBox.setSelected(true);
+                    if (!populationData.isNaturalFitness())
+                    {
+                        invertCheckBox.setSelected(true);
+                    }
+                    // The graph might be showing data from a previous run, so clear it.
+                    meanSeries.clear();
+                    bestSeries.clear();
                 }
                 meanSeries.add(populationData.getGenerationNumber(), populationData.getMeanFitness());
                 double best = populationData.getBestCandidateFitness();
                 bestSeries.add(populationData.getGenerationNumber(), best);
-
-
-                // We don't use JFreeChart's auto-range for the axes because it is inefficient
-                // (it degrades linearly with the number of items in the data set).  Instead we track
-                // the minimum and maximum ourselves.
-                double high = Math.max(populationData.getMeanFitness(), populationData.getBestCandidateFitness());
-                double low = Math.min(populationData.getMeanFitness(), populationData.getBestCandidateFitness());
-                if (high > maxY)
-                {
-                    maxY = high;
-                    rangeAxis.setRange(minY, maxY);
-                }
-                if (low < minY)
-                {
-                    minY = low;
-                    rangeAxis.setRange(minY, maxY);
-                }
 
                 updateDomainAxisRange();
             }
