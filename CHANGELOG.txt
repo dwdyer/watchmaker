@@ -4,6 +4,9 @@ Changes in version @VERSION@
 * Added the option to view only the most recent 200 generations on the
   population fitness graph of the evolution monitor.
 
+* Fixed a bug that prevented the population fitness view from being reset
+  between runs.
+
 * Added more information to the evolution monitor status bar.
 
 * Added a boolean parameter to the evolution monitor showInFrame method so that
@@ -40,6 +43,10 @@ Changes in version @VERSION@
   removed.
 
 * Removed call to System.out.println in ConcurrentEvolutionEngine (ISSUE#12).
+
+* Included source code in the release distribution in the form of source JARs
+  for the framework and swing modules (source code for the examples module is
+  already included) (ISSUE#11). 
 
 
 Changes in version 0.5.1
