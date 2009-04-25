@@ -161,15 +161,22 @@
     <mkdir dir="${dist.dir}" />
     <!-- Copy all application JARs and 3rd party libraries. -->
     <copy todir="${dist.dir}" flatten="true">
-      <fileset dir="." includes="**/${build.dir}/*.jar" />
+      <fileset dir="." includes="**/${build.dir}/*.jar"/>
       <fileset dir="${lib.runtime}" includes="*.jar" />
     </copy>
   </target>
 
 
+  <!-- Build source JAR files for inclusion in the release. -->
+  <target name="source" description="Build source JARs.">
+    <uncommons:source module="framework" jarfile="${artifact.identifier}-src.jar" />
+    <uncommons:source module="swing" jarfile="watchmaker-swing-${version}-src.jar" />
+  </target>
+
+
   <!-- Create the release artifacts. -->
   <target name="release"
-          depends="clean, dist, test, checkstyle, docs"
+          depends="clean, source, dist, test, checkstyle, docs"
           description="Creates the release archives.">
     <mkdir dir="${release.dir}" />
     <!-- Create a GZipped TAR file containing the built binaries, the API
@@ -179,7 +186,11 @@
          longfile="gnu">
       <tarfileset dir="${dist.dir}"
                   prefix="${artifact.identifier}"
-                  includes="**/*" />
+                  includes="**/*"
+                  excludes="*-src.jar" />
+      <tarfileset dir="${dist.dir}"
+                  prefix="${artifact.identifier}/src"
+                  includes="*-src.jar" />
       <tarfileset dir="${api.dir}"
                   prefix="${artifact.identifier}/docs/api"
                   includes="**/*" />
@@ -198,7 +209,11 @@
     <zip destfile="${release.dir}/${artifact.identifier}.zip">
       <zipfileset dir="${dist.dir}"
                   prefix="${artifact.identifier}"
-                  includes="**/*" />
+                  includes="**/*"
+                  excludes="*-src.jar" />
+      <zipfileset dir="${dist.dir}"
+                  prefix="${artifact.identifier}/src"
+                  includes="*-src.jar" />
       <zipfileset dir="${api.dir}"
                   prefix="${artifact.identifier}/docs/api"
                   includes="**/*" />
