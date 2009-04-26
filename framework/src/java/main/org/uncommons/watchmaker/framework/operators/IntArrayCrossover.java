@@ -76,19 +76,21 @@ public class IntArrayCrossover extends AbstractCrossover<int[]>
 
 
     /**
-     * Cross-over with a variable number of cross-over points.  Cross-over
-     * may or may not be applied to a given pair of parents depending on
-     * the {@code crossoverProbability}.
-     * @param crossoverPointsVariable A random variable that provides a number
-     * of cross-over points for each cross-over operation.
-     * @param crossoverProbability The probability that, once selected,
-     * a pair of parents will be subjected to cross-over rather than
-     * being copied, unchanged, into the output population.
+     * Sets up a cross-over implementation that uses a variable number of cross-over
+     * points.  Cross-over is applied to a proportion of selected parent pairs, with
+     * the remainder copied unchanged into the output population.  The size of this
+     * evolved proportion is controlled by the {@code crossoverProbabilityVariable}
+     * parameter.
+     * @param crossoverPointsVariable A variable that provides a (possibly constant,
+     * possibly random) number of cross-over points for each cross-over operation.
+     * @param crossoverProbabilityVariable A variable that controls the probability
+     * that, once selected, a pair of parents will be subjected to cross-over rather
+     * than being copied, unchanged, into the output population.
      */
     public IntArrayCrossover(NumberGenerator<Integer> crossoverPointsVariable,
-                             Probability crossoverProbability)
+                             NumberGenerator<Probability> crossoverProbabilityVariable)
     {
-        super(crossoverPointsVariable, crossoverProbability);
+        super(crossoverPointsVariable, crossoverProbabilityVariable);
     }
 
 

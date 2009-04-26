@@ -46,7 +46,11 @@ Changes in version @VERSION@
 
 * Included source code in the release distribution in the form of source JARs
   for the framework and swing modules (source code for the examples module is
-  already included) (ISSUE#11). 
+  already included) (ISSUE#11).
+
+* Modified cross-over implementation constructors to accept a number generator
+  for the probability parameter.  This allows variable probabilities to be
+  used.
 
 
 Changes in version 0.5.1

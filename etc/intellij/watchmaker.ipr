@@ -456,8 +456,7 @@
         <inspection_tool class="ConstantMathCall" level="WARNING" enabled="true" />
         <inspection_tool class="DivideByZero" level="WARNING" enabled="true" />
         <inspection_tool class="BigDecimalEquals" level="WARNING" enabled="true" />
-        <inspection_tool class="FloatingPointEquality" level="WARNING" enabled="true" />
-        <inspection_tool class="ImplicitNumericConversion" level="WARNING" enabled="true">
+        <inspection_tool class="ImplicitNumericConversion" level="WARNING" enabled="false">
           <option name="ignoreWideningConversions" value="true" />
           <option name="ignoreCharConversions" value="false" />
         </inspection_tool>
@@ -726,6 +725,7 @@
           <option name="SUGGEST_PACKAGE_LOCAL_FOR_TOP_CLASSES" value="true" />
           <option name="SUGGEST_PRIVATE_FOR_INNERS" value="false" />
         </inspection_tool>
+        <inspection_tool class="FloatingPointEquality" level="WARNING" enabled="true" />
       </profile>
     </profiles>
     <list size="4">

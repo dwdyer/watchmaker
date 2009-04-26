@@ -86,9 +86,9 @@ public class ListCrossover<T> extends AbstractCrossover<List<T>>
      * being copied, unchanged, into the output population.
      */
     public ListCrossover(NumberGenerator<Integer> crossoverPointsVariable,
-                         Probability crossoverProbability)
+                         NumberGenerator<Probability> crossoverProbabilityVariable)
     {
-        super(crossoverPointsVariable, crossoverProbability);
+        super(crossoverPointsVariable, crossoverProbabilityVariable);
     }
 
 

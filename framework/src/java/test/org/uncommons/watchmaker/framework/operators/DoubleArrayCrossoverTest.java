@@ -35,7 +35,7 @@ public class DoubleArrayCrossoverTest
     public void testCrossover()
     {
         EvolutionaryOperator<double[]> crossover = new DoubleArrayCrossover(new ConstantGenerator<Integer>(1),
-                                                                            Probability.ONE);
+                                                                            new ConstantGenerator<Probability>(Probability.ONE));
         List<double[]> population = new ArrayList<double[]>(4);
         population.add(new double[]{1.1d, 2.2d, 3.3d, 4.4d, 5.5d});
         population.add(new double[]{6.6d, 7.7d, 8.8d, 9.9d, 10});

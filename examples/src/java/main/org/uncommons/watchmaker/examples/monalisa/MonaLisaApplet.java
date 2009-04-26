@@ -37,6 +37,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
+import org.uncommons.maths.number.ConstantGenerator;
 import org.uncommons.maths.random.GaussianGenerator;
 import org.uncommons.maths.random.Probability;
 import org.uncommons.maths.random.XORShiftRNG;
@@ -76,10 +77,11 @@ public class MonaLisaApplet extends JApplet
     private ProbabilityParameterControl addPolygonControl;
     private ProbabilityParameterControl removePolygonControl;
     private ProbabilityParameterControl movePolygonControl;
-    private ProbabilityParameterControl changeColourControl;
+    private ProbabilityParameterControl crossOverControl;
     private ProbabilityParameterControl addVertexControl;
     private ProbabilityParameterControl removeVertexControl;
     private ProbabilityParameterControl moveVertexControl;
+    private ProbabilityParameterControl changeColourControl;
     private JSpinner populationSpinner;
     private JSpinner elitismSpinner;
 
@@ -164,8 +166,13 @@ public class MonaLisaApplet extends JApplet
         probabilities.add(moveVertexControl.getControl());
         moveVertexControl.setDescription("For each POLYGON, the probability that a randomly-selected vertex will be displaced.");
 
-        probabilities.add(new JLabel()); // Place-holder.
-        probabilities.add(new JLabel()); // Place-holder.
+        crossOverControl = new ProbabilityParameterControl(Probability.ZERO,
+                                                           Probability.ONE,
+                                                           2,
+                                                           Probability.ONE);
+        probabilities.add(new JLabel("Cross-over: "));
+        probabilities.add(crossOverControl.getControl());
+        crossOverControl.setDescription("For each PAIR of parent IMAGES, the probability that 2-point cross-over is applied.");
 
         changeColourControl = new ProbabilityParameterControl(Probability.ZERO,
                                                               ONE_TENTH,
@@ -281,7 +288,8 @@ public class MonaLisaApplet extends JApplet
     {
         List<EvolutionaryOperator<List<ColouredPolygon>>> operators
             = new LinkedList<EvolutionaryOperator<List<ColouredPolygon>>>();
-        operators.add(new ListCrossover<ColouredPolygon>(2));
+        operators.add(new ListCrossover<ColouredPolygon>(new ConstantGenerator<Integer>(2),
+                                                         crossOverControl.getNumberGenerator()));
         operators.add(new RemovePolygonMutation(removePolygonControl.getNumberGenerator()));
         operators.add(new MovePolygonMutation(movePolygonControl.getNumberGenerator()));
         operators.add(new ListOperator<ColouredPolygon>(new RemoveVertexMutation(canvasSize,

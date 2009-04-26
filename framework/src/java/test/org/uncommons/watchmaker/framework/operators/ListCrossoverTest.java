@@ -92,7 +92,7 @@ public class ListCrossoverTest
     public void testZeroProbability()
     {
         EvolutionaryOperator<List<Integer>> crossover = new ListCrossover<Integer>(new ConstantGenerator<Integer>(1),
-                                                                                   Probability.ZERO);
+                                                                                   new ConstantGenerator<Probability>(Probability.ZERO));
         List<List<Integer>> population = new ArrayList<List<Integer>>(4);
         List<Integer> parent1 = Arrays.asList(1, 2, 3, 4, 5);
         List<Integer> parent2 = Arrays.asList(6, 7, 8, 9, 10);

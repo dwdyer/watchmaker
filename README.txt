@@ -24,7 +24,7 @@ The following bundled JAR files are required by all programs that use the
 Watchmaker Framework:
 
   watchmaker-framework-@VERSION@.jar        (Apache Licence 2.0)
-  uncommons-maths-1.1.jar               (Apache Licence 2.0)
+  uncommons-maths-1.2.jar               (Apache Licence 2.0)
   google-collect-1.0-rc1.jar            (Apache Licence 2.0)
 
 These additional JAR files are required to use the Watchmaker Framework Swing
