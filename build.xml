@@ -47,13 +47,13 @@
 
 
   <!-- Classpath for compilation and tests. -->
-  <path id="base.path">
+  <path id="tool.path">
     <fileset dir="${lib.dir}" includes="**/*.jar" />
   </path>
 
   <taskdef uri="antlib:org.uncommons.antlib"
            resource="org/uncommons/antlib/antlib.xml"
-           classpathref="base.path"/>  
+           classpathref="tool.path"/>
 
 
   <property name="version" value="0.6.0pre"/>
@@ -77,8 +77,10 @@
       <mkdir dir="@{api.dir}"/>
       <javadoc destdir="@{api.dir}"
                doctitle="The Watchmaker Framework for Evolutionary Computation ${version}"
-               windowtitle="Watchmaker Framework API"
-               classpathref="base.path">
+               windowtitle="Watchmaker Framework API">
+        <classpath>
+          <fileset dir="." includes="**/${lib.runtime}/*.jar" />
+        </classpath>
         <fileset dir="." defaultexcludes="yes">
           <include name="**/${java.dir}/main/**/*.java"/>
           <exclude name="examples/**/*"/>
@@ -159,10 +161,16 @@
           depends="framework, swing, examples"
           description="Generate the project distribution." >
     <mkdir dir="${dist.dir}" />
-    <!-- Copy all application JARs and 3rd party libraries. -->
     <copy todir="${dist.dir}" flatten="true">
-      <fileset dir="." includes="**/${build.dir}/*.jar"/>
-      <fileset dir="${lib.runtime}" includes="*.jar" />
+      <fileset dir="." includes="**/${build.dir}/*.jar" excludes="**/${build.dir}/*-src.jar"/>      
+    </copy>
+    <mkdir dir="${dist.dir}/lib" />
+    <copy todir="${dist.dir}/lib" flatten="true">
+      <fileset dir="." includes="**/${lib.runtime}/*"/>
+    </copy>
+    <mkdir dir="${dist.dir}/src" />
+    <copy todir="${dist.dir}/src" flatten="true">
+      <fileset dir="." includes="**/${build.dir}/*-src.jar"/>
     </copy>
   </target>
 
@@ -186,11 +194,7 @@
          longfile="gnu">
       <tarfileset dir="${dist.dir}"
                   prefix="${artifact.identifier}"
-                  includes="**/*"
-                  excludes="*-src.jar" />
-      <tarfileset dir="${dist.dir}"
-                  prefix="${artifact.identifier}/src"
-                  includes="*-src.jar" />
+                  includes="**/*" />
       <tarfileset dir="${api.dir}"
                   prefix="${artifact.identifier}/docs/api"
                   includes="**/*" />
@@ -201,19 +205,12 @@
       <tarfileset dir="."
                   prefix="${artifact.identifier}"
                   includes="*.txt" />
-      <tarfileset dir="${lib.runtime}"
-                  prefix="${artifact.identifier}"
-                  includes="*.txt" />
     </tar>
     <!-- Also create a zip file release for the convenience of Windows users. -->
     <zip destfile="${release.dir}/${artifact.identifier}.zip">
       <zipfileset dir="${dist.dir}"
                   prefix="${artifact.identifier}"
-                  includes="**/*"
-                  excludes="*-src.jar" />
-      <zipfileset dir="${dist.dir}"
-                  prefix="${artifact.identifier}/src"
-                  includes="*-src.jar" />
+                  includes="**/*" />
       <zipfileset dir="${api.dir}"
                   prefix="${artifact.identifier}/docs/api"
                   includes="**/*" />
@@ -222,9 +219,6 @@
                   includes="**/*" />
       <!-- Don't forget to include the licence and other important information. -->
       <zipfileset dir="."
-                  prefix="${artifact.identifier}"
-                  includes="*.txt" />
-      <zipfileset dir="${lib.runtime}"
                   prefix="${artifact.identifier}"
                   includes="*.txt" />
     </zip>
@@ -253,7 +247,7 @@
   <target name="checkstyle"
           depends="dist"
           description="Check that coding standard are adhered to.">
-    <taskdef resource="checkstyletask.properties" classpathref="base.path"/>
+    <taskdef resource="checkstyletask.properties" classpathref="tool.path"/>
     <mkdir dir="${checkstyle-results.dir}" />
 
     <!-- Compiled classes must be available on the classpath to work-around this
@@ -286,7 +280,7 @@
   
   <target name="book" description="Generates the PDF user guide.">
     <mkdir dir="book/${build.dir}" />
-    <uncommons:docbook classpathref="base.path"
+    <uncommons:docbook classpathref="tool.path"
                        source="book/${src.dir}/xml/book.xml"
                        format="pdf"                       
                        outputDir="book/${build.dir}" >
@@ -326,7 +320,7 @@
     </copy>
 
     <!-- Generate user manual from DocBook source. -->
-    <uncommons:docbook classpathref="base.path"
+    <uncommons:docbook classpathref="tool.path"
                        source="book/${src.dir}/xml/website.xml"
                        format="html"
                        chunked="true"
