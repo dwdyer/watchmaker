@@ -107,6 +107,7 @@ public final class SpringUtilities
 
     /**
      * Helper method for {@link #makeCompactGrid(Container, int, int, int, int, int, int)}.
+     * @return The constraints for the specified cell.
      */
     private static SpringLayout.Constraints getConstraintsForCell(int row,
                                                                   int col,

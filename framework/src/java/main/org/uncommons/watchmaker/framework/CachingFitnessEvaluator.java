@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentMap;
  * assumption since evolutionary operators are required to return distinct objects,
  * except when the candidate is unaffected by the evolution, as per the contract of the
  * {@link EvolutionaryOperator} interface.  In other words, the Watchmaker Framework
- * treats candidate representations as immutable even if that is not always the case.</p>
+ * treats candidate representations as immutable even when that is not strictly the case.</p>
  * 
  * <p>Caching of fitness scores is provided as an option rather than as the default
  * Watchmaker Framework behaviour because caching is only valid when fitness evaluations

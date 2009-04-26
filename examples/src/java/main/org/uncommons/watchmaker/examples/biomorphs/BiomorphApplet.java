@@ -78,6 +78,11 @@ public class BiomorphApplet extends JApplet
     /**
      * Helper method to create a background task for running the interactive evolutionary
      * algorithm.
+     * @param populationSize How big the population used by the created evolution engine
+     * should be.
+     * @param generationCount How many generations to use when the evolution engine is
+     * invoked.
+     * @param random If true use random mutation, otherwise use Dawkins mutation.
      * @return A Swing task that will execute on a background thread and update
      * the GUI when it is done.
      */

@@ -40,13 +40,11 @@ public abstract class SwingBackgroundTask<V>
 
 
     /**
-     * Asynchronous call that begins execution of the task
-     * and returns immediately.  The {@link #performTask()} will be
-     * invoked on a background thread and, when it has completed,
-     * {@link #postProcessing(Object)} will be invoked on the Event
-     * Dispatch Thread (or, if there is an exception,
-     * {@link #onError(Throwable)} will be invoked instead - also on
-     * the EDT).
+     * Asynchronous call that begins execution of the task and returns immediately.
+     * The {@link #performTask()} method will be invoked on a background thread and,
+     * when it has completed, {@link #postProcessing(Object)} will be invoked on the
+     * Event Dispatch Thread (or, if there is an exception, {@link #onError(Throwable)}
+     * will be invoked instead - also on the EDT).
      * @see #performTask()
      * @see #postProcessing(Object)
      * @see #onError(Throwable)

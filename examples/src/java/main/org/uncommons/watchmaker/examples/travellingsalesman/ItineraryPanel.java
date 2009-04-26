@@ -84,6 +84,7 @@ final class ItineraryPanel extends JPanel
 
     /**
      * Returns the cities that have been selected as part of the itinerary.
+     * @return A list of cities.
      */
     public Collection<String> getSelectedCities()
     {
