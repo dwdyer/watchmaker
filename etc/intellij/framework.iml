@@ -23,7 +23,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../framework/lib/runtime/google-collect-snapshot-20090211.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../framework/lib/runtime/google-collect-1.0-rc1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
