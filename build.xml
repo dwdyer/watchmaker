@@ -56,7 +56,7 @@
            classpathref="tool.path"/>
 
 
-  <property name="version" value="0.6.0pre"/>
+  <property name="version" value="0.6.0"/>
   <property name="artifact.identifier" value="watchmaker-framework-${version}"/>
 
   <!-- This is the minimum coverage percentage (for both lines and
@@ -142,7 +142,9 @@
           depends="framework, swing"
           description="Build the examples.">
     <uncommons:compile module="examples" />
-    <uncommons:jar module="examples" jarfile="watchmaker-examples-${version}.jar">
+    <uncommons:jar module="examples"
+                   jarfile="watchmaker-examples-${version}.jar"
+                   classpath="${artifact.identifier}.jar uncommons-maths-1.2.jar google-collect-1.0-rc1.jar watchmaker-swing-${version}.jar jfreechart-1.0.13.jar jcommon-1.0.16.jar">
       <additionalcontents>
         <fileset dir="${modules.dir}/examples/resources" includes="**/*" />
       </additionalcontents>
@@ -308,6 +310,7 @@
     <!-- Copy latest jars into website examples directory. -->
     <copy todir="${web.dir}/examples">
       <fileset dir="${dist.dir}" includes="*.jar" />
+      <fileset dir="${dist.dir}/${lib.dir}" includes="*.jar" />
       <filterset>
         <filter token="VERSION" value="${version}"/>
       </filterset>

@@ -81,7 +81,7 @@ public class ListCrossover<T> extends AbstractCrossover<List<T>>
      * the {@code crossoverProbability}.
      * @param crossoverPointsVariable A random variable that provides a number
      * of cross-over points for each cross-over operation.
-     * @param crossoverProbability The probability that, once selected,
+     * @param crossoverProbabilityVariable The probability that, once selected,
      * a pair of parents will be subjected to cross-over rather than
      * being copied, unchanged, into the output population.
      */
