@@ -305,15 +305,16 @@
     <!-- Refresh the API documentation tree for the Watchmaker Framework website. -->
     <api.docs api.dir="${web.dir}/api" />
 
-    <copy todir="${web.dir}" file="./CHANGELOG.txt" />
+    <copy todir="${web.dir}" file="./CHANGELOG.txt">
+      <filterset>
+        <filter token="VERSION" value="${version}"/>
+      </filterset>
+    </copy>
 
     <!-- Copy latest jars into website examples directory. -->
     <copy todir="${web.dir}/examples">
       <fileset dir="${dist.dir}" includes="*.jar" />
       <fileset dir="${dist.dir}/${lib.dir}" includes="*.jar" />
-      <filterset>
-        <filter token="VERSION" value="${version}"/>
-      </filterset>
     </copy>
 
     <!-- Generate user manual from DocBook source. -->

@@ -1,4 +1,4 @@
-Changes in version @VERSION@
+Changes in version 0.6.0
 ------------------------
 
 * Added the option to view only the most recent 200 generations on the

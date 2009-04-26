@@ -1,6 +1,6 @@
 _______________________________________________________________________________
 
-  The Watchmaker Framework for Evolutionary Computation - Version @VERSION@
+  The Watchmaker Framework for Evolutionary Computation - Version 0.6.0
    (https://watchmaker.dev.java.net)
   Copyright 2006-2009 Daniel W. Dyer (http://www.dandyer.co.uk)
 _______________________________________________________________________________
