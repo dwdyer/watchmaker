@@ -63,6 +63,10 @@ public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, Buf
                                                 BufferedImage.TYPE_INT_RGB);
 
         Graphics2D graphics = image.createGraphics();
+        // Need to set the background before applying the transform.
+        graphics.setColor(Color.GRAY);
+        graphics.fillRect(0, 0, targetSize.width, targetSize.height);
+
         if (transform != null)
         {
             graphics.transform(transform);
@@ -72,8 +76,6 @@ public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, Buf
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                                       RenderingHints.VALUE_ANTIALIAS_ON);
         }
-        graphics.setColor(Color.GRAY);
-        graphics.fillRect(0, 0, targetSize.width, targetSize.height);
         for (ColouredPolygon polygon : entity)
         {
             graphics.setColor(polygon.getColour());

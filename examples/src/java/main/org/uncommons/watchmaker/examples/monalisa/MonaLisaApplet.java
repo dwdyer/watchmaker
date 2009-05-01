@@ -186,7 +186,7 @@ public class MonaLisaApplet extends JApplet
 
         controls.add(probabilities, BorderLayout.NORTH);
         controls.add(createParametersPanel(targetImage), BorderLayout.SOUTH);
-        controls.setBorder(BorderFactory.createTitledBorder("Controls"));
+        controls.setBorder(BorderFactory.createTitledBorder("Evolution Parameters"));
         return controls;
     }
 
