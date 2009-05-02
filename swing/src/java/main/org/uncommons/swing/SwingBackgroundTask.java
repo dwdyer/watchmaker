@@ -17,6 +17,7 @@ package org.uncommons.swing;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -129,13 +130,17 @@ public abstract class SwingBackgroundTask<V>
     /**
      * This method is invoked, on the Event Dispatch Thread, if there is an
      * exception or error executing the {@link #performTask()} method.
-     * This empty default implementation may be over-ridden in sub-classes
-     * in order to update the GUI with error information.
+     * This default implementation displays a message dialog with details of the
+     * exception.  It may be over-ridden in sub-classes.
      * @param throwable The exception or error that was thrown while executing
      * the task.
      */
     protected void onError(Throwable throwable)
     {
-        // Over-ride in sub-class.
+        throwable.printStackTrace();
+        JOptionPane.showMessageDialog(null,
+                                      throwable.getMessage(),
+                                      throwable.getClass().getName(),
+                                      JOptionPane.ERROR_MESSAGE);
     }
 }
