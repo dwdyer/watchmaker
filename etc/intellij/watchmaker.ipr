@@ -9,7 +9,8 @@
       <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
       <properties />
-      <executeOn event="beforeRun" target="grid" />
+      <executeOn event="beforeRun" target="dist" />
+      <executeOn event="beforeRun" target="dist" runConfigurationType="Applet" runConfigurationName="Mona Lisa Applet" />
     </buildFile>
   </component>
   <component name="BuildJarProjectSettings">

@@ -32,7 +32,10 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  */
 public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPolygon>>
 {
-    private final Renderer<List<ColouredPolygon>, BufferedImage> renderer;
+    private final ThreadLocal<Renderer<List<ColouredPolygon>, BufferedImage>> threadLocalRenderer
+        = new ThreadLocal<Renderer<List<ColouredPolygon>, BufferedImage>>();
+    private final BufferedImage convertedImage;
+    private final AffineTransform transform;
     private final int[] targetPixels;
 
 
@@ -47,8 +50,6 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
         int height = targetImage.getWidth();
         // Scale the image down so that its smallest dimension is 100 pixels.  For large images this drastically
         // reduces the number of pixels that we need to check for fitness evaluation.
-        BufferedImage convertedImage = targetImage;
-        AffineTransform transform = null;
         if (width > 100 && height > 100)
         {
             double ratio = 100.0d / (width > height ? height : width);
@@ -57,10 +58,11 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
                                                                   AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
             convertedImage = convertImage(transformOp.filter(targetImage, null));
         }
-        this.renderer = new PolygonImageRenderer(new Dimension(convertedImage.getWidth(),
-                                                               convertedImage.getHeight()),
-                                                 false,
-                                                 transform);
+        else
+        {
+            convertedImage = convertImage(targetImage);
+            transform = null;
+        }
 
         Raster targetImageData = convertedImage.getData();
         int[] pixelArray = new int[targetImageData.getWidth() * targetImageData.getHeight()];
@@ -107,6 +109,17 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
     public double getFitness(List<ColouredPolygon> candidate,
                              List<? extends List<ColouredPolygon>> population)
     {
+        // Use one renderer per thread because they are not thread safe.
+        Renderer<List<ColouredPolygon>, BufferedImage> renderer = threadLocalRenderer.get();
+        if (renderer == null)
+        {
+            renderer = new PolygonImageRenderer(new Dimension(convertedImage.getWidth(),
+                                                              convertedImage.getHeight()),
+                                                false,
+                                                transform);
+            threadLocalRenderer.set(renderer);
+        }
+        
         BufferedImage candidateImage = renderer.render(candidate);
         Raster candidateImageData = candidateImage.getData();
 

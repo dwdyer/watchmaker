@@ -25,14 +25,21 @@ import java.util.List;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 
 /**
- * Renders a polygon-based image to a {@link BufferedImage}.
+ * Renders a polygon-based image to a {@link BufferedImage}.  For efficiency reasons, this
+ * renderer returns the same image object (with different data) for subsequent invocations.
+ * This means that invoking code should not expect returned images to be unaltered following
+ * subsequent invocations.  It alos means that a renderer is not thread-safe.
  * @author Daniel Dyer
  */
 public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, BufferedImage>
 {
+    private static final AffineTransform IDENTITY_TRANSFORM = new AffineTransform();
+    
     private final Dimension targetSize;
-    private final boolean antialias;
     private final AffineTransform transform;
+    private final BufferedImage image;
+    private final Graphics2D graphics;
+
 
     /**
      * @param targetSize The size of the canvas on which the polygons will be rendered.
@@ -46,8 +53,16 @@ public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, Buf
                                 AffineTransform transform)
     {
         this.targetSize = targetSize;
-        this.antialias = antialias;
-        this.transform = transform;
+        this.transform = transform;        
+        this.image = new BufferedImage(targetSize.width,
+                                       targetSize.height,
+                                       BufferedImage.TYPE_INT_RGB);
+        this.graphics = image.createGraphics();
+        if (antialias)
+        {
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                      RenderingHints.VALUE_ANTIALIAS_ON);
+        }
     }
 
 
@@ -58,30 +73,19 @@ public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, Buf
      */
     public BufferedImage render(List<ColouredPolygon> entity)
     {
-        BufferedImage image = new BufferedImage(targetSize.width,
-                                                targetSize.height,
-                                                BufferedImage.TYPE_INT_RGB);
-
-        Graphics2D graphics = image.createGraphics();
         // Need to set the background before applying the transform.
+        graphics.setTransform(IDENTITY_TRANSFORM);
         graphics.setColor(Color.GRAY);
         graphics.fillRect(0, 0, targetSize.width, targetSize.height);
-
         if (transform != null)
         {
-            graphics.transform(transform);
-        }
-        if (antialias)
-        {
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                      RenderingHints.VALUE_ANTIALIAS_ON);
+            graphics.setTransform(transform);
         }
         for (ColouredPolygon polygon : entity)
         {
             graphics.setColor(polygon.getColour());
             graphics.fillPolygon(polygon.getPolygon());
         }
-        graphics.dispose();
         return image;
     }
 }
