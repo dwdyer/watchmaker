@@ -5,8 +5,8 @@
     <output-test url="file://$MODULE_DIR$/../../examples/build/classes/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../examples">
-      <sourceFolder url="file://$MODULE_DIR$/../../examples/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../examples/src/java/main" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../examples/src/java/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../examples/src/java/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../examples/build" />
     </content>

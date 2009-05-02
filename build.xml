@@ -144,11 +144,7 @@
     <uncommons:compile module="examples" />
     <uncommons:jar module="examples"
                    jarfile="watchmaker-examples-${version}.jar"
-                   classpath="${artifact.identifier}.jar uncommons-maths-1.2.jar google-collect-1.0-rc1.jar watchmaker-swing-${version}.jar jfreechart-1.0.13.jar jcommon-1.0.16.jar">
-      <additionalcontents>
-        <fileset dir="${modules.dir}/examples/resources" includes="**/*" />
-      </additionalcontents>
-    </uncommons:jar>
+                   classpath="${artifact.identifier}.jar uncommons-maths-1.2.jar google-collect-1.0-rc1.jar watchmaker-swing-${version}.jar jfreechart-1.0.13.jar jcommon-1.0.16.jar" />
   </target>
 
 
