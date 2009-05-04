@@ -82,7 +82,6 @@ public class SwingBackgroundTaskTest
             @Override
             protected void onError(Throwable throwable)
             {
-                super.onError(throwable);
                 // Make sure we've been passed the right exception.
                 if (throwable.getClass().equals(UnsupportedOperationException.class))
                 {
