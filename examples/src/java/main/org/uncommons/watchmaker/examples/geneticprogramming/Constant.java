@@ -46,4 +46,35 @@ public class Constant extends LeafNode
     {
         return String.valueOf(constant);
     }
+
+
+    /**
+     * Two constants are equal if they have the same numeric value.
+     * @return True if the constants are equivalent, false otherwise.
+     */
+    @Override
+    public boolean equals(Object other)
+    {
+        if (this == other)
+        {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass())
+        {
+            return false;
+        }
+        return Double.compare(((Constant) other).constant, constant) == 0;
+    }
+
+
+    /**
+     * Over-ridden to be consistent with {@link #equals(Object)}.
+     * @return This object's hash code.
+     */
+    @Override
+    public int hashCode()
+    {
+        long temp = constant != +0.0d ? Double.doubleToLongBits(constant) : 0L;
+        return (int) (temp ^ (temp >>> 32));
+    }
 }

@@ -58,4 +58,35 @@ public class Parameter extends LeafNode
     {
         return "arg" + parameterIndex;
     }
+
+
+    /**
+     * Two parameters are equal if they evaluate to the same program argument
+     * (i.e. they have the same parameter index).
+     * @return True if the parameters are equivalent, false otherwise.
+     */
+    @Override
+    public boolean equals(Object other)
+    {
+        if (this == other)
+        {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass())
+        {
+            return false;
+        }
+        return parameterIndex == ((Parameter) other).parameterIndex;
+    }
+
+
+    /**
+     * Over-ridden to be consistent with {@link #equals(Object)}.
+     * @return This object's hash code.
+     */
+    @Override
+    public int hashCode()
+    {
+        return parameterIndex;
+    }
 }

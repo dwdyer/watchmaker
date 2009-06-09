@@ -110,7 +110,7 @@ public class IfThenElseTest
         Node node = new IfThenElse(new Constant(1), new Constant(2), new Constant(3));
         Node newNode = node.replaceNode(1, new Constant(0));
         assert newNode instanceof IfThenElse : "Replacing condition node should not change type of root node.";
-        assert newNode.evaluate(new double[0]) == 3d : "Changing condition node should change evaluation.";
+        assert newNode.evaluate(BinaryNode.NO_ARGS) == 3d : "Changing condition node should change evaluation.";
     }
 
 
@@ -120,7 +120,7 @@ public class IfThenElseTest
         Node node = new IfThenElse(new Constant(1), new Constant(2), new Constant(3));
         Node newNode = node.replaceNode(2, new Constant(4));
         assert newNode instanceof IfThenElse : "Replacing then node should not change type of root node.";
-        assert newNode.evaluate(new double[0]) == 4d : "Changing then node should change evaluation.";
+        assert newNode.evaluate(BinaryNode.NO_ARGS) == 4d : "Changing then node should change evaluation.";
     }
 
 
@@ -130,7 +130,7 @@ public class IfThenElseTest
         Node node = new IfThenElse(new Constant(0), new Constant(2), new Constant(3));
         Node newNode = node.replaceNode(3, new Constant(5));
         assert newNode instanceof IfThenElse : "Replacing else node should not change type of root node.";
-        assert newNode.evaluate(new double[0]) == 5d : "Changing then node should change evaluation.";
+        assert newNode.evaluate(BinaryNode.NO_ARGS) == 5d : "Changing then node should change evaluation.";
     }
 
 
@@ -146,7 +146,7 @@ public class IfThenElseTest
         Node newNode = node.replaceNode(4, new Constant(5));
         newNode = newNode.replaceNode(5, new Constant(6));
         assert newNode instanceof IfThenElse : "Replacing sub-nodes should not change type of root node.";
-        assert newNode.evaluate(new double[0]) == 11d : "Changing sub-nodes should change evaluation.";
+        assert newNode.evaluate(BinaryNode.NO_ARGS) == 11d : "Changing sub-nodes should change evaluation.";
     }
 
 
@@ -154,12 +154,95 @@ public class IfThenElseTest
     public void testZeroProbabilityMutation()
     {
         Node node = new IfThenElse(new Constant(0), new Constant(2), new Addition(new Constant(3), new Constant(4)));
-        double value = node.evaluate(new double[0]);
+        double value = node.evaluate(BinaryNode.NO_ARGS);
         String string = node.print();
 
         Node mutated = node.mutate(ExamplesTestUtils.getRNG(), Probability.ZERO, null);
         assert mutated == node : "Node should not have changed.";
-        assert value == mutated.evaluate(new double[0]) : "Node should not have been altered.";
+        assert value == mutated.evaluate(BinaryNode.NO_ARGS) : "Node should not have been altered.";
         assert string.equals(mutated.print()) : "Node should not have been altered.";
+    }
+
+
+    @Test
+    public void testSimplify()
+    {
+        Node node = new IfThenElse(new Constant(0), new Constant(1), new Constant(2));
+        Node simplified = node.simplify();
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == node.evaluate(BinaryNode.NO_ARGS) : "Simplified answer differs.";
+    }
+
+
+    /**
+     * Make sure that sub-nodes are simplified.
+     */
+    @Test
+    public void testSimplifySubNode()
+    {
+        Node node = new IfThenElse(new Constant(4),
+                                   new IfThenElse(new Constant(1), new Constant(2), new Constant(3)),
+                                   new Constant(5));
+        Node simplified = node.simplify();
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == node.evaluate(BinaryNode.NO_ARGS) : "Simplified answer differs.";
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == 2;
+    }
+
+
+    /**
+     * Make sure that sub-nodes are simplified and that these simplfications are taken into
+     * account when optimising the parent node (in other words the child nodes should be
+     * simplified first).
+     */
+    @Test
+    public void testSimplifyComplex()
+    {
+        Node node = new IfThenElse(new IfThenElse(new Constant(1), new Constant(2), new Constant(3)),
+                                   new Constant(4),
+                                   new Constant(5));
+        Node simplified = node.simplify();
+        // It is not sufficient to simplify this to an IfThenElse with a constant for each node,
+        // the fact that the condition node can be replaced by a Constant should result in the whole
+        // tree being reduced to a single constant (with a value of 4).
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == node.evaluate(BinaryNode.NO_ARGS) : "Simplified answer differs.";
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == 4;
+    }
+
+
+    /**
+     * Test that simplification doesn't cause any problems when the expression is already as simple
+     * as possible.
+     */
+    @Test
+    public void testSimplifySimplest()
+    {
+        Node node = new IfThenElse(new Parameter(0), new Constant(1), new Constant(2));
+        Node simplified = node.simplify();
+        assert simplified == node : "Expression should not have been changed.";
+    }
+
+
+    /**
+     * If the two branches (then and else) are identical, it doesn't matter what the condition is,
+     * the tree can be replaced by either one of the branches.
+     */
+    @Test
+    public void testSimplifyIdenticalBranches()
+    {
+        Node node = new IfThenElse(new Parameter(0),
+                                   new Constant(2),
+                                   new Constant(2));
+        Node simplified = node.simplify();
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{1}; // Need one argument for the parameter node to use.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+        assert simplified.evaluate(args) == 2;
+
     }
 }

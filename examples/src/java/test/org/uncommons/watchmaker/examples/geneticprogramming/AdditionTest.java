@@ -37,4 +37,17 @@ public class AdditionTest
         Node node = new Addition(new Constant(1), new Constant(3));
         assert node.print().equals("(1.0 + 3.0)") : "Wrong string representation: " + node.print();
     }
+
+
+    /**
+     * Test that simplification doesn't cause any problems when the expression is already as simple
+     * as possible.
+     */
+    @Test
+    public void testSimplifySimplest()
+    {
+        Node node = new Addition(new Parameter(0), new Constant(1));
+        Node simplified = node.simplify();
+        assert simplified == node : "Expression should not have been changed.";
+    }
 }

@@ -18,43 +18,24 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 import org.testng.annotations.Test;
 
 /**
- * Simple unit test for the {@link Parameter} node type.
+ * Unit test for the {@link Constant} node type.
  * @author Daniel Dyer
  */
-public class ParameterTest
+public class ConstantTest
 {
-    @Test
-    public void testParameterSelection()
-    {
-        Parameter parameter = new Parameter(2);
-        double value = parameter.evaluate(new double[]{0, 1, 2, 3});
-        assert value == 2 : "Incorect argument selected: " + value;
-    }
-
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testInvalidParameterSelection()
-    {
-        Parameter parameter = new Parameter(2);
-        // There is only one argument, so trying to select the 3rd one should
-        // result in an IllegalArgumentException.
-        parameter.evaluate(new double[]{0});
-    }
-
-
     @Test
     public void testEquality()
     {
-        Parameter zero = new Parameter(0);
-        Parameter one = new Parameter(1);
-        Parameter anotherOne = new Parameter(1);
+        Constant zero = new Constant(0);
+        Constant one = new Constant(1);
+        Constant anotherOne = new Constant(1);
 
         assert zero.equals(zero) : "Equality must be reflexive.";
-        assert one.equals(anotherOne) : "Same-index parameters must be equal.";
+        assert one.equals(anotherOne) : "Same-valued constants must be equal.";
         assert anotherOne.equals(one) : "Equality must be symmetric.";
         assert one.hashCode() == anotherOne.hashCode() : "Equal objects must have equal hash codes.";
-        assert !zero.equals(one) : "Different index parameters must be non-equal.";
+        assert !zero.equals(one) : "Different valued constants must be non-equal.";
         assert !zero.equals(null) : "No non-null object should not be considered equal to null.";
-        assert !zero.equals(Integer.valueOf(0)) : "Objects of different types should not be equal.";
+        assert !zero.equals(Double.valueOf(0)) : "Objects of different types should not be equal.";
     }
 }

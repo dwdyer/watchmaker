@@ -183,4 +183,39 @@ public class IfThenElse implements Node
     {
         return print();
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Node simplify()
+    {
+        Node simplifiedCondition = condition.simplify();
+
+        // If the condition is constant then the expression can be replaced by the branch that
+        // always gets evaluated.
+        if (simplifiedCondition instanceof Constant)
+        {
+            return simplifiedCondition.evaluate(null) > 0 ? then.simplify() : otherwise.simplify();
+        }
+        else
+        {
+            Node simplifiedThen = then.simplify();
+            Node simplifiedOtherwise = otherwise.simplify();
+            // If both branches are identical, the condition is irrelevant.
+            if (simplifiedThen.equals(simplifiedOtherwise))
+            {
+                return simplifiedThen;
+            }
+            // Only create a new node if something has actually changed, otherwise return the existing node.
+            if (simplifiedCondition != condition || simplifiedThen != then || simplifiedOtherwise != otherwise)
+            {
+                return new IfThenElse(simplifiedCondition, simplifiedThen, simplifiedOtherwise);
+            }
+            else
+            {
+                return this;
+            }
+        }
+    }
 }

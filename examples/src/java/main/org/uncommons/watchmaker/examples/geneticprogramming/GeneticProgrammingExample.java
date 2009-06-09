@@ -54,7 +54,8 @@ public class GeneticProgrammingExample
     public static void main(String[] args)
     {
         Node program = evolveProgram(TEST_DATA);
-        System.out.println(program.print());
+        System.out.println("EVOLVED:    " + program.print());
+        System.out.println("SIMPLIFIED: " + program.simplify().print());
     }
 
 

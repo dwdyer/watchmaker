@@ -37,4 +37,51 @@ public class SubtractionTest
         Node node = new Subtraction(new Constant(7), new Constant(3));
         assert node.print().equals("(7.0 - 3.0)") : "Wrong string representation: " + node.print();
     }
+
+
+    /**
+     * If the arguments to the subtract function are both constants then the subtract node
+     * should be replaced by a constant node containing the evaluation of this sum.
+     */
+    @Test
+    public void testSimplifyConstants()
+    {
+        Node node = new Subtraction(new Constant(7), new Constant(5));
+        Node simplified = node.simplify();
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == node.evaluate(BinaryNode.NO_ARGS) : "Simplified answer differs.";
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == 2;
+
+    }
+
+
+    /**
+     * If the arguments to the subtract function are identical, even if they are not constant,
+     * then the answer will always be zero, so this node should be replaced by the constant zero.
+     */
+    @Test
+    public void testSimplifyIdenticalArguments()
+    {
+        Node node = new Subtraction(new Parameter(0), new Parameter(0));
+        Node simplified = node.simplify();
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+        assert simplified.evaluate(args) == 0;
+    }
+
+
+    /**
+     * Test that simplification doesn't cause any problems when the expression is already as simple
+     * as possible.
+     */
+    @Test
+    public void testSimplifySimplest()
+    {
+        Node node = new Subtraction(new Parameter(0), new Constant(1));
+        Node simplified = node.simplify();
+        assert simplified == node : "Expression should not have been changed.";
+    }
 }

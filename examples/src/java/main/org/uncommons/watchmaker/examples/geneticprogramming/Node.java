@@ -77,4 +77,11 @@ public interface Node
      * @return The mutated node (or the same node if no mutation occurred).
      */
     Node mutate(Random rng, Probability mutationProbability, TreeFactory treeFactory);
+
+    /**
+     * Reduce this program tree to its simplest equivalent form.
+     * @return A simplification of this program tree, or this program tree unodified if it
+     * cannot be simplified.
+     */
+    Node simplify();
 }

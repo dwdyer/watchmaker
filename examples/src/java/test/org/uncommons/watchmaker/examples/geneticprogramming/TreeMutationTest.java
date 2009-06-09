@@ -16,9 +16,9 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import org.testng.annotations.Test;
 import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.examples.ExamplesTestUtils;
@@ -57,12 +57,19 @@ public class TreeMutationTest
                                                                Probability.ONE); // Probability of 1 means guaranteed mutations.
         List<Node> candidates = treeFactory.generateInitialPopulation(20, ExamplesTestUtils.getRNG());
 
-        Set<Node> distinctTrees = new HashSet<Node>(candidates);
+        Map<Node, Node> distinctTrees = new IdentityHashMap<Node, Node>();
+        for (Node node : candidates)
+        {
+            distinctTrees.put(node, node);
+        }
 
         List<Node> result = mutation.apply(candidates, ExamplesTestUtils.getRNG());
         assert result.size() == 20 : "Wrong number of trees returned: " + result.size();
-
-        distinctTrees.addAll(result);
+        for (Node node : result)
+        {
+            distinctTrees.put(node, node);
+        }
+        
         // If none of the original trees are returned, we should have 40 distict trees.
         assert distinctTrees.size() == 40 : "New trees should have been returned.";
     }

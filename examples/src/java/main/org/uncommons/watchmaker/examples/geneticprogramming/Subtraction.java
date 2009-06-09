@@ -43,4 +43,16 @@ public class Subtraction extends BinaryNode
     {
         return getLeft().evaluate(programParameters) - getRight().evaluate(programParameters);
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Node simplify()
+    {
+        Node simplifiedLeft = left.simplify();
+        Node simplifiedRight = right.simplify();
+        return simplifiedLeft.equals(simplifiedRight) ? new Constant(0) : super.simplify();
+    }
 }

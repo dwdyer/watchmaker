@@ -26,8 +26,10 @@ import org.uncommons.util.reflection.ReflectionUtils;
  */
 abstract class BinaryNode implements Node
 {
-    private final Node left;
-    private final Node right;
+    protected static final double[] NO_ARGS = new double[0];
+
+    protected final Node left;
+    protected final Node right;
     private final char symbol;
 
     protected BinaryNode(Node left, Node right, char symbol)
@@ -92,22 +94,16 @@ abstract class BinaryNode implements Node
         }
 
         int leftNodes = left.countNodes();
-        Constructor<? extends BinaryNode> constructor = ReflectionUtils.findKnownConstructor(this.getClass(),
-                                                                                             Node.class,
-                                                                                             Node.class);
         if (index <= leftNodes)
         {
-            return ReflectionUtils.invokeUnchecked(constructor,
-                                                   left.replaceNode(index - 1, newNode),
-                                                   right);
+            return newInstance(left.replaceNode(index - 1, newNode), right);
         }
         else
         {
-            return ReflectionUtils.invokeUnchecked(constructor,
-                                                   left,
-                                                   right.replaceNode(index - leftNodes - 1, newNode));
+            return newInstance(left, right.replaceNode(index - leftNodes - 1, newNode));
         }
     }
+
 
 
     /**
@@ -141,10 +137,7 @@ abstract class BinaryNode implements Node
             Node newRight = right.mutate(rng, mutationProbability, treeFactory);
             if (newLeft != left && newRight != right)
             {
-                Constructor<? extends BinaryNode> constructor = ReflectionUtils.findKnownConstructor(this.getClass(),
-                                                                                                     Node.class,
-                                                                                                     Node.class);
-                return ReflectionUtils.invokeUnchecked(constructor, newLeft, newRight);
+                return newInstance(newLeft, newRight);
             }
             else
             {
@@ -155,9 +148,42 @@ abstract class BinaryNode implements Node
     }
 
 
+    private Node newInstance(Node newLeft, Node newRight)
+    {
+        Constructor<? extends BinaryNode> constructor = ReflectionUtils.findKnownConstructor(this.getClass(),
+                                                                                             Node.class,
+                                                                                             Node.class);
+        return ReflectionUtils.invokeUnchecked(constructor, newLeft, newRight);
+    }
+
+
     @Override
     public String toString()
     {
         return print();
+    }
+
+
+    /**
+     * If this function node has two constant arguments then it will always return the
+     * same constant result, so the node can be replaced by that constant.
+     * @return A simpler equivalent of this node, or this node if no simplification is possible.
+     */
+    public Node simplify()
+    {
+        Node simplifiedLeft = left.simplify();
+        Node simplifiedRight = right.simplify();
+        if (simplifiedLeft instanceof Constant && simplifiedRight instanceof Constant)
+        {
+            return new Constant(evaluate(NO_ARGS));
+        }
+        else if (simplifiedLeft != left || simplifiedRight != right)
+        {
+            return newInstance(simplifiedLeft, simplifiedRight);
+        }
+        else
+        {
+            return this;
+        }
     }
 }

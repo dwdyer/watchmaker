@@ -85,4 +85,14 @@ abstract class LeafNode implements Node
     {
         return print();
     }
+
+
+    /**
+     * Returns this node (leaf nodes cannot be simplified).
+     * @return This node, unmodified.
+     */
+    public Node simplify()
+    {
+        return this;
+    }
 }
