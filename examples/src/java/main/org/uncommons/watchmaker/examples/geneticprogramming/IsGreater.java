@@ -46,4 +46,33 @@ public class IsGreater extends BinaryNode
     {
         return getLeft().evaluate(programParameters) > getRight().evaluate(programParameters) ? 1 : 0;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Node simplify()
+    {
+        Node simplifiedLeft = left.simplify();
+        Node simplifiedRight = right.simplify();
+        // If the two arguments are exactly equivalent, one cannot be greater than the other.
+        if (simplifiedLeft.equals(simplifiedRight))
+        {
+            return new Constant(0);
+        }
+        // If the two arguments are constants, we can simplify by calculating the result, it won't
+        // ever change.
+        else if (simplifiedLeft instanceof Constant && simplifiedRight instanceof Constant)
+        {
+            return new Constant(simplifiedLeft.evaluate(NO_ARGS) + simplifiedRight.evaluate(NO_ARGS));
+        }
+        else if (simplifiedLeft != left || simplifiedRight != right)
+        {
+            return new Addition(simplifiedLeft, simplifiedRight);
+        }
+        else
+        {
+            return this;
+        }
+    }
 }

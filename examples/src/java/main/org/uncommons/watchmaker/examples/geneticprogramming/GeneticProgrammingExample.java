@@ -54,8 +54,7 @@ public class GeneticProgrammingExample
     public static void main(String[] args)
     {
         Node program = evolveProgram(TEST_DATA);
-        System.out.println("EVOLVED:    " + program.print());
-        System.out.println("SIMPLIFIED: " + program.simplify().print());
+        System.out.println(program.print());
     }
 
 
@@ -71,9 +70,10 @@ public class GeneticProgrammingExample
                                               4, // Maximum depth of generated trees.
                                               Probability.EVENS, // Probability that a node is a function node.
                                               new Probability(0.6d)); // Probability that other nodes are params rather than constants.
-        List<EvolutionaryOperator<Node>> operators = new ArrayList<EvolutionaryOperator<Node>>(2);
+        List<EvolutionaryOperator<Node>> operators = new ArrayList<EvolutionaryOperator<Node>>(3);
         operators.add(new TreeMutation(factory, new Probability(0.4d)));
         operators.add(new TreeCrossover());
+        operators.add(new Simplification());
         TreeEvaluator evaluator = new TreeEvaluator(data);
         EvolutionEngine<Node> engine = new ConcurrentEvolutionEngine<Node>(factory,
                                                                            new EvolutionPipeline<Node>(operators),

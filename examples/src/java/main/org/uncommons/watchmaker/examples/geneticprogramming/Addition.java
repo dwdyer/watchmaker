@@ -43,4 +43,37 @@ public class Addition extends BinaryNode
     {
         return getLeft().evaluate(programParameters) + getRight().evaluate(programParameters);
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Node simplify()
+    {
+        Node simplifiedLeft = left.simplify();
+        Node simplifiedRight = right.simplify();
+        // Adding zero is pointless, the expression can be reduced to its other argument.
+        if (simplifiedRight instanceof Constant && simplifiedRight.evaluate(NO_ARGS) == 0)
+        {
+             return simplifiedLeft;
+        }
+        else if (simplifiedLeft instanceof Constant && simplifiedLeft.evaluate(NO_ARGS) == 0)
+        {
+             return simplifiedRight;
+        }
+        // If the two arguments are constants, we can simplify by calculating the result, it won't
+        // ever change.
+        else if (simplifiedLeft instanceof Constant && simplifiedRight instanceof Constant)
+        {
+            return new Constant(simplifiedLeft.evaluate(NO_ARGS) + simplifiedRight.evaluate(NO_ARGS));
+        }
+        else if (simplifiedLeft != left || simplifiedRight != right)
+        {
+            return new Addition(simplifiedLeft, simplifiedRight);
+        }
+        else
+        {
+            return this;
+        }
+    }
 }

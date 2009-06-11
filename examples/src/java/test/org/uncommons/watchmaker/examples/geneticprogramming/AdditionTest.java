@@ -50,4 +50,21 @@ public class AdditionTest
         Node simplified = node.simplify();
         assert simplified == node : "Expression should not have been changed.";
     }
+
+
+    /**
+     * Make sure that sub-nodes are simplified.
+     */
+    @Test
+    public void testSimplifySubNode()
+    {
+        Node node = new Addition(new Parameter(0),
+                                 new Addition(new Constant(3), new Constant(2)));
+        Node simplified = node.simplify();
+        assert simplified instanceof Addition
+            : "Simplified node should be Addition, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+        assert simplified.countNodes() < node.countNodes() : "Should be fewer nodes after simplification.";
+    }
 }

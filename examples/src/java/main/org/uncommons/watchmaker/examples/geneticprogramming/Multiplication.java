@@ -43,4 +43,48 @@ public class Multiplication extends BinaryNode
     {
         return getLeft().evaluate(programParameters) * getRight().evaluate(programParameters);
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Node simplify()
+    {
+        Node simplifiedLeft = left.simplify();
+        Node simplifiedRight = right.simplify();
+        // If the two arguments are constants, we can simplify by calculating the result, it won't
+        // ever change.
+        if (simplifiedLeft instanceof Constant && simplifiedRight instanceof Constant)
+        {
+            return new Constant(simplifiedLeft.evaluate(NO_ARGS) * simplifiedRight.evaluate(NO_ARGS));
+        }
+        // Multiplying by one is pointless, the expression can be reduced to its other argument.
+        else if (simplifiedRight instanceof Constant)
+        {
+            double constant = simplifiedRight.evaluate(NO_ARGS);
+            if (constant == 1)
+            {
+                return simplifiedLeft;
+            }
+            else if (constant == 0)
+            {
+                return new Constant(0);
+            }
+        }
+        else if (simplifiedLeft instanceof Constant)
+        {
+            double constant = simplifiedLeft.evaluate(NO_ARGS);
+            if (constant == 1)
+            {
+                return simplifiedRight;
+            }
+            else if (constant == 0)
+            {
+                return new Constant(0);
+            }
+        }
+        return simplifiedLeft != left || simplifiedRight != right
+               ? new Addition(simplifiedLeft, simplifiedRight)
+               : this;
+    }
 }

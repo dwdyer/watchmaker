@@ -162,28 +162,4 @@ abstract class BinaryNode implements Node
     {
         return print();
     }
-
-
-    /**
-     * If this function node has two constant arguments then it will always return the
-     * same constant result, so the node can be replaced by that constant.
-     * @return A simpler equivalent of this node, or this node if no simplification is possible.
-     */
-    public Node simplify()
-    {
-        Node simplifiedLeft = left.simplify();
-        Node simplifiedRight = right.simplify();
-        if (simplifiedLeft instanceof Constant && simplifiedRight instanceof Constant)
-        {
-            return new Constant(evaluate(NO_ARGS));
-        }
-        else if (simplifiedLeft != left || simplifiedRight != right)
-        {
-            return newInstance(simplifiedLeft, simplifiedRight);
-        }
-        else
-        {
-            return this;
-        }
-    }
 }

@@ -31,6 +31,7 @@ public class SubtractionTest
         assert value == 4 : "Wrong result: " + value;
     }
 
+    
     @Test
     public void testStringRepresentation()
     {
@@ -83,5 +84,38 @@ public class SubtractionTest
         Node node = new Subtraction(new Parameter(0), new Constant(1));
         Node simplified = node.simplify();
         assert simplified == node : "Expression should not have been changed.";
+    }
+
+
+    /**
+     * If the second argument is zero, the experession can be replaced by its lefthand side.
+     */
+    @Test
+    public void testSimplifySubtractZero()
+    {
+        Node node = new Subtraction(new Parameter(0), new Constant(0));
+        Node simplified = node.simplify();
+        assert simplified instanceof Parameter
+            : "Simplified node should be Parameter, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+        assert simplified.evaluate(args) == 5;
+    }
+
+
+    /**
+     * Make sure that sub-nodes are simplified.
+     */
+    @Test
+    public void testSimplifySubNode()
+    {
+        Node node = new Subtraction(new Parameter(0),
+                                    new Subtraction(new Constant(3), new Constant(2)));
+        Node simplified = node.simplify();
+        assert simplified instanceof Subtraction
+            : "Simplified node should be Subtraction, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+        assert simplified.countNodes() < node.countNodes() : "Should be fewer nodes after simplification.";
     }
 }

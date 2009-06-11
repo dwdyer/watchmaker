@@ -48,11 +48,33 @@ public class Subtraction extends BinaryNode
     /**
      * {@inheritDoc}
      */
-    @Override
     public Node simplify()
     {
         Node simplifiedLeft = left.simplify();
         Node simplifiedRight = right.simplify();
-        return simplifiedLeft.equals(simplifiedRight) ? new Constant(0) : super.simplify();
+        // If the two arguments are identical then the result will always be zero.
+        if (simplifiedLeft.equals(simplifiedRight))
+        {
+            return new Constant(0);
+        }
+        // Subtracting zero is pointless, the expression can be reduced to its lefthand side.
+        else if (simplifiedRight instanceof Constant && simplifiedRight.evaluate(NO_ARGS) == 0)
+        {
+             return simplifiedLeft;
+        }
+        // If the two arguments are constants, we can simplify by calculating the result, it won't
+        // ever change.
+        else if (simplifiedLeft instanceof Constant && simplifiedRight instanceof Constant)
+        {
+            return new Constant(simplifiedLeft.evaluate(NO_ARGS) - simplifiedRight.evaluate(NO_ARGS));
+        }
+        else if (simplifiedLeft != left || simplifiedRight != right)
+        {
+            return new Subtraction(simplifiedLeft, simplifiedRight);
+        }
+        else
+        {
+            return this;
+        }
     }
 }
