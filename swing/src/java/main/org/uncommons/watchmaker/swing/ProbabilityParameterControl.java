@@ -38,7 +38,7 @@ public class ProbabilityParameterControl implements EvolutionControl
     private final Probability defaultValue;
     private final int range;
     private final JComponent control;
-    private final JSlider slider;
+    private final JSlider probabilitySlider;
     private final JLabel valueLabel = new JLabel();
     private final AdjustableNumberGenerator<Probability> numberGenerator;
     private final DecimalFormat format;
@@ -78,10 +78,10 @@ public class ProbabilityParameterControl implements EvolutionControl
         this.defaultValue = initialValue;
         this.numberGenerator = new AdjustableNumberGenerator<Probability>(this.defaultValue);
         this.range = (int) Maths.raiseToPower(10, decimalPlaces);
-        this.slider = createSlider(initialValue, minimum, maximum);
-        slider.setName("Slider"); // For easy look-up in unit tests.
+        this.probabilitySlider = createSlider(initialValue, minimum, maximum);
+        probabilitySlider.setName("Slider"); // For easy look-up in unit tests.
         this.control = new JPanel(new BorderLayout());
-        control.add(slider, BorderLayout.CENTER);
+        control.add(probabilitySlider, BorderLayout.CENTER);
         valueLabel.setText(format.format(defaultValue));
         control.add(valueLabel, BorderLayout.WEST);
     }
@@ -137,7 +137,7 @@ public class ProbabilityParameterControl implements EvolutionControl
     public void reset()
     {
         int value = (int) Math.round(range * defaultValue.doubleValue());
-        slider.setValue(value);
+        probabilitySlider.setValue(value);
         valueLabel.setText(format.format(defaultValue));
         numberGenerator.setValue(defaultValue);
     }
@@ -159,7 +159,7 @@ public class ProbabilityParameterControl implements EvolutionControl
      */
     public void setDescription(String description)
     {
-        slider.setToolTipText(description);
+        probabilitySlider.setToolTipText(description);
         valueLabel.setToolTipText(description);
     }
 }

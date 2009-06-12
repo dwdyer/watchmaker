@@ -29,14 +29,15 @@ import javax.swing.SwingUtilities;
 public abstract class SwingBackgroundTask<V>
 {
     // Used to assign thread IDs to make threads easier to identify when debugging.
-    private static final AtomicInteger instanceCount = new AtomicInteger(0);
+    private static final AtomicInteger INSTANCE_COUNT = new AtomicInteger(0);
 
     private final CountDownLatch latch = new CountDownLatch(1);
     private final int id;
 
+
     protected SwingBackgroundTask()
     {
-        this.id = instanceCount.getAndIncrement();
+        this.id = INSTANCE_COUNT.getAndIncrement();
     }
 
 

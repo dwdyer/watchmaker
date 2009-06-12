@@ -23,6 +23,11 @@ public class Constant extends LeafNode
 {
     private final double constant;
 
+
+    /**
+     * Creates a constant-valued node. 
+     * @param constant The value that this node will always evaluate to.
+     */
     public Constant(double constant)
     {
         this.constant = constant;
@@ -50,6 +55,7 @@ public class Constant extends LeafNode
 
     /**
      * Two constants are equal if they have the same numeric value.
+     * @param other The object that this object is compared to.
      * @return True if the constants are equivalent, false otherwise.
      */
     @Override

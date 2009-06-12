@@ -28,10 +28,19 @@ abstract class BinaryNode implements Node
 {
     protected static final double[] NO_ARGS = new double[0];
 
+    /** The first argument to the binary function. */
     protected final Node left;
+    /** The second argument to the binary function. */
     protected final Node right;
+    
     private final char symbol;
 
+
+    /**
+     * @param left The first argument to the binary function.
+     * @param right The second argument to the binary function.
+     * @param symbol A single character that indicates the type of function.
+     */
     protected BinaryNode(Node left, Node right, char symbol)
     {
         this.left = left;

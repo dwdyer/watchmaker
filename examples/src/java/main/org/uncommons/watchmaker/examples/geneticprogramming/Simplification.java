@@ -40,6 +40,12 @@ public class Simplification implements EvolutionaryOperator<Node>
     }
 
 
+    /**
+     * Creates a simplfication operator that has the specified probability of being
+     * applied to any individual candidate. 
+     * @param probability The probability that this operator will attempt to simplify
+     * any single expression.
+     */
     public Simplification(Probability probability)
     {
         this.probability = probability;

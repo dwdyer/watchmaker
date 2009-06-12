@@ -47,27 +47,6 @@ public class SelectionStrategyControl<T> implements EvolutionControl
 
 
     /**
-     * Creates a list containing one instance of each of the standard selection strategies.
-     * These strategies are {@link RankSelection}, {@link RouletteWheelSelection},
-     * {@link StochasticUniversalSampling}, {@link TournamentSelection} and {@link TruncationSelection}.
-     * @param tournamentProbability The probability parameter for {@link TournamentSelection}.
-     * @param truncationRatio The ratio parameter for {@link TruncationSelection}.
-     * @return A list of selection strategies.
-     */
-    public static <T> List<SelectionStrategy<? super T>> createDefaultOptions(Probability tournamentProbability,
-                                                                              double truncationRatio)
-    {
-        List<SelectionStrategy<? super T>> options = new LinkedList<SelectionStrategy<? super T>>();
-        options.add(new RankSelection());
-        options.add(new RouletteWheelSelection());
-        options.add(new StochasticUniversalSampling());
-        options.add(new TournamentSelection(tournamentProbability));
-        options.add(new TruncationSelection(truncationRatio));
-        return options;
-    }
-
-
-    /**
      * Creates a control for choosing between a specified set of selection strategies.
      * @param options The selection strategies to choose from.
      */
@@ -87,6 +66,27 @@ public class SelectionStrategyControl<T> implements EvolutionControl
                 }
             }
         });
+    }
+
+
+    /**
+     * Creates a list containing one instance of each of the standard selection strategies.
+     * These strategies are {@link RankSelection}, {@link RouletteWheelSelection},
+     * {@link StochasticUniversalSampling}, {@link TournamentSelection} and {@link TruncationSelection}.
+     * @param tournamentProbability The probability parameter for {@link TournamentSelection}.
+     * @param truncationRatio The ratio parameter for {@link TruncationSelection}.
+     * @return A list of selection strategies.
+     */
+    public static <T> List<SelectionStrategy<? super T>> createDefaultOptions(Probability tournamentProbability,
+                                                                              double truncationRatio)
+    {
+        List<SelectionStrategy<? super T>> options = new LinkedList<SelectionStrategy<? super T>>();
+        options.add(new RankSelection());
+        options.add(new RouletteWheelSelection());
+        options.add(new StochasticUniversalSampling());
+        options.add(new TournamentSelection(tournamentProbability));
+        options.add(new TruncationSelection(truncationRatio));
+        return options;
     }
 
 

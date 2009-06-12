@@ -63,6 +63,7 @@ public class Parameter extends LeafNode
     /**
      * Two parameters are equal if they evaluate to the same program argument
      * (i.e. they have the same parameter index).
+     * @param other The object that this object is compared to.
      * @return True if the parameters are equivalent, false otherwise.
      */
     @Override

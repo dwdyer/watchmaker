@@ -56,6 +56,13 @@ public class AddVertexMutation extends AbstractVertexMutation
     }
 
 
+    /**
+     * Mutates the list of vertices for a given polygon by adding a new random point.
+     * Whether or not a point is actually added is determined by the configured mutation probability.
+     * @param vertices A list of the points that make up the polygon.
+     * @param rng A source of randomness.
+     * @return A mutated list of points.
+     */
     @Override
     protected List<Point> mutateVertices(List<Point> vertices, Random rng)
     {
