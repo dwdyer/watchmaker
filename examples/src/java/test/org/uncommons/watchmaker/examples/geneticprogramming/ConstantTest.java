@@ -38,4 +38,18 @@ public class ConstantTest
         assert !zero.equals(null) : "No non-null object should not be considered equal to null.";
         assert !zero.equals(Double.valueOf(0)) : "Objects of different types should not be equal.";
     }
+
+
+    @Test(expectedExceptions = IndexOutOfBoundsException.class)
+    public void testGetInvalidNodeIndex()
+    {
+        new Constant(1).getNode(1); // Should throw an exception.
+    }
+
+
+    @Test(expectedExceptions = IndexOutOfBoundsException.class)
+    public void testReplaceInvalidNodeIndex()
+    {
+        new Constant(1).replaceNode(1, new Constant(2)); // Should throw an exception.
+    }
 }

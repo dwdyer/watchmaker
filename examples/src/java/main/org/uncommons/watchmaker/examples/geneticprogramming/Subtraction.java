@@ -41,7 +41,7 @@ public class Subtraction extends BinaryNode
      */
     public double evaluate(double[] programParameters)
     {
-        return getLeft().evaluate(programParameters) - getRight().evaluate(programParameters);
+        return left.evaluate(programParameters) - right.evaluate(programParameters);
     }
 
 

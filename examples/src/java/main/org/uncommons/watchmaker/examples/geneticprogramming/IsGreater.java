@@ -44,7 +44,7 @@ public class IsGreater extends BinaryNode
      */
     public double evaluate(double[] programParameters)
     {
-        return getLeft().evaluate(programParameters) > getRight().evaluate(programParameters) ? 1 : 0;
+        return left.evaluate(programParameters) > right.evaluate(programParameters) ? 1 : 0;
     }
 
 
@@ -64,11 +64,11 @@ public class IsGreater extends BinaryNode
         // ever change.
         else if (simplifiedLeft instanceof Constant && simplifiedRight instanceof Constant)
         {
-            return new Constant(simplifiedLeft.evaluate(NO_ARGS) + simplifiedRight.evaluate(NO_ARGS));
+            return new Constant(simplifiedLeft.evaluate(NO_ARGS) > simplifiedRight.evaluate(NO_ARGS) ? 1 : 0);
         }
         else if (simplifiedLeft != left || simplifiedRight != right)
         {
-            return new Addition(simplifiedLeft, simplifiedRight);
+            return new IsGreater(simplifiedLeft, simplifiedRight);
         }
         else
         {

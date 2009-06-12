@@ -41,7 +41,7 @@ public class Multiplication extends BinaryNode
      */
     public double evaluate(double[] programParameters)
     {
-        return getLeft().evaluate(programParameters) * getRight().evaluate(programParameters);
+        return left.evaluate(programParameters) * right.evaluate(programParameters);
     }
 
 
@@ -84,7 +84,7 @@ public class Multiplication extends BinaryNode
             }
         }
         return simplifiedLeft != left || simplifiedRight != right
-               ? new Addition(simplifiedLeft, simplifiedRight)
+               ? new Multiplication(simplifiedLeft, simplifiedRight)
                : this;
     }
 }

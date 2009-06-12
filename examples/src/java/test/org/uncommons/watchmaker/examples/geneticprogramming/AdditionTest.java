@@ -40,6 +40,24 @@ public class AdditionTest
 
 
     /**
+     * If the arguments to the add function are both constants then the addition node
+     * should be replaced by a constant node containing the evaluation of this sum.
+     */
+    @Test
+    public void testSimplifyConstants()
+    {
+        Node node = new Addition(new Constant(7), new Constant(5));
+        Node simplified = node.simplify();
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == node.evaluate(BinaryNode.NO_ARGS) : "Simplified answer differs.";
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == 12;
+
+    }
+
+
+
+    /**
      * Test that simplification doesn't cause any problems when the expression is already as simple
      * as possible.
      */
@@ -66,5 +84,29 @@ public class AdditionTest
         double[] args = new double[]{5}; // Provides a value for the parameter nodes.
         assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
         assert simplified.countNodes() < node.countNodes() : "Should be fewer nodes after simplification.";
+    }
+
+
+    @Test
+    public void testSimplifyAddZero()
+    {
+        Node node = new Addition(new Parameter(0), new Constant(0));
+        Node simplified = node.simplify();
+        assert simplified instanceof Parameter
+            : "Simplified node should be Parameter, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+    }
+
+
+    @Test
+    public void testSimplifyAddToZero()
+    {
+        Node node = new Addition(new Constant(0), new Parameter(0));
+        Node simplified = node.simplify();
+        assert simplified instanceof Parameter
+            : "Simplified node should be Parameter, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
     }
 }

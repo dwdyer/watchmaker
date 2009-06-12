@@ -18,7 +18,7 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 import org.testng.annotations.Test;
 
 /**
- * Simple unit test for the {@link Subtraction} node type.
+ * Simple unit test for the {@link Multiplication} node type.
  * @author Daniel Dyer
  */
 public class MultiplicationTest
@@ -31,10 +31,127 @@ public class MultiplicationTest
         assert value == 10 : "Wrong result: " + value;
     }
 
+
     @Test
     public void testStringRepresentation()
     {
-        Node node = new Multiplication(new Constant(5), new Constant(2));
-        assert node.print().equals("(5.0 * 2.0)") : "Wrong string representation: " + node.print();
+        Node node = new Multiplication(new Constant(5), new Parameter(0));
+        assert node.print().equals("(5.0 * arg0)") : "Wrong string representation: " + node.print();
     }
+
+
+    /**
+     * If the arguments to the multiply function are both constants then the multiplication node
+     * should be replaced by a constant node containing the evaluation of this product.
+     */
+    @Test
+    public void testSimplifyConstants()
+    {
+        Node node = new Multiplication(new Constant(3), new Constant(4));
+        Node simplified = node.simplify();
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == node.evaluate(BinaryNode.NO_ARGS) : "Simplified answer differs.";
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == 12;
+
+    }
+
+
+    /**
+     * If the lefthand argument is zero, the result will always be zero regardless of the righthand
+     * argument.
+     */
+    @Test
+    public void testSimplifyMultiplyZero()
+    {
+        Node node = new Multiplication(new Constant(0), new Parameter(0));
+        Node simplified = node.simplify();
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == 0;
+
+    }
+
+
+    /**
+     * If the righthand argument is zero, the result will always be zero regardless of the lefthand
+     * argument.
+     */
+    @Test
+    public void testSimplifyMultiplyByZero()
+    {
+        Node node = new Multiplication(new Parameter(0), new Constant(0));
+        Node simplified = node.simplify();
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == 0;
+    }
+
+
+    /**
+     * If the lefthand argument is one, the result can be reduced to the righthand argument.
+     */
+    @Test
+    public void testSimplifyMultiplyOne()
+    {
+        Node node = new Multiplication(new Constant(1), new Parameter(0));
+        Node simplified = node.simplify();
+        assert simplified instanceof Parameter
+            : "Simplified node should be Parameter, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+        assert simplified.evaluate(args) == 5;
+
+    }
+
+
+    /**
+     * If the righthand argument is one, the result can be reduced to the lefthand argument.
+     */
+    @Test
+    public void testSimplifyMultiplyByOne()
+    {
+        Node node = new Multiplication(new Parameter(0), new Constant(1));
+        Node simplified = node.simplify();
+        assert simplified instanceof Parameter
+            : "Simplified node should be Parameter, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+        assert simplified.evaluate(args) == 5;
+    }
+
+
+    /**
+     * Test that simplification doesn't cause any problems when the expression is already as simple
+     * as possible.
+     */
+    @Test
+    public void testSimplifySimplest()
+    {
+        Node node = new Multiplication(new Parameter(0), new Constant(2));
+        Node simplified = node.simplify();
+        assert simplified == node : "Expression should not have been changed.";
+    }
+
+
+    /**
+     * Make sure that sub-nodes are simplified.
+     */
+    @Test
+    public void testSimplifySubNode()
+    {
+        Node node = new Multiplication(new Parameter(0),
+                                       new Multiplication(new Constant(3), new Constant(2)));
+        Node simplified = node.simplify();
+        assert simplified instanceof Multiplication
+            : "Simplified node should be Multiplication, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+        assert simplified.countNodes() < node.countNodes() : "Should be fewer nodes after simplification.";
+    }
+
 }

@@ -40,18 +40,6 @@ abstract class BinaryNode implements Node
     }
 
 
-    protected Node getLeft()
-    {
-        return left;
-    }
-
-    
-    protected Node getRight()
-    {
-        return right;
-    }
-
-
     /**
      * The depth of a binary node is the depth of its deepest sub-tree plus one.
      * @return The depth of the tree rooted at this node.
@@ -62,12 +50,18 @@ abstract class BinaryNode implements Node
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int countNodes()
     {
         return 1 + left.countNodes() + right.countNodes();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Node getNode(int index)
     {
         if (index == 0)
@@ -86,6 +80,9 @@ abstract class BinaryNode implements Node
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Node replaceNode(int index, Node newNode)
     {
         if (index == 0)

@@ -53,7 +53,6 @@ public class SubtractionTest
             : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
         assert simplified.evaluate(BinaryNode.NO_ARGS) == node.evaluate(BinaryNode.NO_ARGS) : "Simplified answer differs.";
         assert simplified.evaluate(BinaryNode.NO_ARGS) == 2;
-
     }
 
 
@@ -100,6 +99,19 @@ public class SubtractionTest
         double[] args = new double[]{5}; // Provides a value for the parameter nodes.
         assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
         assert simplified.evaluate(args) == 5;
+    }
+
+
+    /**
+     * But if the first argument is zero, the experession should not be simplified as it has
+     * the effect of negating the second argument.
+     */
+    @Test
+    public void testSimplifySubtractFromZero()
+    {
+        Node node = new Subtraction(new Constant(0), new Parameter(0));
+        Node simplified = node.simplify();
+        assert simplified == node : "Expression should not have been changed.";
     }
 
 

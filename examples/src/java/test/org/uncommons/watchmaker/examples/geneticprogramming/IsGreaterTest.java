@@ -48,4 +48,63 @@ public class IsGreaterTest
         Node node = new IsGreater(new Constant(-1), new Constant(1));
         assert node.evaluate(new double[0]) == 0 : "First node should be less than second.";
     }
+
+
+    /**
+     * If the arguments to the IsGreater function are both constants then the node
+     * should be replaced by a constant node containing the evaluation of this expression.
+     */
+    @Test
+    public void testSimplifyConstants()
+    {
+        Node node = new IsGreater(new Constant(7), new Constant(5));
+        Node simplified = node.simplify();
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == node.evaluate(BinaryNode.NO_ARGS) : "Simplified answer differs.";
+        assert simplified.evaluate(BinaryNode.NO_ARGS) == 1;
+
+    }
+
+
+    @Test
+    public void testSimplifyIdenticalArguments()
+    {
+        Node node = new IsGreater(new Parameter(0), new Parameter(0));
+        Node simplified = node.simplify();
+        assert simplified instanceof Constant
+            : "Simplified node should be Constant, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+    }
+
+    
+    /**
+     * Test that simplification doesn't cause any problems when the expression is already as simple
+     * as possible.
+     */
+    @Test
+    public void testSimplifySimplest()
+    {
+        Node node = new IsGreater(new Parameter(0), new Constant(1));
+        Node simplified = node.simplify();
+        assert simplified == node : "Expression should not have been changed.";
+    }
+
+
+    /**
+     * Make sure that sub-nodes are simplified.
+     */
+    @Test
+    public void testSimplifySubNode()
+    {
+        Node node = new IsGreater(new Parameter(0),
+                                  new IsGreater(new Constant(3), new Constant(2)));
+        Node simplified = node.simplify();
+        assert simplified instanceof IsGreater
+            : "Simplified node should be IsGreater, is " + simplified.getClass().getSimpleName();
+        double[] args = new double[]{5}; // Provides a value for the parameter nodes.
+        assert simplified.evaluate(args) == node.evaluate(args) : "Simplified answer differs.";
+        assert simplified.countNodes() < node.countNodes() : "Should be fewer nodes after simplification.";
+    }
 }
