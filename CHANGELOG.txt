@@ -1,3 +1,9 @@
+Changes in version 0.6.1
+------------------------
+
+* Improvements to the genetic programming example application.
+
+
 Changes in version 0.6.0
 ------------------------
 
