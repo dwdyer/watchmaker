@@ -35,7 +35,7 @@
     <para>
       An <interfacename>EvolutionEngine</interfacename> has a single generic type parameter
       that indicates the type of object that it can evolve.
-      For the "Hello World" program, we need to be able to evolve Java strings.
+      For the "Hello World" program we need to be able to evolve Java strings.
       Code that creates an engine that can evolve strings would look something like this:
     </para>
     <informalexample>
@@ -366,10 +366,10 @@ EvolutionEngine<String> engine
       <indexterm><primary>TargetFitness</primary></indexterm>
       <para>
         Termination conditions make the evolution stop.  There are a few reasons why
-        we would like the evolution to stop.  The most obvious is when it has found the
+        we would like the evolution to stop.  The most obvious is because we have found the
         solution that we are looking for.  In the case of the "Hello World" program, that
         is when we have found the target string.  The target string has a fitness score of
-        11, so we use the <classname>TargetFitness</classname> condition.
+        11 so we use the <classname>TargetFitness</classname> condition.
       </para>
       <para>
         To complete the evolutionary "Hello World" application, add the following two lines:

@@ -191,7 +191,7 @@
         slightly by mutation, or perhaps not at all.
       </para>
       <para>
-        By applying mutation to each of the offspring produced by cross-over, we will occasionally
+        By applying mutation to each of the offspring produced by cross-over we will occasionally
         introduce correct characters in new positions.  We will also occasionally remove correct
         characters but these bad mutations are unlikely to survive selection in the next generation,
         so this is not a big problem.  Advantageous mutations will be propagated by cross-over and
@@ -384,7 +384,7 @@
       </para>
       <indexterm><primary>Java</primary></indexterm>
       <para>
-        If you can recall the title of this book, it should come as no surprise that we will be
+        If you can recall the title of this book it should come as no surprise that we will be
         using Java for all of the example code.  Java offers a good balance of performance,
         ease-of-use and a rich standard library.
       </para>
