@@ -222,6 +222,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
             throw new IllegalArgumentException("At least one TerminationCondition must be specified.");
         }
 
+        satisfiedTerminationConditions = null;
         currentGenerationIndex = 0;
         startTime = System.currentTimeMillis();
 
