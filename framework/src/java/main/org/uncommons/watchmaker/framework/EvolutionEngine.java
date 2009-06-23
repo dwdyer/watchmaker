@@ -136,4 +136,28 @@ public interface EvolutionEngine<T>
      * @see #addEvolutionObserver(EvolutionObserver)
      */
     void removeEvolutionObserver(EvolutionObserver<? super T> observer);
+
+
+    /**
+     * Returns a list of all {@link TerminationCondition}s that are satisfied by the current
+     * state of the evolution engine.  Usually this list will contain only one item, but it
+     * is possible that mutliple termination conditions will become satisfied at the same
+     * time.  In this case the condition objects in the list will be in the same order that
+     * they were specified when passed to the engine.
+     *
+     * If the evolution has not yet terminated (either because it is still in progress or
+     * because it hasn't even been started) then an IllegalStateException will be thrown.
+     *
+     * If the evolution terminated because the request thread was interrupted before any
+     * termination conditions were satisfied then this method will return an empty list.
+     * 
+     * @throws IllegalStateException If this method is invoked on an evolution engine before
+     * evolution is started or while it is still in progress.
+     *
+     * @return A list of statisfied conditions.  The list is guaranteed to be non-null.  The
+     * list may be empty because it is possible for evolution to terminate without any conditions
+     * being matched.  The only situation in which this occurs is when the request thread is
+     * interrupted.
+     */
+    List<TerminationCondition> getSatisfiedTerminationConditions();
 }

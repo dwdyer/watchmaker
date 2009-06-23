@@ -15,22 +15,26 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework;
 
-import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
+import java.util.Random;
 
 /**
- * Unit-test for the multi-threaded evolution engine.
+ * Unit-test for the single-threaded evolution engine.
  * @author Daniel Dyer
  */
 public class SequentialEvolutionEngineTest extends EvolutionEngineTestBase
 {
     // All test cases are provided by the super-class.
 
-    public SequentialEvolutionEngineTest()
+    protected <T> EvolutionEngine<T> createEvolutionEngine(CandidateFactory<T> candidateFactory,
+                                                           EvolutionaryOperator<T> evolutionScheme,
+                                                           FitnessEvaluator<? super T> fitnessEvaluator,
+                                                           SelectionStrategy<? super T> selectionStrategy,
+                                                           Random rng)
     {
-        super(new SequentialEvolutionEngine<Integer>(new IntegerFactory(),
-                                                     new IntegerZeroMaker(),
-                                                     new IntegerEvaluator(),
-                                                     new RouletteWheelSelection(),
-                                                     FrameworkTestUtils.getRNG()));
+        return new SequentialEvolutionEngine<T>(candidateFactory,
+                                                evolutionScheme,
+                                                fitnessEvaluator,
+                                                selectionStrategy,
+                                                FrameworkTestUtils.getRNG());
     }
 }

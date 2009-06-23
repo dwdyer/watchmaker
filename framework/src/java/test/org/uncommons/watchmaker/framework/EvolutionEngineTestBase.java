@@ -18,8 +18,10 @@ package org.uncommons.watchmaker.framework;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
+import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 import org.uncommons.watchmaker.framework.termination.ElapsedTime;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
@@ -31,14 +33,29 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
 // Has to be public otherwise TestNG fails.
 public abstract class EvolutionEngineTestBase
 {
-    private final EvolutionEngine<Integer> engine;
+    private EvolutionEngine<Integer> engine;
 
-    protected EvolutionEngineTestBase(EvolutionEngine<Integer> engine)
+    /**
+     * Implement in sub-class to create an instance of the engine implementation that
+     * we are testing.
+     */
+    protected abstract <T> EvolutionEngine<T> createEvolutionEngine(CandidateFactory<T> candidateFactory,
+                                                                    EvolutionaryOperator<T> evolutionScheme,
+                                                                    FitnessEvaluator<? super T> fitnessEvaluator,
+                                                                    SelectionStrategy<? super T> selectionStrategy,
+                                                                    Random rng);
+
+    @BeforeMethod
+    public void prepareEngine()
     {
-        this.engine = engine;
+        this.engine = createEvolutionEngine(new IntegerFactory(),
+                                            new IntegerZeroMaker(),
+                                            new IntegerEvaluator(),
+                                            new RouletteWheelSelection(),
+                                            FrameworkTestUtils.getRNG());
     }
 
-    
+
     @Test
     public void testElitism()
     {
@@ -121,13 +138,34 @@ public abstract class EvolutionEngineTestBase
         long elapsedTime = System.currentTimeMillis() - startTime;
         assert Thread.interrupted() : "Thread was not interrupted before timeout.";
         assert elapsedTime < timeout : "Engine did not respond to interrupt before timeout.";
+        assert engine.getSatisfiedTerminationConditions().isEmpty()
+            : "Interrupted engine should have no satisfied termination conditions.";
+    }
+
+
+    @Test
+    public void testGetSatisfiedTerminationConditions()
+    {
+        GenerationCount generationsCondition = new GenerationCount(1);
+        engine.evolve(10, 0, generationsCondition);
+        List<TerminationCondition> satisfiedConditions = engine.getSatisfiedTerminationConditions();
+        assert satisfiedConditions.size() == 1 : "Wrong number of conditions: " + satisfiedConditions.size();
+        assert satisfiedConditions.get(0) == generationsCondition : "Wrong condition returned.";
+    }
+
+
+    @Test(expectedExceptions = IllegalStateException.class)
+    public void testGetSatisfiedTerminationConditionsBeforeStart()
+    {
+        // Should throw an IllegalStateException because evolution has started, let alone terminated.
+        engine.getSatisfiedTerminationConditions();
     }
 
 
     /**
      * Stub candidate factory for tests.  Always returns zero-valued integers.
      */
-    protected static final class IntegerFactory extends AbstractCandidateFactory<Integer>
+    private static final class IntegerFactory extends AbstractCandidateFactory<Integer>
     {
         public Integer generateRandomCandidate(Random rng)
         {
@@ -139,7 +177,7 @@ public abstract class EvolutionEngineTestBase
     /**
      * Trivial fitness evaluator for integers.  Used by tests above.
      */
-    protected static final class IntegerEvaluator implements FitnessEvaluator<Integer>
+    private static final class IntegerEvaluator implements FitnessEvaluator<Integer>
     {
 
         public double getFitness(Integer candidate,
@@ -158,7 +196,7 @@ public abstract class EvolutionEngineTestBase
     /**
      * Trivial test operator that mutates all integers into zeroes.
      */
-    protected static final class IntegerZeroMaker implements EvolutionaryOperator<Integer>
+    private static final class IntegerZeroMaker implements EvolutionaryOperator<Integer>
     {
         public List<Integer> apply(List<Integer> selectedCandidates, Random rng)
         {

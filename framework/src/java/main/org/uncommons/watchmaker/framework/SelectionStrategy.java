@@ -35,7 +35,7 @@ public interface SelectionStrategy<T>
      * @param population The population from which to select.
      * @param naturalFitnessScores Whether higher fitness values represent fitter
      * individuals or not.
-     * @param selectionSize The number of individuals selections to make (not necessarily
+     * @param selectionSize The number of individual selections to make (not necessarily
      * the number of distinct candidates to select, since the same individual may
      * potentially be selected more than once).
      * @param rng Source of randomness for stochastic selection strategies.

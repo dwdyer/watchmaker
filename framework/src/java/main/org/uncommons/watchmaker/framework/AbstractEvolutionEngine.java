@@ -45,6 +45,8 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     private long startTime;
     private int currentGenerationIndex;
 
+    private List<TerminationCondition> satisfiedTerminationConditions;
+
 
     /**
      * Creates a new evolution engine by specifying the various components required by
@@ -234,7 +236,8 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         // Notify observers of the state of the population.
         notifyPopulationChange(data);
 
-        while (shouldContinue(data, conditions))
+        List<TerminationCondition> satisfiedConditions = shouldContinue(data, conditions);
+        while (satisfiedConditions == null)
         {
             ++currentGenerationIndex;
             population = createNextGeneration(evaluatedPopulation, eliteCount);
@@ -243,30 +246,49 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
             data = getPopulationData(evaluatedPopulation, eliteCount);
             // Notify observers of the state of the population.
             notifyPopulationChange(data);
+            satisfiedConditions = shouldContinue(data, conditions);
         }
+        this.satisfiedTerminationConditions = satisfiedConditions;
         return evaluatedPopulation;
     }
 
 
 
-    private boolean shouldContinue(PopulationData<T> data,
-                                   TerminationCondition... conditions)
+    private List<TerminationCondition> shouldContinue(PopulationData<T> data,
+                                                      TerminationCondition... conditions)
     {
         // If the thread has been interrupted, we should abort and return whatever
         // result we currently have.
         if (Thread.currentThread().isInterrupted())
         {
-            return false;
+            return Collections.emptyList();
         }
         // Otherwise check the termination conditions for the evolution.
+        List<TerminationCondition> satisfiedConditions = new LinkedList<TerminationCondition>();
         for (TerminationCondition condition : conditions)
         {
             if (condition.shouldTerminate(data))
             {
-                return false;
+                satisfiedConditions.add(condition);
             }
         }
-        return true;
+        return satisfiedConditions.isEmpty() ? null : satisfiedConditions;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<TerminationCondition> getSatisfiedTerminationConditions()
+    {
+        if (satisfiedTerminationConditions == null)
+        {
+            throw new IllegalStateException("EvolutionEngine has not terminated.");
+        }
+        else
+        {
+            return Collections.unmodifiableList(satisfiedTerminationConditions);
+        }
     }
 
 
