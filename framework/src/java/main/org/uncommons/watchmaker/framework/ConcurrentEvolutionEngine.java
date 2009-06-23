@@ -191,8 +191,9 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                 int fromIndex = i * subListSize;
                 int toIndex = i < threadUtilisation - 1 ? fromIndex + subListSize : population.size();
                 List<T> subList = population.subList(fromIndex, toIndex);
-                tasks.add(new FitnessEvalutationTask(subList,
-                                                     unmodifiablePopulation));
+                tasks.add(new FitnessEvalutationTask<T>(getFitnessEvaluator(),
+                                                        subList,
+                                                        unmodifiablePopulation));
             }
             // Submit tasks for execution and wait until all threads have finished fitness evaluations.
             List<Future<List<EvaluatedCandidate<T>>>> results = threadPool.invokeAll(tasks);
@@ -214,43 +215,5 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         }
 
         return evaluatedPopulation;
-    }
-
-
-    /**
-     * Callable task for performing parallel fitness evaluations.
-     */
-    private final class FitnessEvalutationTask implements Callable<List<EvaluatedCandidate<T>>>
-    {
-        private final List<T> candidates;
-        private final List<T> population;
-
-        /**
-         * Creates a task for performing fitness evaluations.
-         * @param candidates The candidates to evaluate.  This is a subset of
-         * {@code population}.
-         * @param population The entire current population.  This will include all
-         * of the candidates to evaluate along with any other individuals that are
-         * not being evaluated by this task.
-         */
-        FitnessEvalutationTask(List<T> candidates,
-                               List<T> population)
-        {
-            this.candidates = candidates;
-            this.population = population;
-        }
-
-
-        public List<EvaluatedCandidate<T>> call()
-        {
-            List<EvaluatedCandidate<T>> evaluatedCandidates = new ArrayList<EvaluatedCandidate<T>>(candidates.size());
-            for (T candidate : candidates)
-            {
-                evaluatedCandidates.add(new EvaluatedCandidate<T>(candidate,
-                                                                  getFitnessEvaluator().getFitness(candidate,
-                                                                                                   population)));
-            }
-            return evaluatedCandidates;
-        }
     }
 }
