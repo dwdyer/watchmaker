@@ -1,8 +1,8 @@
 Changes in version 0.6.1
 ------------------------
 
-* Added getSatisfiedTerminationConditions method to the EvolutionEngine
-  interface.  This makes it possible to determine which TerminationCondition
+* Added getSatisfiedTerminationConditions() method to the EvolutionEngine
+  interface.  This makes it easier to determine which TerminationCondition
   caused the evolution to stop (ISSUE#13).
 
 * Improvements to the genetic programming example application.

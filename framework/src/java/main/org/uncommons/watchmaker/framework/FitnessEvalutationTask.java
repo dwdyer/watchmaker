@@ -15,7 +15,6 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -24,39 +23,33 @@ import java.util.concurrent.Callable;
  * @param <T> The type of entity for which fitness is calculated.
  * @author Daniel Dyer
  */
-class FitnessEvalutationTask<T> implements Callable<List<EvaluatedCandidate<T>>>
+class FitnessEvalutationTask<T> implements Callable<EvaluatedCandidate<T>>
 {
     private final FitnessEvaluator<? super T> fitnessEvaluator;
-    private final List<T> candidates;
+    private final T candidate;
     private final List<T> population;
 
     /**
      * Creates a task for performing fitness evaluations.
      * @param fitnessEvaluator The fitness function used to determine candidate fitness.
-     * @param candidates The candidates to evaluate.  This is a subset of
-     * {@code population}.
+     * @param candidate The candidate to evaluate.
      * @param population The entire current population.  This will include all
      * of the candidates to evaluate along with any other individuals that are
      * not being evaluated by this task.
      */
     FitnessEvalutationTask(FitnessEvaluator<? super T> fitnessEvaluator,
-                           List<T> candidates,
+                           T candidate,
                            List<T> population)
     {
         this.fitnessEvaluator = fitnessEvaluator;
-        this.candidates = candidates;
+        this.candidate = candidate;
         this.population = population;
     }
 
 
-    public List<EvaluatedCandidate<T>> call()
+    public EvaluatedCandidate<T> call()
     {
-        List<EvaluatedCandidate<T>> evaluatedCandidates = new ArrayList<EvaluatedCandidate<T>>(candidates.size());
-        for (T candidate : candidates)
-        {
-            evaluatedCandidates.add(new EvaluatedCandidate<T>(candidate,
-                                                              fitnessEvaluator.getFitness(candidate, population)));
-        }
-        return evaluatedCandidates;
+        return new EvaluatedCandidate<T>(candidate,
+                                         fitnessEvaluator.getFitness(candidate, population));
     }
 }

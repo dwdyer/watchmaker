@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -41,8 +40,8 @@ import org.uncommons.watchmaker.framework.interactive.NullFitnessEvaluator;
  * 
  * <p>This evolution engine is the most suitable for typical evolutionary
  * algorithms.  Evolutionary programs that execute in a restricted/managed
- * environment (where it is not permitted for applications to manage their own
- * threads) should use the {@link SequentialEvolutionEngine}.</p>
+ * environment that does not permit applications to manage their own
+ * threads should use the {@link SequentialEvolutionEngine} instead.</p>
  * @param <T> The type of entity that is to be evolved.
  * @author Daniel Dyer
  * @see SequentialEvolutionEngine
@@ -53,8 +52,6 @@ import org.uncommons.watchmaker.framework.interactive.NullFitnessEvaluator;
  */
 public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
-    private static final int PROCESSOR_COUNT = Runtime.getRuntime().availableProcessors();
-
     /**
      * This thread pool performs concurrent fitness evaluations (on hosts that
      * have more than one processor).
@@ -123,8 +120,8 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                      ThreadFactory threadFactory)
     {
         super(candidateFactory, evolutionScheme, fitnessEvaluator, selectionStrategy, rng);
-        threadPool = new ThreadPoolExecutor(PROCESSOR_COUNT,
-                                            PROCESSOR_COUNT,
+        threadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
+                                            Runtime.getRuntime().availableProcessors(),
                                             60,
                                             TimeUnit.SECONDS,
                                             new LinkedBlockingQueue<Runnable>(),
@@ -179,27 +176,18 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         // proceed until all threads have finished processing.
         try
         {
-            // Make sure that we don't try to use more threads than we have candidates.
-            int threadUtilisation = Math.min(PROCESSOR_COUNT, population.size());
-
-            int subListSize = (int) Math.round((double) population.size() / threadUtilisation);
             List<T> unmodifiablePopulation = Collections.unmodifiableList(population);
-            List<Callable<List<EvaluatedCandidate<T>>>> tasks
-                = new ArrayList<Callable<List<EvaluatedCandidate<T>>>>(threadUtilisation);
-            for (int i = 0; i < threadUtilisation; i++)
-            {
-                int fromIndex = i * subListSize;
-                int toIndex = i < threadUtilisation - 1 ? fromIndex + subListSize : population.size();
-                List<T> subList = population.subList(fromIndex, toIndex);
-                tasks.add(new FitnessEvalutationTask<T>(getFitnessEvaluator(),
-                                                        subList,
-                                                        unmodifiablePopulation));
-            }
+            List<Future<EvaluatedCandidate<T>>> results = new ArrayList<Future<EvaluatedCandidate<T>>>(population.size());
             // Submit tasks for execution and wait until all threads have finished fitness evaluations.
-            List<Future<List<EvaluatedCandidate<T>>>> results = threadPool.invokeAll(tasks);
-            for (Future<List<EvaluatedCandidate<T>>> result : results)
+            for (T candidate : population)
             {
-                evaluatedPopulation.addAll(result.get());
+                results.add(threadPool.submit(new FitnessEvalutationTask<T>(getFitnessEvaluator(),
+                                                                            candidate,
+                                                                            unmodifiablePopulation)));
+            }
+            for (Future<EvaluatedCandidate<T>> result : results)
+            {
+                evaluatedPopulation.add(result.get());
             }
             assert evaluatedPopulation.size() == population.size() : "Wrong number of evaluated candidates.";
         }
