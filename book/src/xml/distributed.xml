@@ -3,6 +3,12 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
   <title>Distributed Evolutionary Algorithms</title>
-  <subtitle>Running Watchmaker Programs on Hadoop with Apache Mahout</subtitle>
-  <para>TODO</para>
+  <section>
+    <title>Running Watchmaker Programs on Hadoop with Apache Mahout</title>
+    <para>TODO</para>
+  </section>
+  <section>
+    <title>Clustering Watchmaker Programs with Terracotta</title>
+    <para>TODO</para>
+  </section>
 </appendix>

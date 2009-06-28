@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.examples.monalisa;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -30,6 +31,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -88,6 +90,16 @@ public class MonaLisaApplet extends JApplet
     @Override
     public void init()
     {
+        configure(this);
+    }
+
+
+    /**
+     * Initialise and layout the GUI.
+     * @param container The Swing component that will contain the GUI controls.
+     */
+    private void configure(final Container container)
+    {
         try
         {
             URL imageURL = MonaLisaApplet.class.getClassLoader().getResource(IMAGE_PATH);
@@ -98,9 +110,9 @@ public class MonaLisaApplet extends JApplet
                 {
                     Renderer<List<ColouredPolygon>, JComponent> renderer = new PolygonImageSwingRenderer(targetImage);
                     monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer);
-                    
-                    add(createControls(targetImage), BorderLayout.NORTH);
-                    add(monitor.getGUIComponent(), BorderLayout.CENTER);
+
+                    container.add(createControls(targetImage), BorderLayout.NORTH);
+                    container.add(monitor.getGUIComponent(), BorderLayout.CENTER);
                 }
             });
         }
@@ -303,5 +315,20 @@ public class MonaLisaApplet extends JApplet
                                                                                   new GaussianGenerator(0, 20, rng))));
         operators.add(new AddPolygonMutation(addPolygonControl.getNumberGenerator(), factory, 50));
         return new EvolutionPipeline<List<ColouredPolygon>>(operators);
+    }
+
+
+    /**
+     * Entry point for running this example as an application rather than an applet.
+     * @param args Program arguments (ignored).
+     */
+    public static void main(String[] args)
+    {
+        JFrame frame = new JFrame("Watchmaker Framework - Mona Lisa Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        MonaLisaApplet gui = new MonaLisaApplet();
+        gui.configure(frame);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

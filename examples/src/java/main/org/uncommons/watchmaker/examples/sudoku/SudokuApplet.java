@@ -16,8 +16,8 @@
 package org.uncommons.watchmaker.examples.sudoku;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -31,7 +31,9 @@ import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -54,6 +56,7 @@ import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
 import org.uncommons.watchmaker.swing.AbortControl;
 import org.uncommons.watchmaker.swing.ProbabilityParameterControl;
+import org.uncommons.watchmaker.swing.evolutionmonitor.StatusBar;
 
 /**
  * An evolutionary Sudoku solver.
@@ -110,8 +113,6 @@ public class SudokuApplet extends JApplet
 
     private final SudokuView sudokuView = new SudokuView();
     private final JButton solveButton = new JButton("Solve");
-    private final JLabel generationsLabel = new JLabel();
-    private final JLabel timeLabel = new JLabel();
     private final JComboBox puzzleCombo = new JComboBox(new String[]{"Easy Demo (38 givens)",
                                                                      "Medium Demo (32 givens)",
                                                                      "Hard Demo (28 givens)",
@@ -124,21 +125,40 @@ public class SudokuApplet extends JApplet
     private final SelectionStrategy<Object> selectionStrategy
         = new TournamentSelection(selectionPressure.getNumberGenerator());
     private final AbortControl abortControl = new AbortControl();
+    private final StatusBar statusBar = new StatusBar();
 
 
     @Override
     public void init()
     {
-        SwingUtilities.invokeLater(new Runnable()
+        configure(this);
+    }
+
+
+    /**
+     * Initialise and layout the GUI.
+     * @param container The Swing component that will contain the GUI controls.
+     */
+    private void configure(final Container container)
+    {
+        try
         {
-            public void run()
+            SwingUtilities.invokeAndWait(new Runnable()
             {
-                add(createControls(), BorderLayout.NORTH);
-                add(sudokuView, BorderLayout.CENTER);
-                add(createStatusBar(), BorderLayout.SOUTH);
-                sudokuView.setPuzzle(EASY_PUZZLE);
-            }
-        });
+                public void run()
+                {
+                    container.add(createControls(), BorderLayout.NORTH);
+                    container.add(sudokuView, BorderLayout.CENTER);
+                    container.add(statusBar, BorderLayout.SOUTH);
+                    sudokuView.setPuzzle(EASY_PUZZLE);
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex, "Error Occurred", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 
@@ -174,6 +194,8 @@ public class SudokuApplet extends JApplet
             public void actionPerformed(ActionEvent ev)
             {                
                 int populationSize = (Integer) populationSizeSpinner.getValue();
+                puzzleCombo.setEnabled(false);
+                populationSizeSpinner.setEnabled(false);
                 solveButton.setEnabled(false);
                 abortControl.reset();
                 createTask(sudokuView.getPuzzle(),
@@ -186,18 +208,6 @@ public class SudokuApplet extends JApplet
         buttonPanel.add(abortControl.getControl());
         abortControl.getControl().setEnabled(false);
         return buttonPanel;
-    }
-
-
-    private JComponent createStatusBar()
-    {
-        JPanel statusBar = new JPanel(new GridLayout(1, 4));
-        statusBar.add(new JLabel("Generations: "));
-        statusBar.add(generationsLabel);
-        statusBar.add(new JLabel("Time: ", JLabel.RIGHT));
-        timeLabel.setHorizontalAlignment(JLabel.RIGHT);
-        statusBar.add(timeLabel);
-        return statusBar;
     }
 
 
@@ -233,6 +243,7 @@ public class SudokuApplet extends JApplet
                                                                                        selectionStrategy,
                                                                                        rng);
                 engine.addEvolutionObserver(new GridViewUpdater());
+                engine.addEvolutionObserver(statusBar);
                 return engine.evolve(populationSize,
                                      eliteCount,
                                      new TargetFitness(0, false), // Continue until a perfect solution is found...
@@ -243,6 +254,8 @@ public class SudokuApplet extends JApplet
             @Override
             protected void postProcessing(Sudoku result)
             {
+                puzzleCombo.setEnabled(true);
+                populationSizeSpinner.setEnabled(true);
                 solveButton.setEnabled(true);
                 abortControl.getControl().setEnabled(false);
             }
@@ -264,10 +277,24 @@ public class SudokuApplet extends JApplet
                 public void run()
                 {
                     sudokuView.setSolution(data.getBestCandidate());
-                    generationsLabel.setText(String.valueOf(data.getGenerationNumber() + 1));
-                    timeLabel.setText(TIME_FORMAT.format(((double) data.getElapsedTime()) / 1000));
                 }
             });
         }
     }
+
+
+    /**
+     * Entry point for running this example as an application rather than an applet.
+     * @param args Program arguments (ignored).
+     */
+    public static void main(String[] args)
+    {
+        JFrame frame = new JFrame("Watchmaker Framework - Sudoku Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        SudokuApplet gui = new SudokuApplet();
+        gui.configure(frame);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
 }

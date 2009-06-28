@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.examples.biomorphs;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -30,6 +31,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -64,14 +66,37 @@ public class BiomorphApplet extends JApplet
     @Override
     public void init()
     {
-        setLayout(new BorderLayout());
-        add(new ControlPanel(), BorderLayout.WEST);
-        add(biomorphHolder, BorderLayout.CENTER);
-        biomorphHolder.setBorder(BorderFactory.createTitledBorder("Last Evolved Biomorph"));
-        biomorphHolder.add(new JLabel("Nothing generated yet.", JLabel.CENTER));
-        selectionDialog.add(console, BorderLayout.CENTER);
-        selectionDialog.setSize(800, 600);
-        selectionDialog.validate();
+        configure(this);
+    }
+
+
+    /**
+     * Initialise and layout the GUI.
+     * @param container The Swing component that will contain the GUI controls.
+     */
+    private void configure(final Container container)
+    {
+        try
+        {
+            SwingUtilities.invokeAndWait(new Runnable()
+            {
+                public void run()
+                {
+                    container.add(new ControlPanel(), BorderLayout.WEST);
+                    container.add(biomorphHolder, BorderLayout.CENTER);
+                    biomorphHolder.setBorder(BorderFactory.createTitledBorder("Last Evolved Biomorph"));
+                    biomorphHolder.add(new JLabel("Nothing generated yet.", JLabel.CENTER));
+                    selectionDialog.add(console, BorderLayout.CENTER);
+                    selectionDialog.setSize(800, 600);
+                    selectionDialog.validate();
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex, "Error Occurred", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 
@@ -120,6 +145,21 @@ public class BiomorphApplet extends JApplet
                 biomorphHolder.revalidate();
             }
         };
+    }
+
+
+    /**
+     * Entry point for running this example as an application rather than an applet.
+     * @param args Program arguments (ignored).
+     */
+    public static void main(String[] args)
+    {
+        JFrame frame = new JFrame("Watchmaker Framework - Biomporphs Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        BiomorphApplet gui = new BiomorphApplet();
+        gui.configure(frame);
+        frame.pack();
+        frame.setVisible(true);
     }
 
 

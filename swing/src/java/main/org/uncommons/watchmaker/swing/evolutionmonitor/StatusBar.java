@@ -23,17 +23,18 @@ import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.PopulationData;
 
 /**
- * Status bar component for the evolution monitor.
+ * Status bar component for the evolution monitor.  Can also be used separately to
+ * provide basic status information without having to use the full evolution monitor.  
  * @author Daniel Dyer
  */
-class StatusBar extends Box implements EvolutionObserver<Object>
+public class StatusBar extends Box implements EvolutionObserver<Object>
 {
     private final JLabel generationsLabel = new JLabel("N/A", JLabel.RIGHT);
     private final JLabel timeLabel = new JLabel("N/A", JLabel.RIGHT);
     private final JLabel populationLabel = new JLabel("N/A", JLabel.RIGHT);
     private final JLabel elitismLabel = new JLabel("N/A", JLabel.RIGHT);
 
-    StatusBar()
+    public StatusBar()
     {
         super(BoxLayout.X_AXIS);
         add(new JLabel("Population Size: "));

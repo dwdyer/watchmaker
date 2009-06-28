@@ -16,13 +16,16 @@
 package org.uncommons.watchmaker.examples.travellingsalesman;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.List;
 import javax.swing.JApplet;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
@@ -33,69 +36,81 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
  */
 public final class TravellingSalesmanApplet extends JApplet
 {
-    private final ItineraryPanel itineraryPanel;
-    private final StrategyPanel strategyPanel;
-    private final ExecutionPanel executionPanel;
+    private final DistanceLookup distances = new EuropeanDistanceLookup();
+    private final ItineraryPanel itineraryPanel = new ItineraryPanel(distances.getKnownCities());
+    private final StrategyPanel strategyPanel = new StrategyPanel(distances);
+    private final ExecutionPanel executionPanel = new ExecutionPanel();
 
-    private final FitnessEvaluator<List<String>> evaluator;
-
-
-    /**
-     * Creates the applet and lays out its GUI.
-     */
-    public TravellingSalesmanApplet()
-    {
-        DistanceLookup distances = new EuropeanDistanceLookup();
-        evaluator = new RouteEvaluator(distances);
-        itineraryPanel = new ItineraryPanel(distances.getKnownCities());
-        strategyPanel = new StrategyPanel(distances);
-        executionPanel = new ExecutionPanel();
-    }
+    private final FitnessEvaluator<List<String>> evaluator = new RouteEvaluator(distances);
 
 
     @Override
     public void init()
     {
-        add(itineraryPanel, BorderLayout.WEST);
-        JPanel innerPanel = new JPanel(new BorderLayout());
-        innerPanel.add(strategyPanel, BorderLayout.NORTH);
-        innerPanel.add(executionPanel, BorderLayout.CENTER);
-        add(innerPanel, BorderLayout.CENTER);
-
-        executionPanel.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent actionEvent)
-            {
-                Collection<String> cities = itineraryPanel.getSelectedCities();
-                if (cities.size() < 4)
-                {
-                    JOptionPane.showMessageDialog(TravellingSalesmanApplet.this,
-                                                  "Itinerary must include at least 4 cities.",
-                                                  "Error",
-                                                  JOptionPane.ERROR_MESSAGE);
-                }
-                else
-                {
-                    try
-                    {
-                        setEnabled(false);
-                        createTask(cities).execute();
-                    }
-                    catch (IllegalArgumentException ex)
-                    {
-                        JOptionPane.showMessageDialog(TravellingSalesmanApplet.this,
-                                                      ex.getMessage(),
-                                                      "Error",
-                                                      JOptionPane.ERROR_MESSAGE);
-                        setEnabled(true);
-                    }
-                }
-            }
-        });
-        validate();
+        configure(this);
     }
 
-    
+
+    /**
+     * Initialise and layout the GUI.
+     * @param container The Swing component that will contain the GUI controls.
+     */
+    private void configure(final Container container)
+    {
+        try
+        {
+            SwingUtilities.invokeAndWait(new Runnable()
+            {
+                public void run()
+                {
+                    container.add(itineraryPanel, BorderLayout.WEST);
+                    JPanel innerPanel = new JPanel(new BorderLayout());
+                    innerPanel.add(strategyPanel, BorderLayout.NORTH);
+                    innerPanel.add(executionPanel, BorderLayout.CENTER);
+                    container.add(innerPanel, BorderLayout.CENTER);
+
+                    executionPanel.addActionListener(new ActionListener()
+                    {
+                        public void actionPerformed(ActionEvent actionEvent)
+                        {
+                            Collection<String> cities = itineraryPanel.getSelectedCities();
+                            if (cities.size() < 4)
+                            {
+                                JOptionPane.showMessageDialog(TravellingSalesmanApplet.this,
+                                                              "Itinerary must include at least 4 cities.",
+                                                              "Error",
+                                                              JOptionPane.ERROR_MESSAGE);
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    setEnabled(false);
+                                    createTask(cities).execute();
+                                }
+                                catch (IllegalArgumentException ex)
+                                {
+                                    JOptionPane.showMessageDialog(TravellingSalesmanApplet.this,
+                                                                  ex.getMessage(),
+                                                                  "Error",
+                                                                  JOptionPane.ERROR_MESSAGE);
+                                    setEnabled(true);
+                                }
+                            }
+                        }
+                    });
+                    container.validate();                    
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex, "Error Occurred", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
     /**
      * Helper method to create a background task for running the travelling
      * salesman algorithm.
@@ -174,5 +189,20 @@ public final class TravellingSalesmanApplet extends JApplet
         strategyPanel.setEnabled(b);
         executionPanel.setEnabled(b);
         super.setEnabled(b);
+    }
+
+
+    /**
+     * Entry point for running this example as an application rather than an applet.
+     * @param args Program arguments (ignored).
+     */
+    public static void main(String[] args)
+    {
+        JFrame frame = new JFrame("Watchmaker Framework - Travelling Salesman Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        TravellingSalesmanApplet gui = new TravellingSalesmanApplet();
+        gui.configure(frame);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

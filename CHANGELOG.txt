@@ -7,6 +7,15 @@ Changes in version 0.6.1
 
 * Improvements to the genetic programming example application.
 
+* Made StatusBar component public so that it can be used independently of the
+  Evolution Monitor.
+
+* Converted applet-based examples so that they can also run as applications in
+  JFrames.
+
+* Introduced Launcher class so that examples can be run easily from the command
+  line.
+
 
 Changes in version 0.6.0
 ------------------------
