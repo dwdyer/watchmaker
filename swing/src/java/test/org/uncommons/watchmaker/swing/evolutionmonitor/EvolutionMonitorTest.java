@@ -17,9 +17,10 @@ package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.awt.Dialog;
 import java.awt.Frame;
-import org.fest.swing.core.RobotFixture;
-import org.fest.swing.core.matcher.DialogByTitleMatcher;
-import org.fest.swing.core.matcher.FrameByTitleMatcher;
+import org.fest.swing.core.BasicRobot;
+import org.fest.swing.core.Robot;
+import org.fest.swing.core.matcher.DialogMatcher;
+import org.fest.swing.core.matcher.FrameMatcher;
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.FrameFixture;
 import org.testng.annotations.AfterMethod;
@@ -32,12 +33,12 @@ import org.testng.annotations.Test;
  */
 public class EvolutionMonitorTest
 {
-    private RobotFixture robot;
+    private Robot robot;
 
     @BeforeMethod
     public void prepare()
     {
-        robot = RobotFixture.robotWithNewAwtHierarchy();
+        robot = BasicRobot.robotWithNewAwtHierarchy();
     }
 
 
@@ -56,7 +57,7 @@ public class EvolutionMonitorTest
         monitor.showInFrame("MonitorFrame", false);
         robot.waitForIdle();
         // There ought to be a visible frame containing the evolution monitor.
-        Frame frame = robot.finder().find(FrameByTitleMatcher.withTitleAndShowing("MonitorFrame"));
+        Frame frame = robot.finder().find(FrameMatcher.withTitle("MonitorFrame").andShowing());
         assert monitor.getGUIComponent().isShowing() : "Evolution monitor should be showing.";
         FrameFixture frameFixture = new FrameFixture(robot, frame);
         frameFixture.close();
@@ -72,7 +73,7 @@ public class EvolutionMonitorTest
         monitor.showInDialog(null, "MonitorDialog", false);
         robot.waitForIdle();
         // There ought to be a visible dialog containing the evolution monitor.
-        Dialog dialog = robot.finder().find(DialogByTitleMatcher.withTitleAndShowing("MonitorDialog"));
+        Dialog dialog = robot.finder().find(DialogMatcher.withTitle("MonitorDialog").andShowing());
         assert monitor.getGUIComponent().isShowing() : "Evolution monitor should be showing.";
         DialogFixture dialogFixture = new DialogFixture(robot, dialog);
         dialogFixture.close();
@@ -93,12 +94,12 @@ public class EvolutionMonitorTest
         monitor.showInFrame("MonitorFrame", false);
         robot.waitForIdle();
         // There ought to be a visible frame containing the evolution monitor.
-        Frame frame = robot.finder().find(FrameByTitleMatcher.withTitleAndShowing("MonitorFrame"));
+        Frame frame = robot.finder().find(FrameMatcher.withTitle("MonitorFrame").andShowing());
 
         monitor.showInDialog(null, "MonitorDialog", false);
         robot.waitForIdle();
         // There ought to be a visible dialog containing the evolution monitor.
-        robot.finder().find(DialogByTitleMatcher.withTitleAndShowing("MonitorDialog"));
+        robot.finder().find(DialogMatcher.withTitle("MonitorDialog").andShowing());
         assert monitor.getGUIComponent().isShowing() : "Evolution monitor should be showing.";
 
         assert !frame.isShowing() : "Frame should have been replaced by dialog.";

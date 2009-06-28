@@ -989,27 +989,6 @@
     <option name="shortCycleTableSpecificationString" value="" />
   </component>
   <component name="libraryTable">
-    <library name="fest-swing-1.0b1">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../lib/compiletime/fest/fest-swing-1.0b1.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="jfreechart-1.0.12">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../lib/runtime/jfreechart-1.0.12.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="jcommon-1.0.15">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../lib/runtime/jcommon-1.0.15.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="uncommons-maths-1.2">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../lib/runtime/uncommons-maths-1.2.jar!/" />
@@ -1017,16 +996,16 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="google-collect-snapshot-20090211">
+    <library name="testng-5.9-jdk15">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../lib/runtime/google-collect-snapshot-20090211.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/compiletime/testng/testng-5.9-jdk15.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="testng-5.9-jdk15">
+    <library name="fest-swing-1.1">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../lib/compiletime/testng/testng-5.9-jdk15.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/compiletime/fest/fest-swing-1.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

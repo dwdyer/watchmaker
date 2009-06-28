@@ -20,8 +20,9 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
-import org.fest.swing.core.RobotFixture;
-import org.fest.swing.core.matcher.FrameByTitleMatcher;
+import org.fest.swing.core.BasicRobot;
+import org.fest.swing.core.Robot;
+import org.fest.swing.core.matcher.FrameMatcher;
 import org.fest.swing.fixture.FrameFixture;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -33,12 +34,12 @@ import org.testng.annotations.Test;
  */
 public class AbstractExampleAppletTest
 {
-    private RobotFixture robot;
+    private Robot robot;
 
     @BeforeMethod
     public void prepare()
     {
-        robot = RobotFixture.robotWithNewAwtHierarchy();
+        robot = BasicRobot.robotWithNewAwtHierarchy();
     }
 
 
@@ -83,7 +84,7 @@ public class AbstractExampleAppletTest
         applet.displayInFrame("ExampleFrame");
         robot.waitForIdle();
         // There ought to be a visible frame containing the example GUI.
-        JFrame frame = (JFrame) robot.finder().find(FrameByTitleMatcher.withTitleAndShowing("ExampleFrame"));
+        JFrame frame = (JFrame) robot.finder().find(FrameMatcher.withTitle("ExampleFrame").andShowing());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         FrameFixture frameFixture = new FrameFixture(robot, frame);

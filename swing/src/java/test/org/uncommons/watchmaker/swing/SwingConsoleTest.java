@@ -20,7 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import org.fest.swing.core.RobotFixture;
+import org.fest.swing.core.BasicRobot;
+import org.fest.swing.core.Robot;
 import org.fest.swing.fixture.FrameFixture;
 import org.testng.annotations.Test;
 
@@ -33,7 +34,7 @@ public class SwingConsoleTest
     @Test(groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
     public void testUserSelection() throws InterruptedException
     {
-        RobotFixture robot = RobotFixture.robotWithNewAwtHierarchy();
+        Robot robot = BasicRobot.robotWithNewAwtHierarchy();
         final SwingConsole swingConsole = new SwingConsole();
         JFrame frame = new JFrame();
         frame.add(swingConsole, BorderLayout.CENTER);

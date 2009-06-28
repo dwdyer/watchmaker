@@ -18,7 +18,8 @@ package org.uncommons.watchmaker.swing;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JSlider;
-import org.fest.swing.core.RobotFixture;
+import org.fest.swing.core.BasicRobot;
+import org.fest.swing.core.Robot;
 import org.fest.swing.fixture.FrameFixture;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -31,12 +32,12 @@ import org.uncommons.maths.random.Probability;
  */
 public class ProbabilityParameterControlTest
 {
-    private RobotFixture robot;
+    private Robot robot;
 
     @BeforeMethod
     public void prepare()
     {
-        robot = RobotFixture.robotWithNewAwtHierarchy();
+        robot = BasicRobot.robotWithNewAwtHierarchy();
     }
 
 

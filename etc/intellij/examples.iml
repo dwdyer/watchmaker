@@ -14,8 +14,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="framework" />
     <orderEntry type="module" module-name="swing" />
-    <orderEntry type="library" name="fest-swing-1.0b1" level="project" />
     <orderEntry type="library" name="testng-5.9-jdk15" level="project" />
+    <orderEntry type="library" name="fest-swing-1.1" level="project" />
   </component>
 </module>
 
