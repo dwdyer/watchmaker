@@ -34,7 +34,7 @@ public abstract class AbstractExampleApplet extends JApplet
     }
 
     
-    public final void configure(final Container container)
+    protected final void configure(final Container container)
     {
         try
         {

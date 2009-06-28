@@ -116,12 +116,12 @@ public class MonaLisaApplet extends AbstractExampleApplet
         Renderer<List<ColouredPolygon>, JComponent> renderer = new PolygonImageSwingRenderer(targetImage);
         monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer);
 
-        container.add(createControls(targetImage), BorderLayout.NORTH);
+        container.add(createControls(), BorderLayout.NORTH);
         container.add(monitor.getGUIComponent(), BorderLayout.CENTER);
     }
 
 
-    private JComponent createControls(BufferedImage targetImage)
+    private JComponent createControls()
     {
         JPanel controls = new JPanel(new BorderLayout());
 
@@ -194,13 +194,13 @@ public class MonaLisaApplet extends AbstractExampleApplet
         SpringUtilities.makeCompactGrid(probabilities, 4, 4, 0, 0, 10, 0);
 
         controls.add(probabilities, BorderLayout.NORTH);
-        controls.add(createParametersPanel(targetImage), BorderLayout.SOUTH);
+        controls.add(createParametersPanel(), BorderLayout.SOUTH);
         controls.setBorder(BorderFactory.createTitledBorder("Evolution Parameters"));
         return controls;
     }
 
 
-    private JComponent createParametersPanel(final BufferedImage targetImage)
+    private JComponent createParametersPanel()
     {
         JPanel parameters = new JPanel(new FlowLayout(FlowLayout.LEFT));
         parameters.add(new JLabel("Population Size: "));
@@ -221,8 +221,7 @@ public class MonaLisaApplet extends AbstractExampleApplet
                 populationSpinner.setEnabled(false);
                 elitismSpinner.setEnabled(false);
                 startButton.setEnabled(false);
-                createTask(targetImage,
-                           (Integer) populationSpinner.getValue(),
+                createTask((Integer) populationSpinner.getValue(),
                            (Integer) elitismSpinner.getValue(),
                            abort.getTerminationCondition(),
                            new Stagnation(1000, false)).execute();
@@ -239,8 +238,7 @@ public class MonaLisaApplet extends AbstractExampleApplet
     }
 
 
-    private SwingBackgroundTask<List<ColouredPolygon>> createTask(final BufferedImage targetImage,
-                                                                  final int populationSize,
+    private SwingBackgroundTask<List<ColouredPolygon>> createTask(final int populationSize,
                                                                   final int eliteCount,
                                                                   final TerminationCondition... terminationConditions)
     {
