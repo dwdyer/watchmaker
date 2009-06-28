@@ -22,18 +22,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.BorderFactory;
-import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -45,6 +41,7 @@ import org.uncommons.maths.random.PoissonGenerator;
 import org.uncommons.maths.random.Probability;
 import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
+import org.uncommons.watchmaker.examples.AbstractExampleApplet;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
@@ -62,7 +59,7 @@ import org.uncommons.watchmaker.swing.evolutionmonitor.StatusBar;
  * An evolutionary Sudoku solver.
  * @author Daniel Dyer
  */
-public class SudokuApplet extends JApplet
+public class SudokuApplet extends AbstractExampleApplet
 {
     private static final String[] BLANK_PUZZLE = {".........",
                                                   ".........",
@@ -109,8 +106,6 @@ public class SudokuApplet extends JApplet
                                                HARD_PUZZLE,
                                                BLANK_PUZZLE};
 
-    private static final DecimalFormat TIME_FORMAT = new DecimalFormat("#.###s");
-
     private final SudokuView sudokuView = new SudokuView();
     private final JButton solveButton = new JButton("Solve");
     private final JComboBox puzzleCombo = new JComboBox(new String[]{"Easy Demo (38 givens)",
@@ -128,37 +123,17 @@ public class SudokuApplet extends JApplet
     private final StatusBar statusBar = new StatusBar();
 
 
-    @Override
-    public void init()
-    {
-        configure(this);
-    }
-
-
     /**
      * Initialise and layout the GUI.
      * @param container The Swing component that will contain the GUI controls.
      */
-    private void configure(final Container container)
+    @Override
+    protected void prepareGUI(Container container)
     {
-        try
-        {
-            SwingUtilities.invokeAndWait(new Runnable()
-            {
-                public void run()
-                {
-                    container.add(createControls(), BorderLayout.NORTH);
-                    container.add(sudokuView, BorderLayout.CENTER);
-                    container.add(statusBar, BorderLayout.SOUTH);
-                    sudokuView.setPuzzle(EASY_PUZZLE);
-                }
-            });
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex, "Error Occurred", JOptionPane.ERROR_MESSAGE);
-        }
+        container.add(createControls(), BorderLayout.NORTH);
+        container.add(sudokuView, BorderLayout.CENTER);
+        container.add(statusBar, BorderLayout.SOUTH);
+        sudokuView.setPuzzle(EASY_PUZZLE);
     }
 
 
@@ -183,7 +158,8 @@ public class SudokuApplet extends JApplet
         innerPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
         controls.add(innerPanel, BorderLayout.CENTER);
         controls.add(createButtonPanel(), BorderLayout.SOUTH);
-        return controls;    }
+        return controls;
+    }
 
 
     private JComponent createButtonPanel()
@@ -289,12 +265,7 @@ public class SudokuApplet extends JApplet
      */
     public static void main(String[] args)
     {
-        JFrame frame = new JFrame("Watchmaker Framework - Sudoku Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        SudokuApplet gui = new SudokuApplet();
-        gui.configure(frame);
-        frame.pack();
-        frame.setVisible(true);
+        new SudokuApplet().displayInFrame("Watchmaker Framework - Sudoku Example");
     }
 
 }

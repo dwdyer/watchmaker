@@ -24,14 +24,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.BorderFactory;
-import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -41,6 +39,7 @@ import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
 import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
+import org.uncommons.watchmaker.examples.AbstractExampleApplet;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
@@ -55,7 +54,7 @@ import org.uncommons.watchmaker.swing.SwingConsole;
  * Watchmaker Framework implementation of Dawkin's biomorph program. 
  * @author Daniel Dyer
  */
-public class BiomorphApplet extends JApplet
+public class BiomorphApplet extends AbstractExampleApplet
 {
     private final Renderer<Biomorph, JComponent> renderer = new SwingBiomorphRenderer();
     private final SwingConsole console = new SwingConsole(5);
@@ -63,40 +62,20 @@ public class BiomorphApplet extends JApplet
     private final JPanel biomorphHolder = new JPanel(new GridLayout(1, 1));
 
 
-    @Override
-    public void init()
-    {
-        configure(this);
-    }
-
-
     /**
      * Initialise and layout the GUI.
      * @param container The Swing component that will contain the GUI controls.
      */
-    private void configure(final Container container)
+    @Override
+    protected void prepareGUI(Container container)
     {
-        try
-        {
-            SwingUtilities.invokeAndWait(new Runnable()
-            {
-                public void run()
-                {
-                    container.add(new ControlPanel(), BorderLayout.WEST);
-                    container.add(biomorphHolder, BorderLayout.CENTER);
-                    biomorphHolder.setBorder(BorderFactory.createTitledBorder("Last Evolved Biomorph"));
-                    biomorphHolder.add(new JLabel("Nothing generated yet.", JLabel.CENTER));
-                    selectionDialog.add(console, BorderLayout.CENTER);
-                    selectionDialog.setSize(800, 600);
-                    selectionDialog.validate();
-                }
-            });
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex, "Error Occurred", JOptionPane.ERROR_MESSAGE);
-        }
+        container.add(new ControlPanel(), BorderLayout.WEST);
+        container.add(biomorphHolder, BorderLayout.CENTER);
+        biomorphHolder.setBorder(BorderFactory.createTitledBorder("Last Evolved Biomorph"));
+        biomorphHolder.add(new JLabel("Nothing generated yet.", JLabel.CENTER));
+        selectionDialog.add(console, BorderLayout.CENTER);
+        selectionDialog.setSize(800, 600);
+        selectionDialog.validate();
     }
 
 
@@ -154,12 +133,7 @@ public class BiomorphApplet extends JApplet
      */
     public static void main(String[] args)
     {
-        JFrame frame = new JFrame("Watchmaker Framework - Biomporphs Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        BiomorphApplet gui = new BiomorphApplet();
-        gui.configure(frame);
-        frame.pack();
-        frame.setVisible(true);
+        new BiomorphApplet().displayInFrame("Watchmaker Framework - Biomporphs Example");
     }
 
 

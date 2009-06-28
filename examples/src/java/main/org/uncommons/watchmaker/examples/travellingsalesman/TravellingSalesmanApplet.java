@@ -21,12 +21,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.List;
-import javax.swing.JApplet;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
+import org.uncommons.watchmaker.examples.AbstractExampleApplet;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
@@ -34,7 +32,7 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
  * Travelling Salesman problem.
  * @author Daniel Dyer
  */
-public final class TravellingSalesmanApplet extends JApplet
+public final class TravellingSalesmanApplet extends AbstractExampleApplet
 {
     private final DistanceLookup distances = new EuropeanDistanceLookup();
     private final ItineraryPanel itineraryPanel = new ItineraryPanel(distances.getKnownCities());
@@ -44,70 +42,50 @@ public final class TravellingSalesmanApplet extends JApplet
     private final FitnessEvaluator<List<String>> evaluator = new RouteEvaluator(distances);
 
 
-    @Override
-    public void init()
-    {
-        configure(this);
-    }
-
-
     /**
      * Initialise and layout the GUI.
      * @param container The Swing component that will contain the GUI controls.
      */
-    private void configure(final Container container)
+    @Override
+    protected void prepareGUI(Container container)
     {
-        try
-        {
-            SwingUtilities.invokeAndWait(new Runnable()
-            {
-                public void run()
-                {
-                    container.add(itineraryPanel, BorderLayout.WEST);
-                    JPanel innerPanel = new JPanel(new BorderLayout());
-                    innerPanel.add(strategyPanel, BorderLayout.NORTH);
-                    innerPanel.add(executionPanel, BorderLayout.CENTER);
-                    container.add(innerPanel, BorderLayout.CENTER);
+        container.add(itineraryPanel, BorderLayout.WEST);
+        JPanel innerPanel = new JPanel(new BorderLayout());
+        innerPanel.add(strategyPanel, BorderLayout.NORTH);
+        innerPanel.add(executionPanel, BorderLayout.CENTER);
+        container.add(innerPanel, BorderLayout.CENTER);
 
-                    executionPanel.addActionListener(new ActionListener()
-                    {
-                        public void actionPerformed(ActionEvent actionEvent)
-                        {
-                            Collection<String> cities = itineraryPanel.getSelectedCities();
-                            if (cities.size() < 4)
-                            {
-                                JOptionPane.showMessageDialog(TravellingSalesmanApplet.this,
-                                                              "Itinerary must include at least 4 cities.",
-                                                              "Error",
-                                                              JOptionPane.ERROR_MESSAGE);
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    setEnabled(false);
-                                    createTask(cities).execute();
-                                }
-                                catch (IllegalArgumentException ex)
-                                {
-                                    JOptionPane.showMessageDialog(TravellingSalesmanApplet.this,
-                                                                  ex.getMessage(),
-                                                                  "Error",
-                                                                  JOptionPane.ERROR_MESSAGE);
-                                    setEnabled(true);
-                                }
-                            }
-                        }
-                    });
-                    container.validate();                    
-                }
-            });
-        }
-        catch (Exception ex)
+        executionPanel.addActionListener(new ActionListener()
         {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex, "Error Occurred", JOptionPane.ERROR_MESSAGE);
-        }
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                Collection<String> cities = itineraryPanel.getSelectedCities();
+                if (cities.size() < 4)
+                {
+                    JOptionPane.showMessageDialog(TravellingSalesmanApplet.this,
+                                                  "Itinerary must include at least 4 cities.",
+                                                  "Error",
+                                                  JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    try
+                    {
+                        setEnabled(false);
+                        createTask(cities).execute();
+                    }
+                    catch (IllegalArgumentException ex)
+                    {
+                        JOptionPane.showMessageDialog(TravellingSalesmanApplet.this,
+                                                      ex.getMessage(),
+                                                      "Error",
+                                                      JOptionPane.ERROR_MESSAGE);
+                        setEnabled(true);
+                    }
+                }
+            }
+        });
+        container.validate();
     }
 
 
@@ -198,11 +176,6 @@ public final class TravellingSalesmanApplet extends JApplet
      */
     public static void main(String[] args)
     {
-        JFrame frame = new JFrame("Watchmaker Framework - Travelling Salesman Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        TravellingSalesmanApplet gui = new TravellingSalesmanApplet();
-        gui.configure(frame);
-        frame.pack();
-        frame.setVisible(true);
+        new TravellingSalesmanApplet().displayInFrame("Watchmaker Framework - Travelling Salesman Example");
     }
 }

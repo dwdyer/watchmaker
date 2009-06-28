@@ -22,29 +22,28 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
 import org.uncommons.maths.number.ConstantGenerator;
 import org.uncommons.maths.random.GaussianGenerator;
 import org.uncommons.maths.random.Probability;
 import org.uncommons.maths.random.XORShiftRNG;
 import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
+import org.uncommons.watchmaker.examples.AbstractExampleApplet;
 import org.uncommons.watchmaker.framework.CachingFitnessEvaluator;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
@@ -68,7 +67,7 @@ import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
  * resembles Leonardo da Vinci's Mona Lisa.
  * @author Daniel Dyer
  */
-public class MonaLisaApplet extends JApplet
+public class MonaLisaApplet extends AbstractExampleApplet
 {
     private static final String IMAGE_PATH = "org/uncommons/watchmaker/examples/monalisa/monalisa.jpg";
     private static final Probability ONE_TENTH = new Probability(0.1d);
@@ -86,11 +85,24 @@ public class MonaLisaApplet extends JApplet
     private ProbabilityParameterControl changeColourControl;
     private JSpinner populationSpinner;
     private JSpinner elitismSpinner;
+    private BufferedImage targetImage;
+
 
     @Override
     public void init()
     {
-        configure(this);
+        try
+        {
+            URL imageURL = MonaLisaApplet.class.getClassLoader().getResource(IMAGE_PATH);
+            targetImage = ImageIO.read(imageURL);
+            super.init();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex, "Failed to Load Image", JOptionPane.ERROR_MESSAGE);
+
+        }
     }
 
 
@@ -98,29 +110,14 @@ public class MonaLisaApplet extends JApplet
      * Initialise and layout the GUI.
      * @param container The Swing component that will contain the GUI controls.
      */
-    private void configure(final Container container)
+    @Override
+    protected void prepareGUI(Container container)
     {
-        try
-        {
-            URL imageURL = MonaLisaApplet.class.getClassLoader().getResource(IMAGE_PATH);
-            final BufferedImage targetImage = ImageIO.read(imageURL);
-            SwingUtilities.invokeAndWait(new Runnable()
-            {
-                public void run()
-                {
-                    Renderer<List<ColouredPolygon>, JComponent> renderer = new PolygonImageSwingRenderer(targetImage);
-                    monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer);
+        Renderer<List<ColouredPolygon>, JComponent> renderer = new PolygonImageSwingRenderer(targetImage);
+        monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer);
 
-                    container.add(createControls(targetImage), BorderLayout.NORTH);
-                    container.add(monitor.getGUIComponent(), BorderLayout.CENTER);
-                }
-            });
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex, "Error Occurred", JOptionPane.ERROR_MESSAGE);
-        }
+        container.add(createControls(targetImage), BorderLayout.NORTH);
+        container.add(monitor.getGUIComponent(), BorderLayout.CENTER);
     }
 
 
@@ -322,13 +319,14 @@ public class MonaLisaApplet extends JApplet
      * Entry point for running this example as an application rather than an applet.
      * @param args Program arguments (ignored).
      */
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
-        JFrame frame = new JFrame("Watchmaker Framework - Mona Lisa Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         MonaLisaApplet gui = new MonaLisaApplet();
-        gui.configure(frame);
-        frame.pack();
-        frame.setVisible(true);
+        // If a URL is specified as an argument, use that image.  Otherwise use the default Mona Lisa picture.
+        URL imageURL = args.length > 0
+                       ? new URL(args[0])
+                       : MonaLisaApplet.class.getClassLoader().getResource(IMAGE_PATH);
+        gui.targetImage = ImageIO.read(imageURL);
+        gui.displayInFrame("Watchmaker Framework - Mona Lisa Example");
     }
 }

@@ -16,6 +16,9 @@ Changes in version 0.6.1
 * Introduced Launcher class so that examples can be run easily from the command
   line.
 
+* Changed the Mona Lisa example to accept the URL of an alternate image when
+  run from the command line.
+
 
 Changes in version 0.6.0
 ------------------------
