@@ -34,14 +34,14 @@ public class ProbabilityParameterControlTest
 {
     private Robot robot;
 
-    @BeforeMethod
+    @BeforeMethod(groups = "display-required")
     public void prepare()
     {
         robot = BasicRobot.robotWithNewAwtHierarchy();
     }
 
 
-    @AfterMethod
+    @AfterMethod(groups = "display-required")
     public void cleanUp()
     {
         robot.cleanUp();
