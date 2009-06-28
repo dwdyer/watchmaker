@@ -50,7 +50,7 @@ public class AbstractExampleAppletTest
     }
 
     
-    @Test
+    @Test(groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
     public void testPreparationOnEDT()
     {
         final boolean[] onEDT = new boolean[1];
