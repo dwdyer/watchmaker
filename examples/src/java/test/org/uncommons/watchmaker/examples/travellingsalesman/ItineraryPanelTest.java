@@ -51,7 +51,7 @@ public class ItineraryPanelTest
     }
     
 
-    @Test(groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
+    @Test(groups = "display-required") // Will fail if run in a headless environment.
     public void testSelectAll()
     {
         ItineraryPanel itineraryPanel = new ItineraryPanel(CITIES.getKnownCities());
@@ -69,7 +69,7 @@ public class ItineraryPanelTest
     }
 
 
-    @Test(groups = "display-required", // Will fail if run in a headless environment (such as hudson.uncommons.org).
+    @Test(groups = "display-required", // Will fail if run in a headless environment.
           dependsOnMethods = "testSelectAll")
     public void testSelectNone()
     {

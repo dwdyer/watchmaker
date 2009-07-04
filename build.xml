@@ -63,7 +63,7 @@
        branches) that will be tolerated.  This is used to prevent
        regressions in coverage.  The threshold will be raised as
        test coverage improves. -->
-  <property name="minimum.coverage" value="61" />
+  <property name="minimum.coverage" value="75" />
 
 
 <!-- ==================================================================

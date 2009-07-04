@@ -49,6 +49,12 @@ public class StatusBar extends Box implements EvolutionObserver<Object>
         add(new JLabel("Elapsed Time: "));
         add(timeLabel);
         setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+
+        // Set component names for easy look-up from tests.
+        populationLabel.setName("Population");
+        elitismLabel.setName("Elitism");
+        generationsLabel.setName("Generations");
+        timeLabel.setName("Time");
     }
 
 

@@ -51,7 +51,7 @@ public class AbstractExampleAppletTest
     }
 
     
-    @Test(groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
+    @Test(groups = "display-required") // Will fail if run in a headless environment.
     public void testPreparationOnEDT()
     {
         final boolean[] onEDT = new boolean[1];
@@ -68,7 +68,7 @@ public class AbstractExampleAppletTest
     }
 
 
-    @Test(groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
+    @Test(groups = "display-required") // Will fail if run in a headless environment.
     public void testDisplayInFrame()
     {
         AbstractExampleApplet applet = new AbstractExampleApplet()

@@ -76,4 +76,30 @@ public class SelectionStrategyControlTest
         assert selection.contains("CCC") : "Canidated CCC missing from selection.";
         assert selection.contains("DDD") : "Canidated DDD missing from selection.";
     }
+
+
+    @Test(dependsOnMethods = "testChangeSelection")
+    public void testReset()
+    {
+        SelectionStrategy<Object> quarter = new TruncationSelection(0.25);
+        SelectionStrategy<Object> half = new TruncationSelection(0.5);
+        List<SelectionStrategy<? super Object>> strategies = new LinkedList<SelectionStrategy<? super Object>>();
+        strategies.add(quarter);
+        strategies.add(half);
+        SelectionStrategyControl<Object> control = new SelectionStrategyControl<Object>(strategies);
+
+        control.getControl().setSelectedIndex(1); // Not the first strategy.
+        control.reset(); // Reset to the first strategy.
+
+        List<EvaluatedCandidate<String>> population = new LinkedList<EvaluatedCandidate<String>>();
+        population.add(new EvaluatedCandidate<String>("DDD", 4));
+        population.add(new EvaluatedCandidate<String>("CCC", 3));
+        population.add(new EvaluatedCandidate<String>("BBB", 2));
+        population.add(new EvaluatedCandidate<String>("AAA", 1));
+
+        // Using the first selection strategy, only the fittest 25% of candidates should be selected from.
+        List<String> selection = control.getSelectionStrategy().select(population, true, 2, null);
+        assert selection.get(0).equals("DDD") : "Wrong candidate selected: " + selection.get(0);
+        assert selection.get(1).equals("DDD") : "Wrong candidate selected: " + selection.get(1);
+    }
 }

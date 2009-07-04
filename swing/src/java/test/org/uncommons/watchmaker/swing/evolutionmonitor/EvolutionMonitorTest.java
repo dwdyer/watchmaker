@@ -50,7 +50,7 @@ public class EvolutionMonitorTest
     }
 
 
-    @Test(groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
+    @Test(groups = "display-required") // Will fail if run in a headless environment.
     public void testShowInFrame()
     {
         EvolutionMonitor<String> monitor = new EvolutionMonitor<String>();
@@ -66,7 +66,7 @@ public class EvolutionMonitorTest
     }
 
 
-    @Test(groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
+    @Test(groups = "display-required") // Will fail if run in a headless environment.
     public void testShowInDialog()
     {
         EvolutionMonitor<String> monitor = new EvolutionMonitor<String>();
@@ -87,7 +87,7 @@ public class EvolutionMonitorTest
      * the show methods should result in that window being replaced.
      */
     @Test(dependsOnMethods = {"testShowInFrame", "testShowInDialog"},
-          groups = "display-required") // Will fail if run in a headless environment (such as hudson.uncommons.org).
+          groups = "display-required") // Will fail if run in a headless environment.
     public void testShowInFrameThenShowInDialog()
     {
         EvolutionMonitor<String> monitor = new EvolutionMonitor<String>();
