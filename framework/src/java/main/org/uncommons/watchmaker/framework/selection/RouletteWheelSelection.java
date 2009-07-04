@@ -41,9 +41,10 @@ public class RouletteWheelSelection implements SelectionStrategy<Object>
 {
     /**
      * Selects the required number of candidates from the population with
-     * the probability of any particular candidate being selected is proportional
-     * to its fitness score.  Selection is with replacement (the same candidate
-     * may be selected multiple times).
+     * the probability of selecting any particular candidate being proportional
+     * to that candidate's fitness score.  Selection is with replacement (the same
+     * candidate may be selected multiple times).
+     * @param <S> The type of the evolved objects in the population.
      * @param population The candidates to select from.
      * @param naturalFitnessScores True if higher fitness scores indicate fitter
      * individuals, false if lower fitness scores indicate fitter individuals.

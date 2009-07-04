@@ -60,7 +60,7 @@ public class Subtraction extends BinaryNode
         // Subtracting zero is pointless, the expression can be reduced to its lefthand side.
         else if (simplifiedRight instanceof Constant && simplifiedRight.evaluate(NO_ARGS) == 0)
         {
-             return simplifiedLeft;
+            return simplifiedLeft;
         }
         // If the two arguments are constants, we can simplify by calculating the result, it won't
         // ever change.

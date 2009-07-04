@@ -27,7 +27,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import org.uncommons.util.concurrent.ConfigurableThreadFactory;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
-import org.uncommons.watchmaker.framework.interactive.NullFitnessEvaluator;
 
 /**
  * <p>Multi-threaded generational {@link EvolutionEngine}.  Fitness evaluations

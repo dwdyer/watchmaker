@@ -55,11 +55,11 @@ public class Addition extends BinaryNode
         // Adding zero is pointless, the expression can be reduced to its other argument.
         if (simplifiedRight instanceof Constant && simplifiedRight.evaluate(NO_ARGS) == 0)
         {
-             return simplifiedLeft;
+            return simplifiedLeft;
         }
         else if (simplifiedLeft instanceof Constant && simplifiedLeft.evaluate(NO_ARGS) == 0)
         {
-             return simplifiedRight;
+            return simplifiedRight;
         }
         // If the two arguments are constants, we can simplify by calculating the result, it won't
         // ever change.

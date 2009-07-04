@@ -19,6 +19,10 @@ Changes in version 0.6.1
 * Changed the Mona Lisa example to accept the URL of an alternate image when
   run from the command line.
 
+* Moved NullFitnessEvaluator from interactive package to framework package and
+  made it package scope.  This class is an implementation detail and should not
+  be exposed by the API.
+
 
 Changes in version 0.6.0
 ------------------------

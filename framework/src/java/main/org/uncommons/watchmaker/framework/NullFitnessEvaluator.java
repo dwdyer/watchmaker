@@ -13,17 +13,16 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.watchmaker.framework.interactive;
+package org.uncommons.watchmaker.framework;
 
 import java.util.List;
-import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
  * Fitness evaluation is not required for interactive selection, so this stub
  * implementation is used to satisfy the framework requirements.
  * @author Daniel Dyer
  */
-public class NullFitnessEvaluator implements FitnessEvaluator<Object>
+class NullFitnessEvaluator implements FitnessEvaluator<Object>
 {
     /**
      * Returns a score of zero, regardless of the candidate being evaluated.

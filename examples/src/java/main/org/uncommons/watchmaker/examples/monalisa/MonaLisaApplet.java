@@ -133,7 +133,8 @@ public class MonaLisaApplet extends AbstractExampleApplet
                                                             new Probability(0.02));
         probabilities.add(new JLabel("Add Polygon: "));
         probabilities.add(addPolygonControl.getControl());
-        addPolygonControl.setDescription("For each IMAGE, the probability that a new randomly-generated polygon will be added.");
+        addPolygonControl.setDescription("For each IMAGE, the probability that a new "
+                                         + "randomly-generated polygon will be added.");
 
         addVertexControl = new ProbabilityParameterControl(Probability.ZERO,
                                                            ONE_TENTH,
@@ -141,7 +142,8 @@ public class MonaLisaApplet extends AbstractExampleApplet
                                                            new Probability(0.01));
         probabilities.add(new JLabel("Add Vertex: "));
         probabilities.add(addVertexControl.getControl());
-        addVertexControl.setDescription("For each POLYGON, the probability that a new randomly-generated vertex will be added.");
+        addVertexControl.setDescription("For each POLYGON, the probability that a new "
+                                        + "randomly-generated vertex will be added.");
 
         removePolygonControl = new ProbabilityParameterControl(Probability.ZERO,
                                                                ONE_TENTH,
@@ -149,7 +151,8 @@ public class MonaLisaApplet extends AbstractExampleApplet
                                                                new Probability(0.02));
         probabilities.add(new JLabel("Remove Polygon: "));
         probabilities.add(removePolygonControl.getControl());
-        removePolygonControl.setDescription("For each IMAGE, the probability that a randomly-selected polygon will be discarded.");
+        removePolygonControl.setDescription("For each IMAGE, the probability that a "
+                                            + "randomly-selected polygon will be discarded.");
 
         removeVertexControl = new ProbabilityParameterControl(Probability.ZERO,
                                                               ONE_TENTH,
@@ -157,7 +160,8 @@ public class MonaLisaApplet extends AbstractExampleApplet
                                                               new Probability(0.01));
         probabilities.add(new JLabel("Remove Vertex: "));
         probabilities.add(removeVertexControl.getControl());
-        removeVertexControl.setDescription("For each POLYGON, the probability that a randomly-selected vertex will be discarded.");
+        removeVertexControl.setDescription("For each POLYGON, the probability that a "
+                                           + "randomly-selected vertex will be discarded.");
 
         movePolygonControl = new ProbabilityParameterControl(Probability.ZERO,
                                                              ONE_TENTH,
@@ -165,7 +169,8 @@ public class MonaLisaApplet extends AbstractExampleApplet
                                                              new Probability(0.02));
         probabilities.add(new JLabel("Reorder Polygons: "));
         probabilities.add(movePolygonControl.getControl());
-        movePolygonControl.setDescription("For each IMAGE, the probability that the z-positions of two randomly-selected polygons will be swapped.");
+        movePolygonControl.setDescription("For each IMAGE, the probability that the z-positions "
+                                          + "of two randomly-selected polygons will be swapped.");
 
         moveVertexControl = new ProbabilityParameterControl(Probability.ZERO,
                                                             ONE_TENTH,
@@ -173,7 +178,8 @@ public class MonaLisaApplet extends AbstractExampleApplet
                                                             new Probability(0.03));
         probabilities.add(new JLabel("Move Vertex: "));
         probabilities.add(moveVertexControl.getControl());
-        moveVertexControl.setDescription("For each POLYGON, the probability that a randomly-selected vertex will be displaced.");
+        moveVertexControl.setDescription("For each POLYGON, the probability that a randomly-selected "
+                                         + "vertex will be displaced.");
 
         crossOverControl = new ProbabilityParameterControl(Probability.ZERO,
                                                            Probability.ONE,
@@ -181,7 +187,8 @@ public class MonaLisaApplet extends AbstractExampleApplet
                                                            Probability.ONE);
         probabilities.add(new JLabel("Cross-over: "));
         probabilities.add(crossOverControl.getControl());
-        crossOverControl.setDescription("For each PAIR of parent IMAGES, the probability that 2-point cross-over is applied.");
+        crossOverControl.setDescription("For each PAIR of parent IMAGES, the probability that "
+                                        + "2-point cross-over is applied.");
 
         changeColourControl = new ProbabilityParameterControl(Probability.ZERO,
                                                               ONE_TENTH,
@@ -255,11 +262,12 @@ public class MonaLisaApplet extends AbstractExampleApplet
                 PolygonImageFactory factory = new PolygonImageFactory(canvasSize);
                 EvolutionaryOperator<List<ColouredPolygon>> pipeline = createEvolutionPipeline(factory, canvasSize, rng);
 
+                TournamentSelection selection = new TournamentSelection(new Probability(0.8));
                 EvolutionEngine<List<ColouredPolygon>> engine
                     = new ConcurrentEvolutionEngine<List<ColouredPolygon>>(factory,
                                                                            pipeline,
                                                                            evaluator,
-                                                                           new TournamentSelection(new Probability(0.8)),
+                                                                           selection,
                                                                            rng);
 
                 engine.addEvolutionObserver(monitor);
@@ -316,6 +324,7 @@ public class MonaLisaApplet extends AbstractExampleApplet
     /**
      * Entry point for running this example as an application rather than an applet.
      * @param args Program arguments (ignored).
+     * @throws IOException If there is a problem loading the target image. 
      */
     public static void main(String[] args) throws IOException
     {

@@ -33,7 +33,11 @@ public abstract class AbstractExampleApplet extends JApplet
         configure(this);
     }
 
-    
+
+    /**
+     * Configure the program to display its GUI in the specified container.
+     * @param container The container to place the GUI components in.
+     */
     protected final void configure(final Container container)
     {
         try

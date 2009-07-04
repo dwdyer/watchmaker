@@ -148,7 +148,9 @@
       <property name="allowMarkerInterfaces" value="false" />
     </module>
     <module name="PackageDeclaration"/>
-    <module name="VisibilityModifier"/>
+    <module name="VisibilityModifier">
+      <property name="protectedAllowed" value="true" />
+    </module>
 
 
     <!-- Miscellaneous style issues. -->

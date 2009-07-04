@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
-import org.uncommons.watchmaker.framework.interactive.NullFitnessEvaluator;
 
 /**
  * <p>Single-threaded generational {@link EvolutionEngine}.  All work is completed
