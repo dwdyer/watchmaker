@@ -129,7 +129,7 @@ public class ReflectionUtilsTest
           expectedExceptions = IllegalArgumentException.class)
     public void testConstructingAbstractClass()
     {
-        Constructor<Unconstructable> constructor = ReflectionUtils.findKnownConstructor(Unconstructable.class);
+        Constructor<Abstract> constructor = ReflectionUtils.findKnownConstructor(Abstract.class);
         ReflectionUtils.invokeUnchecked(constructor); // Should throw an exception.
     }
 
@@ -152,9 +152,9 @@ public class ReflectionUtilsTest
     }
 
 
-    private abstract static class Unconstructable
+    private abstract static class Abstract
     {
-        public Unconstructable()
+        public Abstract()
         {
             // Do nothing.
         }
