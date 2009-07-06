@@ -59,8 +59,7 @@ public final class ReflectionUtils
         catch (IllegalAccessException ex)
         {
             // This cannot happen if the method is public.
-            String message = "Method " + method.getName() + " is not publicly accessible.";
-            throw new IllegalArgumentException(message, ex);
+            throw new IllegalArgumentException("Method " + method.getName() + " is not publicly accessible.", ex);
         }
         catch (InvocationTargetException ex)
         {
@@ -103,15 +102,13 @@ public final class ReflectionUtils
         catch (IllegalAccessException ex)
         {
             // This cannot happen if the constructor is public.
-            String message = "Constructor is not publicly accessible.";
-            throw new IllegalArgumentException(message, ex);
+            throw new IllegalArgumentException("Constructor is not publicly accessible.", ex);
         }
         catch (InstantiationException ex)
         {
             // This can only happen if the constructor belongs to an
             // abstract class.
-            String message = "Constructor is part of an abstract class.";
-            throw new IllegalArgumentException(message, ex);
+            throw new IllegalArgumentException("Constructor is part of an abstract class.", ex);
         }
         catch (InvocationTargetException ex)
         {
@@ -151,8 +148,7 @@ public final class ReflectionUtils
         catch (NoSuchMethodException ex)
         {
             // This cannot happen if the method is correctly identified.
-            String message = "Method " + name + " does not exist in class " + aClass.getName();
-            throw new IllegalArgumentException(message, ex);
+            throw new IllegalArgumentException("Method " + name + " does not exist in class " + aClass.getName(), ex);
         }
     }
 
@@ -177,8 +173,7 @@ public final class ReflectionUtils
         catch (NoSuchMethodException ex)
         {
             // This cannot happen if the method is correctly identified.
-            String message = "Specified constructor does not exist in class " + aClass.getName();
-            throw new IllegalArgumentException(message, ex);
+            throw new IllegalArgumentException("Specified constructor does not exist in class " + aClass.getName(), ex);
         }
     }
 }

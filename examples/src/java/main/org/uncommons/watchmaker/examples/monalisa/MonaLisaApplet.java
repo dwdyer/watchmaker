@@ -24,7 +24,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
@@ -36,12 +35,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SpringLayout;
-import org.uncommons.maths.number.ConstantGenerator;
-import org.uncommons.maths.random.GaussianGenerator;
 import org.uncommons.maths.random.Probability;
 import org.uncommons.maths.random.XORShiftRNG;
-import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.examples.AbstractExampleApplet;
 import org.uncommons.watchmaker.framework.CachingFitnessEvaluator;
@@ -51,13 +46,9 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
-import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
-import org.uncommons.watchmaker.framework.operators.ListCrossover;
-import org.uncommons.watchmaker.framework.operators.ListOperator;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.Stagnation;
 import org.uncommons.watchmaker.swing.AbortControl;
-import org.uncommons.watchmaker.swing.ProbabilityParameterControl;
 import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
 
 /**
@@ -70,19 +61,11 @@ import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
 public class MonaLisaApplet extends AbstractExampleApplet
 {
     private static final String IMAGE_PATH = "org/uncommons/watchmaker/examples/monalisa/monalisa.jpg";
-    private static final Probability ONE_TENTH = new Probability(0.1d);
 
+    private final ProbabilitiesPanel probabilitiesPanel = new ProbabilitiesPanel();
     private EvolutionMonitor<List<ColouredPolygon>> monitor;
     private JButton startButton;
     private AbortControl abort;
-    private ProbabilityParameterControl addPolygonControl;
-    private ProbabilityParameterControl removePolygonControl;
-    private ProbabilityParameterControl movePolygonControl;
-    private ProbabilityParameterControl crossOverControl;
-    private ProbabilityParameterControl addVertexControl;
-    private ProbabilityParameterControl removeVertexControl;
-    private ProbabilityParameterControl moveVertexControl;
-    private ProbabilityParameterControl changeColourControl;
     private JSpinner populationSpinner;
     private JSpinner elitismSpinner;
     private BufferedImage targetImage;
@@ -113,97 +96,15 @@ public class MonaLisaApplet extends AbstractExampleApplet
     @Override
     protected void prepareGUI(Container container)
     {
-        Renderer<List<ColouredPolygon>, JComponent> renderer = new PolygonImageSwingRenderer(targetImage);
-        monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer);
-
-        container.add(createControls(), BorderLayout.NORTH);
-        container.add(monitor.getGUIComponent(), BorderLayout.CENTER);
-    }
-
-
-    private JComponent createControls()
-    {
         JPanel controls = new JPanel(new BorderLayout());
-
-        JPanel probabilities = new JPanel(new SpringLayout());
-
-        addPolygonControl = new ProbabilityParameterControl(Probability.ZERO,
-                                                            ONE_TENTH,
-                                                            3,
-                                                            new Probability(0.02));
-        probabilities.add(new JLabel("Add Polygon: "));
-        probabilities.add(addPolygonControl.getControl());
-        addPolygonControl.setDescription("For each IMAGE, the probability that a new "
-                                         + "randomly-generated polygon will be added.");
-
-        addVertexControl = new ProbabilityParameterControl(Probability.ZERO,
-                                                           ONE_TENTH,
-                                                           3,
-                                                           new Probability(0.01));
-        probabilities.add(new JLabel("Add Vertex: "));
-        probabilities.add(addVertexControl.getControl());
-        addVertexControl.setDescription("For each POLYGON, the probability that a new "
-                                        + "randomly-generated vertex will be added.");
-
-        removePolygonControl = new ProbabilityParameterControl(Probability.ZERO,
-                                                               ONE_TENTH,
-                                                               3,
-                                                               new Probability(0.02));
-        probabilities.add(new JLabel("Remove Polygon: "));
-        probabilities.add(removePolygonControl.getControl());
-        removePolygonControl.setDescription("For each IMAGE, the probability that a "
-                                            + "randomly-selected polygon will be discarded.");
-
-        removeVertexControl = new ProbabilityParameterControl(Probability.ZERO,
-                                                              ONE_TENTH,
-                                                              3,
-                                                              new Probability(0.01));
-        probabilities.add(new JLabel("Remove Vertex: "));
-        probabilities.add(removeVertexControl.getControl());
-        removeVertexControl.setDescription("For each POLYGON, the probability that a "
-                                           + "randomly-selected vertex will be discarded.");
-
-        movePolygonControl = new ProbabilityParameterControl(Probability.ZERO,
-                                                             ONE_TENTH,
-                                                             3,
-                                                             new Probability(0.02));
-        probabilities.add(new JLabel("Reorder Polygons: "));
-        probabilities.add(movePolygonControl.getControl());
-        movePolygonControl.setDescription("For each IMAGE, the probability that the z-positions "
-                                          + "of two randomly-selected polygons will be swapped.");
-
-        moveVertexControl = new ProbabilityParameterControl(Probability.ZERO,
-                                                            ONE_TENTH,
-                                                            3,
-                                                            new Probability(0.03));
-        probabilities.add(new JLabel("Move Vertex: "));
-        probabilities.add(moveVertexControl.getControl());
-        moveVertexControl.setDescription("For each POLYGON, the probability that a randomly-selected "
-                                         + "vertex will be displaced.");
-
-        crossOverControl = new ProbabilityParameterControl(Probability.ZERO,
-                                                           Probability.ONE,
-                                                           2,
-                                                           Probability.ONE);
-        probabilities.add(new JLabel("Cross-over: "));
-        probabilities.add(crossOverControl.getControl());
-        crossOverControl.setDescription("For each PAIR of parent IMAGES, the probability that "
-                                        + "2-point cross-over is applied.");
-
-        changeColourControl = new ProbabilityParameterControl(Probability.ZERO,
-                                                              ONE_TENTH,
-                                                              3,
-                                                              new Probability(0.01));
-        probabilities.add(new JLabel("Change Colour: "));
-        probabilities.add(changeColourControl.getControl());
-        changeColourControl.setDescription("For each POLYGON, the probability that its colour will be mutated.");
-
-        SpringUtilities.makeCompactGrid(probabilities, 4, 4, 0, 0, 10, 0);
-
-        controls.add(probabilities, BorderLayout.NORTH);
+        controls.add(probabilitiesPanel, BorderLayout.NORTH);
         controls.add(createParametersPanel(), BorderLayout.SOUTH);
         controls.setBorder(BorderFactory.createTitledBorder("Evolution Parameters"));
-        return controls;
+        container.add(controls, BorderLayout.NORTH);
+
+        Renderer<List<ColouredPolygon>, JComponent> renderer = new PolygonImageSwingRenderer(targetImage);
+        monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer);
+        container.add(monitor.getGUIComponent(), BorderLayout.CENTER);
     }
 
 
@@ -228,10 +129,10 @@ public class MonaLisaApplet extends AbstractExampleApplet
                 populationSpinner.setEnabled(false);
                 elitismSpinner.setEnabled(false);
                 startButton.setEnabled(false);
-                createTask((Integer) populationSpinner.getValue(),
-                           (Integer) elitismSpinner.getValue(),
-                           abort.getTerminationCondition(),
-                           new Stagnation(1000, false)).execute();
+                new EvolutionTask((Integer) populationSpinner.getValue(),
+                                  (Integer) elitismSpinner.getValue(),
+                                  abort.getTerminationCondition(),
+                                  new Stagnation(1000, false)).execute();
             }
         });
         abort.getControl().setEnabled(false);
@@ -242,82 +143,6 @@ public class MonaLisaApplet extends AbstractExampleApplet
         wrapper.add(parameters, BorderLayout.CENTER);
         wrapper.add(buttons, BorderLayout.EAST);
         return wrapper;
-    }
-
-
-    private SwingBackgroundTask<List<ColouredPolygon>> createTask(final int populationSize,
-                                                                  final int eliteCount,
-                                                                  final TerminationCondition... terminationConditions)
-    {
-        return new SwingBackgroundTask<List<ColouredPolygon>>()
-        {
-            @Override
-            protected List<ColouredPolygon> performTask() throws Exception
-            {
-                Dimension canvasSize = new Dimension(targetImage.getWidth(), targetImage.getHeight());
-
-                Random rng = new XORShiftRNG();
-                FitnessEvaluator<List<ColouredPolygon>> evaluator
-                    = new CachingFitnessEvaluator<List<ColouredPolygon>>(new PolygonImageEvaluator(targetImage));
-                PolygonImageFactory factory = new PolygonImageFactory(canvasSize);
-                EvolutionaryOperator<List<ColouredPolygon>> pipeline = createEvolutionPipeline(factory, canvasSize, rng);
-
-                TournamentSelection selection = new TournamentSelection(new Probability(0.8));
-                EvolutionEngine<List<ColouredPolygon>> engine
-                    = new ConcurrentEvolutionEngine<List<ColouredPolygon>>(factory,
-                                                                           pipeline,
-                                                                           evaluator,
-                                                                           selection,
-                                                                           rng);
-
-                engine.addEvolutionObserver(monitor);
-
-                return engine.evolve(populationSize, eliteCount, terminationConditions);
-            }
-
-
-            @Override
-            protected void postProcessing(List<ColouredPolygon> result)
-            {
-                abort.reset();
-                abort.getControl().setEnabled(false);
-                populationSpinner.setEnabled(true);
-                elitismSpinner.setEnabled(true);
-                startButton.setEnabled(true);
-            }
-        };
-    }
-
-
-    /**
-     * Construct the combination of evolutionary operators that will be used to evolve the
-     * polygon-based images.
-     * @param factory A source of polygons.
-     * @param canvasSize The size of the target image.
-     * @param rng A source of randomness.
-     * @return A complex evolutionary operator constructed from simpler operators.
-     */
-    private EvolutionaryOperator<List<ColouredPolygon>> createEvolutionPipeline(PolygonImageFactory factory,
-                                                                                Dimension canvasSize,
-                                                                                Random rng)
-    {
-        List<EvolutionaryOperator<List<ColouredPolygon>>> operators
-            = new LinkedList<EvolutionaryOperator<List<ColouredPolygon>>>();
-        operators.add(new ListCrossover<ColouredPolygon>(new ConstantGenerator<Integer>(2),
-                                                         crossOverControl.getNumberGenerator()));
-        operators.add(new RemovePolygonMutation(removePolygonControl.getNumberGenerator()));
-        operators.add(new MovePolygonMutation(movePolygonControl.getNumberGenerator()));
-        operators.add(new ListOperator<ColouredPolygon>(new RemoveVertexMutation(canvasSize,
-                                                                                 removeVertexControl.getNumberGenerator())));
-        operators.add(new ListOperator<ColouredPolygon>(new AdjustVertexMutation(canvasSize,
-                                                                                 moveVertexControl.getNumberGenerator(),
-                                                                                 new GaussianGenerator(0, 3, rng))));
-        operators.add(new ListOperator<ColouredPolygon>(new AddVertexMutation(canvasSize,
-                                                                              addVertexControl.getNumberGenerator())));
-        operators.add(new ListOperator<ColouredPolygon>(new PolygonColourMutation(changeColourControl.getNumberGenerator(),
-                                                                                  new GaussianGenerator(0, 20, rng))));
-        operators.add(new AddPolygonMutation(addPolygonControl.getNumberGenerator(), factory, 50));
-        return new EvolutionPipeline<List<ColouredPolygon>>(operators);
     }
 
 
@@ -335,5 +160,60 @@ public class MonaLisaApplet extends AbstractExampleApplet
                        : MonaLisaApplet.class.getClassLoader().getResource(IMAGE_PATH);
         gui.targetImage = ImageIO.read(imageURL);
         gui.displayInFrame("Watchmaker Framework - Mona Lisa Example");
+    }
+
+
+    /**
+     * The task that acutally performs the evolution.
+     */
+    private class EvolutionTask extends SwingBackgroundTask<List<ColouredPolygon>>
+    {
+        private final int populationSize;
+        private final int eliteCount;
+        private final TerminationCondition[] terminationConditions;
+
+
+        EvolutionTask(int populationSize, int eliteCount, TerminationCondition... terminationConditions)
+        {
+            this.populationSize = populationSize;
+            this.eliteCount = eliteCount;
+            this.terminationConditions = terminationConditions;
+        }
+
+
+        @Override
+        protected List<ColouredPolygon> performTask() throws Exception
+        {
+            Dimension canvasSize = new Dimension(targetImage.getWidth(), targetImage.getHeight());
+
+            Random rng = new XORShiftRNG();
+            FitnessEvaluator<List<ColouredPolygon>> evaluator
+                = new CachingFitnessEvaluator<List<ColouredPolygon>>(new PolygonImageEvaluator(targetImage));
+            PolygonImageFactory factory = new PolygonImageFactory(canvasSize);
+            EvolutionaryOperator<List<ColouredPolygon>> pipeline
+                = probabilitiesPanel.createEvolutionPipeline(factory, canvasSize, rng);
+
+            TournamentSelection selection = new TournamentSelection(new Probability(0.8));
+            EvolutionEngine<List<ColouredPolygon>> engine
+                = new ConcurrentEvolutionEngine<List<ColouredPolygon>>(factory,
+                                                                       pipeline,
+                                                                       evaluator,
+                                                                       selection,
+                                                                       rng);
+            engine.addEvolutionObserver(monitor);
+
+            return engine.evolve(populationSize, eliteCount, terminationConditions);
+        }
+
+
+        @Override
+        protected void postProcessing(List<ColouredPolygon> result)
+        {
+            abort.reset();
+            abort.getControl().setEnabled(false);
+            populationSpinner.setEnabled(true);
+            elitismSpinner.setEnabled(true);
+            startButton.setEnabled(true);
+        }
     }
 }
