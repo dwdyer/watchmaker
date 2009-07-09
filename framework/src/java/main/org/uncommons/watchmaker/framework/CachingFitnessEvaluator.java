@@ -52,7 +52,10 @@ import java.util.concurrent.ConcurrentMap;
 public class CachingFitnessEvaluator<T> implements FitnessEvaluator<T>
 {
     private final FitnessEvaluator<T> delegate;
-    private final ConcurrentMap<T, Double> cache = new MapMaker().weakKeys().makeMap();
+
+    // This field is marked as transient, even though the class is not Serializable, because
+    // Terracotta will respect the fact it is transient and not try to share it.
+    private final transient ConcurrentMap<T, Double> cache = new MapMaker().weakKeys().makeMap();
 
 
     /**

@@ -32,9 +32,13 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  */
 public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPolygon>>
 {
-    private final ThreadLocal<Renderer<List<ColouredPolygon>, BufferedImage>> threadLocalRenderer
+    // This field is marked as transient, even though the class is not Serializable, because
+    // Terracotta will respect the fact it is transient and not try to share it.
+    private final transient ThreadLocal<Renderer<List<ColouredPolygon>, BufferedImage>> threadLocalRenderer
         = new ThreadLocal<Renderer<List<ColouredPolygon>, BufferedImage>>();
-    private final BufferedImage convertedImage;
+
+    private final int width;
+    private final int height;
     private final AffineTransform transform;
     private final int[] targetPixels;
 
@@ -46,25 +50,25 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
      */
     public PolygonImageEvaluator(BufferedImage targetImage)
     {
-        int width = targetImage.getWidth();
-        int height = targetImage.getWidth();
         // Scale the image down so that its smallest dimension is 100 pixels.  For large images this drastically
         // reduces the number of pixels that we need to check for fitness evaluation.
-        if (width > 100 && height > 100)
+        Raster targetImageData;
+        if (targetImage.getWidth() > 100 && targetImage.getHeight() > 100)
         {
-            double ratio = 100.0d / (width > height ? height : width);
+            double ratio = 100.0d / (targetImage.getWidth() > targetImage.getHeight() ? targetImage.getHeight() : targetImage.getWidth());
             transform = AffineTransform.getScaleInstance(ratio, ratio);
             AffineTransformOp transformOp = new AffineTransformOp(transform,
                                                                   AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-            convertedImage = convertImage(transformOp.filter(targetImage, null));
+            targetImageData = convertImage(transformOp.filter(targetImage, null)).getData();
         }
         else
         {
-            convertedImage = convertImage(targetImage);
+            targetImageData = convertImage(targetImage).getData();
             transform = null;
         }
 
-        Raster targetImageData = convertedImage.getData();
+        this.width = targetImageData.getWidth();
+        this.height = targetImageData.getHeight();
         int[] pixelArray = new int[targetImageData.getWidth() * targetImageData.getHeight()];
         targetPixels = (int[]) targetImageData.getDataElements(0,
                                                                0,
@@ -113,8 +117,7 @@ public class PolygonImageEvaluator implements FitnessEvaluator<List<ColouredPoly
         Renderer<List<ColouredPolygon>, BufferedImage> renderer = threadLocalRenderer.get();
         if (renderer == null)
         {
-            renderer = new PolygonImageRenderer(new Dimension(convertedImage.getWidth(),
-                                                              convertedImage.getHeight()),
+            renderer = new PolygonImageRenderer(new Dimension(width, height),
                                                 false,
                                                 transform);
             threadLocalRenderer.set(renderer);
