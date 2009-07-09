@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JFrame;
@@ -82,7 +83,11 @@ public class ProbabilitiesPanelTest
                                                                              Arrays.asList(new Point(1, 1))));
         List<ColouredPolygon> candidate2 = Arrays.asList(new ColouredPolygon(Color.BLACK,
                                                                              Arrays.asList(new Point(2, 2))));
-        List<List<ColouredPolygon>> evolved = operator.apply(Arrays.asList(candidate1, candidate2),
+        List<List<ColouredPolygon>> population = new ArrayList<List<ColouredPolygon>>(2);
+        population.add(candidate1);
+        population.add(candidate2);
+        
+        List<List<ColouredPolygon>> evolved = operator.apply(population,
                                                              ExamplesTestUtils.getRNG());
         // Candidate order may have changed, but individual candidates should remain unaltered.
         assert (checkEquals(evolved.get(0), candidate1) && checkEquals(evolved.get(1), candidate2))

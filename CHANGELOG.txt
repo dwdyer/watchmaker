@@ -23,6 +23,11 @@ Changes in version 0.6.1
   made it package scope.  This class is an implementation detail and should not
   be exposed by the API.
 
+* Refactored the ConcurrentEvolutionEngine by moving the code that actually
+  executes FitnessEvaluationTasks into a new class (FitnessEvaluationWorker).
+  This modified design makes it easy to distribute the fitness evaluations
+  using Terracotta (http://www.terracotta.org).
+
 
 Changes in version 0.6.0
 ------------------------
