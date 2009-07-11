@@ -93,7 +93,7 @@ class ProbabilitiesPanel extends JPanel
         movePolygonControl = new ProbabilityParameterControl(Probability.ZERO,
                                                              ONE_TENTH,
                                                              3,
-                                                             new Probability(0.02));
+                                                             new Probability(0.01));
         add(new JLabel("Reorder Polygons: "));
         add(movePolygonControl.getControl());
         movePolygonControl.setDescription("For each IMAGE, the probability that the z-positions "
@@ -135,7 +135,7 @@ class ProbabilitiesPanel extends JPanel
         moveVertexControl.getControl().setName("MoveVertex");
         changeColourControl.getControl().setName("ChangeColour");
 
-        SpringUtilities.makeCompactGrid(this, 4, 4, 0, 0, 10, 0);
+        SpringUtilities.makeCompactGrid(this, 4, 4, 10, 0, 10, 0);
     }
 
 

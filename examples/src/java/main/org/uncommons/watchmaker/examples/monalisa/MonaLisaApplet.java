@@ -18,7 +18,6 @@ package org.uncommons.watchmaker.examples.monalisa;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -28,6 +27,7 @@ import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -44,11 +44,13 @@ import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
+import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.Stagnation;
 import org.uncommons.watchmaker.swing.AbortControl;
+import org.uncommons.watchmaker.swing.ProbabilityParameterControl;
 import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
 
 /**
@@ -68,6 +70,7 @@ public class MonaLisaApplet extends AbstractExampleApplet
     private AbortControl abort;
     private JSpinner populationSpinner;
     private JSpinner elitismSpinner;
+    private ProbabilityParameterControl selectionPressureControl;
     private BufferedImage targetImage;
 
 
@@ -96,10 +99,10 @@ public class MonaLisaApplet extends AbstractExampleApplet
     @Override
     protected void prepareGUI(Container container)
     {
+        probabilitiesPanel.setBorder(BorderFactory.createTitledBorder("Evolution Probabilities"));        
         JPanel controls = new JPanel(new BorderLayout());
-        controls.add(probabilitiesPanel, BorderLayout.NORTH);
-        controls.add(createParametersPanel(), BorderLayout.SOUTH);
-        controls.setBorder(BorderFactory.createTitledBorder("Evolution Parameters"));
+        controls.add(createParametersPanel(), BorderLayout.NORTH);
+        controls.add(probabilitiesPanel, BorderLayout.SOUTH);
         container.add(controls, BorderLayout.NORTH);
 
         Renderer<List<ColouredPolygon>, JComponent> renderer = new PolygonImageSwingRenderer(targetImage);
@@ -110,15 +113,32 @@ public class MonaLisaApplet extends AbstractExampleApplet
 
     private JComponent createParametersPanel()
     {
-        JPanel parameters = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        parameters.add(new JLabel("Population Size: "));
-        populationSpinner = new JSpinner(new SpinnerNumberModel(15, 2, 1000, 1));
+        Box parameters = Box.createHorizontalBox();
+        parameters.add(Box.createHorizontalStrut(10));
+        final JLabel populationLabel = new JLabel("Population Size: ");
+        parameters.add(populationLabel);
+        parameters.add(Box.createHorizontalStrut(10));
+        populationSpinner = new JSpinner(new SpinnerNumberModel(10, 2, 1000, 1));
+        populationSpinner.setMaximumSize(populationSpinner.getMinimumSize());
         parameters.add(populationSpinner);
-        parameters.add(new JLabel("Elitism: "));
-        elitismSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 1000, 1));
+        parameters.add(Box.createHorizontalStrut(10));
+        final JLabel elitismLabel = new JLabel("Elitism: ");
+        parameters.add(elitismLabel);
+        parameters.add(Box.createHorizontalStrut(10));
+        elitismSpinner = new JSpinner(new SpinnerNumberModel(2, 1, 1000, 1));
+        elitismSpinner.setMaximumSize(elitismSpinner.getMinimumSize());
         parameters.add(elitismSpinner);
+        parameters.add(Box.createHorizontalStrut(10));
 
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        parameters.add(new JLabel("Selection Pressure: "));
+        parameters.add(Box.createHorizontalStrut(10));
+        selectionPressureControl = new ProbabilityParameterControl(Probability.EVENS,
+                                                                   Probability.ONE,
+                                                                   2,
+                                                                   new Probability(0.7));
+        parameters.add(selectionPressureControl.getControl());
+        parameters.add(Box.createHorizontalStrut(10));
+
         startButton = new JButton("Start");
         abort = new AbortControl();        
         startButton.addActionListener(new ActionListener()
@@ -126,7 +146,9 @@ public class MonaLisaApplet extends AbstractExampleApplet
             public void actionPerformed(ActionEvent ev)
             {
                 abort.getControl().setEnabled(true);
+                populationLabel.setEnabled(false);
                 populationSpinner.setEnabled(false);
+                elitismLabel.setEnabled(false);
                 elitismSpinner.setEnabled(false);
                 startButton.setEnabled(false);
                 new EvolutionTask((Integer) populationSpinner.getValue(),
@@ -136,13 +158,12 @@ public class MonaLisaApplet extends AbstractExampleApplet
             }
         });
         abort.getControl().setEnabled(false);
-        buttons.add(startButton);
-        buttons.add(abort.getControl());
+        parameters.add(startButton);
+        parameters.add(abort.getControl());
+        parameters.add(Box.createHorizontalStrut(10));
 
-        JPanel wrapper = new JPanel(new BorderLayout());
-        wrapper.add(parameters, BorderLayout.CENTER);
-        wrapper.add(buttons, BorderLayout.EAST);
-        return wrapper;
+        parameters.setBorder(BorderFactory.createTitledBorder("Parameters"));
+        return parameters;
     }
 
 
@@ -193,7 +214,7 @@ public class MonaLisaApplet extends AbstractExampleApplet
             EvolutionaryOperator<List<ColouredPolygon>> pipeline
                 = probabilitiesPanel.createEvolutionPipeline(factory, canvasSize, rng);
 
-            TournamentSelection selection = new TournamentSelection(new Probability(0.8));
+            SelectionStrategy<Object> selection = new TournamentSelection(selectionPressureControl.getNumberGenerator());
             EvolutionEngine<List<ColouredPolygon>> engine
                 = new ConcurrentEvolutionEngine<List<ColouredPolygon>>(factory,
                                                                        pipeline,
