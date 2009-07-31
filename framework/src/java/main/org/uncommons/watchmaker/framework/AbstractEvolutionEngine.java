@@ -355,7 +355,6 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         population = evolutionScheme.apply(population, rng);
         // When the evolution is finished, add the elite to the population.
         population.addAll(elite);
-        assert population.size() == evaluatedPopulation.size() : "Population size is not consistent.";
         return population;
     }
 
