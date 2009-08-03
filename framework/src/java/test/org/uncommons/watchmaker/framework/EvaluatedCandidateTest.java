@@ -89,4 +89,14 @@ public class EvaluatedCandidateTest
         assert candidate1.compareTo(candidate2) < 0 : "Incorrect ordering.";
         assert candidate2.compareTo(candidate1) > 0 : "Incorrect ordering.";
     }
+
+
+    /**
+     * Negative fitness scores are not supported.  An informative exception should be thrown.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testNegativeFitness()
+    {
+        new EvaluatedCandidate<String>("ABC", -1); // Should throw an exception.
+    }
 }

@@ -361,6 +361,10 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
     /**
      * {@inheritDoc}
+     *
+     * Updates are dispatched synchronously on the request thread.  Observers should
+     * complete their processing and return in a timely manner to avoid holding up
+     * the evolution.
      */
     public void addEvolutionObserver(EvolutionObserver<? super T> observer)
     {

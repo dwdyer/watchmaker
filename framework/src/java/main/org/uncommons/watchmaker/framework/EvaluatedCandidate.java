@@ -33,6 +33,10 @@ public final class EvaluatedCandidate<T> implements Comparable<EvaluatedCandidat
      */
     public EvaluatedCandidate(T candidate, double fitness)
     {
+        if (fitness < 0)
+        {
+            throw new IllegalArgumentException("Fitness score must be greater than or equal to zero.");
+        }
         this.candidate = candidate;
         this.fitness = fitness;
     }

@@ -21,7 +21,7 @@ import java.awt.Insets;
 import javax.swing.border.Border;
 
 /**
- * Border class that allows each of the four sides of the border to enabled
+ * Border class that allows each of the four sides of the border to be enabled
  * or disabled independently.
  * @author Daniel Dyer
  */

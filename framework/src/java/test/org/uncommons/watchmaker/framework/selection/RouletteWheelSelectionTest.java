@@ -71,4 +71,29 @@ public class RouletteWheelSelectionTest
             assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
         }
     }
+
+
+    /**
+     * Make sure that the code still functions for non-natural fitness scores even
+     * when one of them is a zero (a perfect score).
+     */
+    @Test
+    public void testNonNaturalFitnessPerfectSolution()
+    {
+        SelectionStrategy<Object> selector = new RouletteWheelSelection();
+        List<EvaluatedCandidate<String>> population = new ArrayList<EvaluatedCandidate<String>>(4);
+        EvaluatedCandidate<String> gary = new EvaluatedCandidate<String>("Gary", 0);
+        EvaluatedCandidate<String> john = new EvaluatedCandidate<String>("John", 8.4);
+        EvaluatedCandidate<String> mary = new EvaluatedCandidate<String>("Mary", 9.1);
+        EvaluatedCandidate<String> steve = new EvaluatedCandidate<String>("Steve", 10.0);
+        population.add(gary);
+        population.add(john);
+        population.add(mary);
+        population.add(steve);
+        for (int i = 0; i < 20; i++) // Run several iterations to get different outcomes from the "roulette wheel".
+        {
+            List<String> selection = selector.select(population, false, 2, FrameworkTestUtils.getRNG());
+            assert selection.size() == 2 : "Selection size is " + selection.size() + ", should be 2.";
+        }
+    }
 }

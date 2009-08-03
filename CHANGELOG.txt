@@ -28,6 +28,13 @@ Changes in version 0.6.1
   This modified design makes it easy to distribute the fitness evaluations
   using Terracotta (http://www.terracotta.org).
 
+* Documented the restriction that fitness scores are not allowed to be
+  negative.  Made sure that the framework throws an appropriate, informative
+  exception if a negative fitness is encountered (ISSUE#15).
+
+* Documented potential pitfall with using EvolutionObservers to update Swing
+  GUIs (ISSUE#14).
+
 
 Changes in version 0.6.0
 ------------------------
