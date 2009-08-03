@@ -21,11 +21,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import org.uncommons.util.concurrent.ConfigurableThreadFactory;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 
 /**
@@ -51,13 +46,9 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
  */
 public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
-    /**
-     * This thread pool performs concurrent fitness evaluations (on hosts that
-     * have more than one processor).
-     */
-    private final ThreadPoolExecutor threadPool;
+    private final FitnessEvaluationWorker worker = new FitnessEvaluationWorker();
 
-
+    
     /**
      * Creates a new evolution engine by specifying the various components required by
      * an evolutionary algorithm.
@@ -78,54 +69,7 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                      SelectionStrategy<? super T> selectionStrategy,
                                      Random rng)
     {
-        this(candidateFactory,
-             evolutionScheme,
-             fitnessEvaluator,
-             selectionStrategy,
-             rng,
-             new ConfigurableThreadFactory("EvolutionEngine",
-                                           Thread.NORM_PRIORITY,
-                                           true));
-    }
-
-
-    /**
-     * Creates a new evolution engine by specifying the various components required by
-     * an evolutionary algorithm and a thread factory.  Most users will not need a
-     * custom thread factory and should instead use the
-     * {@link #ConcurrentEvolutionEngine(CandidateFactory, EvolutionaryOperator,
-     *  FitnessEvaluator, SelectionStrategy, Random)} constructor, which provides a
-     * sensible default.
-     * @param candidateFactory Factory used to create the initial population that is
-     * iteratively evolved.
-     * @param evolutionScheme The combination of evolutionary operators used to evolve
-     * the population at each generation.
-     * @param fitnessEvaluator A function for assigning fitness scores to candidate
-     * solutions.
-     * @param selectionStrategy A strategy for selecting which candidates survive to
-     * be evolved.
-     * @param rng The source of randomness used by all stochastic processes (including
-     * evolutionary operators and selection strategies).
-     * @param threadFactory The factory used to create worker threads for this evolution
-     * engine.  This allows clients control over priorities and other characteristics.
-     * This is particularly useful for fine-tuning resource usage when running embedded
-     * inside another application such as a servlet container.
-     */
-    public ConcurrentEvolutionEngine(CandidateFactory<T> candidateFactory,
-                                     EvolutionaryOperator<T> evolutionScheme,
-                                     FitnessEvaluator<? super T> fitnessEvaluator,
-                                     SelectionStrategy<? super T> selectionStrategy,
-                                     Random rng,
-                                     ThreadFactory threadFactory)
-    {
         super(candidateFactory, evolutionScheme, fitnessEvaluator, selectionStrategy, rng);
-        threadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
-                                            Runtime.getRuntime().availableProcessors(),
-                                            60,
-                                            TimeUnit.SECONDS,
-                                            new LinkedBlockingQueue<Runnable>(),
-                                            threadFactory);
-        threadPool.prestartAllCoreThreads();
     }
 
 
@@ -180,9 +124,9 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
             // Submit tasks for execution and wait until all threads have finished fitness evaluations.
             for (T candidate : population)
             {
-                results.add(threadPool.submit(new FitnessEvalutationTask<T>(getFitnessEvaluator(),
-                                                                            candidate,
-                                                                            unmodifiablePopulation)));
+                results.add(worker.submit(new FitnessEvalutationTask<T>(getFitnessEvaluator(),
+                                                                        candidate,
+                                                                        unmodifiablePopulation)));
             }
             for (Future<EvaluatedCandidate<T>> result : results)
             {

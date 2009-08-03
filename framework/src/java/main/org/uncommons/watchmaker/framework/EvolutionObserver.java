@@ -16,8 +16,20 @@
 package org.uncommons.watchmaker.framework;
 
 /**
- * Call-back interface so that programs can monitor the state of a
- * long-running evolutionary algorithm.
+ * <p>Call-back interface so that programs can monitor the state of a
+ * long-running evolutionary algorithm.</p>
+ * <p>Depending on the parameters of the evolutionary program, an observer may
+ * be invoked dozens or hundreds of times a second, especially when the population
+ * size is small as this leads to shorter generations. The processing performed by an
+ * evolution observer should be reasonably short-lived so as to avoid slowing down
+ * the evolution by using too much CPU time.</p>
+ * <p><strong>Using an EvolutionObserver to update a Swing GUI:</strong>
+ * Evolution updates are dispatched on the request thread.  To adhere to
+ * Swing threading rules you must use {@link javax.swing.SwingUtilities#invokeLater(Runnable)}
+ * to perform any updates to Swing components.  Be aware that if there are too many Swing
+ * updates (due to a high number of generations per second) the GUI will become sluggish and
+ * unresponsive.  This situation can be mitigated by minimising the amount of work done by
+ * the evolution observer and/or by not updating the GUI every time the observer is notified.</p>
  * @param <T> The type of entity that exists in the evolving population
  * that is being observed.  This type can be bound to a super-type of the
  * actual population type so as to allow a non-specific observer that can

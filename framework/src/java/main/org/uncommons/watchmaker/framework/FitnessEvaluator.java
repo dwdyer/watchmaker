@@ -30,6 +30,8 @@ public interface FitnessEvaluator<T>
      * Calculates a fitness score for the given candidate.  Whether
      * a higher score indicates a fitter candidate or not depends on
      * whether the fitness scores are natural (see {@link #isNatural}).
+     * This method must always return a value greater than or equal to
+     * zero.  Framework behaviour is undefined for negative fitness scores.
      * @param candidate The candidate solution to calculate fitness for.
      * @param population The entire population.  This will include the
      * specified candidate.  This is provided for fitness evaluators that
@@ -40,7 +42,9 @@ public interface FitnessEvaluator<T>
      * over the population, a simple reference equality check (==) can be
      * used to identify which member of the population is the specified
      * candidate.
-     * @return The fitness score for the specified candidate.
+     * @return The fitness score for the specified candidate.  Must always be
+     * a non-negative value regardless of natural or non-natural evaluation is
+     * being used.
      */
     double getFitness(T candidate,
                       List<? extends T> population);

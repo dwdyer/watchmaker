@@ -134,6 +134,24 @@ public class ReflectionUtilsTest
     }
 
 
+    @Test(dependsOnMethods = "testFindConstructor",
+          expectedExceptions = IllegalArgumentException.class)
+    public void testUnconstructable() throws NoSuchMethodException
+    {
+        Constructor<Unconstructable> constructor = Unconstructable.class.getDeclaredConstructor();
+        ReflectionUtils.invokeUnchecked(constructor); // Should throw an exception.
+    }
+
+
+    @Test(dependsOnMethods = "testFindMethod",
+          expectedExceptions = IllegalArgumentException.class)
+    public void testInaccessibleMethod() throws NoSuchMethodException
+    {
+        Method method = Inaccessible.class.getDeclaredMethod("inaccessibleMethod");
+        ReflectionUtils.invokeUnchecked(method, new Inaccessible()); // Should throw an exception.
+    }
+
+
     private static class ExceptionTest
     {
         public ExceptionTest()
@@ -155,6 +173,24 @@ public class ReflectionUtilsTest
     private abstract static class Abstract
     {
         public Abstract()
+        {
+            // Do nothing.
+        }
+    }
+
+
+    private static class Unconstructable
+    {
+        private Unconstructable()
+        {
+            // Do nothing.
+        }
+    }
+
+
+    private static class Inaccessible
+    {
+        private void inaccessibleMethod()
         {
             // Do nothing.
         }

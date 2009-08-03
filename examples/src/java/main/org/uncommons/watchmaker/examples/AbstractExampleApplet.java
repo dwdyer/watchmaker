@@ -55,7 +55,7 @@ public abstract class AbstractExampleApplet extends JApplet
         catch (Exception ex)
         {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex, "Error Occurred", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(container, ex, "Error Occurred", JOptionPane.ERROR_MESSAGE);
         }
     }
 
