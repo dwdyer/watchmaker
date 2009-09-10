@@ -75,4 +75,18 @@ public class FitnessEvaluationWorker
         // the worker creates non-daemon threads that keep the JVM alive.
         new FitnessEvaluationWorker();
     }
+
+
+    /**
+     * A FitnessWorker cannot be garbage-collected if its thread pool has not been shutdown.
+     * This method, invoked on garabage collection (or maybe not at all), shuts down the thread
+     * pool so that the threads can be released. 
+     * @throws Throwable Any exception or error that occurs during finalisation.
+     */
+    @Override
+    protected void finalize() throws Throwable
+    {
+        executor.shutdown();
+        super.finalize();
+    }
 }
