@@ -37,13 +37,13 @@ public class FitnessEvaluationWorker
     // Provide each worker instance with a unique name with which to prefix its threads.
     private static final IDSource<String> WORKER_ID_SOURCE = new StringPrefixIDSource("FitnessEvaluationWorker",
                                                                                       new IntSequenceIDSource());
-    
+
     /**
      * Share this field to use Terracotta to distribute fitness evaluations.
      */
     private final LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>();
 
-    
+
     /**
      * Thread pool that performs concurrent fitness evaluations.
      */

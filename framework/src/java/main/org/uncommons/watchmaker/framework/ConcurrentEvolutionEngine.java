@@ -46,9 +46,9 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
  */
 public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
-    private final FitnessEvaluationWorker worker = new FitnessEvaluationWorker();
+    private static final FitnessEvaluationWorker WORKER = new FitnessEvaluationWorker();
 
-    
+
     /**
      * Creates a new evolution engine by specifying the various components required by
      * an evolutionary algorithm.
@@ -124,7 +124,7 @@ public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
             // Submit tasks for execution and wait until all threads have finished fitness evaluations.
             for (T candidate : population)
             {
-                results.add(worker.submit(new FitnessEvalutationTask<T>(getFitnessEvaluator(),
+                results.add(WORKER.submit(new FitnessEvalutationTask<T>(getFitnessEvaluator(),
                                                                         candidate,
                                                                         unmodifiablePopulation)));
             }
