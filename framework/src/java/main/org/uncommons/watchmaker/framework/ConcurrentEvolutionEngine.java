@@ -46,6 +46,7 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
  */
 public class ConcurrentEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
+    // A single multi-threaded worker is shared among multiple evolution engine instances.
     private static final FitnessEvaluationWorker WORKER = new FitnessEvaluationWorker();
 
 
