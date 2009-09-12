@@ -5,6 +5,12 @@ Changes in version 0.6.2
   finalizer to shutdown the thread pool in FitnessEvaluationWorker so that the
   active threads do not inhibit garbage collection.
 
+* Made fitness evaluation threads daemons again (as in 0.6.0).  Only standalone
+  (i.e. Terracotta) FitnessEvaluationWorkers now use non-daemon threads.  This
+  fixes the problem of the JVM not exiting when the program is finished
+  (ISSUE#17).
+
+
 Changes in version 0.6.1
 ------------------------
 

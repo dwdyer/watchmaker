@@ -42,12 +42,24 @@ public class FitnessEvaluationWorker
      */
     private final ThreadPoolExecutor executor;
 
-    
+
+    /**
+     * Creates a FitnessEvaluationWorker that uses daemon threads.
+     */
     FitnessEvaluationWorker()
+    {
+        this(true);
+    }
+
+
+    /**
+     * @param daemonWorkerThreads If true, any worker threads created will be daemon threads.
+     */
+    private FitnessEvaluationWorker(boolean daemonWorkerThreads)
     {
         ConfigurableThreadFactory threadFactory = new ConfigurableThreadFactory("FitnessEvaluationWorker",
                                                                                 Thread.NORM_PRIORITY,
-                                                                                false);
+                                                                                daemonWorkerThreads);
         this.executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
                                                Runtime.getRuntime().availableProcessors(),
                                                60,
@@ -72,8 +84,8 @@ public class FitnessEvaluationWorker
     public static void main(String[] args)
     {
         // The program will not exit immediately upon completion of the main method because
-        // the worker creates non-daemon threads that keep the JVM alive.
-        new FitnessEvaluationWorker();
+        // the worker is configured to use non-daemon threads that keep the JVM alive.
+        new FitnessEvaluationWorker(false);
     }
 
 

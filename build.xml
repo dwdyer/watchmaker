@@ -56,7 +56,7 @@
            classpathref="tool.path"/>
 
 
-  <property name="version" value="0.6.1"/>
+  <property name="version" value="0.6.2pre"/>
   <property name="artifact.identifier" value="watchmaker-framework-${version}"/>
 
   <!-- This is the minimum coverage percentage (for both lines and
