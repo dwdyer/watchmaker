@@ -20,6 +20,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import org.uncommons.util.concurrent.ConfigurableThreadFactory;
+import org.uncommons.util.id.IDSource;
+import org.uncommons.util.id.IntSequenceIDSource;
+import org.uncommons.util.id.StringPrefixIDSource;
 
 /**
  * This is the class that actually runs the fitness evaluation tasks created by a
@@ -31,6 +34,10 @@ import org.uncommons.util.concurrent.ConfigurableThreadFactory;
  */
 public class FitnessEvaluationWorker
 {
+    // Provide each worker instance with a unique name with which to prefix its threads.
+    private static final IDSource<String> WORKER_ID_SOURCE = new StringPrefixIDSource("FitnessEvaluationWorker",
+                                                                                      new IntSequenceIDSource());
+    
     /**
      * Share this field to use Terracotta to distribute fitness evaluations.
      */
@@ -57,7 +64,7 @@ public class FitnessEvaluationWorker
      */
     private FitnessEvaluationWorker(boolean daemonWorkerThreads)
     {
-        ConfigurableThreadFactory threadFactory = new ConfigurableThreadFactory("FitnessEvaluationWorker",
+        ConfigurableThreadFactory threadFactory = new ConfigurableThreadFactory(WORKER_ID_SOURCE.nextID(),
                                                                                 Thread.NORM_PRIORITY,
                                                                                 daemonWorkerThreads);
         this.executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),

@@ -10,6 +10,8 @@ Changes in version 0.6.2
   fixes the problem of the JVM not exiting when the program is finished
   (ISSUE#17).
 
+* Better thread naming for fitness evaluation worker threads.
+
 
 Changes in version 0.6.1
 ------------------------
