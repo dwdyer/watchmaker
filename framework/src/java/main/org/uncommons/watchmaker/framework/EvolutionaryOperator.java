@@ -41,13 +41,13 @@ public interface EvolutionaryOperator<T>
      * class.  The implementation should not re-order the list provided
      * but instead should make a copy of the list and re-order that.
      * The ordering of the selection should be totally irrelevant for
-     * operators, such as mutation, that process each candidate in isolation.
+     * operators that process each candidate in isolation, such as mutation.
      * It should only be an issue for operators, such as cross-over, that
      * deal with multiple candidates in a single operation.</p>
-     * <p>The operator should not modify any of the candidates passed in,
-     * instead it should return a list that contains evolved copies of those
-     * candidates (umodified candidates can be included in the results without
-     * having to be copied).</p>
+     * <p><strong>The operator should not modify any of the candidates passed
+     * in</strong>.  Instead it should return a list that contains evolved
+     * copies of those candidates (umodified candidates can be included in
+     * the results without having to be copied).</p>
      * @param selectedCandidates The individuals to evolve.
      * @param rng A source of randomness for stochastic operators (most
      * operators will be stochastic).
