@@ -85,11 +85,11 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
             catch (InterruptedException ex)
             {
                 Thread.currentThread().interrupt();
-                throw new InstantiationError(ex.getMessage());
+                throw new IllegalStateException(ex);
             }
             catch (InvocationTargetException ex)
             {
-                throw new InstantiationError(ex.getMessage());
+                throw new IllegalStateException(ex);
             }
         }
     }

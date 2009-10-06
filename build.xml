@@ -87,6 +87,7 @@
         </fileset>
         <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
         <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
+        <group title="Watchmaker Genetic Programming" packages="org.uncommons.gp:org.uncommons.gp.*"/>
         <group title="Uncommons Utilities" packages="org.uncommons.util:org.uncommons.util.*"/>
         <header><![CDATA[Watchmaker Framework API<br><small>(Version ${version})</small>]]></header>
         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
@@ -115,6 +116,7 @@
     <delete dir="${temp.dir}" />
     <uncommons:clean module="examples" />
     <uncommons:clean module="framework" />
+    <uncommons:clean module="gp" />
     <uncommons:clean module="swing" />
     <uncommons:clean module="book" />
   </target>
@@ -153,7 +155,7 @@
     <uncommons:compile module="examples" />
     <uncommons:jar module="examples"
                    jarfile="watchmaker-examples-${version}.jar"
-                   classpath="${artifact.identifier}.jar lib/uncommons-maths-1.2.jar lib/google-collect-1.0-rc1.jar watchmaker-swing-${version}.jar lib/jfreechart-1.0.13.jar lib/jcommon-1.0.16.jar"
+                   classpath="${artifact.identifier}.jar lib/uncommons-maths-1.2.jar lib/google-collect-1.0-rc1.jar watchmaker-swing-${version}.jar watchmaker-gp-${version}.jar lib/jfreechart-1.0.13.jar lib/jcommon-1.0.16.jar"
                    mainclass="org.uncommons.watchmaker.examples.Launcher" />
   </target>
 
