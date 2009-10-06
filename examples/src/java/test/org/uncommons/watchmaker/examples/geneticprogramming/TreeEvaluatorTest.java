@@ -20,6 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
+import org.uncommons.watchmaker.gp.trees.Constant;
+import org.uncommons.watchmaker.gp.trees.Multiplication;
+import org.uncommons.watchmaker.gp.trees.Node;
+import org.uncommons.watchmaker.gp.trees.Parameter;
 
 /**
  * Unit test for the {@link FitnessEvaluator} used

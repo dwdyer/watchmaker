@@ -56,7 +56,7 @@
            classpathref="tool.path"/>
 
 
-  <property name="version" value="0.6.2"/>
+  <property name="version" value="0.6.3pre"/>
   <property name="artifact.identifier" value="watchmaker-framework-${version}"/>
 
   <!-- This is the minimum coverage percentage (for both lines and
@@ -120,11 +120,20 @@
   </target>
 
 
-  <!-- Builds the framework JAR, which depends on the maths module. -->
+  <!-- Builds the core framework JAR. -->
   <target name="framework"
           description="Build the framework module.">
     <uncommons:compile module="framework" />
     <uncommons:jar module="framework" jarfile="${artifact.identifier}.jar" />
+  </target>
+
+
+  <!-- Builds the experimental Genetic Programming module. -->
+  <target name="gp"
+          depends="framework"
+          description="Experimental Genetic Programming module.">
+    <uncommons:compile module="gp" />
+    <uncommons:jar module="gp" jarfile="watchmaker-gp-${version}.jar" />
   </target>
 
 
@@ -139,7 +148,7 @@
 
   <!-- Builds the examples JAR, which depends on each of the other modules. -->
   <target name="examples"
-          depends="framework, swing"
+          depends="framework, gp, swing"
           description="Build the examples.">
     <uncommons:compile module="examples" />
     <uncommons:jar module="examples"
@@ -151,7 +160,7 @@
 
   <!-- Copy all necessary files to distribution directory. -->
   <target name="dist"
-          depends="framework, swing, examples"
+          depends="framework, gp, swing, examples"
           description="Generate the project distribution." >
     <mkdir dir="${dist.dir}" />
     <copy todir="${dist.dir}" flatten="true">

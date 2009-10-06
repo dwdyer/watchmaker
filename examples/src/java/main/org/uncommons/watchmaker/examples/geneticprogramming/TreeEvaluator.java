@@ -18,6 +18,7 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 import java.util.List;
 import java.util.Map;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
+import org.uncommons.watchmaker.gp.trees.Node;
 
 /**
  * Fitness function for the genetic programming example application.
