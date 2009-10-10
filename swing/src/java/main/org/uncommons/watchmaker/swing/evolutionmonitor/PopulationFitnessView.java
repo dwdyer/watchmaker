@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -172,26 +173,38 @@ class PopulationFitnessView extends JPanel implements EvolutionObserver<Object>
      */
     public void populationUpdate(final PopulationData<?> populationData)
     {
-        SwingUtilities.invokeLater(new Runnable()
+        try
         {
-            public void run()
+            SwingUtilities.invokeAndWait(new Runnable()
             {
-                if (populationData.getGenerationNumber() == 0)
+                public void run()
                 {
-                    if (!populationData.isNaturalFitness())
+                    if (populationData.getGenerationNumber() == 0)
                     {
-                        invertCheckBox.setSelected(true);
+                        if (!populationData.isNaturalFitness())
+                        {
+                            invertCheckBox.setSelected(true);
+                        }
+                        // The graph might be showing data from a previous run, so clear it.
+                        meanSeries.clear();
+                        bestSeries.clear();
                     }
-                    // The graph might be showing data from a previous run, so clear it.
-                    meanSeries.clear();
-                    bestSeries.clear();
-                }
-                meanSeries.add(populationData.getGenerationNumber(), populationData.getMeanFitness());
-                double best = populationData.getBestCandidateFitness();
-                bestSeries.add(populationData.getGenerationNumber(), best);
+                    meanSeries.add(populationData.getGenerationNumber(), populationData.getMeanFitness());
+                    double best = populationData.getBestCandidateFitness();
+                    bestSeries.add(populationData.getGenerationNumber(), best);
 
-                updateDomainAxisRange();
-            }
-        });
+                    updateDomainAxisRange();
+                }
+            });
+        }
+        catch (InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException(ex);
+        }
+        catch (InvocationTargetException ex)
+        {
+            throw new IllegalStateException(ex);
+        }
     }
 }

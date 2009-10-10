@@ -27,6 +27,7 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.selection.RankSelection;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
+import org.uncommons.watchmaker.framework.selection.SigmaScaling;
 import org.uncommons.watchmaker.framework.selection.StochasticUniversalSampling;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.selection.TruncationSelection;
@@ -83,6 +84,7 @@ public class SelectionStrategyControl<T> implements EvolutionControl
         List<SelectionStrategy<? super T>> options = new LinkedList<SelectionStrategy<? super T>>();
         options.add(new RankSelection());
         options.add(new RouletteWheelSelection());
+        options.add(new SigmaScaling());
         options.add(new StochasticUniversalSampling());
         options.add(new TournamentSelection(tournamentProbability));
         options.add(new TruncationSelection(truncationRatio));
