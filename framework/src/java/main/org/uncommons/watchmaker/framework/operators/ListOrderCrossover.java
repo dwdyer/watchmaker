@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import org.uncommons.maths.number.ConstantGenerator;
+import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.maths.random.Probability;
 
 /**
@@ -49,6 +51,21 @@ public class ListOrderCrossover<T> extends AbstractCrossover<List<T>>
         super(2, // Requires exactly two cross-over points.
               crossoverProbability);
     }
+
+
+    /**
+     * Creates a cross-over operator where cross-over may or may not be applied to a
+     * given pair of parents depending on the {@code crossoverProbability}.
+     * @param crossoverProbabilityVariable The probability that, once selected,
+     * a pair of parents will be subjected to cross-over rather than
+     * being copied, unchanged, into the output population.
+     */
+    public ListOrderCrossover(NumberGenerator<Probability> crossoverProbabilityVariable)
+    {
+        super(new ConstantGenerator<Integer>(2), // Requires exactly two cross-over points.
+              crossoverProbabilityVariable);
+    }
+
 
 
     /**

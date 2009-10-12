@@ -12,6 +12,8 @@ Changes in version 0.6.3
 * Added ListInversion evolutionary operator.  Randomly reverses subsections of
   lists.
 
+* Added variable probability constructor to ListOrderCrossover.
+
 
 Changes in version 0.6.2
 ------------------------

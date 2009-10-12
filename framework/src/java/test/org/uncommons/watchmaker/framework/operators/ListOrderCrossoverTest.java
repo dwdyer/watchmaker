@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.testng.annotations.Test;
+import org.uncommons.maths.number.ConstantGenerator;
+import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 
@@ -62,7 +64,8 @@ public class ListOrderCrossoverTest
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDifferentLengthParents()
     {
-        EvolutionaryOperator<List<Integer>> crossover = new ListOrderCrossover<Integer>();
+        EvolutionaryOperator<List<Integer>> crossover
+            = new ListOrderCrossover<Integer>(new ConstantGenerator<Probability>(Probability.ONE));
         List<List<Integer>> population = new ArrayList<List<Integer>>(2);
         population.add(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
         population.add(Arrays.asList(9, 10, 11));
