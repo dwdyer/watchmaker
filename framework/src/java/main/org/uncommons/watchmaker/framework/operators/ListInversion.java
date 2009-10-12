@@ -62,8 +62,9 @@ public class ListInversion<T> implements EvolutionaryOperator<List<T>>
             {
                 List<T> newCandidate = new ArrayList<T>(candidate);
                 int length = newCandidate.size();
-                int start = rng.nextInt(length - 2) + 2; // Make sure segment is at least 2 elements.
-                int end = (start + rng.nextInt(length)) % length;
+                int start = rng.nextInt(length);
+                int offset = 2 + rng.nextInt(length - 2); // Make sure segment length is at least 2.
+                int end = (start + offset) % length;
                 int segmentLength = end - start;
                 if (segmentLength < 0)
                 {

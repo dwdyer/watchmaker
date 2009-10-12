@@ -52,7 +52,7 @@ public class ListInversionTest
             // After inversion, candidate should have same elements but not in the same order.
             assert evolvedSelection.size() == 1 : "Wrong number of individuals after evolution: " + evolvedSelection.size();
             assert evolvedSelection.get(0).size() == selection.get(0).size() : "Candidate length should be unchanged.";
-            assert Arrays.deepEquals(evolvedSelection.get(0).toArray(), selection.get(0).toArray())
+            assert !Arrays.deepEquals(evolvedSelection.get(0).toArray(), selection.get(0).toArray())
                 : "Candidate should have been modified.";
             assert new HashSet<Integer>(evolvedSelection.get(0)).size() == 8
                 : "Evolved candidate should contain each element once.";
