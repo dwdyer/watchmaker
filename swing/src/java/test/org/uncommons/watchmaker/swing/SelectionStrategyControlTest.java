@@ -73,8 +73,8 @@ public class SelectionStrategyControlTest
 
         // Using the second selection strategy, only the fittest 50% of candidates should be selected from.
         selection = control.getSelectionStrategy().select(population, true, 2, null);
-        assert selection.contains("CCC") : "Canidated CCC missing from selection.";
-        assert selection.contains("DDD") : "Canidated DDD missing from selection.";
+        assert selection.contains("CCC") : "Candidate CCC missing from selection.";
+        assert selection.contains("DDD") : "Candidate DDD missing from selection.";
     }
 
 

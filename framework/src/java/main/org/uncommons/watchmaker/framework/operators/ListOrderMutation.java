@@ -78,10 +78,10 @@ public class ListOrderMutation<T> implements EvolutionaryOperator<List<T>>
     }
 
 
-    public List<List<T>> apply(List<List<T>> population, Random rng)
+    public List<List<T>> apply(List<List<T>> selectedCandidates, Random rng)
     {
-        List<List<T>> result = new ArrayList<List<T>>(population.size());
-        for (List<T> candidate : population)
+        List<List<T>> result = new ArrayList<List<T>>(selectedCandidates.size());
+        for (List<T> candidate : selectedCandidates)
         {
             List<T> newCandidate = new ArrayList<T>(candidate);
             int mutationCount = Math.abs(mutationCountVariable.nextValue());
