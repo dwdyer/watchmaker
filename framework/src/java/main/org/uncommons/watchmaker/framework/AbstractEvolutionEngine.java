@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import org.uncommons.maths.statistics.DataSet;
 
 /**
  * Base class for {@link EvolutionEngine} implementations.
@@ -41,9 +40,6 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     private final EvolutionaryOperator<T> evolutionScheme;
     private final FitnessEvaluator<? super T> fitnessEvaluator;
     private final SelectionStrategy<? super T> selectionStrategy;
-
-    private long startTime;
-    private int currentGenerationIndex;
 
     private List<TerminationCondition> satisfiedTerminationConditions;
 
@@ -223,8 +219,8 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         }
 
         satisfiedTerminationConditions = null;
-        currentGenerationIndex = 0;
-        startTime = System.currentTimeMillis();
+        int currentGenerationIndex = 0;
+        long startTime = System.currentTimeMillis();
 
         List<T> population = candidateFactory.generateInitialPopulation(populationSize,
                                                                         seedCandidates,
@@ -232,48 +228,33 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         
         // Calculate the fitness scores for each member of the initial population.
         List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
-        sortEvaluatedPopulation(evaluatedPopulation);
-        PopulationData<T> data = getPopulationData(evaluatedPopulation, eliteCount);
+        EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, fitnessEvaluator.isNatural());
+        PopulationData<T> data = EvolutionUtils.getPopulationData(evaluatedPopulation,
+                                                                  fitnessEvaluator.isNatural(),
+                                                                  eliteCount,
+                                                                  currentGenerationIndex,
+                                                                  startTime);
         // Notify observers of the state of the population.
         notifyPopulationChange(data);
 
-        List<TerminationCondition> satisfiedConditions = shouldContinue(data, conditions);
+        List<TerminationCondition> satisfiedConditions = EvolutionUtils.shouldContinue(data, conditions);
         while (satisfiedConditions == null)
         {
             ++currentGenerationIndex;
             population = createNextGeneration(evaluatedPopulation, eliteCount);
             evaluatedPopulation = evaluatePopulation(population);
-            sortEvaluatedPopulation(evaluatedPopulation);
-            data = getPopulationData(evaluatedPopulation, eliteCount);
+            EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, fitnessEvaluator.isNatural());
+            data = EvolutionUtils.getPopulationData(evaluatedPopulation,
+                                                    fitnessEvaluator.isNatural(),
+                                                    eliteCount,
+                                                    currentGenerationIndex,
+                                                    startTime);
             // Notify observers of the state of the population.
             notifyPopulationChange(data);
-            satisfiedConditions = shouldContinue(data, conditions);
+            satisfiedConditions = EvolutionUtils.shouldContinue(data, conditions);
         }
         this.satisfiedTerminationConditions = satisfiedConditions;
         return evaluatedPopulation;
-    }
-
-
-
-    private List<TerminationCondition> shouldContinue(PopulationData<T> data,
-                                                      TerminationCondition... conditions)
-    {
-        // If the thread has been interrupted, we should abort and return whatever
-        // result we currently have.
-        if (Thread.currentThread().isInterrupted())
-        {
-            return Collections.emptyList();
-        }
-        // Otherwise check the termination conditions for the evolution.
-        List<TerminationCondition> satisfiedConditions = new LinkedList<TerminationCondition>();
-        for (TerminationCondition condition : conditions)
-        {
-            if (condition.shouldTerminate(data))
-            {
-                satisfiedConditions.add(condition);
-            }
-        }
-        return satisfiedConditions.isEmpty() ? null : satisfiedConditions;
     }
 
 
@@ -302,26 +283,6 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      * score.
      */
     protected abstract List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population);
-
-    
-    /**
-     * Sorts an evaluated population in descending order of fitness
-     * (descending order of fitness score for natural scores, ascending
-     * order of scores for non-natural scores).
-     * @param evaluatedPopulation The population to be sorted (in-place).
-     */
-    private void sortEvaluatedPopulation(List<EvaluatedCandidate<T>> evaluatedPopulation)
-    {
-        // Sort candidates in descending order according to fitness.
-        if (getFitnessEvaluator().isNatural()) // Descending values for natural fitness.
-        {
-            Collections.sort(evaluatedPopulation, Collections.reverseOrder());
-        }
-        else // Ascending values for non-natural fitness.
-        {
-            Collections.sort(evaluatedPopulation);
-        }
-    }
 
 
     /**
@@ -391,33 +352,5 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         {
             observer.populationUpdate(data);
         }
-    }
-
-
-    /**
-     * Gets data about the current population, including the fittest candidate
-     * and statistics about the population as a whole.
-     * @param evaluatedPopulation Population of candidate solutions with their
-     * associated fitness scores.
-     * @param eliteCount The number of candidates preserved via elitism.
-     * @return Statistics about the current generation of evolved individuals.
-     */
-    private PopulationData<T> getPopulationData(List<EvaluatedCandidate<T>> evaluatedPopulation,
-                                                int eliteCount)
-    {
-        DataSet stats = new DataSet(evaluatedPopulation.size());
-        for (EvaluatedCandidate<T> candidate : evaluatedPopulation)
-        {
-            stats.addValue(candidate.getFitness());
-        }
-        return new PopulationData<T>(evaluatedPopulation.get(0).getCandidate(),
-                                     evaluatedPopulation.get(0).getFitness(),
-                                     stats.getArithmeticMean(),
-                                     stats.getStandardDeviation(),
-                                     getFitnessEvaluator().isNatural(),
-                                     stats.getSize(),
-                                     eliteCount,
-                                     currentGenerationIndex,
-                                     System.currentTimeMillis() - startTime);
     }
 }

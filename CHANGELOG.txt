@@ -1,4 +1,4 @@
-Changes in version 0.6.3
+Changes in version 0.7.0
 ------------------------
 
 * Introduced experimental Genetic Programming module based on the classes that
@@ -13,6 +13,8 @@ Changes in version 0.6.3
   lists.
 
 * Added variable probability constructor to ListOrderCrossover.
+
+* Introduced support for island model evolution.
 
 
 Changes in version 0.6.2

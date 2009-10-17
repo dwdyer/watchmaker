@@ -27,12 +27,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import org.uncommons.maths.statistics.DataSet;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
+import org.uncommons.watchmaker.framework.EvolutionUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 import org.uncommons.watchmaker.framework.PopulationData;
@@ -50,12 +50,11 @@ public class IslandEvolution<T>
     private final boolean naturalFitness;
     private final Random rng;
 
+    private final List<EvolutionObserver<? super T>> observers = new LinkedList<EvolutionObserver<? super T>>();
+
     // Latest population data from each island.
     private final Map<Integer, PopulationData<? extends T>> islandData
         = Collections.synchronizedSortedMap(new TreeMap<Integer, PopulationData<? extends T>>());
-
-    private int currentEpochIndex;
-    private long startTime;
 
     public IslandEvolution(int islandCount,
                            Migration migration,
@@ -128,8 +127,6 @@ public class IslandEvolution<T>
 
 
     /**
-     * {@inheritDoc}
-     *
      * <em>If you interrupt the request thread before this method returns, the
      * method will return prematurely (with the best individual found so far).
      * After returning in this way, the current thread's interrupted flag
@@ -143,7 +140,7 @@ public class IslandEvolution<T>
                     int migrantCount,
                     TerminationCondition... conditions)
     {
-        startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         ExecutorService threadPool = Executors.newFixedThreadPool(islands.size());
 
         List<List<T>> islandPopulations = new ArrayList<List<T>>(islands.size());
@@ -153,7 +150,8 @@ public class IslandEvolution<T>
         }
 
         List<EvaluatedCandidate<T>> evaluatedCombinedPopulation = new ArrayList<EvaluatedCandidate<T>>();
-        currentEpochIndex = 0;
+        PopulationData<T> data = null;
+        int currentEpochIndex = 0;
         do
         {
             List<Callable<List<EvaluatedCandidate<T>>>> islandEpochs
@@ -176,10 +174,16 @@ public class IslandEvolution<T>
                 {
                     List<EvaluatedCandidate<T>> evaluatedIslandPopulation = future.get();
                     evaluatedCombinedPopulation.addAll(evaluatedIslandPopulation);
-                    islandPopulations.add(toCandidateList(evaluatedIslandPopulation));
+                    islandPopulations.add(EvolutionUtils.toCandidateList(evaluatedIslandPopulation));
                 }
                 ++currentEpochIndex;
                 migration.migrate(islandPopulations, migrantCount, rng);
+                data = EvolutionUtils.getPopulationData(evaluatedCombinedPopulation,
+                                                        naturalFitness,
+                                                        eliteCount,
+                                                        currentEpochIndex,
+                                                        startTime);
+                notifyPopulationChange(data);
             }
             catch (InterruptedException ex)
             {
@@ -189,98 +193,44 @@ public class IslandEvolution<T>
             {
                 throw new IllegalStateException(ex);
             }
-        } while (shouldContinue(getPopulationData(evaluatedCombinedPopulation, eliteCount), conditions) == null);
-        sortEvaluatedPopulation(evaluatedCombinedPopulation);
+        } while (EvolutionUtils.shouldContinue(data, conditions) == null);
+        EvolutionUtils.sortEvaluatedPopulation(evaluatedCombinedPopulation, naturalFitness);
+        threadPool.shutdownNow();
         return evaluatedCombinedPopulation.get(0).getCandidate();
     }
 
-    
-
-    private List<TerminationCondition> shouldContinue(PopulationData<T> data,
-                                                      TerminationCondition... conditions)
-    {
-        // If the thread has been interrupted, we should abort and return whatever
-        // result we currently have.
-        if (Thread.currentThread().isInterrupted())
-        {
-            return Collections.emptyList();
-        }
-        // Otherwise check the termination conditions for the evolution.
-        List<TerminationCondition> satisfiedConditions = new LinkedList<TerminationCondition>();
-        for (TerminationCondition condition : conditions)
-        {
-            if (condition.shouldTerminate(data))
-            {
-                satisfiedConditions.add(condition);
-            }
-        }
-        return satisfiedConditions.isEmpty() ? null : satisfiedConditions;
-    }
-
-
 
     /**
-     * Convert a list of {@link EvaluatedCandidate}s into a simple list of candidates.
-     * @param evaluatedCandidates The population of candidate objects to relieve of their
-     * evaluation wrappers. 
-     * @return The candidates, stripped of their fitness scores.
+     * {@inheritDoc}
+     *
+     * Updates are dispatched synchronously on the request thread.  Observers should
+     * complete their processing and return in a timely manner to avoid holding up
+     * the evolution.
      */
-    private List<T> toCandidateList(List<EvaluatedCandidate<T>> evaluatedCandidates)
+    public void addEvolutionObserver(EvolutionObserver<? super T> observer)
     {
-        List<T> candidates = new ArrayList<T>(evaluatedCandidates.size());
-        for (EvaluatedCandidate<T> evaluatedCandidate : evaluatedCandidates)
-        {
-            candidates.add(evaluatedCandidate.getCandidate());
-        }
-        return candidates;
-    }
-
-
-    
-    /**
-     * Sorts an evaluated population in descending order of fitness
-     * (descending order of fitness score for natural scores, ascending
-     * order of scores for non-natural scores).
-     * @param evaluatedPopulation The population to be sorted (in-place).
-     */
-    private void sortEvaluatedPopulation(List<EvaluatedCandidate<T>> evaluatedPopulation)
-    {
-        // Sort candidates in descending order according to fitness.
-        if (naturalFitness) // Descending values for natural fitness.
-        {
-            Collections.sort(evaluatedPopulation, Collections.reverseOrder());
-        }
-        else // Ascending values for non-natural fitness.
-        {
-            Collections.sort(evaluatedPopulation);
-        }
+        observers.add(observer);
     }
 
 
     /**
-     * Gets data about the current population, including the fittest candidate
-     * and statistics about the population as a whole.
-     * @param evaluatedPopulation Population of candidate solutions with their
-     * associated fitness scores.
-     * @param eliteCount The number of candidates preserved via elitism.
-     * @return Statistics about the current generation of evolved individuals.
+     * {@inheritDoc}
      */
-    private PopulationData<T> getPopulationData(List<EvaluatedCandidate<T>> evaluatedPopulation,
-                                                int eliteCount)
+    public void removeEvolutionObserver(EvolutionObserver<? super T> observer)
     {
-        DataSet stats = new DataSet(evaluatedPopulation.size());
-        for (EvaluatedCandidate<T> candidate : evaluatedPopulation)
+        observers.remove(observer);
+    }
+
+
+    /**
+     * Send the population data to all registered observers.
+     * @param data Information about the current state of the population.
+     */
+    private void notifyPopulationChange(PopulationData<T> data)
+    {
+        for (EvolutionObserver<? super T> observer : observers)
         {
-            stats.addValue(candidate.getFitness());
+            observer.populationUpdate(data);
         }
-        return new PopulationData<T>(evaluatedPopulation.get(0).getCandidate(),
-                                     evaluatedPopulation.get(0).getFitness(),
-                                     stats.getArithmeticMean(),
-                                     stats.getStandardDeviation(),
-                                     naturalFitness,
-                                     stats.getSize(),
-                                     eliteCount,
-                                     currentEpochIndex,
-                                     System.currentTimeMillis() - startTime);
     }
 }
