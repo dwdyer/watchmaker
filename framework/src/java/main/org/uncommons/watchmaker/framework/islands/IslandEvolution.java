@@ -41,6 +41,8 @@ import org.uncommons.watchmaker.framework.TerminationCondition;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
+ * An implementation of island evolution in which multiple independent populations are evolved in
+ * parallel with occasional migration of individuals between islands.
  * @author Daniel Dyer
  */
 public class IslandEvolution<T>
@@ -201,11 +203,16 @@ public class IslandEvolution<T>
 
 
     /**
-     * {@inheritDoc}
+     * <p>Adds an observer to the overall evolution.  Receives an update at the end of
+     * each epoch describing the state of the combined population of all islands.</p>
      *
-     * Updates are dispatched synchronously on the request thread.  Observers should
+     * <p>Updates are dispatched synchronously on the request thread.  Observers should
      * complete their processing and return in a timely manner to avoid holding up
-     * the evolution.
+     * the evolution.</p>
+     *
+     * @param observer The callback that will be notified at the end of each epoch.
+     *
+     * @see #removeEvolutionObserver(EvolutionObserver)
      */
     public void addEvolutionObserver(EvolutionObserver<? super T> observer)
     {
@@ -214,7 +221,10 @@ public class IslandEvolution<T>
 
 
     /**
-     * {@inheritDoc}
+     * Remove the specified observer from the overall evolution.
+     * @param observer The observer to remove (if it is registered).
+     *
+     * @see #addEvolutionObserver(EvolutionObserver)
      */
     public void removeEvolutionObserver(EvolutionObserver<? super T> observer)
     {
