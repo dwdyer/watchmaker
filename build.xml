@@ -229,6 +229,25 @@
   </target>
 
 
+  <target name="release-maven"
+          depends="clean, dist"
+          description="Deploys the software to the Java.net Maven repository.">
+    <uncommons:maven-deploy module="framework"
+                            version="${version}"
+                            username="${maven.user}"
+                            password="${maven.password}"/>
+    <uncommons:maven-deploy module="swing"
+                            version="${version}"
+                            username="${maven.user}"
+                            password="${maven.password}"/>
+    <uncommons:maven-deploy module="gp"
+                            version="${version}"
+                            username="${maven.user}"
+                            password="${maven.password}"/>
+  </target>
+
+
+
 <!-- ==================================================================
       TARGETS FOR GENERATING TEST REPORTS & DOCUMENTATION
  =================================================================== -->

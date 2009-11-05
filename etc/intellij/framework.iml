@@ -20,6 +20,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="testng-5.10-jdk15" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -29,7 +30,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="testng-5.9-jdk15" level="project" />
   </component>
 </module>
 

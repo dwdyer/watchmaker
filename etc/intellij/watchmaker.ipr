@@ -926,7 +926,7 @@
   </component>
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
-    <option name="state" value="https://watchmaker.dev.java.net/svn/watchmaker/trunk/etc/intellij/watchmaker.ipr" />
+    <option name="state" value="https://watchmaker.dev.java.net/svn/watchmaker/branches/Maven/etc/intellij/watchmaker.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
@@ -997,9 +997,9 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="testng-5.9-jdk15">
+    <library name="testng-5.10-jdk15">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../lib/compiletime/testng/testng-5.9-jdk15.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/compiletime/testng/testng-5.10-jdk15.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
