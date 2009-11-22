@@ -7,9 +7,8 @@ Changes in version 0.7.0
   controlled via a parameter rather than different implementations.
 
 * Refactored internals to make it easier for the framework to provide different
-  evolutionary algorithm variants.  The new EvolutionEngine class exposes no
-  constructors.  Evolution engines should be created using the static factory
-  methods of the EvolutionEngine class.
+  evolutionary algorithm variants.  Evolution engines should now typically be
+  created using the static factory methods of the EvolutionEngine class.
 
 * Introduced experimental Genetic Programming module based on the classes that
   were previously part of the GP example program.

@@ -23,20 +23,14 @@ import java.util.Random;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 
 /**
- * <p>Multi-threaded generational {@link EvolutionEngine}.  Fitness evaluations
- * are performed in parallel on multi-processor, multi-core and hyper-threaded
- * machines.
- * Evolution (mutation, cross-over, etc.) occurs on the request thread but
- * fitness evaluations are delegated to a pool of worker threads.
- * All of the host's available processing units are used (i.e. on a quad-core
- * machine, there will be four fitness evaluation worker threads).</p>
+ * A general purpose evolution implementation that can be customised by plugging
+ * in different {@link EvolutionAlgorithm} implementations.
  *
  * @param <T> The type of entity that is to be evolved.
  * @author Daniel Dyer
  * @see CandidateFactory
+ * @see EvolutionAlgorithm
  * @see FitnessEvaluator
- * @see SelectionStrategy
- * @see EvolutionaryOperator
  */
 public class EvolutionEngine<T>
 {
@@ -44,10 +38,8 @@ public class EvolutionEngine<T>
 
     private final Random rng;
     private final CandidateFactory<T> candidateFactory;
-    private final EvolutionType<T> evolutionType;
-    private final FitnessEvaluator<? super T> fitnessEvaluator;
-    private final SelectionStrategy<? super T> selectionStrategy;
-    private final FitnessEvaluationStrategy evaluationStrategy;
+    private final EvolutionAlgorithm<T> evolutionAlgorithm;
+    private final boolean naturalFitness;
 
     private List<TerminationCondition> satisfiedTerminationConditions;
 
@@ -57,27 +49,23 @@ public class EvolutionEngine<T>
      * an evolutionary algorithm.
      * @param candidateFactory Factory used to create the initial population that is
      * iteratively evolved.
-     * @param evolutionType A preconfigured strategy for evolving a population.
-     * @param fitnessEvaluator A function for assigning fitness scores to candidate
-     * solutions.
-     * @param selectionStrategy A strategy for selecting which candidates survive to
-     * be evolved.
+     * @param evolutionAlgorithm A preconfigured strategy for evolving a population.
+     * @param naturalFitness If true, indicates that higher fitness values mean fitter
+     * individuals.  If false, indicates that fitter individuals will have lower scores.
      * @param rng The source of randomness used by all stochastic processes (including
      * evolutionary operators and selection strategies).
+     * @see #createGenerationalEvolutionEngine(CandidateFactory, EvolutionaryOperator, FitnessEvaluator, SelectionStrategy, Random, boolean)
+     * @see #createInteractiveEvolutionEngine(CandidateFactory, EvolutionaryOperator, InteractiveSelection, Random)
      */
-    EvolutionEngine(CandidateFactory<T> candidateFactory,
-                    EvolutionType<T> evolutionType,
-                    FitnessEvaluator<? super T> fitnessEvaluator,
-                    FitnessEvaluationStrategy evaluationStrategy,
-                    SelectionStrategy<? super T> selectionStrategy,
-                    Random rng)
+    public EvolutionEngine(CandidateFactory<T> candidateFactory,
+                           EvolutionAlgorithm<T> evolutionAlgorithm,
+                           boolean naturalFitness,
+                           Random rng)
     {
         this.candidateFactory = candidateFactory;
-        this.evolutionType = evolutionType;
-        this.fitnessEvaluator = fitnessEvaluator;
-        this.selectionStrategy = selectionStrategy;
+        this.evolutionAlgorithm = evolutionAlgorithm;
+        this.naturalFitness = naturalFitness;
         this.rng = rng;
-        this.evaluationStrategy = evaluationStrategy;
     }
 
 
@@ -249,11 +237,10 @@ public class EvolutionEngine<T>
                                                                         rng);
 
         // Calculate the fitness scores for each member of the initial population.
-        List<EvaluatedCandidate<T>> evaluatedPopulation = evaluationStrategy.evaluatePopulation(population,
-                                                                                                fitnessEvaluator);
-        EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, fitnessEvaluator.isNatural());
+        List<EvaluatedCandidate<T>> evaluatedPopulation = evolutionAlgorithm.evaluatePopulation(population);
+        EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, naturalFitness);
         PopulationData<T> data = EvolutionUtils.getPopulationData(evaluatedPopulation,
-                                                                  fitnessEvaluator.isNatural(),
+                                                                  naturalFitness,
                                                                   eliteCount,
                                                                   currentGenerationIndex,
                                                                   startTime);
@@ -264,10 +251,10 @@ public class EvolutionEngine<T>
         while (satisfiedConditions == null)
         {
             ++currentGenerationIndex;
-            evaluatedPopulation = evolutionType.evolvePopulation(evaluatedPopulation, eliteCount, rng);
-            EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, fitnessEvaluator.isNatural());
+            evaluatedPopulation = evolutionAlgorithm.evolvePopulation(evaluatedPopulation, eliteCount, rng);
+            EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, naturalFitness);
             data = EvolutionUtils.getPopulationData(evaluatedPopulation,
-                                                    fitnessEvaluator.isNatural(),
+                                                    naturalFitness,
                                                     eliteCount,
                                                     currentGenerationIndex,
                                                     startTime);
@@ -374,17 +361,13 @@ public class EvolutionEngine<T>
                                                                            Random rng,
                                                                            boolean multiThreaded)
     {
-        FitnessEvaluationStrategy evaluationStrategy = multiThreaded ? new ConcurrentFitnessEvaluation()
-                                                                     : new SequentialFitnessEvaluation();
-        EvolutionType<T> evolutionType = new GenerationalEvolution<T>(evolutionScheme,
-                                                                      fitnessEvaluator,
-                                                                      selectionStrategy,
-                                                                      evaluationStrategy);
+        EvolutionAlgorithm<T> evolutionType = new GenerationalEvolution<T>(evolutionScheme,
+                                                                           fitnessEvaluator,
+                                                                           selectionStrategy,
+                                                                           multiThreaded);
         return new EvolutionEngine<T>(candidateFactory,
                                       evolutionType,
-                                      fitnessEvaluator,
-                                      evaluationStrategy,
-                                      selectionStrategy,
+                                      fitnessEvaluator.isNatural(),
                                       rng);
     }
 
@@ -408,16 +391,13 @@ public class EvolutionEngine<T>
                                                                           final Random rng)
     {
         FitnessEvaluator<? super T> fitnessEvaluator = new NullFitnessEvaluator();
-        FitnessEvaluationStrategy evaluationStrategy = new SequentialFitnessEvaluation();
-        EvolutionType<T> evolutionType = new GenerationalEvolution<T>(evolutionScheme,
-                                                                      fitnessEvaluator,
-                                                                      selectionStrategy,
-                                                                      evaluationStrategy);
+        EvolutionAlgorithm<T> evolutionAlgorithm = new GenerationalEvolution<T>(evolutionScheme,
+                                                                                fitnessEvaluator,
+                                                                                selectionStrategy,
+                                                                                false);
         return new EvolutionEngine<T>(candidateFactory,
-                                      evolutionType,
-                                      fitnessEvaluator,
-                                      evaluationStrategy,
-                                      selectionStrategy,
+                                      evolutionAlgorithm,
+                                      fitnessEvaluator.isNatural(),
                                       rng)
         {
             @Override
