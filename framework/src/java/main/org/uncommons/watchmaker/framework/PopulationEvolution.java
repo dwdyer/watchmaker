@@ -24,7 +24,7 @@ import java.util.Random;
  * @param <T> The type of entity that can be evolved by an instance of this interface.
  * @author Daniel Dyer
  */
-public interface EvolutionAlgorithm<T>
+public interface PopulationEvolution<T>
 {
     /**
      * This method performs a single step/iteration of the evolutionary process.

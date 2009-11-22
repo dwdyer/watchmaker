@@ -24,12 +24,12 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 
 /**
  * A general purpose evolution implementation that can be customised by plugging
- * in different {@link EvolutionAlgorithm} implementations.
+ * in different {@link PopulationEvolution} implementations.
  *
  * @param <T> The type of entity that is to be evolved.
  * @author Daniel Dyer
  * @see CandidateFactory
- * @see EvolutionAlgorithm
+ * @see PopulationEvolution
  * @see FitnessEvaluator
  */
 public class EvolutionEngine<T>
@@ -38,7 +38,7 @@ public class EvolutionEngine<T>
 
     private final Random rng;
     private final CandidateFactory<T> candidateFactory;
-    private final EvolutionAlgorithm<T> evolutionAlgorithm;
+    private final PopulationEvolution<T> evolution;
     private final boolean naturalFitness;
 
     private List<TerminationCondition> satisfiedTerminationConditions;
@@ -49,7 +49,7 @@ public class EvolutionEngine<T>
      * an evolutionary algorithm.
      * @param candidateFactory Factory used to create the initial population that is
      * iteratively evolved.
-     * @param evolutionAlgorithm A preconfigured strategy for evolving a population.
+     * @param evolution A preconfigured strategy for evolving a population.
      * @param naturalFitness If true, indicates that higher fitness values mean fitter
      * individuals.  If false, indicates that fitter individuals will have lower scores.
      * @param rng The source of randomness used by all stochastic processes (including
@@ -58,12 +58,12 @@ public class EvolutionEngine<T>
      * @see #createInteractiveEvolutionEngine(CandidateFactory, EvolutionaryOperator, InteractiveSelection, Random)
      */
     public EvolutionEngine(CandidateFactory<T> candidateFactory,
-                           EvolutionAlgorithm<T> evolutionAlgorithm,
+                           PopulationEvolution<T> evolution,
                            boolean naturalFitness,
                            Random rng)
     {
         this.candidateFactory = candidateFactory;
-        this.evolutionAlgorithm = evolutionAlgorithm;
+        this.evolution = evolution;
         this.naturalFitness = naturalFitness;
         this.rng = rng;
     }
@@ -237,7 +237,7 @@ public class EvolutionEngine<T>
                                                                         rng);
 
         // Calculate the fitness scores for each member of the initial population.
-        List<EvaluatedCandidate<T>> evaluatedPopulation = evolutionAlgorithm.evaluatePopulation(population);
+        List<EvaluatedCandidate<T>> evaluatedPopulation = evolution.evaluatePopulation(population);
         EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, naturalFitness);
         PopulationData<T> data = EvolutionUtils.getPopulationData(evaluatedPopulation,
                                                                   naturalFitness,
@@ -251,7 +251,7 @@ public class EvolutionEngine<T>
         while (satisfiedConditions == null)
         {
             ++currentGenerationIndex;
-            evaluatedPopulation = evolutionAlgorithm.evolvePopulation(evaluatedPopulation, eliteCount, rng);
+            evaluatedPopulation = evolution.evolvePopulation(evaluatedPopulation, eliteCount, rng);
             EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, naturalFitness);
             data = EvolutionUtils.getPopulationData(evaluatedPopulation,
                                                     naturalFitness,
@@ -342,7 +342,7 @@ public class EvolutionEngine<T>
 
     /**
      * Creates a new evolution engine by specifying the various components required by
-     * an evolutionary algorithm.
+     * a generational evolutionary algorithm.
      * @param candidateFactory Factory used to create the initial population that is
      * iteratively evolved.
      * @param evolutionScheme The combination of evolutionary operators used to evolve
@@ -361,12 +361,12 @@ public class EvolutionEngine<T>
                                                                            Random rng,
                                                                            boolean multiThreaded)
     {
-        EvolutionAlgorithm<T> evolutionType = new GenerationalEvolution<T>(evolutionScheme,
-                                                                           fitnessEvaluator,
-                                                                           selectionStrategy,
-                                                                           multiThreaded);
+        PopulationEvolution<T> evolution = new GenerationalEvolution<T>(evolutionScheme,
+                                                                       fitnessEvaluator,
+                                                                       selectionStrategy,
+                                                                       multiThreaded);
         return new EvolutionEngine<T>(candidateFactory,
-                                      evolutionType,
+                                      evolution,
                                       fitnessEvaluator.isNatural(),
                                       rng);
     }
@@ -391,12 +391,12 @@ public class EvolutionEngine<T>
                                                                           final Random rng)
     {
         FitnessEvaluator<? super T> fitnessEvaluator = new NullFitnessEvaluator();
-        EvolutionAlgorithm<T> evolutionAlgorithm = new GenerationalEvolution<T>(evolutionScheme,
-                                                                                fitnessEvaluator,
-                                                                                selectionStrategy,
-                                                                                false);
+        PopulationEvolution<T> evolution = new GenerationalEvolution<T>(evolutionScheme,
+                                                                       fitnessEvaluator,
+                                                                       selectionStrategy,
+                                                                       false);
         return new EvolutionEngine<T>(candidateFactory,
-                                      evolutionAlgorithm,
+                                      evolution,
                                       fitnessEvaluator.isNatural(),
                                       rng)
         {
@@ -425,4 +425,38 @@ public class EvolutionEngine<T>
             }
         };
     }
+
+
+
+    /**
+     * Creates a new evolution engine by specifying the various components required by
+     * a steady-state evolutionary algorithm.
+     * @param candidateFactory Factory used to create the initial population that is
+     * iteratively evolved.
+     * @param evolutionScheme The combination of evolutionary operators used to evolve
+     * the population at each generation.
+     * @param fitnessEvaluator A function for assigning fitness scores to candidate
+     * solutions.
+     * @param selectionStrategy A strategy for selecting which candidates survive to
+     * be evolved.
+     * @param rng The source of randomness used by all stochastic processes (including
+     * evolutionary operators and selection strategies).
+     */
+    public static <T> EvolutionEngine<T> createSteadyStateEvolutionEngine(CandidateFactory<T> candidateFactory,
+                                                                          EvolutionaryOperator<T> evolutionScheme,
+                                                                          FitnessEvaluator<? super T> fitnessEvaluator,
+                                                                          SelectionStrategy<? super T> selectionStrategy,
+                                                                          int selectionSize,
+                                                                          Random rng)
+    {
+        PopulationEvolution<T> evolution = new SteadyStateEvolution<T>(evolutionScheme,
+                                                                      fitnessEvaluator,
+                                                                      selectionStrategy,
+                                                                      selectionSize);
+        return new EvolutionEngine<T>(candidateFactory,
+                                      evolution,
+                                      fitnessEvaluator.isNatural(),
+                                      rng);
+    }
+
 }

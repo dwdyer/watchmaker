@@ -24,31 +24,32 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
- * <p>This class implements the evolution technique used by a typical generational
+ * <p>This class implements a single iteration of a general-purpose generational
  * evolutionary algorithm.  It supports optional concurrent fitness evaluations
  * to take full advantage of multi-processor, multi-core and hyper-threaded machines.</p>
  *
  * <p>If multi-threading is enabled, evolution (mutation, cross-over, etc.) occurs
  * on the request thread but fitness evaluations are delegated to a pool of worker
  * threads. All of the host's available processing units are used (i.e. on a quad-core
- * machine, there will be four fitness evaluation worker threads).</p>
+ * machine there will be four fitness evaluation worker threads).</p>
  *
  * <p>If multi-threading is disabled, all work is performed synchronously on the
  * request thread.  This strategy is suitable for restricted/managed environments where
  * it is not permitted for applications to manage their own threads.  If there are no
- * restrictions on concurrency, applications should enable it for improved performance.</p> 
+ * restrictions on concurrency, applications should enable multi-threading for improved
+ * performance.</p>
+ *
+ * @see SteadyStateEvolution 
  *
  * @author Daniel Dyer
  */
-public class GenerationalEvolution<T> implements EvolutionAlgorithm<T>
+public class GenerationalEvolution<T> implements PopulationEvolution<T>
 {
-    // A single multi-threaded worker is shared among multiple evolution engine instances.
-    private static final FitnessEvaluationWorker WORKER = new FitnessEvaluationWorker();
+    private final FitnessEvaluationWorker concurrentWorker;
 
+    private final EvolutionaryOperator<T> evolutionScheme;
     private final FitnessEvaluator<? super T> fitnessEvaluator;
     private final SelectionStrategy<? super T> selectionStrategy;
-    private final EvolutionaryOperator<T> evolutionScheme;
-    private final boolean multiThreaded;
 
 
     GenerationalEvolution(EvolutionaryOperator<T> evolutionScheme,
@@ -59,7 +60,7 @@ public class GenerationalEvolution<T> implements EvolutionAlgorithm<T>
         this.fitnessEvaluator = fitnessEvaluator;
         this.selectionStrategy = selectionStrategy;
         this.evolutionScheme = evolutionScheme;
-        this.multiThreaded = multiThreaded;
+        this.concurrentWorker = multiThreaded ? new FitnessEvaluationWorker() : null;
     }
 
 
@@ -100,7 +101,15 @@ public class GenerationalEvolution<T> implements EvolutionAlgorithm<T>
     {
         List<EvaluatedCandidate<T>> evaluatedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());
 
-        if (multiThreaded)
+        if (concurrentWorker == null) // Do fitness evaluations on the request thread.
+        {
+            for (T candidate : population)
+            {
+                evaluatedPopulation.add(new EvaluatedCandidate<T>(candidate,
+                                                                  fitnessEvaluator.getFitness(candidate, population)));
+            }
+        }
+        else
         {
             // Divide the required number of fitness evaluations equally among the
             // available processors and coordinate the threads so that we do not
@@ -112,7 +121,7 @@ public class GenerationalEvolution<T> implements EvolutionAlgorithm<T>
                 // Submit tasks for execution and wait until all threads have finished fitness evaluations.
                 for (T candidate : population)
                 {
-                    results.add(WORKER.submit(new FitnessEvalutationTask<T>(fitnessEvaluator,
+                    results.add(concurrentWorker.submit(new FitnessEvalutationTask<T>(fitnessEvaluator,
                                                                             candidate,
                                                                             unmodifiablePopulation)));
                 }
@@ -131,14 +140,6 @@ public class GenerationalEvolution<T> implements EvolutionAlgorithm<T>
                 // Restore the interrupted status, allows methods further up the call-stack
                 // to abort processing if appropriate.
                 Thread.currentThread().interrupt();
-            }
-        }
-        else // Do fitness evaluations on the request thread.
-        {
-            for (T candidate : population)
-            {
-                evaluatedPopulation.add(new EvaluatedCandidate<T>(candidate,
-                                                                  fitnessEvaluator.getFitness(candidate, population)));
             }
         }
 
