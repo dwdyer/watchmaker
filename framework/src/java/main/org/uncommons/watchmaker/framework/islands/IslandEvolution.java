@@ -28,7 +28,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import org.uncommons.watchmaker.framework.CandidateFactory;
-import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
@@ -92,11 +91,12 @@ public class IslandEvolution<T>
         List<EvolutionEngine<T>> islands = new ArrayList<EvolutionEngine<T>>(islandCount);
         for (int i = 0; i < islandCount; i++)
         {
-            islands.add(new ConcurrentEvolutionEngine<T>(candidateFactory,
-                                                         evolutionScheme,
-                                                         fitnessEvaluator,
-                                                         selectionStrategy,
-                                                         rng));
+            islands.add(EvolutionEngine.createGenerationalEvolutionEngine(candidateFactory,
+                                                                          evolutionScheme,
+                                                                          fitnessEvaluator,
+                                                                          selectionStrategy,
+                                                                          rng,
+                                                                          true));
         }
         return islands;
     }

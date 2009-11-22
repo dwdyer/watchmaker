@@ -32,8 +32,6 @@
   <property name="dist.dir" value="dist" />
   <property name="docs.dir" value="docs" />
   <property name="api.dir" value="${docs.dir}/api" />
-  <property name="coverage.dir" value="${docs.dir}/coverage" />
-  <property name="test-results.dir" value="${docs.dir}/test-results" />
   <property name="checkstyle-results.dir" value="${docs.dir}/checkstyle" />
   <property name="release.dir" value="release" />
   <property name="web.dir" value="www" />
@@ -43,7 +41,6 @@
   <property name="src.dir" value="src" />
   <property name="java.dir" value="${src.dir}/java" />
   <property name="build.dir" value="build"/>
-  <property name="classes.dir" value="${build.dir}/classes" />
 
 
   <!-- Classpath for compilation and tests. -->

@@ -40,7 +40,6 @@ import org.uncommons.maths.random.Probability;
 import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.examples.AbstractExampleApplet;
-import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
@@ -105,10 +104,10 @@ public class BiomorphApplet extends AbstractExampleApplet
                                                                                               renderer,
                                                                                               populationSize,
                                                                                               1);
-                EvolutionEngine<Biomorph> engine = new ConcurrentEvolutionEngine<Biomorph>(new BiomorphFactory(),
-                                                                                           mutation,
-                                                                                           selection,
-                                                                                           new MersenneTwisterRNG());
+                EvolutionEngine<Biomorph> engine = EvolutionEngine.createInteractiveEvolutionEngine(new BiomorphFactory(),
+                                                                                                    mutation,
+                                                                                                    selection,
+                                                                                                    new MersenneTwisterRNG());
                 engine.addEvolutionObserver(new GenerationTracker());
                 return engine.evolve(populationSize,
                                      0,

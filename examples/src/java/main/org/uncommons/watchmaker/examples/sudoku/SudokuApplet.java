@@ -42,7 +42,6 @@ import org.uncommons.maths.random.Probability;
 import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.examples.AbstractExampleApplet;
-import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
@@ -213,11 +212,12 @@ public class SudokuApplet extends AbstractExampleApplet
 
                 EvolutionaryOperator<Sudoku> pipeline = new EvolutionPipeline<Sudoku>(operators);
 
-                EvolutionEngine<Sudoku> engine = new ConcurrentEvolutionEngine<Sudoku>(new SudokuFactory(puzzle),
-                                                                                       pipeline,
-                                                                                       new SudokuEvaluator(),
-                                                                                       selectionStrategy,
-                                                                                       rng);
+                EvolutionEngine<Sudoku> engine = EvolutionEngine.createGenerationalEvolutionEngine(new SudokuFactory(puzzle),
+                                                                                                   pipeline,
+                                                                                                   new SudokuEvaluator(),
+                                                                                                   selectionStrategy,
+                                                                                                   rng,
+                                                                                                   true);
                 engine.addEvolutionObserver(new GridViewUpdater());
                 engine.addEvolutionObserver(statusBar);
                 return engine.evolve(populationSize,

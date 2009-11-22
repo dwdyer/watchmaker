@@ -34,6 +34,7 @@ public class RingMigrationTest
     public void testZeroMigration()
     {
         Migration migration = new RingMigration();
+        @SuppressWarnings("unchecked")
         List<List<String>> islandPopulations = Arrays.asList(Arrays.asList("A", "A", "A"),
                                                              Arrays.asList("B", "B", "B"),
                                                              Arrays.asList("C", "C", "C"));
@@ -52,6 +53,7 @@ public class RingMigrationTest
     public void testFullMigration()
     {
         Migration migration = new RingMigration();
+        @SuppressWarnings("unchecked")
         List<List<String>> islandPopulations = Arrays.asList(Arrays.asList("A", "A", "A"),
                                                              Arrays.asList("B", "B", "B"),
                                                              Arrays.asList("C", "C", "C"));

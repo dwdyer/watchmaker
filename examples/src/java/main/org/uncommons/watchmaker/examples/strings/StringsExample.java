@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
-import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
@@ -69,12 +68,12 @@ public final class StringsExample
         operators.add(new StringMutation(ALPHABET, new Probability(0.02d)));
         operators.add(new StringCrossover());
         EvolutionaryOperator<String> pipeline = new EvolutionPipeline<String>(operators);
-        EvolutionEngine<String> engine = new ConcurrentEvolutionEngine<String>(new StringFactory(ALPHABET,
-                                                                                                 target.length()),
-                                                                               pipeline,
-                                                                               new StringEvaluator(target),
-                                                                               new RouletteWheelSelection(),
-                                                                               new MersenneTwisterRNG());
+        EvolutionEngine<String> engine = EvolutionEngine.createGenerationalEvolutionEngine(new StringFactory(ALPHABET, target.length()),
+                                                                                           pipeline,
+                                                                                           new StringEvaluator(target),
+                                                                                           new RouletteWheelSelection(),
+                                                                                           new MersenneTwisterRNG(),
+                                                                                           true);
         engine.addEvolutionObserver(new EvolutionLogger());
         return engine.evolve(100, // 100 individuals in the population.
                              5, // 5% elitism.

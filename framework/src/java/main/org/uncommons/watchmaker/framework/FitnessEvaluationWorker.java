@@ -26,7 +26,7 @@ import org.uncommons.util.id.StringPrefixIDSource;
 
 /**
  * This is the class that actually runs the fitness evaluation tasks created by a
- * {@link ConcurrentEvolutionEngine}.  This responsibility is abstracted away from
+ * {@link EvolutionEngine}.  This responsibility is abstracted away from
  * the evolution engine to permit the possibility of creating multiple instances
  * across several machines, all fed by a single shared work queue, using Terracotta
  * (http://www.terracotta.org) or similar.

@@ -926,7 +926,7 @@
   </component>
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
-    <option name="state" value="https://watchmaker.dev.java.net/svn/watchmaker/branches/Maven/etc/intellij/watchmaker.ipr" />
+    <option name="state" value="https://watchmaker.dev.java.net/svn/watchmaker/trunk/etc/intellij/watchmaker.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>

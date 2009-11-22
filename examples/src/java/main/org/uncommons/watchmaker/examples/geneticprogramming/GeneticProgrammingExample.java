@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
-import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
@@ -80,11 +79,12 @@ public class GeneticProgrammingExample
         operators.add(new TreeCrossover());
         operators.add(new Simplification());
         TreeEvaluator evaluator = new TreeEvaluator(data);
-        EvolutionEngine<Node> engine = new ConcurrentEvolutionEngine<Node>(factory,
-                                                                           new EvolutionPipeline<Node>(operators),
-                                                                           evaluator,
-                                                                           new RouletteWheelSelection(),
-                                                                           new MersenneTwisterRNG());
+        EvolutionEngine<Node> engine = EvolutionEngine.createGenerationalEvolutionEngine(factory,
+                                                                                         new EvolutionPipeline<Node>(operators),
+                                                                                         evaluator,
+                                                                                         new RouletteWheelSelection(),
+                                                                                         new MersenneTwisterRNG(),
+                                                                                         true);
         engine.addEvolutionObserver(new EvolutionLogger());
         return engine.evolve(1000, 5, new TargetFitness(0d, evaluator.isNatural()));
     }

@@ -30,29 +30,20 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
  * {@link EvolutionEngine}.
  * @author Daniel Dyer
  */
-// Has to be public otherwise TestNG fails.
-public abstract class EvolutionEngineTestBase
+public class EvolutionEngineTest
 {
     private EvolutionEngine<Integer> engine;
 
-    /**
-     * Implement in sub-class to create an instance of the engine implementation that
-     * we are testing.
-     */
-    protected abstract <T> EvolutionEngine<T> createEvolutionEngine(CandidateFactory<T> candidateFactory,
-                                                                    EvolutionaryOperator<T> evolutionScheme,
-                                                                    FitnessEvaluator<? super T> fitnessEvaluator,
-                                                                    SelectionStrategy<? super T> selectionStrategy,
-                                                                    Random rng);
 
     @BeforeMethod
     public void prepareEngine()
     {
-        this.engine = createEvolutionEngine(new IntegerFactory(),
-                                            new IntegerZeroMaker(),
-                                            new IntegerEvaluator(),
-                                            new RouletteWheelSelection(),
-                                            FrameworkTestUtils.getRNG());
+        this.engine = EvolutionEngine.createGenerationalEvolutionEngine(new IntegerFactory(),
+                                                                        new IntegerZeroMaker(),
+                                                                        new IntegerEvaluator(),
+                                                                        new RouletteWheelSelection(),
+                                                                        FrameworkTestUtils.getRNG(),
+                                                                        false);
     }
 
 

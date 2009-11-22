@@ -23,7 +23,6 @@ import java.util.Random;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.PoissonGenerator;
 import org.uncommons.watchmaker.framework.CandidateFactory;
-import org.uncommons.watchmaker.framework.ConcurrentEvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
@@ -130,11 +129,12 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
         CandidateFactory<List<String>> candidateFactory
             = new ListPermutationFactory<String>(new LinkedList<String>(cities));
         EvolutionEngine<List<String>> engine
-            = new ConcurrentEvolutionEngine<List<String>>(candidateFactory,
-                                                          pipeline,
-                                                          new RouteEvaluator(distances),
-                                                          selectionStrategy,
-                                                          rng);
+            = EvolutionEngine.createGenerationalEvolutionEngine(candidateFactory,
+                                                                pipeline,
+                                                                new RouteEvaluator(distances),
+                                                                selectionStrategy,
+                                                                rng,
+                                                                true);
         engine.addEvolutionObserver(new EvolutionObserver<List<String>>()
         {
             public void populationUpdate(PopulationData<? extends List<String>> data)

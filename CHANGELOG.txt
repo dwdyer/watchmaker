@@ -1,6 +1,16 @@
 Changes in version 0.7.0
 ------------------------
 
+* Converted EvolutionEngine from an interface to a concrete class based on the
+  previous ConcurrentEvolutionEngine class.  Removed ConcurrentEvolutionEngine,
+  SequentialEvolutionEngine and AbstractEvolutionEngine.  Concurrency is now
+  controlled via a parameter rather than different implementations.
+
+* Refactored internals to make it easier for the framework to provide different
+  evolutionary algorithm variants.  The new EvolutionEngine class exposes no
+  constructors.  Evolution engines should be created using the static factory
+  methods of the EvolutionEngine class.
+
 * Introduced experimental Genetic Programming module based on the classes that
   were previously part of the GP example program.
 
