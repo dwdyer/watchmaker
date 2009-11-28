@@ -450,9 +450,9 @@ public class EvolutionEngine<T>
                                                                           Random rng)
     {
         PopulationEvolution<T> evolution = new SteadyStateEvolution<T>(evolutionScheme,
-                                                                      fitnessEvaluator,
-                                                                      selectionStrategy,
-                                                                      selectionSize);
+                                                                       fitnessEvaluator,
+                                                                       selectionStrategy,
+                                                                       selectionSize);
         return new EvolutionEngine<T>(candidateFactory,
                                       evolution,
                                       fitnessEvaluator.isNatural(),

@@ -24,11 +24,11 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
  * Trivial test operator that mutates all integers by adding a fixed offset.
  * @author Daniel Dyer
  */
-final class IntegerAdjuster implements EvolutionaryOperator<Integer>
+public final class IntegerAdjuster implements EvolutionaryOperator<Integer>
 {
     private final int adjustment;
 
-    IntegerAdjuster(int adjustment)
+    public IntegerAdjuster(int adjustment)
     {
         this.adjustment = adjustment;
     }

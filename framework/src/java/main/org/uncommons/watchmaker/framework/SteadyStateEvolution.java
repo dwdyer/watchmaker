@@ -47,6 +47,9 @@ public class SteadyStateEvolution<T> implements PopulationEvolution<T>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public List<EvaluatedCandidate<T>> evolvePopulation(List<EvaluatedCandidate<T>> evaluatedPopulation,
                                                         int eliteCount,
                                                         Random rng)
@@ -56,10 +59,6 @@ public class SteadyStateEvolution<T> implements PopulationEvolution<T>
                                                               fitnessEvaluator.isNatural(),
                                                               selectionSize,
                                                               rng);
-        for (int i = 0; i < selectionSize; i++)
-        {
-            selectedCandidates.add(evaluatedPopulation.get(rng.nextInt(evaluatedPopulation.size())).getCandidate());
-        }
         List<EvaluatedCandidate<T>> offspring = evaluatePopulation(evolutionScheme.apply(selectedCandidates, rng));
 
         doReplacement(evaluatedPopulation, offspring, eliteCount, rng);
