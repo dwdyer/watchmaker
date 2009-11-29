@@ -57,6 +57,23 @@ public class IslandEvolution<T>
     private final Map<Integer, PopulationData<? extends T>> islandData
         = Collections.synchronizedSortedMap(new TreeMap<Integer, PopulationData<? extends T>>());
 
+
+    /**
+     * Create an island system with the specified number of identically-configured islands.
+     * If you want more fine-grained control over the configuration of each island, use the
+     * {@link #IslandEvolution(List, Migration, boolean, Random)} constructor, which accepts
+     * a list of pre-created islands (each is an instance of {@link EvolutionEngine}). 
+     * @param islandCount The number of separate islands that will be part of the system.
+     * @param migration A migration strategy for moving individuals between islands at the
+     * end of an epoch.
+     * @param candidateFactory Generates the initial population for each island.
+     * @param evolutionScheme The evolutionary operator, or combination of evolutionary operators,
+     * used on each island.
+     * @param fitnessEvaluator The fitness function used on each island.
+     * @param selectionStrategy The selection strategy used on each island.
+     * @param rng A source of randomness, used by all islands.
+     * @see #IslandEvolution(List, Migration, boolean, Random) 
+     */
     public IslandEvolution(int islandCount,
                            Migration migration,
                            CandidateFactory<T> candidateFactory,
@@ -102,6 +119,14 @@ public class IslandEvolution<T>
     }
 
 
+    /**
+     * @param islands A list of pre-configured islands.
+     * @param migration A migration strategy for moving individuals between islands at the
+     * end of an epoch.
+     * @param naturalFitness If true, indicates that higher fitness values mean fitter
+     * individuals.  If false, indicates that fitter individuals will have lower scores. 
+     * @param rng A source of randomness, used by all islands.
+     */
     public IslandEvolution(List<EvolutionEngine<T>> islands,
                            Migration migration,
                            boolean naturalFitness,
@@ -178,7 +203,6 @@ public class IslandEvolution<T>
                     evaluatedCombinedPopulation.addAll(evaluatedIslandPopulation);
                     islandPopulations.add(EvolutionUtils.toCandidateList(evaluatedIslandPopulation));
                 }
-                ++currentEpochIndex;
                 migration.migrate(islandPopulations, migrantCount, rng);
                 data = EvolutionUtils.getPopulationData(evaluatedCombinedPopulation,
                                                         naturalFitness,
@@ -186,6 +210,7 @@ public class IslandEvolution<T>
                                                         currentEpochIndex,
                                                         startTime);
                 notifyPopulationChange(data);
+                ++currentEpochIndex;
             }
             catch (InterruptedException ex)
             {

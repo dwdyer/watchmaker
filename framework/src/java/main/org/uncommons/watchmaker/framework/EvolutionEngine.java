@@ -250,7 +250,6 @@ public class EvolutionEngine<T>
         List<TerminationCondition> satisfiedConditions = EvolutionUtils.shouldContinue(data, conditions);
         while (satisfiedConditions == null)
         {
-            ++currentGenerationIndex;
             evaluatedPopulation = evolution.evolvePopulation(evaluatedPopulation, eliteCount, rng);
             EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, naturalFitness);
             data = EvolutionUtils.getPopulationData(evaluatedPopulation,
@@ -261,6 +260,7 @@ public class EvolutionEngine<T>
             // Notify observers of the state of the population.
             notifyPopulationChange(data);
             satisfiedConditions = EvolutionUtils.shouldContinue(data, conditions);
+            ++currentGenerationIndex;
         }
         this.satisfiedTerminationConditions = satisfiedConditions;
         return evaluatedPopulation;

@@ -25,6 +25,10 @@ Changes in version 0.7.0
 
 * Introduced support for island model evolution.
 
+* Fixed generation numbering in EvolutionEngine.  It was supposed to be
+  zero-based but was starting at 1, which would cause the GenerationCount
+  termination condition to trigger prematurely.
+
 
 Changes in version 0.6.2
 ------------------------

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Random;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
+import org.uncommons.watchmaker.framework.factories.StubIntegerFactory;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 import org.uncommons.watchmaker.framework.termination.ElapsedTime;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
@@ -38,7 +38,7 @@ public class EvolutionEngineTest
     @BeforeMethod
     public void prepareEngine()
     {
-        this.engine = EvolutionEngine.createGenerationalEvolutionEngine(new IntegerFactory(),
+        this.engine = EvolutionEngine.createGenerationalEvolutionEngine(new StubIntegerFactory(),
                                                                         new IntegerZeroMaker(),
                                                                         new IntegerEvaluator(),
                                                                         new RouletteWheelSelection(),
@@ -150,18 +150,6 @@ public class EvolutionEngineTest
     {
         // Should throw an IllegalStateException because evolution has started, let alone terminated.
         engine.getSatisfiedTerminationConditions();
-    }
-
-
-    /**
-     * Stub candidate factory for tests.  Always returns zero-valued integers.
-     */
-    private static final class IntegerFactory extends AbstractCandidateFactory<Integer>
-    {
-        public Integer generateRandomCandidate(Random rng)
-        {
-            return 0;
-        }
     }
 
 
