@@ -25,6 +25,7 @@ import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.factories.StubIntegerFactory;
 import org.uncommons.watchmaker.framework.operators.IntegerAdjuster;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
+import org.uncommons.watchmaker.framework.termination.ElapsedTime;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
@@ -41,24 +42,11 @@ public class IslandEvolutionTest
     @Test
     public void testListeners()
     {
-        FitnessEvaluator<Integer> fitnessEvaluator = new FitnessEvaluator<Integer>()
-        {
-            public double getFitness(Integer candidate, List<? extends Integer> population)
-            {
-                return 0;
-            }
-
-            public boolean isNatural()
-            {
-                return true;
-            }
-        };
-
         IslandEvolution<Integer> islandEvolution = new IslandEvolution<Integer>(3,
                                                                                 new RingMigration(),
                                                                                 new StubIntegerFactory(),
                                                                                 new IntegerAdjuster(2),
-                                                                                fitnessEvaluator,
+                                                                                new DummyFitnessEvaluator(),
                                                                                 new RouletteWheelSelection(),
                                                                                 FrameworkTestUtils.getRNG());
         final AtomicInteger invocationCount = new AtomicInteger(0);
@@ -71,5 +59,51 @@ public class IslandEvolutionTest
         });
         islandEvolution.evolve(5, 0, 5, 0, new GenerationCount(2));
         assert invocationCount.get() == 2 : "Listener should have been notified twice, was " + invocationCount.get();
+    }
+
+
+    @Test
+    public void testInterrupt()
+    {
+        IslandEvolution<Integer> islandEvolution = new IslandEvolution<Integer>(2,
+                                                                                new RingMigration(),
+                                                                                new StubIntegerFactory(),
+                                                                                new IntegerAdjuster(2),
+                                                                                new DummyFitnessEvaluator(),
+                                                                                new RouletteWheelSelection(),
+                                                                                FrameworkTestUtils.getRNG());
+        final long timeout = 1000L;
+        final Thread requestThread = Thread.currentThread();
+        islandEvolution.addEvolutionObserver(new EvolutionObserver<Integer>()
+        {
+            public void populationUpdate(PopulationData<? extends Integer> populationData)
+            {
+                if (populationData.getElapsedTime() > timeout / 2)
+                {
+                    requestThread.interrupt();
+                }
+            }
+        });
+        long startTime = System.currentTimeMillis();
+        islandEvolution.evolve(10, 0, 10, 0, new ElapsedTime(timeout));
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        assert Thread.interrupted() : "Thread was not interrupted before timeout.";
+        assert elapsedTime < timeout : "Engine did not respond to interrupt before timeout.";
+        assert islandEvolution.getSatisfiedTerminationConditions().isEmpty()
+            : "Interrupted islands should have no satisfied termination conditions.";
+    }
+
+
+    private static class DummyFitnessEvaluator implements FitnessEvaluator<Integer>
+    {
+        public double getFitness(Integer candidate, List<? extends Integer> population)
+        {
+            return 0;
+        }
+
+        public boolean isNatural()
+        {
+            return true;
+        }
     }
 }

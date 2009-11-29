@@ -19,9 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -53,10 +51,7 @@ public class IslandEvolution<T>
 
     private final List<EvolutionObserver<? super T>> observers = new LinkedList<EvolutionObserver<? super T>>();
 
-    // Latest population data from each island.
-    private final Map<Integer, PopulationData<? extends T>> islandData
-        = Collections.synchronizedSortedMap(new TreeMap<Integer, PopulationData<? extends T>>());
-
+    private List<TerminationCondition> satisfiedTerminationConditions;
 
     /**
      * Create an island system with the specified number of identically-configured islands.
@@ -136,30 +131,34 @@ public class IslandEvolution<T>
         this.migration = migration;
         this.naturalFitness = naturalFitness;
         this.rng = rng;
-
-        // Monitor population updates from each individual island.  Store the latest data
-        // from each.
-        for (int i = 0; i < islands.size(); i++)
-        {
-            final int islandID = i;
-            islands.get(i).addEvolutionObserver(new EvolutionObserver<T>()
-            {
-                public void populationUpdate(PopulationData<? extends T> populationData)
-                {
-                    islandData.put(islandID, populationData);
-                }
-            });
-        }
     }
 
 
     /**
-     * <em>If you interrupt the request thread before this method returns, the
+     * <p>Start the evolutionary process on each island and return the fittest candidate so far at the point
+     * any of the termination conditions is satisfied.</p>
+     *
+     * <p><em>If you interrupt the request thread before this method returns, the
      * method will return prematurely (with the best individual found so far).
      * After returning in this way, the current thread's interrupted flag
      * will be set.  It is preferable to use an appropritate
      * {@link org.uncommons.watchmaker.framework.TerminationCondition} rather than interrupting the evolution in
-     * this way.</em>
+     * this way.</em></p>
+     *
+     * @param populationSize The population size <em>for each island</em>.  Therefore, if you have 5 islands,
+     * setting this parameter to 200 will result in 1000 individuals overall, 200 on each island.
+     * @param eliteCount The number of candidates preserved via elitism <em>on each island</em>.  In elitism,
+     * a sub-set of the population with the best fitness scores are preserved unchanged in
+     * the subsequent generation.  Candidate solutions that are preserved unchanged through
+     * elitism remain eligible for selection for breeding the remainder of the next generation.
+     * This value must be non-negative and less than the population size.  A value of zero
+     * means that no elitism will be applied.
+     * @param epochLength The number of generations that make up an epoch.  Islands evolve independently for
+     * this number of generations and then migration occurs at the end of the epoch and the next epoch starts.
+     * @param migrantCount The number of individuals that will be migrated from each island at the end of each
+     * epoch.
+     * @param conditions One or more conditions that may cause the evolution to terminate.
+     * @return The fittest solution found by the evolutionary process on any of the islands.
      */
     public T evolve(int populationSize,
                     int eliteCount,
@@ -178,8 +177,9 @@ public class IslandEvolution<T>
 
         List<EvaluatedCandidate<T>> evaluatedCombinedPopulation = new ArrayList<EvaluatedCandidate<T>>();
         PopulationData<T> data = null;
+        List<TerminationCondition> satisfiedConditions = null;
         int currentEpochIndex = 0;
-        do
+        while (satisfiedConditions == null)
         {
             List<Callable<List<EvaluatedCandidate<T>>>> islandEpochs
                 = new ArrayList<Callable<List<EvaluatedCandidate<T>>>>(islands.size());
@@ -220,10 +220,47 @@ public class IslandEvolution<T>
             {
                 throw new IllegalStateException(ex);
             }
-        } while (EvolutionUtils.shouldContinue(data, conditions) == null);
+            satisfiedConditions = EvolutionUtils.shouldContinue(data, conditions);
+        }
         EvolutionUtils.sortEvaluatedPopulation(evaluatedCombinedPopulation, naturalFitness);
         threadPool.shutdownNow();
+
+        this.satisfiedTerminationConditions = satisfiedConditions;
         return evaluatedCombinedPopulation.get(0).getCandidate();
+    }
+
+
+    /**
+     * <p>Returns a list of all {@link TerminationCondition}s that are satisfied by the current
+     * state of the island evolution.  Usually this list will contain only one item, but it
+     * is possible that mutliple termination conditions will become satisfied at the same
+     * time.  In this case the condition objects in the list will be in the same order that
+     * they were specified when passed to the engine.</p>
+     *
+     * <p>If the evolution has not yet terminated (either because it is still in progress or
+     * because it hasn't even been started) then an IllegalStateException will be thrown.</p>
+     *
+     * <p>If the evolution terminated because the request thread was interrupted before any
+     * termination conditions were satisfied then this method will return an empty list.</p>
+     *
+     * @throws IllegalStateException If this method is invoked on an island system before
+     * evolution is started or while it is still in progress.
+     *
+     * @return A list of statisfied conditions.  The list is guaranteed to be non-null.  The
+     * list may be empty because it is possible for evolution to terminate without any conditions
+     * being matched.  The only situation in which this occurs is when the request thread is
+     * interrupted.
+     */
+    public List<TerminationCondition> getSatisfiedTerminationConditions()
+    {
+        if (satisfiedTerminationConditions == null)
+        {
+            throw new IllegalStateException("EvolutionEngine has not terminated.");
+        }
+        else
+        {
+            return Collections.unmodifiableList(satisfiedTerminationConditions);
+        }
     }
 
 
