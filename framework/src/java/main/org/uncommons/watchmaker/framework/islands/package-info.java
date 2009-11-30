@@ -14,9 +14,9 @@
 //   limitations under the License.
 // ============================================================================
 /**
- * This package provides a framework for evolutionary computation.  It defines generic
- * interfaces for evolutionary operators, fitness functions and selection strategies.
- * It also provides an all-purpose {@link EvolutionEngine}.
+ * An implementation of island model evolution.  Manages parallel evolution across
+ * multiple {@link org.uncommons.watchmaker.framework.EvolutionEngine}s (islands)
+ * with periodic migration between them. 
  * @author Daniel Dyer
  */
-package org.uncommons.watchmaker.framework;
+package org.uncommons.watchmaker.framework.islands;

@@ -39,7 +39,7 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
  * An implementation of island evolution in which multiple independent populations are evolved in
- * parallel with occasional migration of individuals between islands.
+ * parallel with periodic migration of individuals between islands.
  * @author Daniel Dyer
  */
 public class IslandEvolution<T>

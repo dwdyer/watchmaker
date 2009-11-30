@@ -38,7 +38,7 @@ public class SwingGPTreeRenderer implements Renderer<Node, JComponent>
 
     private static final class GPTreeView extends JComponent
     {
-         // Allow 50 pixels for each node horizontally.
+         // Allow 30 pixels for each node horizontally.
         private static final int NODE_WIDTH = 30;
          // Allow 50 pixels for each node vertically.
         private static final int NODE_HEIGHT = 50;

@@ -14,9 +14,12 @@
 //   limitations under the License.
 // ============================================================================
 /**
- * This package provides a framework for evolutionary computation.  It defines generic
- * interfaces for evolutionary operators, fitness functions and selection strategies.
- * It also provides an all-purpose {@link EvolutionEngine}.
+ * <p>This package provides an experimental implementation of tree-based Genetic
+ * Programming using the Watchmaker Framework.</p>
+ *
+ * <p><em>This code is a proof-of-concept and is experimental in nature.  There
+ * maybe significant API changes in future releases.</em></p>
+ *
  * @author Daniel Dyer
  */
-package org.uncommons.watchmaker.framework;
+package org.uncommons.watchmaker.gp.trees;
