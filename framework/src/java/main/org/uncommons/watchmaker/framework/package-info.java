@@ -16,7 +16,7 @@
 /**
  * This package provides a framework for evolutionary computation.  It defines generic
  * interfaces for evolutionary operators, fitness functions and selection strategies.
- * It also provides an all-purpose {@link EvolutionEngine}.
+ * It also provides an all-purpose {@link org.uncommons.watchmaker.framework.EvolutionEngine}.
  * @author Daniel Dyer
  */
 package org.uncommons.watchmaker.framework;

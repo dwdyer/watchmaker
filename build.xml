@@ -81,14 +81,14 @@
         <fileset dir="." defaultexcludes="yes">
           <include name="**/${java.dir}/main/**/*.java"/>
           <exclude name="examples/**/*"/>
+          <exclude name="framework/${java.dir}/main/org/uncommons/util/**/*"/>
         </fileset>
         <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
         <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
         <group title="Watchmaker Genetic Programming (Experimental)" packages="org.uncommons.watchmaker.gp:org.uncommons.watchmaker.gp.*"/>
-        <group title="Uncommons Utility Classes" packages="org.uncommons.util:org.uncommons.util.*"/>
         <header><![CDATA[Watchmaker Framework API<br><small>(Version ${version})</small>]]></header>
         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
-        <link href="https://uncommons-maths.dev.java.net/nonav/api/"/>
+        <link href="https://uncommons-maths.dev.java.net/nonav/api/"/>        
       </javadoc>
     </sequential>
   </macrodef>
