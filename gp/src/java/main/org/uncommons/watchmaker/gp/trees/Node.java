@@ -20,7 +20,7 @@ import org.uncommons.maths.random.Probability;
 
 /**
  * Operations supported by the different types of nodes that make up
- * program trees in the genetic programming example application.
+ * genetic program trees.
  * @author Daniel Dyer
  */
 public interface Node
@@ -41,13 +41,38 @@ public interface Node
     String print();
 
     /**
+     * @return A short String that represents the function or value represented by this node.
+     */
+    String getLabel();
+
+    /**
+     * If this is a function (non-leaf) node, how many arguments does it take?  For
+     * leaf nodes the answer is zero.
+     * @return The arity of this function, or zero if this node is a leaf node.
+     * @see #countNodes()
+     */
+    int getArity();
+
+    /**
      * @return The number of levels of nodes that make up this tree.
+     * @see #getWidth()
      */
     int getDepth();
 
     /**
+     * Work out how wide (in nodes) this tree is.  Used primarily for laying out a
+     * visual representation.  A leaf node has a width of 1.  A binary node's width
+     * is the sum of the widths of its sub-trees.
+     * @return The maximum width of this tree.
+     * @see #getDepth()
+     * @see #getArity()
+     */
+    int getWidth();
+
+    /**
      * @return The total number of nodes in this tree (recursively counts the nodes
      * for each sub-node of this node).
+     * @see #getArity() 
      */
     int countNodes();
 
@@ -58,6 +83,14 @@ public interface Node
      * @return The node at the specified position.
      */
     Node getNode(int index);
+
+    /**
+     * Retrieves a direct sub-node from this tree.
+     * @param index The index of a child node.  Index 0 is the first child.  Nodes are numbered
+     * right-to-left, grandchild nodes are not included.
+     * @return The node at the specified position.
+     */
+    Node getChild(int index);
 
     /**
      * Returns a new tree that is identical to this tree except with the specified node

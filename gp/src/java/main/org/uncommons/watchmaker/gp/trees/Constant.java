@@ -15,13 +15,18 @@
 // ============================================================================
 package org.uncommons.watchmaker.gp.trees;
 
+import java.text.DecimalFormat;
+
 /**
  * A program node that evaluates to a constant value. 
  * @author Daniel Dyer
  */
 public class Constant extends LeafNode
 {
+    private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("######0.##");
+
     private final double constant;
+    private final String label;
 
 
     /**
@@ -31,6 +36,7 @@ public class Constant extends LeafNode
     public Constant(double constant)
     {
         this.constant = constant;
+        this.label = NUMBER_FORMAT.format(constant);
     }
 
 
@@ -41,6 +47,15 @@ public class Constant extends LeafNode
     public double evaluate(double[] programParameters)
     {
         return constant;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getLabel()
+    {
+        return label;
     }
 
 

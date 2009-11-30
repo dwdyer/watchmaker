@@ -51,6 +51,15 @@ public class Parameter extends LeafNode
 
     /**
      * {@inheritDoc}
+     */
+    public String getLabel()
+    {
+        return "P" + parameterIndex;
+    }
+
+
+    /**
+     * {@inheritDoc}
      * For a parameter node the String representation is simply "arg0", "arg1", etc.
      * depending on which program parameter it refers to.
      */

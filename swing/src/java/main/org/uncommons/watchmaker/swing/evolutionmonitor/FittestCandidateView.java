@@ -20,6 +20,7 @@ import java.awt.Font;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.PopulationData;
@@ -38,6 +39,7 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
 
     private final Renderer<? super T, JComponent> renderer;
     private final JLabel fitnessLabel = new JLabel("N/A", JLabel.CENTER);
+    private final JScrollPane scroller = new JScrollPane();
 
     private T fittestCandidate = null;
     private JComponent renderedCandidate = null;
@@ -58,8 +60,12 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
         header.add(label, BorderLayout.NORTH);
         fitnessLabel.setFont(BIG_FONT);
         header.add(fitnessLabel, BorderLayout.CENTER);
-
         add(header, BorderLayout.NORTH);
+
+        scroller.setBackground(null);
+        scroller.getViewport().setBackground(null);
+        scroller.setBorder(null);
+        add(scroller, BorderLayout.CENTER);
 
         // Set names for easier indentification in unit tests.
         fitnessLabel.setName("FitnessLabel");
@@ -81,12 +87,8 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
                 if (populationData.getBestCandidate() != fittestCandidate)
                 {
                     fittestCandidate = populationData.getBestCandidate();
-                    if (renderedCandidate != null)
-                    {
-                        remove(renderedCandidate);
-                    }
                     renderedCandidate = renderer.render(fittestCandidate);
-                    add(renderedCandidate, BorderLayout.CENTER);
+                    scroller.setViewportView(renderedCandidate);
                 }
             }
         });

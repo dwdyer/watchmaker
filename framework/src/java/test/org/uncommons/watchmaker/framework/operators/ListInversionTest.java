@@ -33,6 +33,7 @@ public class ListInversionTest
     public void testZeroProbability()
     {
         EvolutionaryOperator<List<Integer>> inversion = new ListInversion<Integer>(Probability.ZERO);
+        @SuppressWarnings("unchecked")
         List<List<Integer>> selection = Arrays.asList(Arrays.asList(1, 2, 3));
         List<List<Integer>> evolvedSelection = inversion.apply(selection, FrameworkTestUtils.getRNG());
         assert evolvedSelection.size() == 1 : "Wrong number of individuals after evolution: " + evolvedSelection.size();

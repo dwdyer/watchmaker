@@ -48,9 +48,37 @@ public class IfThenElse implements Node
     /**
      * {@inheritDoc}
      */
+    public String getLabel()
+    {
+        return "if";
+    }
+
+
+    /**
+     * The arity of a ternary node is three.
+     * @return 3
+     */
+    public int getArity()
+    {
+        return 3;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public int getDepth()
     {
-        return Math.max(condition.getDepth(), Math.max(then.getDepth(), otherwise.getDepth()));
+        return 1 + Math.max(condition.getDepth(), Math.max(then.getDepth(), otherwise.getDepth()));
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getWidth()
+    {
+        return condition.getWidth() + then.getWidth() + otherwise.getWidth();
     }
 
 
@@ -90,6 +118,22 @@ public class IfThenElse implements Node
             }
         }
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Node getChild(int index)
+    {
+        switch (index)
+        {
+            case 0: return condition;
+            case 1: return then;
+            case 2 : return otherwise;
+            default: throw new IndexOutOfBoundsException("Invalid child index: " + index);
+        }
+    }
+
 
 
     /**

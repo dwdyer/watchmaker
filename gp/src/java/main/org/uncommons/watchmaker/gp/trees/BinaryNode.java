@@ -50,12 +50,41 @@ abstract class BinaryNode implements Node
 
 
     /**
+     * {@inheritDoc}
+     */
+    public String getLabel()
+    {
+        return String.valueOf(symbol);
+    }
+
+
+    /**
+     * The arity of a binary node is two.
+     * @return 2
+     */
+    public int getArity()
+    {
+        return 2;
+    }
+
+
+    /**
      * The depth of a binary node is the depth of its deepest sub-tree plus one.
      * @return The depth of the tree rooted at this node.
      */
     public int getDepth()
     {
         return 1 + Math.max(left.getDepth(), right.getDepth());
+    }
+
+
+    /**
+     * The width of a binary node is the sum of the widths of its two sub-trees.
+     * @return The width of the tree rooted at this node.
+     */
+    public int getWidth()
+    {
+        return left.getWidth() + right.getWidth();
     }
 
 
@@ -85,6 +114,20 @@ abstract class BinaryNode implements Node
         else
         {
             return right.getNode(index - leftNodes - 1);
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Node getChild(int index)
+    {
+        switch (index)
+        {
+            case 0: return left;
+            case 1: return right;
+            default: throw new IndexOutOfBoundsException("Invalid child index: " + index);
         }
     }
 

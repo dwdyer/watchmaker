@@ -28,7 +28,7 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  * Renders a polygon-based image to a {@link BufferedImage}.  For efficiency reasons, this
  * renderer returns the same image object (with different data) for subsequent invocations.
  * This means that invoking code should not expect returned images to be unaltered following
- * subsequent invocations.  It alos means that a renderer is not thread-safe.
+ * subsequent invocations.  It also means that a renderer is not thread-safe.
  * @author Daniel Dyer
  */
 public class PolygonImageRenderer implements Renderer<List<ColouredPolygon>, BufferedImage>

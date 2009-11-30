@@ -25,10 +25,30 @@ import org.uncommons.maths.random.Probability;
 abstract class LeafNode implements Node
 {
     /**
+     * The arity of a non-function node is always zero.
+     * @return 0
+     */
+    public int getArity()
+    {
+        return 0;
+    }
+
+    
+    /**
      * Leaf nodes always have a depth of 1 since they have no child nodes.
      * @return 1 
      */
     public int getDepth()
+    {
+        return 1;
+    }
+
+
+    /**
+     * Leaf nodes always have a width of 1 since they have no child nodes.
+     * @return 1
+     */
+    public int getWidth()
     {
         return 1;
     }
@@ -50,6 +70,15 @@ abstract class LeafNode implements Node
             throw new IndexOutOfBoundsException("Invalid node index: " + index);
         }
         return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Node getChild(int index)
+    {
+        throw new IndexOutOfBoundsException("Leaf nodes have no children.");
     }
 
 
