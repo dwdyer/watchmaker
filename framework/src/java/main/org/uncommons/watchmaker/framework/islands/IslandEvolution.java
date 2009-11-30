@@ -115,12 +115,17 @@ public class IslandEvolution<T>
 
 
     /**
+     * Create an island evolution system from a list of pre-configured islands.  This constructor
+     * gives more control over the configuration of individual islands than the alternative constructor.
+     * The other constructor should be used where possible to avoid having to explicitly create each
+     * island.
      * @param islands A list of pre-configured islands.
      * @param migration A migration strategy for moving individuals between islands at the
      * end of an epoch.
      * @param naturalFitness If true, indicates that higher fitness values mean fitter
      * individuals.  If false, indicates that fitter individuals will have lower scores. 
      * @param rng A source of randomness, used by all islands.
+     * @see #IslandEvolution(int, Migration, CandidateFactory, EvolutionaryOperator, FitnessEvaluator, SelectionStrategy, Random) 
      */
     public IslandEvolution(List<EvolutionEngine<T>> islands,
                            Migration migration,
@@ -166,44 +171,42 @@ public class IslandEvolution<T>
                     int migrantCount,
                     TerminationCondition... conditions)
     {
-        long startTime = System.currentTimeMillis();
         ExecutorService threadPool = Executors.newFixedThreadPool(islands.size());
-
         List<List<T>> islandPopulations = new ArrayList<List<T>>(islands.size());
-        for (int i = 0; i < islands.size(); i++)
-        {
-            islandPopulations.add(Collections.<T>emptyList());
-        }
-
         List<EvaluatedCandidate<T>> evaluatedCombinedPopulation = new ArrayList<EvaluatedCandidate<T>>();
+
         PopulationData<T> data = null;
         List<TerminationCondition> satisfiedConditions = null;
         int currentEpochIndex = 0;
+        long startTime = System.currentTimeMillis();
         while (satisfiedConditions == null)
         {
-            List<Callable<List<EvaluatedCandidate<T>>>> islandEpochs
-                = new ArrayList<Callable<List<EvaluatedCandidate<T>>>>(islands.size());
-            for (int i = 0; i < islands.size(); i++)
-            {
-                islandEpochs.add(new Epoch<T>(islands.get(i),
-                                              populationSize,
-                                              eliteCount,
-                                              islandPopulations.get(i),
-                                              new GenerationCount(epochLength)));
-            }
-
+            List<Callable<List<EvaluatedCandidate<T>>>> islandEpochs = createEpochTasks(populationSize,
+                                                                                        eliteCount,
+                                                                                        epochLength,
+                                                                                        islandPopulations);
             try
             {
                 List<Future<List<EvaluatedCandidate<T>>>> futures = threadPool.invokeAll(islandEpochs);
-                islandPopulations.clear();
+
                 evaluatedCombinedPopulation.clear();
+                List<List<EvaluatedCandidate<T>>> evaluatedPopulations
+                    = new ArrayList<List<EvaluatedCandidate<T>>>(islands.size());
                 for (Future<List<EvaluatedCandidate<T>>> future : futures)
                 {
                     List<EvaluatedCandidate<T>> evaluatedIslandPopulation = future.get();
                     evaluatedCombinedPopulation.addAll(evaluatedIslandPopulation);
-                    islandPopulations.add(EvolutionUtils.toCandidateList(evaluatedIslandPopulation));
+                    evaluatedPopulations.add(evaluatedIslandPopulation);
                 }
-                migration.migrate(islandPopulations, migrantCount, rng);
+
+                migration.migrate(evaluatedPopulations, migrantCount, rng);
+
+                islandPopulations.clear();
+                for (List<EvaluatedCandidate<T>> evaluatedPopulation : evaluatedPopulations)
+                {
+                    islandPopulations.add(EvolutionUtils.toCandidateList(evaluatedPopulation));
+                }
+                
                 data = EvolutionUtils.getPopulationData(evaluatedCombinedPopulation,
                                                         naturalFitness,
                                                         eliteCount,
@@ -227,6 +230,28 @@ public class IslandEvolution<T>
 
         this.satisfiedTerminationConditions = satisfiedConditions;
         return evaluatedCombinedPopulation.get(0).getCandidate();
+    }
+
+
+    /**
+     * Create the concurrently-executed tasks that perform evolution on each island.
+     */
+    private List<Callable<List<EvaluatedCandidate<T>>>> createEpochTasks(int populationSize,
+                                                                         int eliteCount,
+                                                                         int epochLength,
+                                                                         List<List<T>> islandPopulations)
+    {
+        List<Callable<List<EvaluatedCandidate<T>>>> islandEpochs
+            = new ArrayList<Callable<List<EvaluatedCandidate<T>>>>(islands.size());
+        for (int i = 0; i < islands.size(); i++)
+        {
+            islandEpochs.add(new Epoch<T>(islands.get(i),
+                                          populationSize,
+                                          eliteCount,
+                                          islandPopulations.isEmpty() ? Collections.<T>emptyList() : islandPopulations.get(i),
+                                          new GenerationCount(epochLength)));
+        }
+        return islandEpochs;
     }
 
 

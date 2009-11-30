@@ -45,6 +45,7 @@ public class ListInversionTest
     public void testInversion()
     {
         EvolutionaryOperator<List<Integer>> inversion = new ListInversion<Integer>(Probability.ONE);
+        @SuppressWarnings("unchecked")
         List<List<Integer>> selection = Arrays.asList(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
         for (int i = 0; i < 50; i++) // Try several times so that different random numbers are generated.
         {

@@ -15,10 +15,12 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework.islands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
+import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 
 /**
@@ -35,14 +37,14 @@ public class RingMigrationTest
     {
         Migration migration = new RingMigration();
         @SuppressWarnings("unchecked")
-        List<List<String>> islandPopulations = Arrays.asList(Arrays.asList("A", "A", "A"),
-                                                             Arrays.asList("B", "B", "B"),
-                                                             Arrays.asList("C", "C", "C"));
+        List<List<EvaluatedCandidate<String>>> islandPopulations = Arrays.asList(createTestPopulation("A", "A", "A"),
+                                                                                 createTestPopulation("B", "B", "B"),
+                                                                                 createTestPopulation("C", "C", "C"));
         migration.migrate(islandPopulations, 0, FrameworkTestUtils.getRNG());
         assert islandPopulations.size() == 3 : "Wrong number of populations after migration.";
-        testPopulationContents(islandPopulations.get(0), Arrays.asList("A", "A", "A"));
-        testPopulationContents(islandPopulations.get(1), Arrays.asList("B", "B", "B"));
-        testPopulationContents(islandPopulations.get(2), Arrays.asList("C", "C", "C"));
+        testPopulationContents(islandPopulations.get(0), "A", "A", "A");
+        testPopulationContents(islandPopulations.get(1), "B", "B", "B");
+        testPopulationContents(islandPopulations.get(2), "C", "C", "C");
     }
 
 
@@ -54,25 +56,36 @@ public class RingMigrationTest
     {
         Migration migration = new RingMigration();
         @SuppressWarnings("unchecked")
-        List<List<String>> islandPopulations = Arrays.asList(Arrays.asList("A", "A", "A"),
-                                                             Arrays.asList("B", "B", "B"),
-                                                             Arrays.asList("C", "C", "C"));
+        List<List<EvaluatedCandidate<String>>> islandPopulations = Arrays.asList(createTestPopulation("A", "A", "A"),
+                                                                                 createTestPopulation("B", "B", "B"),
+                                                                                 createTestPopulation("C", "C", "C"));
         migration.migrate(islandPopulations, 3, FrameworkTestUtils.getRNG());
         assert islandPopulations.size() == 3: "Wrong number of populations after migration.";
         Reporter.log(islandPopulations.toString());
-        testPopulationContents(islandPopulations.get(0), Arrays.asList("C", "C", "C"));
-        testPopulationContents(islandPopulations.get(1), Arrays.asList("A", "A", "A"));
-        testPopulationContents(islandPopulations.get(2), Arrays.asList("B", "B", "B"));
+        testPopulationContents(islandPopulations.get(0), "C", "C", "C");
+        testPopulationContents(islandPopulations.get(1), "A", "A", "A");
+        testPopulationContents(islandPopulations.get(2), "B", "B", "B");
     }
 
 
-
-    private void testPopulationContents(List<String> actualPopulation, List<String> expectedPopulation)
+    private <T> List<EvaluatedCandidate<T>> createTestPopulation(T... members)
     {
-        assert actualPopulation.size() == expectedPopulation.size() : "Wrong population size after migration.";
+        List<EvaluatedCandidate<T>> population = new ArrayList<EvaluatedCandidate<T>>(members.length);
+        for (T member : members)
+        {
+            population.add(new EvaluatedCandidate<T>(member, 0));
+        }
+        return population;
+    }
+
+
+    private void testPopulationContents(List<EvaluatedCandidate<String>> actualPopulation,
+                                        String... expectedPopulation)
+    {
+        assert actualPopulation.size() == expectedPopulation.length : "Wrong population size after migration.";
         for (int i = 0; i < actualPopulation.size(); i++)
         {
-            assert actualPopulation.get(i).equals(expectedPopulation.get(i)) : "Wrong value at index " + i;
+            assert actualPopulation.get(i).getCandidate().equals(expectedPopulation[i]) : "Wrong value at index " + i;
         }
     }
 }

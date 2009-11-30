@@ -17,6 +17,7 @@ package org.uncommons.watchmaker.framework.islands;
 
 import java.util.List;
 import java.util.Random;
+import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 
 /**
  * Strategy interface for different ways of migrating individuals between islands
@@ -31,5 +32,5 @@ public interface Migration
      * @param rng A source of randomness.
      * @param <T> The type of the individual members of the island populations.
      */
-    <T> void migrate(List<List<T>> islandPopulations, int migrantCount, Random rng);
+    <T> void migrate(List<List<EvaluatedCandidate<T>>> islandPopulations, int migrantCount, Random rng);
 }

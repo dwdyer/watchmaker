@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 
 /**
  * Migrates a fixed number of individuals from each island to the adjacent island.
@@ -37,23 +38,23 @@ public class RingMigration implements Migration
      * each island.
      * @param rng A source of randomness.
      */
-    public <T> void migrate(List<List<T>> islandPopulations, int migrantCount, Random rng)
+    public <T> void migrate(List<List<EvaluatedCandidate<T>>> islandPopulations, int migrantCount, Random rng)
     {
         // The first batch of immigrants is from the last island to the first.
-        List<T> lastIsland = islandPopulations.get(islandPopulations.size() - 1);
+        List<EvaluatedCandidate<T>> lastIsland = islandPopulations.get(islandPopulations.size() - 1);
         Collections.shuffle(lastIsland, rng);
-        List<T> migrants = lastIsland.subList(lastIsland.size() - migrantCount, lastIsland.size());
+        List<EvaluatedCandidate<T>> migrants = lastIsland.subList(lastIsland.size() - migrantCount, lastIsland.size());
 
-        for (List<T> island : islandPopulations)
+        for (List<EvaluatedCandidate<T>> island : islandPopulations)
         {
             // Migrants from the last island are immigrants for this island.
-            List<T> immigrants = migrants;
+            List<EvaluatedCandidate<T>> immigrants = migrants;
             if (island != lastIsland) // We've already migrated individuals from the last island.
             {
                 // Select the migrants that will move to the next island to make room for the immigrants here.
                 // Randomise the population so that there is no bias concerning which individuals are migrated.
                 Collections.shuffle(island, rng);
-                migrants = new ArrayList<T>(island.subList(island.size() - migrantCount, island.size()));
+                migrants = new ArrayList<EvaluatedCandidate<T>>(island.subList(island.size() - migrantCount, island.size()));
             }
             // Copy the immigrants over the last members of the population (those that are themselves
             // migrating to the next island).
