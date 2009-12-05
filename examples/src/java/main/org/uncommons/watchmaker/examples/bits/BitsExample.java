@@ -52,14 +52,14 @@ public class BitsExample
     {
         List<EvolutionaryOperator<BitString>> operators = new ArrayList<EvolutionaryOperator<BitString>>(2);
         operators.add(new BitStringCrossover(1, new Probability(0.7d)));
-        operators.add(new BitStringMutation(new Probability(0.001d)));
+        operators.add(new BitStringMutation(new Probability(0.01d)));
         EvolutionaryOperator<BitString> pipeline = new EvolutionPipeline<BitString>(operators);
         EvolutionEngine<BitString> engine = EvolutionEngine.createGenerationalEvolutionEngine(new BitStringFactory(length),
                                                                                               pipeline,
                                                                                               new BitStringEvaluator(),
                                                                                               new RouletteWheelSelection(),
                                                                                               new MersenneTwisterRNG(),
-                                                                                              true);
+                                                                                              false);
         engine.addEvolutionObserver(new EvolutionLogger());
         return engine.evolve(100, // 100 individuals in each generation.
                              0, // Don't use elitism.

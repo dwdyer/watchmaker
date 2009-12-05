@@ -33,28 +33,34 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 public class BitStringMutation implements EvolutionaryOperator<BitString>
 {
     private final NumberGenerator<Probability> mutationProbability;
+    private final NumberGenerator<Integer> mutationCount;
 
 
     /**
-     * Creates a mutation operator for bit strings with the specified
-     * probability that any given bit will be flipped.
-     * @param mutationProbability The probability of a single bit being flipped.
+     * Creates a mutation operator for bit strings with the specified probability that a given
+     * bit string will be mutated, with exactly one bit being flipped.
+     * @param mutationProbability The probability of a candidate being mutated.
      */
     public BitStringMutation(Probability mutationProbability)
     {
-        this(new ConstantGenerator<Probability>(mutationProbability));
+        this(new ConstantGenerator<Probability>(mutationProbability),
+             new ConstantGenerator<Integer>(1));
     }
 
 
     /**
      * Creates a mutation operator for bit strings, with the probability that any
      * given bit will be flipped governed by the specified number generator.
-     * @param mutationProbability The (possibly variable) probability of a single
-     * bit being flipped.
+     * @param mutationProbability The (possibly variable) probability of a candidate
+     * bit string being mutated at all.
+     * @param mutationCount The (possibly variable) number of bits that will be flipped
+     * on any candidate bit string that is selected for mutation.
      */
-    public BitStringMutation(NumberGenerator<Probability> mutationProbability)
+    public BitStringMutation(NumberGenerator<Probability> mutationProbability,
+                             NumberGenerator<Integer> mutationCount)
     {
         this.mutationProbability = mutationProbability;
+        this.mutationCount = mutationCount;
     }
 
 
@@ -79,14 +85,16 @@ public class BitStringMutation implements EvolutionaryOperator<BitString>
      */
     private BitString mutateBitString(BitString bitString, Random rng)
     {
-        BitString mutatedBitString = bitString.clone();
-        for (int i = 0; i < mutatedBitString.getLength(); i++)
+        if (mutationProbability.nextValue().nextEvent(rng))
         {
-            if (mutationProbability.nextValue().nextEvent(rng))
+            BitString mutatedBitString = bitString.clone();
+            int mutations = mutationCount.nextValue();
+            for (int i = 0; i < mutations; i++)
             {
-                mutatedBitString.flipBit(i);
+                mutatedBitString.flipBit(rng.nextInt(mutatedBitString.getLength()));
             }
+            return mutatedBitString;
         }
-        return mutatedBitString;
+        return bitString;
     }
 }

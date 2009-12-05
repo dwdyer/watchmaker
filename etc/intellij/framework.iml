@@ -11,15 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../lib/runtime/uncommons-maths-1.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" exported="" name="uncommons-maths-1.2.1" level="project" />
     <orderEntry type="library" name="testng-5.10-jdk15" level="project" />
     <orderEntry type="module-library">
       <library>

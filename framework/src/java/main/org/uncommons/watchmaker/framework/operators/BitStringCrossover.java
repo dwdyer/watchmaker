@@ -118,12 +118,7 @@ public class BitStringCrossover extends AbstractCrossover<BitString>
             // the length of the parent so that we always pick a point that
             // will result in a meaningful cross-over.
             int crossoverIndex = (1 + rng.nextInt(parent1.getLength() - 1));
-            for (int j = 0; j < crossoverIndex; j++)
-            {
-                boolean temp = offspring1.getBit(j);
-                offspring1.setBit(j, offspring2.getBit(j));
-                offspring2.setBit(j, temp);
-            }
+            offspring1.swapSubstring(offspring2, 0, crossoverIndex);
         }
         List<BitString> result = new ArrayList<BitString>(2);
         result.add(offspring1);

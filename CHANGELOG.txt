@@ -29,6 +29,17 @@ Changes in version 0.7.0
   zero-based but was starting at 1, which would cause the GenerationCount
   termination condition to trigger prematurely.
 
+* Ugraded to Uncommons Maths 1.2.1 to take advantage of optimisations.
+
+* Optimised the implementation of BitStringCrossover to take advantage of
+  faster bit swapping operation in Uncommons Maths 1.2.1.
+
+* Converted BitStringMutation to use a more efficient approach.  The
+  probability parameter is now for controlling whether an individual candidate
+  gets mutated, not each separate bit as was the case previously (existing
+  programs should now use higher probabilities accordingly).  How many bits get
+  flipped is now controlled via a secondary parameter.
+
 
 Changes in version 0.6.2
 ------------------------
