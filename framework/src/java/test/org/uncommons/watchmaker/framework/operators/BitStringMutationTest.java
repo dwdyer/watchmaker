@@ -55,10 +55,10 @@ public class BitStringMutationTest
      * make the outcome predictable (all bits will be flipped).
      */
     @Test
-    public void testMutateAllBits()
+    public void testSingleBitMutation()
     {
-        EvolutionaryOperator<BitString> mutation = new BitStringMutation(Probability.ONE);
         BitString original = new BitString("111100101");
+        EvolutionaryOperator<BitString> mutation = new BitStringMutation(Probability.ONE);                                                                         
         List<BitString> population = Arrays.asList(original);
         population = mutation.apply(population, FrameworkTestUtils.getRNG());
         BitString mutated = population.get(0);
@@ -66,8 +66,7 @@ public class BitStringMutationTest
         assert mutated.getLength() == 9 : "Mutated bit string changed length.";
         int set = mutated.countSetBits();
         int unset = mutated.countUnsetBits();
-        assert set == 3 : "Mutated bit string has wrong number of 1s: " + set;
-        assert unset == 6 : "Mutated bit string has wrong number of 0s: " + unset;
-        assert mutated.toString().equals("000011010") : "Wrong bits set.";
+        assert set == 5 || set == 7 : "Mutated bit string has wrong number of 1s: " + set;
+        assert unset == 2 || unset == 4 : "Mutated bit string has wrong number of 0s: " + unset;
     }
 }

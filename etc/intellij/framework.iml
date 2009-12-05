@@ -12,16 +12,16 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="uncommons-maths-1.2.1" level="project" />
-    <orderEntry type="library" name="testng-5.10-jdk15" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../framework/lib/runtime/google-collect-1.0-rc1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../framework/lib/runtime/google-collect-1.0-rc4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="testng-5.10-jdk15" level="project" />
   </component>
 </module>
 
