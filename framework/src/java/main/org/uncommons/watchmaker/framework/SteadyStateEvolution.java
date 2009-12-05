@@ -35,6 +35,25 @@ public class SteadyStateEvolution<T> implements PopulationEvolution<T>
     private final int selectionSize;
 
 
+    /**
+     * Create a steady-state evolution strategy in which one or more evolved offspring
+     * replace randomly-chosen individuals.
+     * @param evolutionScheme The evolutionary operator that modifies the population.  The
+     * number of candidates used as input is controlled by the {@code selectionSize} parameter.
+     * The number of candidates that will be outputted depends on the implementation.  Typically
+     * it will be the same as the input size, but this is not necessary.  In fact, for steady-state
+     * evolution, it is typical that the output size is always 1, regardless of the input size, so
+     * that only one member of the population is replaced at a time.  To acheive this using cross-over
+     * requires a cross-over implementation that returns only one offspring, rather than the normal
+     * two.
+     * @param fitnessEvaluator The fitness function.
+     * @param selectionStrategy The strategy for selecting which candidate(s) will be
+     * the parent(s) when evolving individuals.
+     * @param selectionSize How many parent candidates are required by the evolution scheme.
+     * This controls how many individuals will be provided to the evolutionary operator at
+     * each iteration. If you are just using mutation, this will typically be 1.  For
+     * cross-over, two separate parents are required, so this must be set to 2.
+     */
     public SteadyStateEvolution(EvolutionaryOperator<T> evolutionScheme,
                                 FitnessEvaluator<? super T> fitnessEvaluator,                                
                                 SelectionStrategy<? super T> selectionStrategy,
@@ -72,6 +91,11 @@ public class SteadyStateEvolution<T> implements PopulationEvolution<T>
      * space for them.
      * This method randomly chooses which individuals should be replaced, but it can be over-ridden
      * in sub-classes if alternative behaviour is required.
+     * @param existingPopulation The full popultation, sorted in descending order of fitness.
+     * @param newCandidates The (unsorted) newly-created individual(s) that should replace existing members
+     * of the population.
+     * @param eliteCount The number of the fittest individuals that should be exempt from being replaced.
+     * @param rng A source of randomness.
      */
     protected void doReplacement(List<EvaluatedCandidate<T>> existingPopulation,
                                  List<EvaluatedCandidate<T>> newCandidates,

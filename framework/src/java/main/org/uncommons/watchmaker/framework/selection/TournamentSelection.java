@@ -67,7 +67,7 @@ public class TournamentSelection implements SelectionStrategy<Object>
         {
             throw new IllegalArgumentException("Selection threshold must be greater than 0.5.");
         }
-        this.description = "Tournament Selection (p = " + selectionProbability.toString() + ")";
+        this.description = "Tournament Selection (p = " + selectionProbability.toString() + ')';
     }
 
 
@@ -88,26 +88,16 @@ public class TournamentSelection implements SelectionStrategy<Object>
             if (selectFitter == naturalFitnessScores)
             {
                 // Select the fitter candidate.
-                if (candidate2.getFitness() > candidate1.getFitness())
-                {
-                    selection.add(candidate2.getCandidate());
-                }
-                else
-                {
-                    selection.add(candidate1.getCandidate());
-                }
+                selection.add(candidate2.getFitness() > candidate1.getFitness()
+                              ? candidate2.getCandidate()
+                              : candidate1.getCandidate());
             }
             else
             {
                 // Select the less fit candidate.
-                if (candidate2.getFitness() > candidate1.getFitness())
-                {
-                    selection.add(candidate1.getCandidate());
-                }
-                else
-                {
-                    selection.add(candidate2.getCandidate());
-                }
+                selection.add(candidate2.getFitness() > candidate1.getFitness()
+                              ? candidate1.getCandidate()
+                              : candidate2.getCandidate());
             }
         }
         return selection;

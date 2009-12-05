@@ -40,6 +40,8 @@ Changes in version 0.7.0
   programs should now use higher probabilities accordingly).  How many bits get
   flipped is now controlled via a secondary parameter.
 
+* Upgraded to Google Collections 1.0 RC4.
+
 
 Changes in version 0.6.2
 ------------------------
