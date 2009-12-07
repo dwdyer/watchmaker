@@ -16,9 +16,7 @@
 package org.uncommons.watchmaker.framework.islands;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.testng.annotations.Test;
-import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 import org.uncommons.watchmaker.framework.FrameworkTestUtils;
 import org.uncommons.watchmaker.framework.PopulationData;
@@ -35,30 +33,48 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
 public class IslandEvolutionTest
 {
     /**
-     * This test makes sure that the evolution observer only gets invoked at the
-     * end of each epoch, rather than each generation, and only once for the whole
-     * island system rather than once for each island.
+     * This test makes sure that the evolution observer global method only gets invoked at
+     * the end of each epoch, and that the island method gets invoked for each generation on each
+     * island.
      */
     @Test
     public void testListeners()
     {
-        IslandEvolution<Integer> islandEvolution = new IslandEvolution<Integer>(3,
+        final int islandCount = 3;
+        final int epochCount = 2;
+        final int generationCount = 5;
+
+        IslandEvolution<Integer> islandEvolution = new IslandEvolution<Integer>(islandCount,
                                                                                 new RingMigration(),
                                                                                 new StubIntegerFactory(),
                                                                                 new IntegerAdjuster(2),
                                                                                 new DummyFitnessEvaluator(),
                                                                                 new RouletteWheelSelection(),
                                                                                 FrameworkTestUtils.getRNG());
-        final AtomicInteger invocationCount = new AtomicInteger(0);
-        islandEvolution.addEvolutionObserver(new EvolutionObserver<Integer>()
+        final int[] observedEpochCount = new int[1];
+        final int[] observedGenerationCounts = new int[islandCount];
+
+        islandEvolution.addEvolutionObserver(new IslandEvolutionObserver<Integer>()
         {
             public void populationUpdate(PopulationData<? extends Integer> populationData)
             {
-                invocationCount.incrementAndGet();
+                observedEpochCount[0]++;
+            }
+
+
+            public void islandPopulationUpdate(int islandIndex, PopulationData<? extends Integer> populationData)
+            {
+                observedGenerationCounts[islandIndex]++;
             }
         });
         islandEvolution.evolve(5, 0, 5, 0, new GenerationCount(2));
-        assert invocationCount.get() == 2 : "Listener should have been notified twice, was " + invocationCount.get();
+        assert observedEpochCount[0] == 2 : "Listener should have been notified twice, was " + observedEpochCount[0];
+        for (int i = 0; i < islandCount; i++)
+        {
+            int expected = epochCount * (generationCount + 1); // +1 because of notification before first generation.
+            assert observedGenerationCounts[i] == expected
+                : "Genertion count for island " + i + " should be 5, is " + observedGenerationCounts[i];
+        }
     }
 
 
@@ -74,7 +90,7 @@ public class IslandEvolutionTest
                                                                                 FrameworkTestUtils.getRNG());
         final long timeout = 1000L;
         final Thread requestThread = Thread.currentThread();
-        islandEvolution.addEvolutionObserver(new EvolutionObserver<Integer>()
+        islandEvolution.addEvolutionObserver(new IslandEvolutionObserver<Integer>()
         {
             public void populationUpdate(PopulationData<? extends Integer> populationData)
             {
@@ -83,6 +99,9 @@ public class IslandEvolutionTest
                     requestThread.interrupt();
                 }
             }
+
+
+            public void islandPopulationUpdate(int islandIndex, PopulationData<? extends Integer> populationData){}
         });
         long startTime = System.currentTimeMillis();
         islandEvolution.evolve(10, 0, 10, 0, new ElapsedTime(timeout));

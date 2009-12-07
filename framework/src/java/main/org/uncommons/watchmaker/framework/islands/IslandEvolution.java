@@ -17,10 +17,11 @@ package org.uncommons.watchmaker.framework.islands;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,9 +50,11 @@ public class IslandEvolution<T>
     private final boolean naturalFitness;
     private final Random rng;
 
-    private final List<EvolutionObserver<? super T>> observers = new LinkedList<EvolutionObserver<? super T>>();
+    private final Set<IslandEvolutionObserver<? super T>> observers
+        = new CopyOnWriteArraySet<IslandEvolutionObserver<? super T>>();
 
     private List<TerminationCondition> satisfiedTerminationConditions;
+
 
     /**
      * Create an island system with the specified number of identically-configured islands.
@@ -136,6 +139,22 @@ public class IslandEvolution<T>
         this.migration = migration;
         this.naturalFitness = naturalFitness;
         this.rng = rng;
+
+        for (int i = 0; i < islands.size(); i++)
+        {
+            final int islandIndex = i;
+            EvolutionEngine<T> island = islands.get(islandIndex);
+            island.addEvolutionObserver(new EvolutionObserver<T>()
+            {
+                public void populationUpdate(PopulationData<? extends T> populationData)
+                {
+                    for (IslandEvolutionObserver<? super T> islandObserver : observers)
+                    {
+                        islandObserver.islandPopulationUpdate(islandIndex, populationData);
+                    }
+                }
+            });
+        }
     }
 
 
@@ -290,30 +309,31 @@ public class IslandEvolution<T>
 
 
     /**
-     * <p>Adds an observer to the overall evolution.  Receives an update at the end of
-     * each epoch describing the state of the combined population of all islands.</p>
+     * <p>Adds an observer to the evolution.  Observers will receives two types of updates:
+     * updates from each individual island at the end of each generation, and updates for
+     * the combined global population at the end of each epoch.</p>
      *
      * <p>Updates are dispatched synchronously on the request thread.  Observers should
      * complete their processing and return in a timely manner to avoid holding up
      * the evolution.</p>
      *
-     * @param observer The callback that will be notified at the end of each epoch.
+     * @param observer The callback that will be notified at the end of each generation and epoch.
      *
-     * @see #removeEvolutionObserver(EvolutionObserver)
+     * @see #removeEvolutionObserver(IslandEvolutionObserver)
      */
-    public void addEvolutionObserver(EvolutionObserver<? super T> observer)
+    public void addEvolutionObserver(final IslandEvolutionObserver<? super T> observer)
     {
         observers.add(observer);
     }
 
 
     /**
-     * Remove the specified observer from the overall evolution.
+     * Remove the specified observer.
      * @param observer The observer to remove (if it is registered).
      *
-     * @see #addEvolutionObserver(EvolutionObserver)
+     * @see #addEvolutionObserver(IslandEvolutionObserver)
      */
-    public void removeEvolutionObserver(EvolutionObserver<? super T> observer)
+    public void removeEvolutionObserver(final IslandEvolutionObserver<? super T> observer)
     {
         observers.remove(observer);
     }
@@ -325,7 +345,7 @@ public class IslandEvolution<T>
      */
     private void notifyPopulationChange(PopulationData<T> data)
     {
-        for (EvolutionObserver<? super T> observer : observers)
+        for (IslandEvolutionObserver<? super T> observer : observers)
         {
             observer.populationUpdate(data);
         }

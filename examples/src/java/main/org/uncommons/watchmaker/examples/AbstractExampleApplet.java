@@ -20,6 +20,7 @@ import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * Base class for examples that run as applets.
@@ -38,7 +39,7 @@ public abstract class AbstractExampleApplet extends JApplet
      * Configure the program to display its GUI in the specified container.
      * @param container The container to place the GUI components in.
      */
-    protected final void configure(final Container container)
+    private void configure(final Container container)
     {
         try
         {
@@ -48,6 +49,14 @@ public abstract class AbstractExampleApplet extends JApplet
             {
                 public void run()
                 {
+                    try
+                    {
+                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    }
+                    catch (Exception ex)
+                    {
+                        System.err.println("Failed to load System look-and-feel.");
+                    }
                     prepareGUI(container);
                 }
             });

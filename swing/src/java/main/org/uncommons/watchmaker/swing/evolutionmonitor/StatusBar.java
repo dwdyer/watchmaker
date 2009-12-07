@@ -19,15 +19,15 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.PopulationData;
+import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 
 /**
  * Status bar component for the evolution monitor.  Can also be used separately to
  * provide basic status information without having to use the full evolution monitor.  
  * @author Daniel Dyer
  */
-public class StatusBar extends Box implements EvolutionObserver<Object>
+public class StatusBar extends Box implements IslandEvolutionObserver<Object>
 {
     private final JLabel generationsLabel = new JLabel("N/A", JLabel.RIGHT);
     private final JLabel timeLabel = new JLabel("N/A", JLabel.RIGHT);
@@ -37,7 +37,7 @@ public class StatusBar extends Box implements EvolutionObserver<Object>
     public StatusBar()
     {
         super(BoxLayout.X_AXIS);
-        add(new JLabel("Population Size: "));
+        add(new JLabel("Population: "));
         add(populationLabel);
         add(createHorizontalStrut(20));
         add(new JLabel("Elitism: "));
@@ -64,6 +64,13 @@ public class StatusBar extends Box implements EvolutionObserver<Object>
         elitismLabel.setText(String.valueOf(populationData.getEliteCount()));
         generationsLabel.setText(String.valueOf(populationData.getGenerationNumber() + 1));
         timeLabel.setText(formatTime(populationData.getElapsedTime()));
+    }
+
+
+    public void islandPopulationUpdate(int islandIndex,
+                                       PopulationData<? extends Object> populationData)
+    {
+        // TO DO:
     }
 
 

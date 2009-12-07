@@ -28,9 +28,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.StandardChartTheme;
-import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
+import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 import org.uncommons.watchmaker.swing.ObjectSwingRenderer;
 
 /**
@@ -41,10 +41,10 @@ import org.uncommons.watchmaker.swing.ObjectSwingRenderer;
  * @param <T> The type of the evolved entities monitored by this component.
  * @author Daniel Dyer
  */
-public class EvolutionMonitor<T> implements EvolutionObserver<T>
+public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 {
-    private final List<EvolutionObserver<? super T>> views = new LinkedList<EvolutionObserver<? super T>>();
-    
+    private final List<IslandEvolutionObserver<? super T>> views = new LinkedList<IslandEvolutionObserver<? super T>>();
+
     private JComponent monitorComponent;
     private Window window = null;
 
@@ -127,13 +127,25 @@ public class EvolutionMonitor<T> implements EvolutionObserver<T>
      */
     public void populationUpdate(PopulationData<? extends T> populationData)
     {
-        for (EvolutionObserver<? super T> view : views)
+        for (IslandEvolutionObserver<? super T> view : views)
         {
             view.populationUpdate(populationData);
         }
     }
 
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public void islandPopulationUpdate(int islandIndex, PopulationData<? extends T> populationData)
+    {
+        for (IslandEvolutionObserver<? super T> view : views)
+        {
+            view.islandPopulationUpdate(islandIndex, populationData);
+        }
+    }
+
+
     public JComponent getGUIComponent()
     {
         return monitorComponent;

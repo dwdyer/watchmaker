@@ -40,7 +40,13 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
      */
     public PolygonImageSwingRenderer(BufferedImage targetImage)
     {
-        this.targetImage = targetImage;
+        // Convert the target image into the most efficient format for rendering.
+        this.targetImage = new BufferedImage(targetImage.getWidth(),
+                                             targetImage.getHeight(),
+                                             BufferedImage.TYPE_INT_RGB);
+        this.targetImage.getGraphics().drawImage(targetImage, 0, 0, null);
+        this.targetImage.setAccelerationPriority(1);
+
         this.delegate = new PolygonImageRenderer(new Dimension(targetImage.getWidth(),
                                                                targetImage.getHeight()),
                                                  true, // Anti-alias.
@@ -100,10 +106,11 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
             int y = Math.max(0, (getHeight() - minimumSize.height) / 2);
             graphics.drawImage(targetImage, x, y, this);
             BufferedImage candidateImage = delegate.render(candidate);
+            candidateImage.setAccelerationPriority(1);
             Graphics clip = graphics.create(x + targetImage.getWidth() + GAP,
-                                     y,
-                                     candidateImage.getWidth(),
-                                     candidateImage.getHeight() + FOOTER);
+                                            y,
+                                            candidateImage.getWidth(),
+                                            candidateImage.getHeight() + FOOTER);
             clip.drawImage(candidateImage, 0, 0, this);
 
             clip.setColor(getForeground());

@@ -22,9 +22,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
+import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 
 /**
  * {@link EvolutionMonitor} view for displaying a graphical representation
@@ -33,7 +33,7 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  * @param <T> The type of the evolved entity displayed by this component.
  * @author Daniel Dyer
  */
-class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
+class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<T>
 {
     private static final Font BIG_FONT = new Font("Dialog", Font.BOLD, 16);
 
@@ -92,5 +92,11 @@ class FittestCandidateView<T> extends JPanel implements EvolutionObserver<T>
                 }
             }
         });
+    }
+
+
+    public void islandPopulationUpdate(int islandIndex, final PopulationData<? extends T> populationData)
+    {
+        // Do nothing.        
     }
 }

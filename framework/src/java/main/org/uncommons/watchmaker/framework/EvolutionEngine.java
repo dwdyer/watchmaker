@@ -17,9 +17,10 @@ package org.uncommons.watchmaker.framework;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 
 /**
@@ -34,7 +35,7 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
  */
 public class EvolutionEngine<T>
 {
-    private final List<EvolutionObserver<? super T>> observers = new LinkedList<EvolutionObserver<? super T>>();
+    private final Set<EvolutionObserver<? super T>> observers = new CopyOnWriteArraySet<EvolutionObserver<? super T>>();
 
     private final Random rng;
     private final CandidateFactory<T> candidateFactory;
