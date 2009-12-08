@@ -47,18 +47,32 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 
     private JComponent monitorComponent;
     private Window window = null;
-    private JTabbedPane tabs;
-    private IslandsView islandsView;
 
-    private volatile boolean islands = false;
+    private final boolean islands;
 
     /**
-     * Creates an EvolutionMonitor with a single panel that graphs the fitness scores
-     * of the population from generation to generation.
+     * <p>Creates an EvolutionMonitor with a single panel that graphs the fitness scores
+     * of the population from generation to generation.</p>
+     * <p>If you are using {@link org.uncommons.watchmaker.framework.islands.IslandEvolution},
+     * use the {@link #EvolutionMonitor(boolean)} constructor instead, to enable island support.</p>
      */
     public EvolutionMonitor()
     {
-        this(new ObjectSwingRenderer());
+        this(false);
+    }
+
+    
+    /**
+     * Creates an EvolutionMonitor with a single panel that graphs the fitness scores
+     * of the population from generation to generation.
+     * @param islands Whether the monitor should be configured for displaying data from
+     * {@link org.uncommons.watchmaker.framework.islands.IslandEvolution}.  Set this
+     * parameter to false when using a standard {@link org.uncommons.watchmaker.framework.EvolutionEngine}
+     * or if you don't want to display island-specific data for island evolution.
+     */
+    public EvolutionMonitor(boolean islands)
+    {
+        this(new ObjectSwingRenderer(), islands);
     }
 
 
@@ -66,9 +80,13 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
      * Creates an EvolutionMonitor with a second panel that displays a graphical
      * representation of the fittest candidate in the population.
      * @param renderer Renders a candidate solution as a JComponent.
+     * @param islands Whether the monitor should be configured for displaying data from
+     * {@link org.uncommons.watchmaker.framework.islands.IslandEvolution}.  Set this
+     * parameter to false when using a standard {@link org.uncommons.watchmaker.framework.EvolutionEngine}
      */
-    public EvolutionMonitor(final Renderer<? super T, JComponent> renderer)
+    public EvolutionMonitor(final Renderer<? super T, JComponent> renderer, boolean islands)
     {
+        this.islands = islands;
         if (SwingUtilities.isEventDispatchThread())
         {
             init(renderer);
@@ -104,7 +122,7 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         // (grey surround and white data area).
         ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
 
-        tabs = new JTabbedPane();
+        JTabbedPane tabs = new JTabbedPane();
         monitorComponent = new JPanel(new BorderLayout());
         monitorComponent.add(tabs, BorderLayout.CENTER);
 
@@ -113,16 +131,20 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         views.add(candidateView);
 
         PopulationFitnessView fitnessView = new PopulationFitnessView();
-        tabs.add("Population Fitness", fitnessView);
+        tabs.add(islands ? "Global Population" : "Population Fitness", fitnessView);
         views.add(fitnessView);
 
-        islandsView = new IslandsView();
-        views.add(islandsView);
+        if (islands)
+        {
+            IslandsView islandsView = new IslandsView();
+            tabs.add("Island Populations", islandsView);
+            views.add(islandsView);
+        }
 
         JVMView jvmView = new JVMView();
         tabs.add("JVM Memory", jvmView);
 
-        StatusBar statusBar = new StatusBar();
+        StatusBar statusBar = new StatusBar(islands);
         monitorComponent.add(statusBar, BorderLayout.SOUTH);
         views.add(statusBar);
     }
@@ -145,39 +167,6 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
      */
     public void islandPopulationUpdate(int islandIndex, PopulationData<? extends T> populationData)
     {
-        // If we're receiving island notifications, then this must be island evolution, so we
-        // should show the islands tab.
-        if (!islands)
-        {
-            try
-            {
-                SwingUtilities.invokeAndWait(new Runnable()
-                {
-                    public void run()
-                    {
-                        // Protect against multiple events triggering the same GUI change.
-                        synchronized (views)
-                        {
-                            if (tabs.getTabCount() < 4)
-                            {
-                                tabs.insertTab("Island Populations", null, islandsView, null, 2);
-                                tabs.setTitleAt(1, "Global Population");
-                                islands = true;
-                            }
-                        }
-                    }
-                });
-            }
-            catch (InterruptedException ex)
-            {
-                Thread.currentThread().interrupt();
-            }
-            catch (InvocationTargetException ex)
-            {
-                throw new IllegalStateException(ex.getCause());
-            }
-        }
-        
         for (IslandEvolutionObserver<? super T> view : views)
         {
             view.islandPopulationUpdate(islandIndex, populationData);

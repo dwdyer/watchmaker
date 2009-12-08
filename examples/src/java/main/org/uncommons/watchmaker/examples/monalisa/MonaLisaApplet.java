@@ -105,7 +105,7 @@ public class MonaLisaApplet extends AbstractExampleApplet
         container.add(controls, BorderLayout.NORTH);
 
         Renderer<List<ColouredPolygon>, JComponent> renderer = new PolygonImageSwingRenderer(targetImage);
-        monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer);
+        monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer, false);
         container.add(monitor.getGUIComponent(), BorderLayout.CENTER);
     }
 

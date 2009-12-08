@@ -34,22 +34,32 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
     private final JLabel timeLabel = new JLabel("N/A", JLabel.RIGHT);
     private final JLabel populationLabel = new JLabel("N/A", JLabel.RIGHT);
     private final JLabel elitismLabel = new JLabel("N/A", JLabel.RIGHT);
-    private final JLabel iterationTypeLabel = new JLabel("Generations: ");
 
     private volatile int islandPopulationSize = -1;
 
     public StatusBar()
     {
+        this(false);
+    }
+
+
+    /**
+     * @param islands Whether the status bar should be configured for updates from
+     * {@link org.uncommons.watchmaker.framework.islands.IslandEvolution}.  Set this
+     * parameter to false when using a standard {@link org.uncommons.watchmaker.framework.EvolutionEngine}
+     */
+    public StatusBar(boolean islands)
+    {
         super(BoxLayout.X_AXIS);
         add(new JLabel("Population: "));
         add(populationLabel);
-        add(createHorizontalStrut(20));
+        add(createHorizontalStrut(15));
         add(new JLabel("Elitism: "));
         add(elitismLabel);
-        add(createHorizontalStrut(20));
-        add(iterationTypeLabel);
+        add(createHorizontalStrut(15));
+        add(new JLabel(islands ? "Epochs: " : "Generations: "));
         add(generationsLabel);
-        add(createHorizontalStrut(20));
+        add(createHorizontalStrut(15));
         add(new JLabel("Elapsed Time: "));
         add(timeLabel);
         setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
@@ -68,19 +78,22 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
         {
             public void run()
             {
-                elitismLabel.setText(String.valueOf(populationData.getEliteCount()));
+                if (populationData.getGenerationNumber() == 0)
+                {
+                    if (islandPopulationSize > 0)
+                    {
+                        int islandCount = populationData.getPopulationSize() / islandPopulationSize;
+                        populationLabel.setText(islandCount + "x" + islandPopulationSize);
+                        elitismLabel.setText(islandCount + "x" + populationData.getEliteCount());
+                    }
+                    else
+                    {
+                        populationLabel.setText(String.valueOf(populationData.getPopulationSize()));
+                        elitismLabel.setText(String.valueOf(populationData.getEliteCount()));
+                    }
+                }
                 generationsLabel.setText(String.valueOf(populationData.getGenerationNumber() + 1));
                 timeLabel.setText(formatTime(populationData.getElapsedTime()));
-                if (islandPopulationSize > 0)
-                {
-                    int islandCount = populationData.getPopulationSize() / islandPopulationSize;
-                    populationLabel.setText(islandCount + "x" + islandPopulationSize);
-                    iterationTypeLabel.setText("Epochs: ");
-                }
-                else
-                {
-                    populationLabel.setText(String.valueOf(populationData.getPopulationSize()));
-                }
             }
         });
     }
