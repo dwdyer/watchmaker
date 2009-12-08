@@ -19,6 +19,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 
@@ -33,6 +34,9 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
     private final JLabel timeLabel = new JLabel("N/A", JLabel.RIGHT);
     private final JLabel populationLabel = new JLabel("N/A", JLabel.RIGHT);
     private final JLabel elitismLabel = new JLabel("N/A", JLabel.RIGHT);
+    private final JLabel iterationTypeLabel = new JLabel("Generations: ");
+
+    private volatile int islandPopulationSize = -1;
 
     public StatusBar()
     {
@@ -43,7 +47,7 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
         add(new JLabel("Elitism: "));
         add(elitismLabel);
         add(createHorizontalStrut(20));
-        add(new JLabel("Generations: "));
+        add(iterationTypeLabel);
         add(generationsLabel);
         add(createHorizontalStrut(20));
         add(new JLabel("Elapsed Time: "));
@@ -58,19 +62,34 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
     }
 
 
-    public void populationUpdate(PopulationData<?> populationData)
+    public void populationUpdate(final PopulationData<?> populationData)
     {
-        populationLabel.setText(String.valueOf(populationData.getPopulationSize()));
-        elitismLabel.setText(String.valueOf(populationData.getEliteCount()));
-        generationsLabel.setText(String.valueOf(populationData.getGenerationNumber() + 1));
-        timeLabel.setText(formatTime(populationData.getElapsedTime()));
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                elitismLabel.setText(String.valueOf(populationData.getEliteCount()));
+                generationsLabel.setText(String.valueOf(populationData.getGenerationNumber() + 1));
+                timeLabel.setText(formatTime(populationData.getElapsedTime()));
+                if (islandPopulationSize > 0)
+                {
+                    int islandCount = populationData.getPopulationSize() / islandPopulationSize;
+                    populationLabel.setText(islandCount + "x" + islandPopulationSize);
+                    iterationTypeLabel.setText("Epochs: ");
+                }
+                else
+                {
+                    populationLabel.setText(String.valueOf(populationData.getPopulationSize()));
+                }
+            }
+        });
     }
 
 
     public void islandPopulationUpdate(int islandIndex,
                                        PopulationData<? extends Object> populationData)
     {
-        // TO DO:
+        islandPopulationSize = populationData.getPopulationSize();
     }
 
 

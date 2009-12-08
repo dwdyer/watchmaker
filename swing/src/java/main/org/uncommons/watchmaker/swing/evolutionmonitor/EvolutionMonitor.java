@@ -50,6 +50,7 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
     private JTabbedPane tabs;
     private IslandsView islandsView;
 
+    private volatile boolean islands = false;
 
     /**
      * Creates an EvolutionMonitor with a single panel that graphs the fitness scores
@@ -146,10 +147,35 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
     {
         // If we're receiving island notifications, then this must be island evolution, so we
         // should show the islands tab.
-        if (tabs.getTabCount() < 4)
+        if (!islands)
         {
-            tabs.insertTab("Island Populations", null, islandsView, null, 2);
-            tabs.setTitleAt(1, "Global Population");
+            try
+            {
+                SwingUtilities.invokeAndWait(new Runnable()
+                {
+                    public void run()
+                    {
+                        // Protect against multiple events triggering the same GUI change.
+                        synchronized (views)
+                        {
+                            if (tabs.getTabCount() < 4)
+                            {
+                                tabs.insertTab("Island Populations", null, islandsView, null, 2);
+                                tabs.setTitleAt(1, "Global Population");
+                                islands = true;
+                            }
+                        }
+                    }
+                });
+            }
+            catch (InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+            }
+            catch (InvocationTargetException ex)
+            {
+                throw new IllegalStateException(ex.getCause());
+            }
         }
         
         for (IslandEvolutionObserver<? super T> view : views)
