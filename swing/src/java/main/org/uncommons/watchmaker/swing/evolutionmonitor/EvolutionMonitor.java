@@ -47,6 +47,8 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 
     private JComponent monitorComponent;
     private Window window = null;
+    private JTabbedPane tabs;
+    private IslandsView islandsView;
 
 
     /**
@@ -101,7 +103,7 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         // (grey surround and white data area).
         ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
 
-        JTabbedPane tabs = new JTabbedPane();
+        tabs = new JTabbedPane();
         monitorComponent = new JPanel(new BorderLayout());
         monitorComponent.add(tabs, BorderLayout.CENTER);
 
@@ -112,6 +114,9 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         PopulationFitnessView fitnessView = new PopulationFitnessView();
         tabs.add("Population Fitness", fitnessView);
         views.add(fitnessView);
+
+        islandsView = new IslandsView();
+        views.add(islandsView);
 
         JVMView jvmView = new JVMView();
         tabs.add("JVM Memory", jvmView);
@@ -139,6 +144,14 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
      */
     public void islandPopulationUpdate(int islandIndex, PopulationData<? extends T> populationData)
     {
+        // If we're receiving island notifications, then this must be island evolution, so we
+        // should show the islands tab.
+        if (tabs.getTabCount() < 4)
+        {
+            tabs.insertTab("Island Populations", null, islandsView, null, 2);
+            tabs.setTitleAt(1, "Global Population");
+        }
+        
         for (IslandEvolutionObserver<? super T> view : views)
         {
             view.islandPopulationUpdate(islandIndex, populationData);

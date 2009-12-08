@@ -91,7 +91,7 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
                                                true, // Save
                                                true, // Print
                                                false, // Zoom
-                                               true); // Tooltips
+                                               false); // Tooltips
         add(chartPanel, BorderLayout.CENTER);
         add(createControls(), BorderLayout.SOUTH);
     }

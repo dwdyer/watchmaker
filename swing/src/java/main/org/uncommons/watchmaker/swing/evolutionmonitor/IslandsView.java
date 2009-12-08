@@ -16,6 +16,8 @@
 package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.awt.BorderLayout;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
@@ -23,38 +25,34 @@ import javax.swing.SwingUtilities;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 
 /**
+ * An evolution monitor view that gives an insight into how the evolution is progressing on
+ * individual islands.
  * @author Daniel Dyer
  */
 class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
 {
-    private final Map<Integer, XYSeries> islandSeries = new HashMap<Integer, XYSeries>();
-    private final XYSeriesCollection dataSet = new XYSeriesCollection();
-    private final ValueAxis domainAxis;
+    private final DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
+
+    private final Map<Integer, Double> values = Collections.synchronizedMap(new HashMap <Integer, Double>());
+
 
     IslandsView()
     {
         super(new BorderLayout());
-        JFreeChart chart = ChartFactory.createXYLineChart("Island Populations",
-                                                          "Generations",
-                                                          "Fitness",
-                                                          dataSet,
-                                                          PlotOrientation.VERTICAL,
-                                                          true, // Legend.
-                                                          false, // Tooltips.
-                                                          false); // URLs.
-        this.domainAxis = chart.getXYPlot().getDomainAxis();
-        domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        domainAxis.setLowerMargin(0);
-        domainAxis.setUpperMargin(0.05);
+        JFreeChart chart = ChartFactory.createBarChart("Fittest Candidate by Island",
+                                                       "Island No.",
+                                                       "Best Candidate Fitness",
+                                                       dataSet,
+                                                       PlotOrientation.VERTICAL,
+                                                       false,
+                                                       false,
+                                                       false);
         ChartPanel chartPanel = new ChartPanel(chart,
                                                ChartPanel.DEFAULT_WIDTH,
                                                ChartPanel.DEFAULT_HEIGHT,
@@ -62,32 +60,61 @@ class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
                                                ChartPanel.DEFAULT_MINIMUM_DRAW_HEIGHT,
                                                ChartPanel.DEFAULT_MAXIMUM_DRAW_WIDTH,
                                                ChartPanel.DEFAULT_MAXIMUM_DRAW_HEIGHT,
-                                               true, // Buffered
+                                               false, // Buffered
                                                false, // Properties
                                                true, // Save
                                                true, // Print
                                                false, // Zoom
-                                               true); // Tooltips
+                                               false); // Tooltips
         add(chartPanel, BorderLayout.CENTER);
     }
 
 
     public void islandPopulationUpdate(final int islandIndex, final PopulationData<? extends Object> populationData)
     {
-        SwingUtilities.invokeLater(new Runnable()
+        // Make sure the bars are added to the chart in order of island index, regardless of which island
+        // reports its results first.
+        if (islandIndex >= values.size())
         {
-            public void run()
+            try
             {
-                XYSeries islandData = islandSeries.get(islandIndex);
-                if (islandData == null)
+                SwingUtilities.invokeAndWait(new Runnable()
                 {
-                    islandData = new XYSeries("Island " + islandIndex);
-                    islandSeries.put(islandIndex, islandData);
-                    dataSet.addSeries(islandData);
-                }
-                islandData.add(islandData.getItemCount(), populationData.getBestCandidateFitness());
+                    public void run()
+                    {
+                        synchronized (values)
+                        {
+                            for (Integer i = values.size(); i <= islandIndex; i++)
+                            {
+                                values.put(i, 0.0d);
+                                dataSet.addValue(0, "Fittest", i);
+                            }
+                        }
+                    }
+                });
             }
-        });
+            catch (InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+            }
+            catch (InvocationTargetException ex)
+            {
+                throw new IllegalStateException(ex.getCause());
+            }
+        }
+
+        // Only queue a GUI update if it is actually necessary.
+        Double oldValue = values.put(islandIndex, populationData.getBestCandidateFitness());
+        if (oldValue == null || oldValue != populationData.getBestCandidateFitness())
+        {
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    dataSet.setValue(populationData.getBestCandidateFitness(), "Fittest", (Integer) islandIndex);
+                }
+            });
+        }
     }
 
 

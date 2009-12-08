@@ -220,18 +220,19 @@ public class IslandEvolution<T>
 
                 migration.migrate(evaluatedPopulations, migrantCount, rng);
 
-                islandPopulations.clear();
-                for (List<EvaluatedCandidate<T>> evaluatedPopulation : evaluatedPopulations)
-                {
-                    islandPopulations.add(EvolutionUtils.toCandidateList(evaluatedPopulation));
-                }
-                
+                EvolutionUtils.sortEvaluatedPopulation(evaluatedCombinedPopulation, naturalFitness);
                 data = EvolutionUtils.getPopulationData(evaluatedCombinedPopulation,
                                                         naturalFitness,
                                                         eliteCount,
                                                         currentEpochIndex,
                                                         startTime);
                 notifyPopulationChange(data);
+
+                islandPopulations.clear();
+                for (List<EvaluatedCandidate<T>> evaluatedPopulation : evaluatedPopulations)
+                {
+                    islandPopulations.add(EvolutionUtils.toCandidateList(evaluatedPopulation));
+                }
                 ++currentEpochIndex;
             }
             catch (InterruptedException ex)
@@ -244,7 +245,6 @@ public class IslandEvolution<T>
             }
             satisfiedConditions = EvolutionUtils.shouldContinue(data, conditions);
         }
-        EvolutionUtils.sortEvaluatedPopulation(evaluatedCombinedPopulation, naturalFitness);
         threadPool.shutdownNow();
 
         this.satisfiedTerminationConditions = satisfiedConditions;
