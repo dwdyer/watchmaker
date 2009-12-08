@@ -15,11 +15,16 @@
 // ============================================================================
 package org.uncommons.watchmaker.swing.evolutionmonitor;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 
@@ -35,7 +40,8 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
     private final JLabel populationLabel = new JLabel("N/A", JLabel.RIGHT);
     private final JLabel elitismLabel = new JLabel("N/A", JLabel.RIGHT);
 
-    private volatile int islandPopulationSize = -1;
+    private final AtomicInteger islandPopulationSize = new AtomicInteger(-1);
+    private final AtomicLong startTime = new AtomicLong(-1);
 
     public StatusBar()
     {
@@ -74,16 +80,19 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
 
     public void populationUpdate(final PopulationData<?> populationData)
     {
+        configure(populationData);
+
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()
             {
                 if (populationData.getGenerationNumber() == 0)
                 {
-                    if (islandPopulationSize > 0)
+                    int islandSize = islandPopulationSize.get();
+                    if (islandSize > 0)
                     {
-                        int islandCount = populationData.getPopulationSize() / islandPopulationSize;
-                        populationLabel.setText(islandCount + "x" + islandPopulationSize);
+                        int islandCount = populationData.getPopulationSize() / islandSize;
+                        populationLabel.setText(islandCount + "x" + islandSize);
                         elitismLabel.setText(islandCount + "x" + populationData.getEliteCount());
                     }
                     else
@@ -93,7 +102,6 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
                     }
                 }
                 generationsLabel.setText(String.valueOf(populationData.getGenerationNumber() + 1));
-                timeLabel.setText(formatTime(populationData.getElapsedTime()));
             }
         });
     }
@@ -102,7 +110,33 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
     public void islandPopulationUpdate(int islandIndex,
                                        PopulationData<? extends Object> populationData)
     {
-        islandPopulationSize = populationData.getPopulationSize();
+        configure(populationData);
+    }
+
+
+    /**
+     * Once we receive the first notification, we have a better idea of what the configuration is.
+     * We start the time elapsed timer and set the island population size.
+     */
+    private void configure(PopulationData<? extends Object> populationData)
+    {
+        if (startTime.get() < 0) // Make sure the initialisation hasn't already been done.
+        {
+            boolean updated = startTime.compareAndSet(-1, System.currentTimeMillis() - populationData.getElapsedTime());
+            if (updated)
+            {
+                Timer timer = new Timer(1000, new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent ev)
+                    {
+                        timeLabel.setText(formatTime(System.currentTimeMillis() - startTime.get()));
+                    }
+                });
+                timer.setInitialDelay(0);
+                timer.start();
+                islandPopulationSize.set(populationData.getPopulationSize());
+            }
+        }
     }
 
 
