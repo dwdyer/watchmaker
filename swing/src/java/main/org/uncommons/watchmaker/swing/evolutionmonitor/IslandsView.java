@@ -25,6 +25,8 @@ import javax.swing.SwingUtilities;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.uncommons.watchmaker.framework.PopulationData;
@@ -39,13 +41,15 @@ class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
 {
     private final DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 
-    private final Map<Integer, Double> values = Collections.synchronizedMap(new HashMap <Integer, Double>());
+    private final Map<Integer, Double> values = Collections.synchronizedMap(new HashMap<Integer, Double>());
+    private final JFreeChart chart;
 
+    private double max = 0;
 
     IslandsView()
     {
         super(new BorderLayout());
-        JFreeChart chart = ChartFactory.createBarChart("Fittest Candidate by Island",
+        chart = ChartFactory.createBarChart("Fittest Candidate by Island",
                                                        "Island No.",
                                                        "Best Candidate Fitness",
                                                        dataSet,
@@ -53,6 +57,7 @@ class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
                                                        false,
                                                        false,
                                                        false);
+        ((CategoryPlot) chart.getPlot()).getRangeAxis().setAutoRange(false);
         ChartPanel chartPanel = new ChartPanel(chart,
                                                ChartPanel.DEFAULT_WIDTH,
                                                ChartPanel.DEFAULT_HEIGHT,
@@ -111,7 +116,16 @@ class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
             {
                 public void run()
                 {
+                    chart.setNotify(false);
                     dataSet.setValue(populationData.getBestCandidateFitness(), "Fittest", (Integer) islandIndex);
+                    ValueAxis rangeAxis = ((CategoryPlot) chart.getPlot()).getRangeAxis();
+                    // If the range is not sufficient to display all values, enlarge it.
+                    max = Math.max(max, populationData.getBestCandidateFitness());
+                    while (max > rangeAxis.getUpperBound())
+                    {
+                        rangeAxis.setUpperBound(rangeAxis.getUpperBound() * 2);
+                    }
+                    chart.setNotify(true);
                 }
             });
         }
