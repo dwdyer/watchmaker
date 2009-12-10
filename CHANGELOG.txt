@@ -45,9 +45,6 @@ Changes in version 0.7.0
 * Added islands view to the evolution monitor so that the state of individual
   island populations can be tracked.
 
-* Improved status bar so that the elapsed time field is updated every second,
-  regardless of whether a notification was received.
-
 
 Changes in version 0.6.2
 ------------------------

@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 public class SwingGPTreeRendererTest
 {
     // There's not much we can effectively test for this class, but we can at least
-    // make sure the generated component is the correct dimensions.
+    // make sure the generated component has the correct dimensions.
     @Test
     public void testSizes()
     {

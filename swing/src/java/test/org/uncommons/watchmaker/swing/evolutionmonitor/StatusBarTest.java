@@ -72,6 +72,32 @@ public class StatusBarTest
         assert frameFixture.label("Time").text().equals("10:10:10") : "Wrong value for elapsed time label.";
     }
 
+
+    @Test(groups = "display-required") // Will fail if run in a headless environment.
+    public void testFieldUpdatesForIslandMode()
+    {
+        StatusBar statusBar = new StatusBar(true);
+        JFrame frame = new JFrame();
+        frame.add(statusBar, BorderLayout.CENTER);
+        FrameFixture frameFixture = new FrameFixture(robot, frame);
+        frame.setSize(400, 30);
+        frame.validate();
+        frameFixture.show();
+
+        assert frameFixture.label("Population").text().equals("N/A") : "Wrong initial text for population label.";
+        assert frameFixture.label("Elitism").text().equals("N/A") : "Wrong initial text for elitism label.";
+        assert frameFixture.label("Generations").text().equals("N/A") : "Wrong initial text for generations label.";
+        assert frameFixture.label("Time").text().equals("N/A") : "Wrong initial text for elapsed time label.";
+
+        statusBar.islandPopulationUpdate(0, new PopulationData<Object>(new Object(), 10, 8, 2, true, 10, 1, 0, 36610000));
+        statusBar.populationUpdate(new PopulationData<Object>(new Object(), 10, 8, 2, true, 50, 1, 0, 36610000));
+        assert frameFixture.label("Population").text().equals("5x10") : "Wrong value for popluation label.";
+        assert frameFixture.label("Elitism").text().equals("5x1") : "Wrong value for elitism label.";
+        // Generation count is number + 1 (because generations start at zero).
+        assert frameFixture.label("Generations").text().equals("1") : "Wrong value for generations label.";
+        assert frameFixture.label("Time").text().equals("10:10:10") : "Wrong value for elapsed time label.";
+    }
+
     
     @Test(groups = "display-required") // Will fail if run in a headless environment.
     public void testTimeFormat()

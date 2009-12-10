@@ -90,7 +90,7 @@ public class EvolutionMonitorTest
           groups = "display-required") // Will fail if run in a headless environment.
     public void testShowInFrameThenShowInDialog()
     {
-        EvolutionMonitor<String> monitor = new EvolutionMonitor<String>();
+        EvolutionMonitor<String> monitor = new EvolutionMonitor<String>(true);
         monitor.showInFrame("MonitorFrame", false);
         robot.waitForIdle();
         // There ought to be a visible frame containing the evolution monitor.
