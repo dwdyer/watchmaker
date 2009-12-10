@@ -89,9 +89,9 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
                 if (populationData.getGenerationNumber() == 0)
                 {
                     int islandSize = islandPopulationSize.get();
-                    if (islandSize > 0)
+                    int islandCount = populationData.getPopulationSize() / islandSize;
+                    if (islandCount > 1)
                     {
-                        int islandCount = populationData.getPopulationSize() / islandSize;
                         populationLabel.setText(islandCount + "x" + islandSize);
                         elitismLabel.setText(islandCount + "x" + populationData.getEliteCount());
                     }
