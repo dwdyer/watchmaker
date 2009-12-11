@@ -18,7 +18,6 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 import java.util.HashMap;
 import java.util.Map;
 import org.testng.annotations.Test;
-import org.uncommons.watchmaker.gp.trees.Node;
 
 /**
  * Test for the {@link GeneticProgrammingExample} example application.

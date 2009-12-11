@@ -85,7 +85,6 @@
         </fileset>
         <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
         <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
-        <group title="Watchmaker Genetic Programming (Experimental)" packages="org.uncommons.watchmaker.gp:org.uncommons.watchmaker.gp.*"/>
         <header><![CDATA[Watchmaker Framework API<br><small>(Version ${version})</small>]]></header>
         <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
         <link href="https://uncommons-maths.dev.java.net/nonav/api/"/>        
@@ -113,7 +112,6 @@
     <delete dir="${temp.dir}" />
     <uncommons:clean module="examples" />
     <uncommons:clean module="framework" />
-    <uncommons:clean module="gp" />
     <uncommons:clean module="swing" />
     <uncommons:clean module="book" />
   </target>
@@ -124,15 +122,6 @@
           description="Build the framework module.">
     <uncommons:compile module="framework" />
     <uncommons:jar module="framework" jarfile="${artifact.identifier}.jar" />
-  </target>
-
-
-  <!-- Builds the experimental Genetic Programming module. -->
-  <target name="gp"
-          depends="framework"
-          description="Experimental Genetic Programming module.">
-    <uncommons:compile module="gp" />
-    <uncommons:jar module="gp" jarfile="watchmaker-gp-${version}.jar" />
   </target>
 
 
@@ -147,7 +136,7 @@
 
   <!-- Builds the examples JAR, which depends on each of the other modules. -->
   <target name="examples"
-          depends="framework, gp, swing"
+          depends="framework, swing"
           description="Build the examples.">
     <uncommons:compile module="examples" />
     <uncommons:jar module="examples"
@@ -159,7 +148,7 @@
 
   <!-- Copy all necessary files to distribution directory. -->
   <target name="dist"
-          depends="framework, gp, swing, examples"
+          depends="framework, swing, examples"
           description="Generate the project distribution." >
     <mkdir dir="${dist.dir}" />
     <copy todir="${dist.dir}" flatten="true">
@@ -234,10 +223,6 @@
                             username="${maven.user}"
                             password="${maven.password}"/>
     <uncommons:maven-deploy module="swing"
-                            version="${version}"
-                            username="${maven.user}"
-                            password="${maven.password}"/>
-    <uncommons:maven-deploy module="gp"
                             version="${version}"
                             username="${maven.user}"
                             password="${maven.password}"/>

@@ -28,11 +28,6 @@ import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
-import org.uncommons.watchmaker.gp.trees.Node;
-import org.uncommons.watchmaker.gp.trees.Simplification;
-import org.uncommons.watchmaker.gp.trees.TreeCrossover;
-import org.uncommons.watchmaker.gp.trees.TreeFactory;
-import org.uncommons.watchmaker.gp.trees.TreeMutation;
 
 /**
  * Simple tree-based genetic programming application based on the first example

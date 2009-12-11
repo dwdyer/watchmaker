@@ -15,12 +15,6 @@
     </packages>
   </test>
 
-  <test name="Genetic Programming" >
-    <packages>
-      <package name="org.uncommons.watchmaker.gp.*" />
-    </packages>
-  </test>
-
   <test name="Examples" >
     <packages>
       <package name="org.uncommons.watchmaker.examples.*" />

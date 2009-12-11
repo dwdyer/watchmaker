@@ -10,9 +10,6 @@ Changes in version 0.7.0
   evolutionary algorithm variants.  Evolution engines should now typically be
   created using the static factory methods of the EvolutionEngine class.
 
-* Introduced experimental Genetic Programming module based on the classes that
-  were previously part of the GP example program.
-
 * Added SigmaScaling selection strategy.
 
 * Changed EvolutionMonitor to use invokeAndWait.  Means that GUI updates
@@ -44,6 +41,8 @@ Changes in version 0.7.0
 
 * Added islands view to the evolution monitor so that the state of individual
   island populations can be tracked.
+
+* Introduced Swing renderer for example GP trees.
 
 
 Changes in version 0.6.2
