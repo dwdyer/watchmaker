@@ -30,9 +30,14 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
  */
 public class SwingGPTreeRenderer implements Renderer<Node, JComponent>
 {
-    public JComponent render(Node entity)
+    /**
+     * Renders a GP tree as a Swing component.
+     * @param tree The root node of the GP tree to render.
+     * @return A {@link JComponent} that displays a graphical representation of the tree.
+     */
+    public JComponent render(Node tree)
     {
-        return new GPTreeView(entity);
+        return new GPTreeView(tree);
     }
 
 
@@ -87,9 +92,19 @@ public class SwingGPTreeRenderer implements Renderer<Node, JComponent>
             if (node instanceof Constant)
             {
                 graphics.setColor(Color.YELLOW);
-                graphics.fillRoundRect(start - (NODE_WIDTH / 2 - 2), y, NODE_WIDTH - 4, CIRCLE_DIAMETER, CIRCLE_RADIUS, CIRCLE_RADIUS);
+                graphics.fillRoundRect(start - (NODE_WIDTH / 2 - 2),
+                                       y,
+                                       NODE_WIDTH - 4,
+                                       CIRCLE_DIAMETER,
+                                       CIRCLE_RADIUS,
+                                       CIRCLE_RADIUS);
                 graphics.setColor(Color.BLACK);
-                graphics.drawRoundRect(start - (NODE_WIDTH / 2 - 2), y, NODE_WIDTH - 4, CIRCLE_DIAMETER, CIRCLE_RADIUS, CIRCLE_RADIUS);
+                graphics.drawRoundRect(start - (NODE_WIDTH / 2 - 2),
+                                       y,
+                                       NODE_WIDTH - 4,
+                                       CIRCLE_DIAMETER,
+                                       CIRCLE_RADIUS,
+                                       CIRCLE_RADIUS);
             }
             else if (node instanceof Parameter)
             {

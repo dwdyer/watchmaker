@@ -46,6 +46,18 @@ public class Launcher
         EXAMPLES.put("sudoku", SudokuApplet.class);
     }
 
+
+    private Launcher()
+    {
+        // Prevents instantiation of launcher class.
+    }
+
+    
+    /**
+     * Launch the specified example application from the command-line.
+     * @param args First item is the name of the example to run.  Any subsequent arguments are passed
+     * on to the specific example.
+     */
     public static void main(String[] args)
     {
         Class<?> exampleClass = args.length > 0 ? EXAMPLES.get(args[0]) : null;

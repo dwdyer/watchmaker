@@ -27,6 +27,7 @@ import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 /**
  * An evolutionary operator that randomly reverses a subsection of a list.
  * @author Daniel Dyer
+ * @param <T> The type of entity being evolved.
  */
 public class ListInversion<T> implements EvolutionaryOperator<List<T>>
 {

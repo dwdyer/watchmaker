@@ -37,6 +37,7 @@ public class RingMigration implements Migration
      * @param migrantCount The number of (randomly selected) individuals to be moved on from
      * each island.
      * @param rng A source of randomness.
+     * @param <T> The type of entity being evolved.
      */
     public <T> void migrate(List<List<EvaluatedCandidate<T>>> islandPopulations, int migrantCount, Random rng)
     {

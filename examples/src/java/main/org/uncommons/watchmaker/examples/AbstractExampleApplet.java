@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.examples;
 
 import java.awt.Container;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -28,6 +29,9 @@ import javax.swing.UIManager;
  */
 public abstract class AbstractExampleApplet extends JApplet
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void init()
     {
@@ -55,16 +59,22 @@ public abstract class AbstractExampleApplet extends JApplet
                     }
                     catch (Exception ex)
                     {
+                        // This should never happen as we are installing a known look-and-feel.
                         System.err.println("Failed to load System look-and-feel.");
                     }
                     prepareGUI(container);
                 }
             });
         }
-        catch (Exception ex)
+        catch (InterruptedException ex)
         {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(container, ex, "Error Occurred", JOptionPane.ERROR_MESSAGE);
+            // Restore interrupt flag.
+            Thread.currentThread().interrupt();
+        }
+        catch (InvocationTargetException ex)
+        {
+            ex.getCause().printStackTrace();
+            JOptionPane.showMessageDialog(container, ex.getCause(), "Error Occurred", JOptionPane.ERROR_MESSAGE);
         }
     }
 

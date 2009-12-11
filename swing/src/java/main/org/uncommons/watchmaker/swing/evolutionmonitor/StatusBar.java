@@ -38,6 +38,10 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
 
     private final AtomicInteger islandPopulationSize = new AtomicInteger(-1);
 
+
+    /**
+     * Creates a status bar configured for non-island evolution.
+     */
     public StatusBar()
     {
         this(false);
@@ -73,6 +77,9 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void populationUpdate(final PopulationData<?> populationData)
     {
         SwingUtilities.invokeLater(new Runnable()
@@ -101,6 +108,9 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void islandPopulationUpdate(int islandIndex,
                                        final PopulationData<? extends Object> populationData)
     {

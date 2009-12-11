@@ -22,6 +22,7 @@ import org.uncommons.watchmaker.framework.PopulationData;
  * A specialisation of {@link org.uncommons.watchmaker.framework.EvolutionObserver} that, as well as
  * receiving global population updates (at the end of each epoch), can receive individual island
  * population updates (at the end of each generation on each island).
+ * @param <T> The type of entity being evolved.
  * @author Daniel Dyer
  */
 public interface IslandEvolutionObserver<T> extends EvolutionObserver<T>

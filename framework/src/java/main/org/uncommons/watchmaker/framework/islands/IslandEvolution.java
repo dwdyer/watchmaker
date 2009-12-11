@@ -41,6 +41,7 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
 /**
  * An implementation of island evolution in which multiple independent populations are evolved in
  * parallel with periodic migration of individuals between islands.
+ * @param <T> The type of entity that is to be evolved.
  * @author Daniel Dyer
  */
 public class IslandEvolution<T>
@@ -93,31 +94,6 @@ public class IslandEvolution<T>
 
 
     /**
-     * Helper method used by the constructor to create the individual islands if they haven't
-     * been provided already (via the other constructor).
-     */
-    private static <T> List<EvolutionEngine<T>> createIslands(int islandCount,
-                                                              CandidateFactory<T> candidateFactory,
-                                                              EvolutionaryOperator<T> evolutionScheme,
-                                                              FitnessEvaluator<? super T> fitnessEvaluator,
-                                                              SelectionStrategy<? super T> selectionStrategy,
-                                                              Random rng)
-    {
-        List<EvolutionEngine<T>> islands = new ArrayList<EvolutionEngine<T>>(islandCount);
-        for (int i = 0; i < islandCount; i++)
-        {
-            islands.add(EvolutionEngine.createGenerationalEvolutionEngine(candidateFactory,
-                                                                          evolutionScheme,
-                                                                          fitnessEvaluator,
-                                                                          selectionStrategy,
-                                                                          rng,
-                                                                          false)); // Concurrency does not need to be more fine-grained than one thread per island.
-        }
-        return islands;
-    }
-
-
-    /**
      * Create an island evolution system from a list of pre-configured islands.  This constructor
      * gives more control over the configuration of individual islands than the alternative constructor.
      * The other constructor should be used where possible to avoid having to explicitly create each
@@ -126,9 +102,10 @@ public class IslandEvolution<T>
      * @param migration A migration strategy for moving individuals between islands at the
      * end of an epoch.
      * @param naturalFitness If true, indicates that higher fitness values mean fitter
-     * individuals.  If false, indicates that fitter individuals will have lower scores. 
+     * individuals.  If false, indicates that fitter individuals will have lower scores.
      * @param rng A source of randomness, used by all islands.
-     * @see #IslandEvolution(int, Migration, CandidateFactory, EvolutionaryOperator, FitnessEvaluator, SelectionStrategy, Random) 
+     * @see #IslandEvolution(int, Migration, CandidateFactory, EvolutionaryOperator, FitnessEvaluator,
+     * SelectionStrategy, Random)
      */
     public IslandEvolution(List<EvolutionEngine<T>> islands,
                            Migration migration,
@@ -155,6 +132,31 @@ public class IslandEvolution<T>
                 }
             });
         }
+    }
+
+
+    /**
+     * Helper method used by the constructor to create the individual islands if they haven't
+     * been provided already (via the other constructor).
+     */
+    private static <T> List<EvolutionEngine<T>> createIslands(int islandCount,
+                                                              CandidateFactory<T> candidateFactory,
+                                                              EvolutionaryOperator<T> evolutionScheme,
+                                                              FitnessEvaluator<? super T> fitnessEvaluator,
+                                                              SelectionStrategy<? super T> selectionStrategy,
+                                                              Random rng)
+    {
+        List<EvolutionEngine<T>> islands = new ArrayList<EvolutionEngine<T>>(islandCount);
+        for (int i = 0; i < islandCount; i++)
+        {
+            islands.add(EvolutionEngine.createGenerationalEvolutionEngine(candidateFactory,
+                                                                          evolutionScheme,
+                                                                          fitnessEvaluator,
+                                                                          selectionStrategy,
+                                                                          rng,
+                                                                          false)); // Concurrency does not need to be more fine-grained than one thread per island.
+        }
+        return islands;
     }
 
 

@@ -55,7 +55,8 @@ public class EvolutionEngine<T>
      * individuals.  If false, indicates that fitter individuals will have lower scores.
      * @param rng The source of randomness used by all stochastic processes (including
      * evolutionary operators and selection strategies).
-     * @see #createGenerationalEvolutionEngine(CandidateFactory, EvolutionaryOperator, FitnessEvaluator, SelectionStrategy, Random, boolean)
+     * @see #createGenerationalEvolutionEngine(CandidateFactory, EvolutionaryOperator, FitnessEvaluator,
+     * SelectionStrategy, Random, boolean)
      * @see #createInteractiveEvolutionEngine(CandidateFactory, EvolutionaryOperator, InteractiveSelection, Random)
      */
     public EvolutionEngine(CandidateFactory<T> candidateFactory,
@@ -354,6 +355,9 @@ public class EvolutionEngine<T>
      * be evolved.
      * @param rng The source of randomness used by all stochastic processes (including
      * evolutionary operators and selection strategies).
+     * @param multiThreaded Whether or not the evolution engine should use concurrent fitness evaluations.
+     * @param <T> The type of entity that is to be evolved.
+     * @return An appropriately-configured {@link EvolutionEngine}.
      */
     public static <T> EvolutionEngine<T> createGenerationalEvolutionEngine(CandidateFactory<T> candidateFactory,
                                                                            EvolutionaryOperator<T> evolutionScheme,
@@ -385,6 +389,8 @@ public class EvolutionEngine<T>
      * console.
      * @param rng The source of randomness used by all stochastic processes (including
      * evolutionary operators and selection strategies).
+     * @param <T> The type of entity that is to be evolved.
+     * @return An appropriately-configured {@link EvolutionEngine}.
      */
     public static <T> EvolutionEngine<T> createInteractiveEvolutionEngine(CandidateFactory<T> candidateFactory,
                                                                           EvolutionaryOperator<T> evolutionScheme,
@@ -456,6 +462,8 @@ public class EvolutionEngine<T>
      * the evolutionary operator(s).
      * @param rng The source of randomness used by all stochastic processes (including
      * evolutionary operators and selection strategies).
+     * @param <T> The type of entity that is to be evolved.
+     * @return An appropriately-configured {@link EvolutionEngine}.
      */
     public static <T> EvolutionEngine<T> createSteadyStateEvolutionEngine(CandidateFactory<T> candidateFactory,
                                                                           EvolutionaryOperator<T> evolutionScheme,

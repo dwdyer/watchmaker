@@ -24,6 +24,8 @@ import java.util.Random;
  * where a population is changed incrementally, with one individual evolved at a time.  This
  * differs from {@link GenerationalEvolution} in which the entire population is evolved in
  * parallel.
+ *
+ * @param <T> The type of entity that is to be evolved.
  * @see GenerationalEvolution
  * @author Daniel Dyer
  */

@@ -87,6 +87,7 @@ public class FitnessEvaluationWorker
      * Entry-point for running this class standalone, as an additional node for fitness evaluations.
      * If this method is invoked without using Terracotta (or similar) to share the work queue, the
      * program will do nothing.
+     * @param args Program arguments, should be empty.
      */
     public static void main(String[] args)
     {

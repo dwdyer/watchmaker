@@ -222,6 +222,9 @@ public class IfThenElse implements Node
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString()
     {

@@ -26,7 +26,7 @@ import org.uncommons.maths.statistics.DataSet;
  * avoid duplication of this logic among multiple evolution implementations.
  * @author Daniel Dyer
  */
-public class EvolutionUtils
+public final class EvolutionUtils
 {
     private EvolutionUtils()
     {
@@ -34,6 +34,17 @@ public class EvolutionUtils
     }
 
 
+    /**
+     * Given data about the current population and a set of termination conditions, determines
+     * whether or not the evolution should continue.
+     * @param data The current state of the population.
+     * @param conditions One or more termination conditions.  The evolution should not continue if
+     * any of these is satisfied.
+     * @param <T> The type of entity that is being evolved.
+     * @return A list of satisfied termination conditions if the evolution has reached some
+     * pre-specified state, an empty list if the evolution should stop because of a thread
+     * interruption, or null if the evolution should continue.
+     */
     public static <T> List<TerminationCondition> shouldContinue(PopulationData<T> data,
                                                                 TerminationCondition... conditions)
     {
@@ -62,6 +73,8 @@ public class EvolutionUtils
      * order of scores for non-natural scores).
      *
      * @param evaluatedPopulation The population to be sorted (in-place).
+     * @param naturalFitness True if higher fitness scores mean fitter individuals, false otherwise.
+     * @param <T> The type of entity that is being evolved.
      */
     public static <T> void sortEvaluatedPopulation(List<EvaluatedCandidate<T>> evaluatedPopulation,
                                                    boolean naturalFitness)
@@ -83,6 +96,7 @@ public class EvolutionUtils
      * Convert a list of {@link EvaluatedCandidate}s into a simple list of candidates.
      * @param evaluatedCandidates The population of candidate objects to relieve of their
      * evaluation wrappers.
+     * @param <T> The type of entity that is being evolved.
      * @return The candidates, stripped of their fitness scores.
      */
     public static <T> List<T> toCandidateList(List<EvaluatedCandidate<T>> evaluatedCandidates)
@@ -103,7 +117,12 @@ public class EvolutionUtils
      *
      * @param evaluatedPopulation Population of candidate solutions with their
      * associated fitness scores.
+     * @param naturalFitness True if higher fitness scores mean fitter individuals, false otherwise.
      * @param eliteCount The number of candidates preserved via elitism.
+     * @param iterationNumber The zero-based index of the current generation/epoch.
+     * @param startTime The time at which the evolution began, expressed as a number of milliseconds since
+     * 00:00 on 1st January 1970.
+     * @param <T> The type of entity that is being evolved.
      * @return Statistics about the current generation of evolved individuals.
      */
     public static <T> PopulationData<T> getPopulationData(List<EvaluatedCandidate<T>> evaluatedPopulation,

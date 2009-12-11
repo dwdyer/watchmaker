@@ -39,8 +39,8 @@ import java.util.concurrent.Future;
  * restrictions on concurrency, applications should enable multi-threading for improved
  * performance.</p>
  *
- * @see SteadyStateEvolution 
- *
+ * @param <T> The type of entity that is to be evolved.
+ * @see SteadyStateEvolution
  * @author Daniel Dyer
  */
 public class GenerationalEvolution<T> implements PopulationEvolution<T>
@@ -51,7 +51,15 @@ public class GenerationalEvolution<T> implements PopulationEvolution<T>
     private final FitnessEvaluator<? super T> fitnessEvaluator;
     private final SelectionStrategy<? super T> selectionStrategy;
 
-
+    /**
+     * @param evolutionScheme The combination of evolutionary operators used to evolve
+     * the population at each generation.
+     * @param fitnessEvaluator A function for assigning fitness scores to candidate
+     * solutions.
+     * @param selectionStrategy A strategy for selecting which candidates survive to
+     * be evolved.
+     * @param multiThreaded Whether or not the evolution engine should use concurrent fitness evaluations.
+     */
     GenerationalEvolution(EvolutionaryOperator<T> evolutionScheme,
                           FitnessEvaluator<? super T> fitnessEvaluator,
                           SelectionStrategy<? super T> selectionStrategy,
