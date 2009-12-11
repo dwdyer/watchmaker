@@ -130,7 +130,7 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         tabs.add("Fittest Individual", candidateView);
         views.add(candidateView);
 
-        PopulationFitnessView fitnessView = new PopulationFitnessView();
+        PopulationFitnessView fitnessView = new PopulationFitnessView(islands);
         tabs.add(islands ? "Global Population" : "Population Fitness", fitnessView);
         views.add(fitnessView);
 

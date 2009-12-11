@@ -46,7 +46,7 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
     private static final int SHOW_FIXED_GENERATIONS = 200;
 
     private final XYSeries bestSeries = new XYSeries("Fittest Individual");
-    private final XYSeries meanSeries = new XYSeries("Population Mean Fitness");
+    private final XYSeries meanSeries;
     private final XYSeriesCollection dataSet = new XYSeriesCollection();
     private final ValueAxis domainAxis;
     private final ValueAxis rangeAxis;
@@ -59,13 +59,14 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
     private double minY = 0;
 
 
-    PopulationFitnessView()
+    PopulationFitnessView(boolean islands)
     {
         super(new BorderLayout());
+        meanSeries = new XYSeries(islands ? "Global Mean Fitness" : "Population Mean Fitness");
         dataSet.addSeries(bestSeries);
         dataSet.addSeries(meanSeries);
-        chart = ChartFactory.createXYLineChart("Population Fitness",
-                                               "Generations",
+        chart = ChartFactory.createXYLineChart(islands ? "Global Population Fitness" : "Population Fitness",
+                                               islands ? "Epochs" : "Generations",
                                                "Fitness",
                                                dataSet,
                                                PlotOrientation.VERTICAL,
@@ -93,7 +94,7 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
                                                false, // Zoom
                                                false); // Tooltips
         add(chartPanel, BorderLayout.CENTER);
-        add(createControls(), BorderLayout.SOUTH);
+        add(createControls(islands), BorderLayout.SOUTH);
     }
 
 
@@ -101,7 +102,7 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
      * Creates the GUI controls for toggling graph display options.
      * @return A component that can be added to the main panel.
      */
-    private JComponent createControls()
+    private JComponent createControls(boolean islands)
     {
         JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -112,7 +113,8 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
                 updateDomainAxisRange();
             }
         });
-        JRadioButton recentDataButton = new JRadioButton("Last " + SHOW_FIXED_GENERATIONS + " Generations", true);
+        String text = "Last " + SHOW_FIXED_GENERATIONS + (islands ? " Epochs" : " Generations");
+        JRadioButton recentDataButton = new JRadioButton(text, true);
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(allDataButton);
         buttonGroup.add(recentDataButton);
