@@ -438,8 +438,22 @@ public class EvolutionEngine<T>
      * the population at each generation.
      * @param fitnessEvaluator A function for assigning fitness scores to candidate
      * solutions.
-     * @param selectionStrategy A strategy for selecting which candidates survive to
-     * be evolved.
+     * @param selectionStrategy A strategy for selecting which candidates to use as parents
+     * for evolved offspring.
+     * @param selectionSize How many parent candidates are required by the evolution scheme.
+     * This controls how many individuals will be provided to the evolutionary operator at
+     * each iteration. If you are just using mutation, this will typically be 1.  For
+     * cross-over, two separate parents are required, so this must be set to 2.
+     * @param forceSingleCandidateUpdate Some evolutionary operators, specifically cross-over
+     * operators, generate more than one evolved individual.  A true steady-state algorithm will
+     * only replace one individual at a time.  Setting this parameter to true forces the evolution
+     * to discard any additional generated offspring so that for each iteration of the algorithm
+     * there is only one updated individual.  This allows cross-over operators that were designed
+     * for generational evolutionary algorithms to be reused for steady-state evolution.  A more
+     * efficient, but less straightforward, alternative would be to implement a steady-state-specific
+     * cross-over operator that returns only a single evolved individual.  Setting this parameter to
+     * false permits multiple candidates to be replaced per iteration, depending on the specifics of
+     * the evolutionary operator(s).
      * @param rng The source of randomness used by all stochastic processes (including
      * evolutionary operators and selection strategies).
      */
@@ -448,12 +462,14 @@ public class EvolutionEngine<T>
                                                                           FitnessEvaluator<? super T> fitnessEvaluator,
                                                                           SelectionStrategy<? super T> selectionStrategy,
                                                                           int selectionSize,
+                                                                          boolean forceSingleCandidateUpdate,
                                                                           Random rng)
     {
         PopulationEvolution<T> evolution = new SteadyStateEvolution<T>(evolutionScheme,
                                                                        fitnessEvaluator,
                                                                        selectionStrategy,
-                                                                       selectionSize);
+                                                                       selectionSize,
+                                                                       forceSingleCandidateUpdate);
         return new EvolutionEngine<T>(candidateFactory,
                                       evolution,
                                       fitnessEvaluator.isNatural(),

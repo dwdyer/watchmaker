@@ -36,7 +36,8 @@ public class SteadyStateEvolutionTest
         PopulationEvolution<Integer> steadyState = new SteadyStateEvolution<Integer>(new IntegerAdjuster(5),
                                                                                      new NullFitnessEvaluator(),
                                                                                      new RouletteWheelSelection(),
-                                                                                     1);
+                                                                                     1,
+                                                                                     true);
         @SuppressWarnings("unchecked")
         List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 0),
                                                                      new EvaluatedCandidate<Integer>(1, 0),
@@ -59,13 +60,83 @@ public class SteadyStateEvolutionTest
     }
 
 
+    /**
+     * A single iteration might update multiple candidates if operators generate more than
+     * one evolved individual.
+     */
+    @Test(dependsOnMethods = "testIncrementalEvolution")
+    public void testMultipleCandidateUpdate()
+    {
+        PopulationEvolution<Integer> steadyState = new SteadyStateEvolution<Integer>(new IntegerAdjuster(5),
+                                                                                     new NullFitnessEvaluator(),
+                                                                                     new RouletteWheelSelection(),
+                                                                                     2,
+                                                                                     false); // Don't force single update.
+        @SuppressWarnings("unchecked")
+        List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 0),
+                                                                     new EvaluatedCandidate<Integer>(1, 0),
+                                                                     new EvaluatedCandidate<Integer>(1, 0),
+                                                                     new EvaluatedCandidate<Integer>(1, 0),
+                                                                     new EvaluatedCandidate<Integer>(1, 0));
+        List<EvaluatedCandidate<Integer>> evaluatedPopulation = steadyState.evolvePopulation(population,
+                                                                                             0,
+                                                                                             FrameworkTestUtils.getRNG());
+        assert evaluatedPopulation.size() == 5 : "Population size should be unchanged.";
+        int unchangedCount = 0;
+        for (EvaluatedCandidate<Integer> candidate : evaluatedPopulation)
+        {
+            if (candidate.getCandidate() == 1)
+            {
+                ++unchangedCount;
+            }
+        }
+        assert unchangedCount == 3 : "Should be 3 out of 5 candidates unchanged, is " + unchangedCount;
+    }
+
+
+    /**
+     * Even if the evolutionary operator generates multiple offspring, only a single individual should be
+     * replaced if the forceSingleUpdate flag is set.
+     */
+    @Test(dependsOnMethods = "testMultipleCandidateUpdate")
+    public void testForcedSingleCandidateUpdate()
+    {
+        PopulationEvolution<Integer> steadyState = new SteadyStateEvolution<Integer>(new IntegerAdjuster(5),
+                                                                                     new NullFitnessEvaluator(),
+                                                                                     new RouletteWheelSelection(),
+                                                                                     2,
+                                                                                     true); // Force single update.
+        @SuppressWarnings("unchecked")
+        List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 0),
+                                                                     new EvaluatedCandidate<Integer>(1, 0),
+                                                                     new EvaluatedCandidate<Integer>(1, 0),
+                                                                     new EvaluatedCandidate<Integer>(1, 0),
+                                                                     new EvaluatedCandidate<Integer>(1, 0));
+        List<EvaluatedCandidate<Integer>> evaluatedPopulation = steadyState.evolvePopulation(population,
+                                                                                             0,
+                                                                                             FrameworkTestUtils.getRNG());
+        assert evaluatedPopulation.size() == 5 : "Population size should be unchanged.";
+        int unchangedCount = 0;
+        for (EvaluatedCandidate<Integer> candidate : evaluatedPopulation)
+        {
+            if (candidate.getCandidate() == 1)
+            {
+                ++unchangedCount;
+            }
+        }
+        assert unchangedCount == 4 : "Should be 4 out of 5 candidates unchanged, is " + unchangedCount;
+    }
+
+
+
     @Test
     public void testElitism()
     {
         PopulationEvolution<Integer> steadyState = new SteadyStateEvolution<Integer>(new IntegerAdjuster(10),
                                                                                      new NullFitnessEvaluator(),
                                                                                      new RouletteWheelSelection(),
-                                                                                     1);
+                                                                                     1,
+                                                                                     true);
         @SuppressWarnings("unchecked")
         List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 1),
                                                                      new EvaluatedCandidate<Integer>(2, 2),

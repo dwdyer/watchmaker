@@ -33,11 +33,12 @@ public class SteadyStateEvolution<T> implements PopulationEvolution<T>
     private final FitnessEvaluator<? super T> fitnessEvaluator;
     private final SelectionStrategy<? super T> selectionStrategy;
     private final int selectionSize;
+    private final boolean forceSingleCandidateUpdate;
 
 
     /**
-     * Create a steady-state evolution strategy in which one or more evolved offspring
-     * replace randomly-chosen individuals.
+     * Create a steady-state evolution strategy in which one or more (usually just one) evolved
+     * offspring replace randomly-chosen individuals.
      * @param evolutionScheme The evolutionary operator that modifies the population.  The
      * number of candidates used as input is controlled by the {@code selectionSize} parameter.
      * The number of candidates that will be outputted depends on the implementation.  Typically
@@ -53,16 +54,28 @@ public class SteadyStateEvolution<T> implements PopulationEvolution<T>
      * This controls how many individuals will be provided to the evolutionary operator at
      * each iteration. If you are just using mutation, this will typically be 1.  For
      * cross-over, two separate parents are required, so this must be set to 2.
+     * @param forceSingleCandidateUpdate Some evolutionary operators, specifically cross-over
+     * operators, generate more than one evolved individual.  A true steady-state algorithm will
+     * only replace one individual at a time.  Setting this parameter to true forces the evolution
+     * to discard any additional generated offspring so that for each iteration of the algorithm
+     * there is only one updated individual.  This allows cross-over operators that were designed
+     * for generational evolutionary algorithms to be reused for steady-state evolution.  A more
+     * efficient, but less straightforward, alternative would be to implement a steady-state-specific
+     * cross-over operator that returns only a single evolved individual.  Setting this parameter to
+     * false permits multiple candidates to be replaced per iteration, depending on the specifics of
+     * the evolutionary operator(s).
      */
     public SteadyStateEvolution(EvolutionaryOperator<T> evolutionScheme,
                                 FitnessEvaluator<? super T> fitnessEvaluator,                                
                                 SelectionStrategy<? super T> selectionStrategy,
-                                int selectionSize)
+                                int selectionSize,
+                                boolean forceSingleCandidateUpdate)
     {
         this.fitnessEvaluator = fitnessEvaluator;
         this.evolutionScheme = evolutionScheme;
         this.selectionStrategy = selectionStrategy;
         this.selectionSize = selectionSize;
+        this.forceSingleCandidateUpdate = forceSingleCandidateUpdate;
     }
 
 
@@ -103,11 +116,23 @@ public class SteadyStateEvolution<T> implements PopulationEvolution<T>
                                  Random rng)
     {
         assert newCandidates.size() < existingPopulation.size() - eliteCount : "Too many new candidates for replacement.";
-        for (EvaluatedCandidate<T> candidate : newCandidates)
+        // If this is strictly steady-state (only one updated individual per iteration), then we can't keep multiple
+        // evolved individuals, so just pick one at random and use that.
+        if (newCandidates.size() > 1 && forceSingleCandidateUpdate)
         {
             // Replace a randomly selected individual, but not one of the "elite" individuals at the
             // beginning of the sorted population.
-            existingPopulation.set(rng.nextInt(existingPopulation.size() - eliteCount) + eliteCount, candidate);
+            existingPopulation.set(rng.nextInt(existingPopulation.size() - eliteCount) + eliteCount,
+                                   newCandidates.get(rng.nextInt(newCandidates.size())));
+        }
+        else
+        {
+            for (EvaluatedCandidate<T> candidate : newCandidates)
+            {
+                // Replace a randomly selected individual, but not one of the "elite" individuals at the
+                // beginning of the sorted population.
+                existingPopulation.set(rng.nextInt(existingPopulation.size() - eliteCount) + eliteCount, candidate);
+            }
         }
     }
 

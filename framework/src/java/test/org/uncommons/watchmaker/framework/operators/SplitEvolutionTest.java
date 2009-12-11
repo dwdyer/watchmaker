@@ -75,7 +75,7 @@ public class SplitEvolutionTest
     public void testNegativeWeight()
     {
         // Negative weight.
-        new SplitEvolution<Integer>(new IntegerAdjuster(1), new IntegerAdjuster(-1), -0.01d);
+        new SplitEvolution<Integer>(new IntegerAdjuster(1), new IdentityOperator<Integer>(), -0.01d);
     }
 
 
@@ -87,6 +87,6 @@ public class SplitEvolutionTest
     public void testWeightTooHigh()
     {
         // Weight too high (must be less than or equal to one).
-        new SplitEvolution<Integer>(new IntegerAdjuster(1), new IntegerAdjuster(-1), 1.01d);
+        new SplitEvolution<Integer>(new IntegerAdjuster(1), new IdentityOperator<Integer>(), 1.01d);
     }
 }
