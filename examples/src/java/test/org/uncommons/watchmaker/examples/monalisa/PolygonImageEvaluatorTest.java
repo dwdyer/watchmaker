@@ -73,4 +73,29 @@ public class PolygonImageEvaluatorTest
         double fitness = evaluator.getFitness(candidateImage, null);
         assert fitness > 0 : "Fitness should be non-zero when image does not match target.";
     }
+
+
+    /**
+     * If the image is not INT_RGB, it will be converted.  This should not affect the results.
+     */
+    @Test(groups = "display-required")
+    public void testImageConversion()
+    {
+        Dimension canvasSize = new Dimension(100, 100);
+        PolygonImageFactory factory = new PolygonImageFactory(canvasSize);
+        List<ColouredPolygon> image = factory.generateRandomCandidate(new MersenneTwisterRNG());
+
+        BufferedImage targetImage = new PolygonImageRenderer(canvasSize, false, null).render(image);
+        // Convert target image to some format that will have to be converted to INT_RGB.
+        BufferedImage newImage = new BufferedImage(targetImage.getWidth(),
+                                                   targetImage.getHeight(),
+                                                   BufferedImage.TYPE_3BYTE_BGR); // Sub-optimal image type.
+        newImage.getGraphics().drawImage(targetImage, 0, 0, null);
+
+        PolygonImageEvaluator evaluator = new PolygonImageEvaluator(newImage);
+
+        double fitness = evaluator.getFitness(image, null);
+        assert fitness == 0 : "Fitness should be zero when image is an exact match.";
+    }
+
 }

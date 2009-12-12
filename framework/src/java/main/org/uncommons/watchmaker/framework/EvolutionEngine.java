@@ -367,9 +367,9 @@ public class EvolutionEngine<T>
                                                                            boolean multiThreaded)
     {
         PopulationEvolution<T> evolution = new GenerationalEvolution<T>(evolutionScheme,
-                                                                       fitnessEvaluator,
-                                                                       selectionStrategy,
-                                                                       multiThreaded);
+                                                                        fitnessEvaluator,
+                                                                        selectionStrategy,
+                                                                        multiThreaded);
         return new EvolutionEngine<T>(candidateFactory,
                                       evolution,
                                       fitnessEvaluator.isNatural(),
@@ -399,9 +399,9 @@ public class EvolutionEngine<T>
     {
         FitnessEvaluator<? super T> fitnessEvaluator = new NullFitnessEvaluator();
         PopulationEvolution<T> evolution = new GenerationalEvolution<T>(evolutionScheme,
-                                                                       fitnessEvaluator,
-                                                                       selectionStrategy,
-                                                                       false);
+                                                                        fitnessEvaluator,
+                                                                        selectionStrategy,
+                                                                        false);
         return new EvolutionEngine<T>(candidateFactory,
                                       evolution,
                                       fitnessEvaluator.isNatural(),

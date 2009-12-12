@@ -236,5 +236,13 @@ public class MonaLisaApplet extends AbstractExampleApplet
             elitismSpinner.setEnabled(true);
             startButton.setEnabled(true);
         }
+
+
+        @Override
+        protected void onError(Throwable throwable)
+        {
+            super.onError(throwable);
+            postProcessing(null);
+        }
     }
 }
