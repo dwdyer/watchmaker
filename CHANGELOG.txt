@@ -10,6 +10,8 @@ Changes in version 0.7.0
   evolutionary algorithm variants.  Evolution engines should now typically be
   created using the static factory methods of the EvolutionEngine class.
 
+* Added first-class support for steady-state evolution.
+
 * Added SigmaScaling selection strategy.
 
 * Added ListInversion evolutionary operator.  Randomly reverses subsections of
@@ -37,7 +39,7 @@ Changes in version 0.7.0
   programs should now use higher probabilities accordingly).  How many bits get
   flipped is now controlled via a secondary parameter.
 
-* Upgraded to Google Collections 1.0 RC4.
+* Upgraded to Google Collections 1.0 RC5.
 
 * Introduced Swing renderer for example GP trees.
 
