@@ -43,6 +43,7 @@ import org.uncommons.watchmaker.examples.AbstractExampleApplet;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
@@ -104,10 +105,10 @@ public class BiomorphApplet extends AbstractExampleApplet
                                                                                               renderer,
                                                                                               populationSize,
                                                                                               1);
-                EvolutionEngine<Biomorph> engine = EvolutionEngine.createInteractiveEvolutionEngine(new BiomorphFactory(),
-                                                                                                    mutation,
-                                                                                                    selection,
-                                                                                                    new MersenneTwisterRNG());
+                EvolutionEngine<Biomorph> engine = new GenerationalEvolutionEngine<Biomorph>(new BiomorphFactory(),
+                                                                                             mutation,
+                                                                                             selection,
+                                                                                             new MersenneTwisterRNG());
                 engine.addEvolutionObserver(new GenerationTracker());
                 return engine.evolve(populationSize,
                                      0,

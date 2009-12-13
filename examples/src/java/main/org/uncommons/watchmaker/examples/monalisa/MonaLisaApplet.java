@@ -43,6 +43,7 @@ import org.uncommons.watchmaker.framework.CachingFitnessEvaluator;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
+import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
@@ -215,12 +216,11 @@ public class MonaLisaApplet extends AbstractExampleApplet
 
             SelectionStrategy<Object> selection = new TournamentSelection(selectionPressureControl.getNumberGenerator());
             EvolutionEngine<List<ColouredPolygon>> engine
-                = EvolutionEngine.createGenerationalEvolutionEngine(factory,
-                                                                    pipeline,
-                                                                    evaluator,
-                                                                    selection,
-                                                                    true,
-                                                                    rng);
+                = new GenerationalEvolutionEngine<List<ColouredPolygon>>(factory,
+                                                                         pipeline,
+                                                                         evaluator,
+                                                                         selection,
+                                                                         rng);
             engine.addEvolutionObserver(monitor);
 
             return engine.evolve(populationSize, eliteCount, terminationConditions);

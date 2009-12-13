@@ -26,11 +26,10 @@ import org.uncommons.watchmaker.framework.termination.ElapsedTime;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
- * Convenient base class that defines test cases for various implementations of
- * {@link EvolutionEngine}.
+ * Unit test for the {@link GenerationalEvolutionEngine} class.
  * @author Daniel Dyer
  */
-public class EvolutionEngineTest
+public class GenerationalEvolutionEngineTest
 {
     private EvolutionEngine<Integer> engine;
 
@@ -38,12 +37,11 @@ public class EvolutionEngineTest
     @BeforeMethod
     public void prepareEngine()
     {
-        this.engine = EvolutionEngine.createGenerationalEvolutionEngine(new StubIntegerFactory(),
-                                                                        new IntegerZeroMaker(),
-                                                                        new IntegerEvaluator(),
-                                                                        new RouletteWheelSelection(),
-                                                                        false,
-                                                                        FrameworkTestUtils.getRNG());
+        this.engine = new GenerationalEvolutionEngine<Integer>(new StubIntegerFactory(),
+                                                               new IntegerZeroMaker(),
+                                                               new IntegerEvaluator(),
+                                                               new RouletteWheelSelection(),
+                                                               FrameworkTestUtils.getRNG());
     }
 
 

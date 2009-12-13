@@ -26,6 +26,7 @@ import org.uncommons.watchmaker.framework.CandidateFactory;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.factories.ListPermutationFactory;
@@ -129,12 +130,11 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
         CandidateFactory<List<String>> candidateFactory
             = new ListPermutationFactory<String>(new LinkedList<String>(cities));
         EvolutionEngine<List<String>> engine
-            = EvolutionEngine.createGenerationalEvolutionEngine(candidateFactory,
-                                                                pipeline,
-                                                                new RouteEvaluator(distances),
-                                                                selectionStrategy,
-                                                                true,
-                                                                rng);
+            = new GenerationalEvolutionEngine<List<String>>(candidateFactory,
+                                                            pipeline,
+                                                            new RouteEvaluator(distances),
+                                                            selectionStrategy,
+                                                            rng);
         engine.addEvolutionObserver(new EvolutionObserver<List<String>>()
         {
             public void populationUpdate(PopulationData<? extends List<String>> data)

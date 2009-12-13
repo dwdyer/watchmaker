@@ -24,6 +24,7 @@ import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
@@ -74,12 +75,11 @@ public class GeneticProgrammingExample
         operators.add(new TreeCrossover());
         operators.add(new Simplification());
         TreeEvaluator evaluator = new TreeEvaluator(data);
-        EvolutionEngine<Node> engine = EvolutionEngine.createGenerationalEvolutionEngine(factory,
-                                                                                         new EvolutionPipeline<Node>(operators),
-                                                                                         evaluator,
-                                                                                         new RouletteWheelSelection(),
-                                                                                         true,
-                                                                                         new MersenneTwisterRNG());
+        EvolutionEngine<Node> engine = new GenerationalEvolutionEngine<Node>(factory,
+                                                                             new EvolutionPipeline<Node>(operators),
+                                                                             evaluator,
+                                                                             new RouletteWheelSelection(),
+                                                                             new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
         return engine.evolve(1000, 5, new TargetFitness(0d, evaluator.isNatural()));
     }

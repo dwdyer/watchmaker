@@ -33,6 +33,7 @@ import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
+import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.TerminationCondition;
@@ -149,12 +150,11 @@ public class IslandEvolution<T>
         List<EvolutionEngine<T>> islands = new ArrayList<EvolutionEngine<T>>(islandCount);
         for (int i = 0; i < islandCount; i++)
         {
-            islands.add(EvolutionEngine.createGenerationalEvolutionEngine(candidateFactory,
-                                                                          evolutionScheme,
-                                                                          fitnessEvaluator,
-                                                                          selectionStrategy,
-                                                                          false, // Concurrency does not need to be more fine-grained than one thread per island.
-                                                                          rng));
+            islands.add(new GenerationalEvolutionEngine<T>(candidateFactory,
+                                                           evolutionScheme,
+                                                           fitnessEvaluator,
+                                                           selectionStrategy,
+                                                           rng));
         }
         return islands;
     }

@@ -22,6 +22,7 @@ import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.factories.StringFactory;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
@@ -69,12 +70,11 @@ public final class StringsExample
         operators.add(new StringMutation(ALPHABET, new Probability(0.02d)));
         operators.add(new StringCrossover());
         EvolutionaryOperator<String> pipeline = new EvolutionPipeline<String>(operators);
-        EvolutionEngine<String> engine = EvolutionEngine.createGenerationalEvolutionEngine(factory,
-                                                                                           pipeline,
-                                                                                           new StringEvaluator(target),
-                                                                                           new RouletteWheelSelection(),
-                                                                                           true,
-                                                                                           new MersenneTwisterRNG());
+        EvolutionEngine<String> engine = new GenerationalEvolutionEngine<String>(factory,
+                                                                                 pipeline,
+                                                                                 new StringEvaluator(target),
+                                                                                 new RouletteWheelSelection(),
+                                                                                 new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
         return engine.evolve(100, // 100 individuals in the population.
                              5, // 5% elitism.

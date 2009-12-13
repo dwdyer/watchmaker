@@ -18,14 +18,15 @@ package org.uncommons.watchmaker.framework;
 import java.util.Arrays;
 import java.util.List;
 import org.testng.annotations.Test;
+import org.uncommons.watchmaker.framework.factories.StubIntegerFactory;
 import org.uncommons.watchmaker.framework.operators.IntegerAdjuster;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 
 /**
- * Unit test for the {@link SteadyStateEvolution} class.
+ * Unit test for the {@link SteadyStateEvolutionEngine} class.
  * @author Daniel Dyer
  */
-public class SteadyStateEvolutionTest
+public class SteadyStateEvolutionEngineTest
 {
     /**
      * A single iteration should update only a single candidate.
@@ -33,20 +34,22 @@ public class SteadyStateEvolutionTest
     @Test
     public void testIncrementalEvolution()
     {
-        PopulationEvolution<Integer> steadyState = new SteadyStateEvolution<Integer>(new IntegerAdjuster(5),
-                                                                                     new NullFitnessEvaluator(),
-                                                                                     new RouletteWheelSelection(),
-                                                                                     1,
-                                                                                     true);
+        SteadyStateEvolutionEngine<Integer> steadyState = new SteadyStateEvolutionEngine<Integer>(new StubIntegerFactory(),
+                                                                                                  new IntegerAdjuster(5),
+                                                                                                  new NullFitnessEvaluator(),
+                                                                                                  new RouletteWheelSelection(),
+                                                                                                  1,
+                                                                                                  true,
+                                                                                                  FrameworkTestUtils.getRNG());
         @SuppressWarnings("unchecked")
         List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 0),
                                                                      new EvaluatedCandidate<Integer>(1, 0),
                                                                      new EvaluatedCandidate<Integer>(1, 0),
                                                                      new EvaluatedCandidate<Integer>(1, 0),
                                                                      new EvaluatedCandidate<Integer>(1, 0));
-        List<EvaluatedCandidate<Integer>> evaluatedPopulation = steadyState.evolvePopulation(population,
-                                                                                             0,
-                                                                                             FrameworkTestUtils.getRNG());
+        List<EvaluatedCandidate<Integer>> evaluatedPopulation = steadyState.nextEvolutionStep(population,
+                                                                                              0,
+                                                                                              FrameworkTestUtils.getRNG());
         assert evaluatedPopulation.size() == 5 : "Population size should be unchanged.";
         int unchangedCount = 0;
         for (EvaluatedCandidate<Integer> candidate : evaluatedPopulation)
@@ -67,20 +70,22 @@ public class SteadyStateEvolutionTest
     @Test
     public void testForcedSingleCandidateUpdate()
     {
-        PopulationEvolution<Integer> steadyState = new SteadyStateEvolution<Integer>(new IntegerAdjuster(5),
-                                                                                     new NullFitnessEvaluator(),
-                                                                                     new RouletteWheelSelection(),
-                                                                                     2,
-                                                                                     true); // Force single update.
+        SteadyStateEvolutionEngine<Integer> steadyState = new SteadyStateEvolutionEngine<Integer>(new StubIntegerFactory(),
+                                                                                                  new IntegerAdjuster(5),
+                                                                                                  new NullFitnessEvaluator(),
+                                                                                                  new RouletteWheelSelection(),
+                                                                                                  2,
+                                                                                                  true, // Force single update.
+                                                                                                  FrameworkTestUtils.getRNG());
         @SuppressWarnings("unchecked")
         List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 0),
                                                                      new EvaluatedCandidate<Integer>(1, 0),
                                                                      new EvaluatedCandidate<Integer>(1, 0),
                                                                      new EvaluatedCandidate<Integer>(1, 0),
                                                                      new EvaluatedCandidate<Integer>(1, 0));
-        List<EvaluatedCandidate<Integer>> evaluatedPopulation = steadyState.evolvePopulation(population,
-                                                                                             0,
-                                                                                             FrameworkTestUtils.getRNG());
+        List<EvaluatedCandidate<Integer>> evaluatedPopulation = steadyState.nextEvolutionStep(population,
+                                                                                              0,
+                                                                                              FrameworkTestUtils.getRNG());
         assert evaluatedPopulation.size() == 5 : "Population size should be unchanged.";
         int unchangedCount = 0;
         for (EvaluatedCandidate<Integer> candidate : evaluatedPopulation)
@@ -98,11 +103,13 @@ public class SteadyStateEvolutionTest
     @Test
     public void testElitism()
     {
-        PopulationEvolution<Integer> steadyState = new SteadyStateEvolution<Integer>(new IntegerAdjuster(10),
-                                                                                     new NullFitnessEvaluator(),
-                                                                                     new RouletteWheelSelection(),
-                                                                                     1,
-                                                                                     true);
+        SteadyStateEvolutionEngine<Integer> steadyState = new SteadyStateEvolutionEngine<Integer>(new StubIntegerFactory(),
+                                                                                                  new IntegerAdjuster(10),
+                                                                                                  new NullFitnessEvaluator(),
+                                                                                                  new RouletteWheelSelection(),
+                                                                                                  1,
+                                                                                                  true,
+                                                                                                  FrameworkTestUtils.getRNG());
         @SuppressWarnings("unchecked")
         List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 1),
                                                                      new EvaluatedCandidate<Integer>(2, 2),
@@ -112,9 +119,9 @@ public class SteadyStateEvolutionTest
         // The fittest candidate should always be preserved.
         for (int i = 0; i < 20; i++) // Once is not enough to be confident.
         {
-            List<EvaluatedCandidate<Integer>> evaluatedPopulation = steadyState.evolvePopulation(population,
-                                                                                                 1,
-                                                                                                 FrameworkTestUtils.getRNG());
+            List<EvaluatedCandidate<Integer>> evaluatedPopulation = steadyState.nextEvolutionStep(population,
+                                                                                                  1,
+                                                                                                  FrameworkTestUtils.getRNG());
             assert evaluatedPopulation.size() == 5 : "Population size should be unchanged.";
             boolean found = false;
             for (EvaluatedCandidate<Integer> candidate : evaluatedPopulation)

@@ -15,21 +15,20 @@
 // ============================================================================
 package org.uncommons.watchmaker.framework;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 /**
  * An implementation of steady-state evolution, which is a type of evolutionary algorithm
  * where a population is changed incrementally, with one individual evolved at a time.  This
- * differs from {@link GenerationalEvolution} in which the entire population is evolved in
+ * differs from {@link GenerationalEvolutionEngine} in which the entire population is evolved in
  * parallel.
  *
  * @param <T> The type of entity that is to be evolved.
- * @see GenerationalEvolution
+ * @see GenerationalEvolutionEngine
  * @author Daniel Dyer
  */
-public class SteadyStateEvolution<T> implements PopulationEvolution<T>
+public class SteadyStateEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
     private final EvolutionaryOperator<T> evolutionScheme;
     private final FitnessEvaluator<? super T> fitnessEvaluator;
@@ -37,10 +36,11 @@ public class SteadyStateEvolution<T> implements PopulationEvolution<T>
     private final int selectionSize;
     private final boolean forceSingleCandidateUpdate;
 
-
     /**
      * Create a steady-state evolution strategy in which one or more (usually just one) evolved
      * offspring replace randomly-chosen individuals.
+     * @param candidateFactory Factory used to create the initial population that is
+     * iteratively evolved.
      * @param evolutionScheme The evolutionary operator that modifies the population.  The
      * number of candidates used as input is controlled by the {@code selectionSize} parameter.
      * The number of candidates that will be outputted depends on the implementation.  Typically
@@ -66,13 +66,18 @@ public class SteadyStateEvolution<T> implements PopulationEvolution<T>
      * cross-over operator that returns only a single evolved individual.  Setting this parameter to
      * false permits multiple candidates to be replaced per iteration, depending on the specifics of
      * the evolutionary operator(s).
+     * @param rng The source of randomness used by all stochastic processes (including
+     * evolutionary operators and selection strategies).
      */
-    public SteadyStateEvolution(EvolutionaryOperator<T> evolutionScheme,
-                                FitnessEvaluator<? super T> fitnessEvaluator,                                
-                                SelectionStrategy<? super T> selectionStrategy,
-                                int selectionSize,
-                                boolean forceSingleCandidateUpdate)
+    public SteadyStateEvolutionEngine(CandidateFactory<T> candidateFactory,
+                                      EvolutionaryOperator<T> evolutionScheme,
+                                      FitnessEvaluator<? super T> fitnessEvaluator,
+                                      SelectionStrategy<? super T> selectionStrategy,
+                                      int selectionSize,
+                                      boolean forceSingleCandidateUpdate,
+                                      Random rng)
     {
+        super(candidateFactory, fitnessEvaluator, rng);
         this.fitnessEvaluator = fitnessEvaluator;
         this.evolutionScheme = evolutionScheme;
         this.selectionStrategy = selectionStrategy;
@@ -80,13 +85,14 @@ public class SteadyStateEvolution<T> implements PopulationEvolution<T>
         this.forceSingleCandidateUpdate = forceSingleCandidateUpdate;
     }
 
-
+    
     /**
      * {@inheritDoc}
      */
-    public List<EvaluatedCandidate<T>> evolvePopulation(List<EvaluatedCandidate<T>> evaluatedPopulation,
-                                                        int eliteCount,
-                                                        Random rng)
+    @Override
+    protected List<EvaluatedCandidate<T>> nextEvolutionStep(List<EvaluatedCandidate<T>> evaluatedPopulation,
+                                                            int eliteCount,
+                                                            Random rng)
     {
         EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, fitnessEvaluator.isNatural());
         List<T> selectedCandidates = selectionStrategy.select(evaluatedPopulation,
@@ -136,20 +142,5 @@ public class SteadyStateEvolution<T> implements PopulationEvolution<T>
                 existingPopulation.set(rng.nextInt(existingPopulation.size() - eliteCount) + eliteCount, candidate);
             }
         }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population)
-    {
-        List<EvaluatedCandidate<T>> evaluatedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());
-        for (T candidate : population)
-        {
-            evaluatedPopulation.add(new EvaluatedCandidate<T>(candidate,
-                                                              fitnessEvaluator.getFitness(candidate, population)));
-        }
-        return evaluatedPopulation;
     }
 }

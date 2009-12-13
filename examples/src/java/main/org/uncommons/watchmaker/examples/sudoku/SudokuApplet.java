@@ -45,6 +45,7 @@ import org.uncommons.watchmaker.examples.AbstractExampleApplet;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
+import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
@@ -212,12 +213,11 @@ public class SudokuApplet extends AbstractExampleApplet
 
                 EvolutionaryOperator<Sudoku> pipeline = new EvolutionPipeline<Sudoku>(operators);
 
-                EvolutionEngine<Sudoku> engine = EvolutionEngine.createGenerationalEvolutionEngine(new SudokuFactory(puzzle),
-                                                                                                   pipeline,
-                                                                                                   new SudokuEvaluator(),
-                                                                                                   selectionStrategy,
-                                                                                                   true,
-                                                                                                   rng);
+                EvolutionEngine<Sudoku> engine = new GenerationalEvolutionEngine<Sudoku>(new SudokuFactory(puzzle),
+                                                                                         pipeline,
+                                                                                         new SudokuEvaluator(),
+                                                                                         selectionStrategy,
+                                                                                         rng);
                 engine.addEvolutionObserver(new GridViewUpdater());
                 engine.addEvolutionObserver(statusBar);
                 return engine.evolve(populationSize,
