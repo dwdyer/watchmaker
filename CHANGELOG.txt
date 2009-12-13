@@ -1,16 +1,18 @@
 Changes in version 0.7.0
 ------------------------
 
-* Converted EvolutionEngine from an interface to a concrete class based on the
-  previous ConcurrentEvolutionEngine class.  Removed ConcurrentEvolutionEngine,
-  SequentialEvolutionEngine and AbstractEvolutionEngine.  Concurrency is now
-  controlled via a parameter rather than different implementations.
-
 * Refactored internals to make it easier for the framework to provide different
-  evolutionary algorithm variants.  Evolution engines should now typically be
-  created using the static factory methods of the EvolutionEngine class.
+  evolutionary algorithm variants.  Different types of evolutionary algorithm
+  are supported by different sub-classes of AbstractEvolutionEngine, with
+  different implementations of the nextEvolutionStep method.  The main
+  EvolutionEngine implementation is now called GenerationalEvolutionEngine.
 
-* Added first-class support for steady-state evolution.
+* Concurrency control is no longer supported through inheritance.  Removed
+  ConcurrentEvolutionEngine and SequentialEvolutionEngine and added the
+  setSingleThreaded method to AbstractEvolutionEngine.
+
+* Added first-class support for steady-state evolution in the form of the new
+  SteadyStateEvolutionEngine.
 
 * Added SigmaScaling selection strategy.
 

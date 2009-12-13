@@ -35,13 +35,15 @@ import java.util.concurrent.Future;
 public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 {
     // A single multi-threaded worker is shared among multiple evolution engine instances.
-    private static final FitnessEvaluationWorker WORKER = new FitnessEvaluationWorker();
+    private static FitnessEvaluationWorker concurrentWorker = null;
 
     private final Set<EvolutionObserver<? super T>> observers = new CopyOnWriteArraySet<EvolutionObserver<? super T>>();
 
     private final Random rng;
     private final CandidateFactory<T> candidateFactory;
     private final FitnessEvaluator<? super T> fitnessEvaluator;
+
+    private volatile boolean singleThreaded = false;
 
     private List<TerminationCondition> satisfiedTerminationConditions;
 
@@ -192,7 +194,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     {
         List<EvaluatedCandidate<T>> evaluatedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());
 
-        if (WORKER == null) // Do fitness evaluations on the request thread.
+        if (singleThreaded) // Do fitness evaluations on the request thread.
         {
             for (T candidate : population)
             {
@@ -212,15 +214,14 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
                 // Submit tasks for execution and wait until all threads have finished fitness evaluations.
                 for (T candidate : population)
                 {
-                    results.add(WORKER.submit(new FitnessEvalutationTask<T>(fitnessEvaluator,
-                                                                            candidate,
-                                                                            unmodifiablePopulation)));
+                    results.add(getSharedWorker().submit(new FitnessEvalutationTask<T>(fitnessEvaluator,
+                                                                                       candidate,
+                                                                                       unmodifiablePopulation)));
                 }
                 for (Future<EvaluatedCandidate<T>> result : results)
                 {
                     evaluatedPopulation.add(result.get());
                 }
-                assert evaluatedPopulation.size() == population.size() : "Wrong number of evaluated candidates.";
             }
             catch (ExecutionException ex)
             {
@@ -308,5 +309,33 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         {
             observer.populationUpdate(data);
         }
+    }
+
+
+    /**
+     * By default, fitness evaluations are performed on separate threads (as many as there are
+     * available cores/processors).  Use this method to force evaluation to occur synchronously
+     * on the request thread.  This is useful in restricted environments where programs are not
+     * permitted to start or control threads.  It might also lead to better performance for
+     * programs that have extremely lightweight/trivial fitness evaluations.
+     * @param singleThreaded If true, fitness evaluations will be performed synchronously on the
+     * request thread.  If false, fitness evaluations will be performed by worker threads.
+     */
+    public void setSingleThreaded(boolean singleThreaded)
+    {
+        this.singleThreaded = singleThreaded;
+    }
+
+
+    /**
+     * Lazily create the multi-threaded worker for fitness evaluations.
+     */
+    private static synchronized FitnessEvaluationWorker getSharedWorker()
+    {
+        if (concurrentWorker == null)
+        {
+            concurrentWorker = new FitnessEvaluationWorker();
+        }
+        return concurrentWorker;
     }
 }
