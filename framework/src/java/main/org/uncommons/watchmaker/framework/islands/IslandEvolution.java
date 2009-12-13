@@ -153,8 +153,8 @@ public class IslandEvolution<T>
                                                                           evolutionScheme,
                                                                           fitnessEvaluator,
                                                                           selectionStrategy,
-                                                                          rng,
-                                                                          false)); // Concurrency does not need to be more fine-grained than one thread per island.
+                                                                          false, // Concurrency does not need to be more fine-grained than one thread per island.
+                                                                          rng));
         }
         return islands;
     }

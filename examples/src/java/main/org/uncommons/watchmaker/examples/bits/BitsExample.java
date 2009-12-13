@@ -58,8 +58,8 @@ public class BitsExample
                                                                                               pipeline,
                                                                                               new BitStringEvaluator(),
                                                                                               new RouletteWheelSelection(),
-                                                                                              new MersenneTwisterRNG(),
-                                                                                              false);
+                                                                                              false,
+                                                                                              new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
         return engine.evolve(100, // 100 individuals in each generation.
                              0, // Don't use elitism.

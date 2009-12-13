@@ -56,7 +56,7 @@ public class EvolutionEngine<T>
      * @param rng The source of randomness used by all stochastic processes (including
      * evolutionary operators and selection strategies).
      * @see #createGenerationalEvolutionEngine(CandidateFactory, EvolutionaryOperator, FitnessEvaluator,
-     * SelectionStrategy, Random, boolean)
+     * SelectionStrategy, boolean, Random)
      * @see #createInteractiveEvolutionEngine(CandidateFactory, EvolutionaryOperator, InteractiveSelection, Random)
      */
     public EvolutionEngine(CandidateFactory<T> candidateFactory,
@@ -353,18 +353,17 @@ public class EvolutionEngine<T>
      * solutions.
      * @param selectionStrategy A strategy for selecting which candidates survive to
      * be evolved.
+     * @param multiThreaded Whether or not the evolution engine should use concurrent fitness evaluations.
      * @param rng The source of randomness used by all stochastic processes (including
      * evolutionary operators and selection strategies).
-     * @param multiThreaded Whether or not the evolution engine should use concurrent fitness evaluations.
-     * @param <T> The type of entity that is to be evolved.
      * @return An appropriately-configured {@link EvolutionEngine}.
      */
     public static <T> EvolutionEngine<T> createGenerationalEvolutionEngine(CandidateFactory<T> candidateFactory,
                                                                            EvolutionaryOperator<T> evolutionScheme,
                                                                            FitnessEvaluator<? super T> fitnessEvaluator,
                                                                            SelectionStrategy<? super T> selectionStrategy,
-                                                                           Random rng,
-                                                                           boolean multiThreaded)
+                                                                           boolean multiThreaded,
+                                                                           Random rng)
     {
         PopulationEvolution<T> evolution = new GenerationalEvolution<T>(evolutionScheme,
                                                                         fitnessEvaluator,

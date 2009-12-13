@@ -219,8 +219,8 @@ public class MonaLisaApplet extends AbstractExampleApplet
                                                                     pipeline,
                                                                     evaluator,
                                                                     selection,
-                                                                    rng,
-                                                                    true);
+                                                                    true,
+                                                                    rng);
             engine.addEvolutionObserver(monitor);
 
             return engine.evolve(populationSize, eliteCount, terminationConditions);

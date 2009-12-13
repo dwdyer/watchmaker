@@ -73,8 +73,8 @@ public final class StringsExample
                                                                                            pipeline,
                                                                                            new StringEvaluator(target),
                                                                                            new RouletteWheelSelection(),
-                                                                                           new MersenneTwisterRNG(),
-                                                                                           true);
+                                                                                           true,
+                                                                                           new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
         return engine.evolve(100, // 100 individuals in the population.
                              5, // 5% elitism.

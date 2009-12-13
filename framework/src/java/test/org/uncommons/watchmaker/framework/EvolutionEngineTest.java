@@ -42,8 +42,8 @@ public class EvolutionEngineTest
                                                                         new IntegerZeroMaker(),
                                                                         new IntegerEvaluator(),
                                                                         new RouletteWheelSelection(),
-                                                                        FrameworkTestUtils.getRNG(),
-                                                                        false);
+                                                                        false,
+                                                                        FrameworkTestUtils.getRNG());
     }
 
 

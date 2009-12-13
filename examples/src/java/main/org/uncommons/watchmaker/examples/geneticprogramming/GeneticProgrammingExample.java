@@ -78,8 +78,8 @@ public class GeneticProgrammingExample
                                                                                          new EvolutionPipeline<Node>(operators),
                                                                                          evaluator,
                                                                                          new RouletteWheelSelection(),
-                                                                                         new MersenneTwisterRNG(),
-                                                                                         true);
+                                                                                         true,
+                                                                                         new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
         return engine.evolve(1000, 5, new TargetFitness(0d, evaluator.isNatural()));
     }

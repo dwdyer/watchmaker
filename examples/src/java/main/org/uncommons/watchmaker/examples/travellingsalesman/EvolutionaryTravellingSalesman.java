@@ -133,8 +133,8 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
                                                                 pipeline,
                                                                 new RouteEvaluator(distances),
                                                                 selectionStrategy,
-                                                                rng,
-                                                                true);
+                                                                true,
+                                                                rng);
         engine.addEvolutionObserver(new EvolutionObserver<List<String>>()
         {
             public void populationUpdate(PopulationData<? extends List<String>> data)

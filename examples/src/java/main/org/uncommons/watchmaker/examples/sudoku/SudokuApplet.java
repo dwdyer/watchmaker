@@ -216,8 +216,8 @@ public class SudokuApplet extends AbstractExampleApplet
                                                                                                    pipeline,
                                                                                                    new SudokuEvaluator(),
                                                                                                    selectionStrategy,
-                                                                                                   rng,
-                                                                                                   true);
+                                                                                                   true,
+                                                                                                   rng);
                 engine.addEvolutionObserver(new GridViewUpdater());
                 engine.addEvolutionObserver(statusBar);
                 return engine.evolve(populationSize,
