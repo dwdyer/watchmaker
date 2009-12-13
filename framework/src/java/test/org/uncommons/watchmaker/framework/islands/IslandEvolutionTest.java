@@ -113,6 +113,21 @@ public class IslandEvolutionTest
     }
 
 
+    @Test(expectedExceptions = IllegalStateException.class)
+    public void testGetSatisfiedTerminationConditionsBeforeStart()
+    {
+        IslandEvolution<Integer> islandEvolution = new IslandEvolution<Integer>(3,
+                                                                                new RingMigration(),
+                                                                                new StubIntegerFactory(),
+                                                                                new IntegerAdjuster(2),
+                                                                                new DummyFitnessEvaluator(),
+                                                                                new RouletteWheelSelection(),
+                                                                                FrameworkTestUtils.getRNG());
+        // Should throw an IllegalStateException because evolution has started, let alone terminated.
+        islandEvolution.getSatisfiedTerminationConditions();
+    }
+
+
     private static class DummyFitnessEvaluator implements FitnessEvaluator<Integer>
     {
         public double getFitness(Integer candidate, List<? extends Integer> population)

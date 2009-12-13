@@ -12,15 +12,15 @@ Changes in version 0.7.0
 
 * Added SigmaScaling selection strategy.
 
-* Changed EvolutionMonitor to use invokeAndWait.  Means that GUI updates
-  temporarily block evolution but avoids the problem of an unresponsive UI.
-
 * Added ListInversion evolutionary operator.  Randomly reverses subsections of
   lists.
 
 * Added variable probability constructor to ListOrderCrossover.
 
 * Introduced support for island model evolution.
+
+* Added islands view to the evolution monitor so that the state of individual
+  island populations can be tracked.
 
 * Fixed generation numbering in EvolutionEngine.  It was supposed to be
   zero-based but was starting at 1, which would cause the GenerationCount
@@ -38,9 +38,6 @@ Changes in version 0.7.0
   flipped is now controlled via a secondary parameter.
 
 * Upgraded to Google Collections 1.0 RC4.
-
-* Added islands view to the evolution monitor so that the state of individual
-  island populations can be tracked.
 
 * Introduced Swing renderer for example GP trees.
 
