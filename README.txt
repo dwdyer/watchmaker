@@ -16,6 +16,13 @@ Please refer to the included LICENCE.txt and NOTICE.txt files for terms of use.
 
 Source code for several example programs is included in the distribution.
 
+The examples can be run with the following command:
+
+    java -jar watchmaker-examples-0.7.0.jar
+
+This will list the names of available example applications.  Then just run the
+command again with one of those names as an argument.
+
 
 2). Library Dependencies
 ------------------------
