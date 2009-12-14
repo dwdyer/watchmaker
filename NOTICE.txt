@@ -1,7 +1,7 @@
 _______________________________________________________________________________
 
-  The Watchmaker Framework for Evolutionary Computation - Version 0.6.0
-   (https://watchmaker.dev.java.net)
+  The Watchmaker Framework for Evolutionary Computation - Version 0.7.0
+   (http://watchmaker.uncommons.org)
   Copyright 2006-2009 Daniel W. Dyer (http://www.dandyer.co.uk)
 _______________________________________________________________________________
 
@@ -24,7 +24,7 @@ below.
 
 _______________________________________________________________________________
 
-  Uncommons Maths (https://uncommons-maths.dev.java.net)
+  Uncommons Maths (http://maths.uncommons.org)
   Copyright 2006-2009 Daniel W. Dyer (http://www.dandyer.co.uk)
 _______________________________________________________________________________
 

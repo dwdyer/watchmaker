@@ -1,5 +1,6 @@
 <chapter xmlns="http://docbook.org/ns/docbook"
          xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
   <title>The Watchmaker Framework</title>
@@ -9,7 +10,7 @@
     object-oriented framework for implementing platform-independent evolutionary algorithms
     in Java.
     It is freely available under a permissive Open Source licence.  It can be downloaded from
-    <link href="https://watchmaker.dev.java.net">https://watchmaker.dev.java.net</link>.
+    <link xlink:href="http://watchmaker.uncommons.org">http://watchmaker.uncommons.org</link>.
   </para>
   <para>
     This chapter introduces the core components of the Watchmaker Framework and shows how
@@ -18,19 +19,17 @@
   </para>
   <section>
     <title>The Evolution Engine</title>
-    <indexterm><primary>ConcurrentEvolutionEngine</primary></indexterm>
+    <indexterm><primary>GenerationalEvolutionEngine</primary></indexterm>
     <indexterm><primary>EvolutionEngine</primary></indexterm>
     <para>
       The central object of an evolutionary program built with the Watchmaker Framework is
-      the evolution engine.  An evolution engine is a general-purpose implementation of
-      the evolutionary algorithm outline from chapter 1.
+      the evolution engine.
     </para>
     <para>
       The framework provides multiple implementations of the
       <interfacename>EvolutionEngine</interfacename> interface, but the one that you will
-      usually want to use is <classname>ConcurrentEvolutionEngine</classname>.  As its
-      name suggests, it takes advantage of the parallel processing facilities of your
-      computer in order to speed-up the evolutionary process.
+      usually want to use is <classname>GenerationalEvolutionEngine</classname>.  This is a
+      general-purpose implementation of the evolutionary algorithm outline from chapter 1.
     </para>
     <para>
       An <interfacename>EvolutionEngine</interfacename> has a single generic type parameter
@@ -41,11 +40,11 @@
     <informalexample>
       <programlisting language="java">
 <![CDATA[EvolutionEngine<String> engine
-    = new ConcurrentEvolutionEngine<String>(candidateFactory,
-                                            evolutionaryOperator,
-                                            fitnessEvaluator,
-                                            selectionStrategy,
-                                            rng);]]>
+    = new GenerationalEvolutionEngine<String>(candidateFactory,
+                                              evolutionaryOperator,
+                                              fitnessEvaluator,
+                                              selectionStrategy,
+                                              rng);]]>
       </programlisting>
     </informalexample>
     <para>
@@ -55,7 +54,7 @@
       However, as you can see from the code snippet above, there is a little bit of work to
       be done first in order to create an <interfacename>EvolutionEngine</interfacename> that
       is configured appropriately for the given problem.
-      The constructor of the <classname>ConcurrentEvolutionEngine</classname> class requires
+      The constructor of the <classname>GenerationalEvolutionEngine</classname> class requires
       five objects.  These are:
     </para>
     <itemizedlist>
@@ -336,11 +335,11 @@ SelectionStrategy<Object> selection = new RouletteWheelSelection();
 Random rng = new MersenneTwisterRNG();
 
 EvolutionEngine<String> engine
-    = new ConcurrentEvolutionEngine<String>(factory,
-                                            pipeline,
-                                            fitnessEvaluator,
-                                            selection,
-                                            rng);]]>
+    = new GenerationalEvolutionEngine<String>(factory,
+                                              pipeline,
+                                              fitnessEvaluator,
+                                              selection,
+                                              rng);]]>
       </programlisting>
     </informalexample>
     <indexterm><primary>evolve method</primary></indexterm>

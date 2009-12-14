@@ -233,7 +233,7 @@ public class IslandEvolution<T>
                 islandPopulations.clear();
                 for (List<EvaluatedCandidate<T>> evaluatedPopulation : evaluatedPopulations)
                 {
-                    islandPopulations.add(EvolutionUtils.toCandidateList(evaluatedPopulation));
+                    islandPopulations.add(toCandidateList(evaluatedPopulation));
                 }
                 ++currentEpochIndex;
             }
@@ -273,6 +273,24 @@ public class IslandEvolution<T>
                                           new GenerationCount(epochLength)));
         }
         return islandEpochs;
+    }
+
+
+    /**
+     * Convert a list of {@link EvaluatedCandidate}s into a simple list of candidates.
+     * @param evaluatedCandidates The population of candidate objects to relieve of their
+     * evaluation wrappers.
+     * @param <T> The type of entity that is being evolved.
+     * @return The candidates, stripped of their fitness scores.
+     */
+    private static <T> List<T> toCandidateList(List<EvaluatedCandidate<T>> evaluatedCandidates)
+    {
+        List<T> candidates = new ArrayList<T>(evaluatedCandidates.size());
+        for (EvaluatedCandidate<T> evaluatedCandidate : evaluatedCandidates)
+        {
+            candidates.add(evaluatedCandidate.getCandidate());
+        }
+        return candidates;
     }
 
 
