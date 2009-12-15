@@ -34,6 +34,8 @@
   <property name="api.dir" value="${docs.dir}/api" />
   <property name="checkstyle-results.dir" value="${docs.dir}/checkstyle" />
   <property name="release.dir" value="release" />
+  <!-- The "website" directory is a symlink to a copy of the Git repository
+       at http://github.com/dwdyer/watchmaker-website. -->
   <property name="web.dir" value="website" />
   <property name="temp.dir" value="temp" />
 
