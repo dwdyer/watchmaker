@@ -34,7 +34,7 @@
   <property name="api.dir" value="${docs.dir}/api" />
   <property name="checkstyle-results.dir" value="${docs.dir}/checkstyle" />
   <property name="release.dir" value="release" />
-  <property name="web.dir" value="www" />
+  <property name="web.dir" value="website" />
   <property name="temp.dir" value="temp" />
 
   <!-- Per-module locations. -->
@@ -323,6 +323,8 @@
     <!-- Copy latest jars into website examples directory. -->
     <copy todir="${web.dir}/examples">
       <fileset dir="${dist.dir}" includes="*.jar" />
+    </copy>
+    <copy todir="${web.dir}/examples/lib">
       <fileset dir="${dist.dir}/${lib.dir}" includes="*.jar" />
     </copy>
 
