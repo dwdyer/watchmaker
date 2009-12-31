@@ -150,11 +150,13 @@ public class IslandEvolution<T>
         List<EvolutionEngine<T>> islands = new ArrayList<EvolutionEngine<T>>(islandCount);
         for (int i = 0; i < islandCount; i++)
         {
-            islands.add(new GenerationalEvolutionEngine<T>(candidateFactory,
-                                                           evolutionScheme,
-                                                           fitnessEvaluator,
-                                                           selectionStrategy,
-                                                           rng));
+            GenerationalEvolutionEngine<T> island = new GenerationalEvolutionEngine<T>(candidateFactory,
+                                                                                       evolutionScheme,
+                                                                                       fitnessEvaluator,
+                                                                                       selectionStrategy,
+                                                                                       rng);
+            island.setSingleThreaded(true); // Don't need fine-grained concurrency when each island is on a separate thread.
+            islands.add(island);
         }
         return islands;
     }

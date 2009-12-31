@@ -32,7 +32,7 @@ Watchmaker Framework:
 
   watchmaker-framework-0.7.0.jar        (Apache Licence 2.0)
   uncommons-maths-1.2.1.jar             (Apache Licence 2.0)
-  google-collect-1.0-rc5.jar            (Apache Licence 2.0)
+  google-collect-1.0.jar                (Apache Licence 2.0)
 
 These additional JAR files are required to use the Watchmaker Framework Swing
 components:
