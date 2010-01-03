@@ -338,9 +338,10 @@
                        outputDir="${web.dir}/manual" >
       <parameter name="highlight.source" value="1" />
       <parameter name="img.src.path" value="./" />
+      <parameter name="html.stylesheet" value="docbook.css" />
     </uncommons:docbook>
     <copy todir="${web.dir}/manual">
-      <fileset dir="book/${src.dir}/images" includes="**/*"/>
+      <fileset dir="book/${src.dir}/resources" includes="**/*"/>
     </copy>
   </target>
 

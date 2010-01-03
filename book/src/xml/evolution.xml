@@ -1,5 +1,6 @@
 <chapter xmlns="http://docbook.org/ns/docbook"
          xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
   <title>The Power of Evolution</title>
@@ -320,7 +321,7 @@
         </imageobject>
         <caption>
           <para>
-            <link href="http://ti.arc.nasa.gov/projects/esg/research/antenna.htm">http://ti.arc.nasa.gov/projects/esg/research/antenna.htm</link>
+            <link xlink:href="http://ti.arc.nasa.gov/projects/esg/research/antenna.htm">NASA Evolvable Systems Group</link>
           </para>
         </caption>
       </mediaobject>

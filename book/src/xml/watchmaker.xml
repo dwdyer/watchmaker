@@ -58,21 +58,11 @@
       five objects.  These are:
     </para>
     <itemizedlist>
-      <listitem>
-        <para>A Candidate Factory</para>
-      </listitem>
-      <listitem>
-        <para>An Evolutionary Operator</para>
-      </listitem>
-      <listitem>
-        <para>A Fitness Evaluator</para>
-      </listitem>
-      <listitem>
-        <para>A Selection Strategy</para>
-      </listitem>
-      <listitem>
-        <para>A Random Number Generator</para>
-      </listitem>
+      <listitem>A Candidate Factory</listitem>
+      <listitem>An Evolutionary Operator</listitem>
+      <listitem>A Fitness Evaluator</listitem>
+      <listitem>A Selection Strategy</listitem>
+      <listitem>A Random Number Generator</listitem>
     </itemizedlist>
   </section>
   <section>

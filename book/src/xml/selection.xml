@@ -9,7 +9,12 @@
     <indexterm><primary>truncation selection</primary></indexterm>
     <indexterm><primary>selection</primary><secondary>truncation</secondary></indexterm>
     <para>
-      Truncation selection is the simplest, and arguably least useful, selection strategy.
+      Truncation selection is the simplest and arguably least useful selection strategy.  Truncation selection
+      simply retains the fittest <varname>x</varname>% of the population.  These fittest individuals are duplicated so
+      that the population size is maintained.  For example, we might select the fittest 25% from a population of 100
+      individuals.  In this case we would create 4 copies of each of the 25 candidates in order to maintain a population
+      of 100 individuals.  This is an easy selection strategy to implement but it can result in premature convergence as
+      less fit candidates are ruthlessly culled without being given the opportunity to evolve into something better.
     </para>
   </section>
   <section>
