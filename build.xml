@@ -31,7 +31,6 @@
   <property name="lib.runtime" value="${lib.dir}/runtime" />
   <property name="dist.dir" value="dist" />
   <property name="docs.dir" value="docs" />
-  <property name="api.dir" value="${docs.dir}/api" />
   <property name="checkstyle-results.dir" value="${docs.dir}/checkstyle" />
   <property name="release.dir" value="release" />
   <!-- The "website" directory is a symlink to a copy of the Git repository
@@ -63,36 +62,6 @@
        regressions in coverage.  The threshold will be raised as
        test coverage improves. -->
   <property name="minimum.coverage" value="80" />
-
-
-<!-- ==================================================================
-     MACROS
-=================================================================== -->
-
-  <!-- Generates API documentation for all modules. -->
-  <macrodef name="api.docs">
-    <attribute name="api.dir"/>
-    <sequential>
-      <mkdir dir="@{api.dir}"/>
-      <javadoc destdir="@{api.dir}"
-               doctitle="The Watchmaker Framework for Evolutionary Computation ${version}"
-               windowtitle="Watchmaker Framework API">
-        <classpath>
-          <fileset dir="." includes="**/${lib.runtime}/*.jar" />
-        </classpath>
-        <fileset dir="." defaultexcludes="yes">
-          <include name="**/${java.dir}/main/**/*.java"/>
-          <exclude name="examples/**/*"/>
-          <exclude name="framework/${java.dir}/main/org/uncommons/util/**/*"/>
-        </fileset>
-        <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
-        <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
-        <header><![CDATA[Watchmaker Framework API<br><small>(Version ${version})</small>]]></header>
-        <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
-        <link href="https://uncommons-maths.dev.java.net/nonav/api/"/>        
-      </javadoc>
-    </sequential>
-  </macrodef>
 
 
 <!-- ==================================================================
@@ -152,14 +121,7 @@
   <target name="dist"
           depends="framework, swing, examples"
           description="Generate the project distribution." >
-    <mkdir dir="${dist.dir}" />
-    <copy todir="${dist.dir}" flatten="true">
-      <fileset dir="." includes="**/${build.dir}/*.jar" excludes="**/${build.dir}/*-src.jar"/>      
-    </copy>
-    <mkdir dir="${dist.dir}/lib" />
-    <copy todir="${dist.dir}/lib" flatten="true">
-      <fileset dir="." includes="**/${lib.runtime}/*"/>
-    </copy>
+    <uncommons:dist />
     <mkdir dir="${dist.dir}/src" />
     <copy todir="${dist.dir}/src" flatten="true">
       <fileset dir="." includes="**/${build.dir}/*-src.jar"/>
@@ -178,42 +140,13 @@
   <target name="release"
           depends="clean, source, dist, test, checkstyle, docs"
           description="Creates the release archives.">
-    <mkdir dir="${release.dir}" />
-    <!-- Create a GZipped TAR file containing the built binaries, the API
-         documentation, and source code for the examples. -->
-    <tar destfile="${release.dir}/${artifact.identifier}.tgz"
-         compression="gzip"
-         longfile="gnu">
-      <tarfileset dir="${dist.dir}"
-                  prefix="${artifact.identifier}"
-                  includes="**/*" />
-      <tarfileset dir="${api.dir}"
-                  prefix="${artifact.identifier}/docs/api"
-                  includes="**/*" />
-      <tarfileset dir="examples/${java.dir}/main"
-                  prefix="${artifact.identifier}/examples/src"
-                  includes="**/*" />
-      <!-- Don't forget to include the licence and other important information. -->
-      <tarfileset dir="."
-                  prefix="${artifact.identifier}"
-                  includes="*.txt" />
-    </tar>
-    <!-- Also create a zip file release for the convenience of Windows users. -->
-    <zip destfile="${release.dir}/${artifact.identifier}.zip">
-      <zipfileset dir="${dist.dir}"
-                  prefix="${artifact.identifier}"
-                  includes="**/*" />
-      <zipfileset dir="${api.dir}"
-                  prefix="${artifact.identifier}/docs/api"
-                  includes="**/*" />
-      <zipfileset dir="examples/${java.dir}/main"
-                  prefix="${artifact.identifier}/examples/src"
-                  includes="**/*" />
-      <!-- Don't forget to include the licence and other important information. -->
-      <zipfileset dir="."
-                  prefix="${artifact.identifier}"
-                  includes="*.txt" />
-    </zip>
+    <uncommons:release name="${artifact.identifier}">
+      <additionalcontents>
+        <tarfileset dir="examples/${java.dir}/main"
+                    prefix="${artifact.identifier}/examples/src"
+                    includes="**/*" />
+      </additionalcontents>
+    </uncommons:release>
   </target>
 
 
@@ -281,7 +214,15 @@
   <!-- Generates API documentation for all modules. -->
   <target name="docs"
           description="Generates Javadoc API documentation for all modules.">
-    <api.docs api.dir="${api.dir}" />
+    <uncommons:javadoc title="Watchmaker Framework for Evolutionary Computation API"
+                       version="${version}"
+                       excludes="examples/**/*,framework/${java.dir}/main/org/uncommons/util/**/*">
+      <additionalconfig>
+        <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
+        <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
+        <link href="https://uncommons-maths.dev.java.net/nonav/api/"/>
+      </additionalconfig>
+    </uncommons:javadoc>
   </target>
 
   
@@ -293,7 +234,7 @@
                        outputDir="book/${build.dir}" >
       <parameter name="paper.type" value="A4" />
       <parameter name="highlight.source" value="1" />
-      <parameter name="img.src.path" value="./book/src/images/" />
+      <parameter name="img.src.path" value="./book/src/resources/" />
     </uncommons:docbook>
   </target>
 
@@ -314,7 +255,16 @@
     </delete>
 
     <!-- Refresh the API documentation tree for the Watchmaker Framework website. -->
-    <api.docs api.dir="${web.dir}/api" />
+    <uncommons:javadoc dir="${web.dir}/api"
+                       title="Watchmaker Framework for Evolutionary Computation API"
+                       version="${version}"
+                       excludes="examples/**/*,framework/${java.dir}/main/org/uncommons/util/**/*">
+      <additionalconfig>
+        <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
+        <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
+        <link href="https://uncommons-maths.dev.java.net/nonav/api/"/>
+      </additionalconfig>
+    </uncommons:javadoc>
 
     <copy todir="${web.dir}" file="./CHANGELOG.txt">
       <filterset>
