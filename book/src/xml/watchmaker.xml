@@ -119,7 +119,7 @@ CandidateFactory<String> factory = new StringFactory(chars, 11);]]>
       population.  Cross-over is an evolutionary operator, as is mutation.
     </para>
     <para>
-      In the Watchamker Framework, evolutionary operators are defined in terms of the
+      In the Watchmaker Framework, evolutionary operators are defined in terms of the
       <interfacename>EvolutionaryOperator</interfacename> interface.  This interface
       declares a single method that takes a list of selected individuals and returns a
       list of evolved individuals.  Some operators (i.e. mutation) will process one
@@ -177,7 +177,7 @@ EvolutionaryOperator<String> pipeline
     <para>
       So far we've been able to build our evolutionary program by simply combining instances
       of classes provided by the framework.  There is one part of the program that we will
-      always have to write for ourselves though and that is the fitness fuction, which is
+      always have to write for ourselves though and that is the fitness function, which is
       necessarily different for every program.
     </para>
     <para>
@@ -265,7 +265,7 @@ EvolutionaryOperator<String> pipeline
       <emphasis>Roulette wheel selection</emphasis> is the most common type of
       <emphasis>fitness-proportionate selection</emphasis>.
       It gives all individuals a chance of being selected but favours the fitter
-      individuals since an individual's selection probability is dervived from its
+      individuals since an individual's selection probability is derived from its
       fitness score.
     </para>
   </section>
@@ -281,7 +281,7 @@ EvolutionaryOperator<String> pipeline
       passes to its candidate factory, evolutionary operator and selection strategy.
       An ideal RNG is both fast and statistically random.  We <emphasis>could</emphasis>
       use the standard Java RNG, <classname>java.util.Random</classname>, but its output
-      is not as random as it should be.  The other RNG in the standard libary,
+      is not as random as it should be.  The other RNG in the standard library,
       <classname>java.security.SecureRandom</classname> is much better in this respect
       but can be slow.
     </para>

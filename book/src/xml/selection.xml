@@ -11,7 +11,7 @@
     strategies result in fast convergence, others will tend to produce a more thorough exploration of the search space.
     An evolutionary algorithm that appears ineffective with one selection strategy may be transformed by switching to
     a strategy with different characteristics.  This chapter describes the most commonly used selection strategies
-    (all of these strategies are supported by the Watchmaker Framework for Evolutionary Computation via different
+    (all of these strategies are supported in the Watchmaker Framework for Evolutionary Computation via different
     implementations of the <classname>SelectionStrategy</classname> interface).
   </para>
   <section>
@@ -44,7 +44,7 @@
       <indexterm><primary>selection</primary><secondary>roulette wheel</secondary></indexterm>
       <para>
         The most common fitness-proportionate selection technique is called <emphasis>Roulette Wheel
-        Selection</emphasis>.  Conceptually, each memeber of the population is allocated a section of an imaginary
+        Selection</emphasis>.  Conceptually, each member of the population is allocated a section of an imaginary
         roulette wheel.  Unlike a real roulette wheel the sections are different sizes, proportional to the
         individual's fitness, such that the fittest candidate has the biggest slice of the wheel and the weakest
         candidate has the smallest.  The wheel is then spun and the individual associated with the winning section
@@ -63,7 +63,7 @@
       <title>Stochastic Universal Sampling</title>
       <indexterm><primary>stochastic universal sampling</primary></indexterm>
       <para>
-        <emphasis>Stochastic Universal Sampling</emphasis> is an elaborately named variation of roulette wheel
+        <emphasis>Stochastic Universal Sampling</emphasis> is an elaborately-named variation of roulette wheel
         selection.  Stochastic Universal Sampling ensures that the observed selection frequencies of each individual
         are in line with the expected frequencies.  So if we have an individual that occupies 4.5% of the wheel
         and we select 100 individuals, we would expect on average for that individual to be selected between four
@@ -87,7 +87,7 @@
     <indexterm><primary>rank selection</primary></indexterm>
     <indexterm><primary>selection</primary><secondary>rank</secondary></indexterm>
     <para>
-      <emphasis>Rank Selection</emphasis> is similar to fitness-proporitionate selection except that selection
+      <emphasis>Rank Selection</emphasis> is similar to fitness-proportionate selection except that selection
       probability is proportional to relative fitness rather than absolute fitness.  In other words, it doesn't make
       any difference whether the fittest candidate is ten times fitter than the next fittest or 0.001% fitter.  In
       both cases the selection probabilities would be the same; all that matters is the ranking relative to other
@@ -115,7 +115,7 @@
       just involves generating a random value between zero and one and comparing it to a pre-determined selection
       probability.  If the random value is less than or equal to the selection probability, the fitter candidate is
       selected, otherwise the weaker candidate is chosen.  The probability parameter provides a convenient mechanism
-      for adjusting the selection pressure. In practice it is always set to be greater than 0.5 in order to favour
+      for adjusting the selection pressure. In practise it is always set to be greater than 0.5 in order to favour
       fitter candidates. The tournament can be extended to involve more than two individuals if desired.
     </para>
   </section>
