@@ -253,9 +253,9 @@ EvolutionaryOperator<String> pipeline
     <para>
       Some selection strategies work better than others for certain problems.  Often a little
       trial-and-error is required to pick the best option.  We will delve into the details of
-      various selection strategies in chapter 4, but for now we will just create an instance
-      of the <classname>RouletteWheelSelection</classname> class and use that for our
-      "Hello World" application.
+      various selection strategies in <xref linkend="selection_chapter" />, but for now we will
+      just create an instance of the <classname>RouletteWheelSelection</classname> class and use
+      that for our "Hello World" application.
     </para>
     <indexterm><primary>fitness-proportionate selection</primary></indexterm>
     <indexterm><primary>roulette wheel selection</primary></indexterm>
@@ -346,7 +346,7 @@ EvolutionEngine<String> engine
     </para>
     <para>
       The second parameter is concerned with <emphasis>elitism</emphasis>.  Elitism
-      is explained in chapter 4.  For now, just use a value of zero.
+      is explained in <xref linkend="selection_chapter" />.  For now, just use a value of zero.
       The final varargs parameter specifies one or more termination conditions.
     </para>
     <section>

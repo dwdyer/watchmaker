@@ -1,3 +1,9 @@
+Changes in version 0.7.1
+------------------------
+
+* Use final version of Google Collections 1.0.
+
+
 Changes in version 0.7.0
 ------------------------
 

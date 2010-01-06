@@ -35,6 +35,7 @@
   <!-- Chapters -->
   <xi:include href="evolution.xml" />
   <xi:include href="watchmaker.xml" />
+  <xi:include href="selection.xml" />
 
   <!-- Appendices -->
   <xi:include href="performance.xml" />

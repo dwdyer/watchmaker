@@ -1,9 +1,19 @@
 <chapter xmlns="http://docbook.org/ns/docbook"
          xmlns:xi="http://www.w3.org/2001/XInclude"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd"
+         id="selection_chapter">
   <title>Selection Strategies &amp; Elitism</title>
-  <para>TODO</para>
+  <para>
+    Selection is an important part of an evolutionary algorithm.  Without selection directing the algorithm towards
+    fitter solutions there would be no progress.  Selection must favour fitter candidates over weaker candidates but
+    beyond that there are no fixed rules.  Furthermore, there is no one strategy that is best for all problems.  Some
+    strategies result in fast convergence, others will tend to produce a more thorough exploration of the search space.
+    An evolutionary algorithm that appears ineffective with one selection strategy may be transformed by switching to
+    a strategy with different characteristics.  This chapter describes the most commonly used selection strategies
+    (all of these strategies are supported by the Watchmaker Framework for Evolutionary Computation via different
+    implementations of the <classname>SelectionStrategy</classname> interface).
+  </para>
   <section>
     <title>Truncation Selection</title>
     <indexterm><primary>truncation selection</primary></indexterm>
@@ -12,45 +22,115 @@
       Truncation selection is the simplest and arguably least useful selection strategy.  Truncation selection
       simply retains the fittest <varname>x</varname>% of the population.  These fittest individuals are duplicated so
       that the population size is maintained.  For example, we might select the fittest 25% from a population of 100
-      individuals.  In this case we would create 4 copies of each of the 25 candidates in order to maintain a population
+      individuals.  In this case we would create four copies of each of the 25 candidates in order to maintain a population
       of 100 individuals.  This is an easy selection strategy to implement but it can result in premature convergence as
       less fit candidates are ruthlessly culled without being given the opportunity to evolve into something better.
+      Nevertheless, truncation selection can be an effective strategy for certain problems. 
     </para>
   </section>
   <section>
     <title>Fitness-Proportionate Selection</title>
     <indexterm><primary>fitness-proportionate selection</primary></indexterm>
     <indexterm><primary>selection</primary><secondary>fitness-proportionate</secondary></indexterm>
-    <para>TODO</para>
+    <para>
+      A better approach to selection is to give every individual a chance of being selected to breed but to make
+      fitter candidates more likely to be chosen than weaker individuals.  This is achieved by making an individual's
+      survival probability a function of its fitness score.  Such strategies are known as
+      <emphasis>fitness-proportionate selection</emphasis>.
+    </para>
     <section>
       <title>Roulette Wheel Selection</title>
       <indexterm><primary>roulette wheel selection</primary></indexterm>
       <indexterm><primary>selection</primary><secondary>roulette wheel</secondary></indexterm>
-      <para>TODO</para>
+      <para>
+        The most common fitness-proportionate selection technique is called <emphasis>Roulette Wheel
+        Selection</emphasis>.  Conceptually, each memeber of the population is allocated a section of an imaginary
+        roulette wheel.  Unlike a real roulette wheel the sections are different sizes, proportional to the
+        individual's fitness, such that the fittest candidate has the biggest slice of the wheel and the weakest
+        candidate has the smallest.  The wheel is then spun and the individual associated with the winning section
+        is selected.  The wheel is spun as many times as is necessary to select the full set of parents for the next
+        generation.
+      </para>
+      <para>
+        Using this technique it is possible (probable) that one or more individuals is selected multiple times.
+        That's OK, it's what we want to happen.  Remember that we are not selecting the members of the next
+        generation, we are selecting their parents and it is possible for an individual to be a parent multiple times.
+        If there is a particularly fit member of the population we would expect it to be more successful at producing
+        offspring than a weaker rival.          
+      </para>
     </section>
     <section>
       <title>Stochastic Universal Sampling</title>
       <indexterm><primary>stochastic universal sampling</primary></indexterm>
-      <para>TODO</para>
+      <para>
+        <emphasis>Stochastic Universal Sampling</emphasis> is an elaborately named variation of roulette wheel
+        selection.  Stochastic Universal Sampling ensures that the observed selection frequencies of each individual
+        are in line with the expected frequencies.  So if we have an individual that occupies 4.5% of the wheel
+        and we select 100 individuals, we would expect on average for that individual to be selected between four
+        and five times.  Stochastic Universal Sampling guarantees this.  The individual will be selected either four
+        times or five times, not three times, not zero times and not 100 times.  Standard roulette wheel selection
+        does not make this guarantee.
+      </para>
+      <para>
+        Stochastic Universal Sampling works by making a single spin of the roulette wheel.  This provides a starting
+        position and the first selected individual.  The selection process then proceeds by advancing all the way
+        around the wheel in equal sized steps, where the step size is determined by the number of individuals to be
+        selected.  So if we are selecting 30 individuals we will advance by
+        <inlineequation><mathphrase>1/30 x 360 degrees</mathphrase></inlineequation> for each selection.  Note that
+        this does not mean that every candidate on the wheel will be selected.  Some weak individuals will have very
+        thin slices of the wheel and these might be stepped over completely depending on the random starting position.
+      </para>
     </section>
   </section>
   <section>
     <title>Rank Selection</title>
     <indexterm><primary>rank selection</primary></indexterm>
     <indexterm><primary>selection</primary><secondary>rank</secondary></indexterm>
-    <para>TODO</para>
+    <para>
+      <emphasis>Rank Selection</emphasis> is similar to fitness-proporitionate selection except that selection
+      probability is proportional to relative fitness rather than absolute fitness.  In other words, it doesn't make
+      any difference whether the fittest candidate is ten times fitter than the next fittest or 0.001% fitter.  In
+      both cases the selection probabilities would be the same; all that matters is the ranking relative to other
+      individuals.
+    </para>
+    <para>
+      Rank selection will tend to avoid premature convergence by tempering selection
+      pressure for large fitness differentials that occur in early generations.  Conversely, by amplifying small
+      fitness differences in later generations, selection pressure is increased compared to alternative selection
+      strategies.
+    </para>
   </section>
   <section>
     <title>Tournament Selection</title>
     <indexterm><primary>selection</primary><secondary>tournament</secondary></indexterm>
     <indexterm><primary>tournament selection</primary></indexterm>
-    <para>TODO</para>
+    <para>
+      <emphasis>Tournament Selection</emphasis> is among the most widely used selection strategies in evolutionary
+      algorithms.  It works well for a wide range of problems, it can be implemented efficiently, and it is amenable to
+      parallelisation.
+    </para>
+    <para>
+      At its simplest tournament selection involves randomly picking two individuals from the population and staging
+      a tournament to determine which one gets selected.  The "tournament" isn't much of a tournament at all, it
+      just involves generating a random value between zero and one and comparing it to a pre-determined selection
+      probability.  If the random value is less than or equal to the selection probability, the fitter candidate is
+      selected, otherwise the weaker candidate is chosen.  The probability parameter provides a convenient mechanism
+      for adjusting the selection pressure. In practice it is always set to be greater than 0.5 in order to favour
+      fitter candidates. The tournament can be extended to involve more than two individuals if desired.
+    </para>
   </section>
   <section>
     <title>Sigma Scaling</title>
     <indexterm><primary>selection</primary><secondary>sigma scaling</secondary></indexterm>
     <indexterm><primary>sigma scaling</primary></indexterm>
-    <para>TODO</para>
+    <para>
+      Like rank selection, <emphasis>Sigma Scaling</emphasis> attempts to moderate selection pressure over time
+      so that it is not too strong in early generations and not too weak once the population has stabilised and
+      fitness differences are smaller.  The Greek letter Sigma is used in statistics to denote standard deviation
+      and that's what it means here too.  The standard deviation of the population fitness is used to scale the
+      fitness scores so that selection pressure is relatively constant over the lifetime of the evolutionary
+      program.
+    </para>
   </section>
   <section>
     <title>Elitism</title>

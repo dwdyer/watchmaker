@@ -9,6 +9,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../framework" />
       <excludeFolder url="file://$MODULE_DIR$/../../swing" />
       <excludeFolder url="file://$MODULE_DIR$/../../temp" />
+      <excludeFolder url="file://$MODULE_DIR$/../../website" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
