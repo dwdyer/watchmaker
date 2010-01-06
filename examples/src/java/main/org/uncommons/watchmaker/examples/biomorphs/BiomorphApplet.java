@@ -56,10 +56,10 @@ import org.uncommons.watchmaker.swing.SwingConsole;
  */
 public class BiomorphApplet extends AbstractExampleApplet
 {
-    private final Renderer<Biomorph, JComponent> renderer = new SwingBiomorphRenderer();
-    private final SwingConsole console = new SwingConsole(5);
-    private final JDialog selectionDialog = new JDialog((JFrame) null, "Biomorph Selection", true);
-    private final JPanel biomorphHolder = new JPanel(new GridLayout(1, 1));
+    private Renderer<Biomorph, JComponent> renderer;
+    private SwingConsole console;
+    private JDialog selectionDialog;
+    private JPanel biomorphHolder;
 
 
     /**
@@ -69,6 +69,11 @@ public class BiomorphApplet extends AbstractExampleApplet
     @Override
     protected void prepareGUI(Container container)
     {
+        renderer = new SwingBiomorphRenderer();
+        console = new SwingConsole(5);
+        selectionDialog = new JDialog((JFrame) null, "Biomorph Selection", true);
+        biomorphHolder = new JPanel(new GridLayout(1, 1));
+
         container.add(new ControlPanel(), BorderLayout.WEST);
         container.add(biomorphHolder, BorderLayout.CENTER);
         biomorphHolder.setBorder(BorderFactory.createTitledBorder("Last Evolved Biomorph"));

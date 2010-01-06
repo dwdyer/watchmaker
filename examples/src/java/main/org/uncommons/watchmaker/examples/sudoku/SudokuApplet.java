@@ -106,21 +106,14 @@ public class SudokuApplet extends AbstractExampleApplet
                                                HARD_PUZZLE,
                                                BLANK_PUZZLE};
 
-    private final SudokuView sudokuView = new SudokuView();
-    private final JButton solveButton = new JButton("Solve");
-    private final JComboBox puzzleCombo = new JComboBox(new String[]{"Easy Demo (38 givens)",
-                                                                     "Medium Demo (32 givens)",
-                                                                     "Hard Demo (28 givens)",
-                                                                     "Custom"});
-    private final JSpinner populationSizeSpinner = new JSpinner(new SpinnerNumberModel(500, 10, 50000, 1));
-    private final ProbabilityParameterControl selectionPressure = new ProbabilityParameterControl(Probability.EVENS,
-                                                                                                  Probability.ONE,
-                                                                                                  2,
-                                                                                                  new Probability(0.85d));
-    private final SelectionStrategy<Object> selectionStrategy
-        = new TournamentSelection(selectionPressure.getNumberGenerator());
-    private final AbortControl abortControl = new AbortControl();
-    private final StatusBar statusBar = new StatusBar();
+    private SelectionStrategy<Object> selectionStrategy;
+
+    private SudokuView sudokuView;
+    private JButton solveButton;
+    private JComboBox puzzleCombo;
+    private JSpinner populationSizeSpinner;
+    private AbortControl abortControl;
+    private StatusBar statusBar;
 
 
     /**
@@ -130,8 +123,10 @@ public class SudokuApplet extends AbstractExampleApplet
     @Override
     protected void prepareGUI(Container container)
     {
+        sudokuView = new SudokuView();
         container.add(createControls(), BorderLayout.NORTH);
         container.add(sudokuView, BorderLayout.CENTER);
+        statusBar = new StatusBar();
         container.add(statusBar, BorderLayout.SOUTH);
         sudokuView.setPuzzle(EASY_PUZZLE);
     }
@@ -142,6 +137,10 @@ public class SudokuApplet extends AbstractExampleApplet
         JPanel controls = new JPanel(new BorderLayout());
         JPanel innerPanel = new JPanel(new SpringLayout());
         innerPanel.add(new JLabel("Puzzle: "));
+        puzzleCombo = new JComboBox(new String[]{"Easy Demo (38 givens)",
+                                                 "Medium Demo (32 givens)",
+                                                 "Hard Demo (28 givens)",
+                                                 "Custom"});
         innerPanel.add(puzzleCombo);
         puzzleCombo.addItemListener(new ItemListener()
         {
@@ -151,8 +150,15 @@ public class SudokuApplet extends AbstractExampleApplet
             }
         });
         innerPanel.add(new JLabel("Selection Pressure: "));
+        ProbabilityParameterControl selectionPressure = new ProbabilityParameterControl(Probability.EVENS,
+                                                                                        Probability.ONE,
+                                                                                        2,
+                                                                                        new Probability(0.85d));
+
+        selectionStrategy = new TournamentSelection(selectionPressure.getNumberGenerator());
         innerPanel.add(selectionPressure.getControl());
         innerPanel.add(new JLabel("Population Size: "));
+        populationSizeSpinner = new JSpinner(new SpinnerNumberModel(500, 10, 50000, 1));        
         innerPanel.add(populationSizeSpinner);
         SpringUtilities.makeCompactGrid(innerPanel, 3, 2, 0, 6, 6, 6);
         innerPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
@@ -165,6 +171,7 @@ public class SudokuApplet extends AbstractExampleApplet
     private JComponent createButtonPanel()
     {
         JPanel buttonPanel = new JPanel(new FlowLayout());
+        solveButton = new JButton("Solve");
         solveButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -181,6 +188,7 @@ public class SudokuApplet extends AbstractExampleApplet
         });
 
         buttonPanel.add(solveButton);
+        abortControl = new AbortControl();
         buttonPanel.add(abortControl.getControl());
         abortControl.getControl().setEnabled(false);
         return buttonPanel;

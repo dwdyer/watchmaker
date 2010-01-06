@@ -64,7 +64,7 @@ public class MonaLisaApplet extends AbstractExampleApplet
 {
     private static final String IMAGE_PATH = "org/uncommons/watchmaker/examples/monalisa/monalisa.jpg";
 
-    private final ProbabilitiesPanel probabilitiesPanel = new ProbabilitiesPanel();
+    private ProbabilitiesPanel probabilitiesPanel;
     private EvolutionMonitor<List<ColouredPolygon>> monitor;
     private JButton startButton;
     private AbortControl abort;
@@ -99,6 +99,7 @@ public class MonaLisaApplet extends AbstractExampleApplet
     @Override
     protected void prepareGUI(Container container)
     {
+        probabilitiesPanel = new ProbabilitiesPanel();
         probabilitiesPanel.setBorder(BorderFactory.createTitledBorder("Evolution Probabilities"));        
         JPanel controls = new JPanel(new BorderLayout());
         controls.add(createParametersPanel(), BorderLayout.NORTH);

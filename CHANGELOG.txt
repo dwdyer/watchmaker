@@ -3,6 +3,12 @@ Changes in version 0.7.1
 
 * Use final version of Google Collections 1.0.
 
+* Tweaked concurrency settings in IslandEvolution (no need for more than one
+  thread per island).
+
+* Fixed look-and-feel issues in example applets (make sure all components are
+  created after the look-and-feel is set.
+
 
 Changes in version 0.7.0
 ------------------------

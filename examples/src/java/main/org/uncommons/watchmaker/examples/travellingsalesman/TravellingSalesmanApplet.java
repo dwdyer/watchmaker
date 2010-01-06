@@ -35,11 +35,11 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
 public final class TravellingSalesmanApplet extends AbstractExampleApplet
 {
     private final DistanceLookup distances = new EuropeanDistanceLookup();
-    private final ItineraryPanel itineraryPanel = new ItineraryPanel(distances.getKnownCities());
-    private final StrategyPanel strategyPanel = new StrategyPanel(distances);
-    private final ExecutionPanel executionPanel = new ExecutionPanel();
-
     private final FitnessEvaluator<List<String>> evaluator = new RouteEvaluator(distances);
+
+    private ItineraryPanel itineraryPanel;
+    private StrategyPanel strategyPanel;
+    private ExecutionPanel executionPanel;
 
 
     /**
@@ -49,6 +49,10 @@ public final class TravellingSalesmanApplet extends AbstractExampleApplet
     @Override
     protected void prepareGUI(Container container)
     {
+        itineraryPanel = new ItineraryPanel(distances.getKnownCities());
+        strategyPanel = new StrategyPanel(distances);
+        executionPanel = new ExecutionPanel();
+
         container.add(itineraryPanel, BorderLayout.WEST);
         JPanel innerPanel = new JPanel(new BorderLayout());
         innerPanel.add(strategyPanel, BorderLayout.NORTH);
