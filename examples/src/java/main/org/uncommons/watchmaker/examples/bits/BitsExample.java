@@ -20,10 +20,9 @@ import java.util.List;
 import org.uncommons.maths.binary.BitString;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
-import org.uncommons.watchmaker.framework.EvolutionObserver;
+import org.uncommons.watchmaker.examples.EvolutionLogger;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
-import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.factories.BitStringFactory;
 import org.uncommons.watchmaker.framework.operators.BitStringCrossover;
 import org.uncommons.watchmaker.framework.operators.BitStringMutation;
@@ -60,22 +59,9 @@ public class BitsExample
                                                                                                    new RouletteWheelSelection(),
                                                                                                    new MersenneTwisterRNG());
         engine.setSingleThreaded(true); // Performs better for very trivial fitness evaluations.
-        engine.addEvolutionObserver(new EvolutionLogger());
+        engine.addEvolutionObserver(new EvolutionLogger<BitString>());
         return engine.evolve(100, // 100 individuals in each generation.
                              0, // Don't use elitism.
                              new TargetFitness(length, true)); // Continue until a perfect match is found.        
-    }
-
-
-    /**
-     * Trivial evolution observer for displaying information at the end
-     * of each generation.
-     */
-    private static class EvolutionLogger implements EvolutionObserver<BitString>
-    {
-        public void populationUpdate(PopulationData<? extends BitString> data)
-        {
-            System.out.println("Generation " + data.getGenerationNumber() + ": " + data.getBestCandidate());
-        }
     }
 }

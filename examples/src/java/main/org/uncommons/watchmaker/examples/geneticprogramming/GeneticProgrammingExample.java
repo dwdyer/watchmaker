@@ -21,11 +21,10 @@ import java.util.List;
 import java.util.Map;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
+import org.uncommons.watchmaker.examples.EvolutionLogger;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
-import org.uncommons.watchmaker.framework.EvolutionObserver;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
-import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
@@ -80,20 +79,7 @@ public class GeneticProgrammingExample
                                                                              evaluator,
                                                                              new RouletteWheelSelection(),
                                                                              new MersenneTwisterRNG());
-        engine.addEvolutionObserver(new EvolutionLogger());
+        engine.addEvolutionObserver(new EvolutionLogger<Node>());
         return engine.evolve(1000, 5, new TargetFitness(0d, evaluator.isNatural()));
-    }
-
-
-    /**
-     * Trivial evolution observer for displaying information at the end
-     * of each generation.
-     */
-    private static class EvolutionLogger implements EvolutionObserver<Node>
-    {
-        public void populationUpdate(PopulationData<? extends Node> data)
-        {
-            System.out.println("Generation " + data.getGenerationNumber() + ": " + data.getBestCandidateFitness());
-        }
     }
 }

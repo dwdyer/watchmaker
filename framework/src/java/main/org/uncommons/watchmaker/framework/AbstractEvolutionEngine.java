@@ -150,6 +150,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         List<TerminationCondition> satisfiedConditions = EvolutionUtils.shouldContinue(data, conditions);
         while (satisfiedConditions == null)
         {
+            ++currentGenerationIndex;
             evaluatedPopulation = nextEvolutionStep(evaluatedPopulation, eliteCount, rng);
             EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, fitnessEvaluator.isNatural());
             data = EvolutionUtils.getPopulationData(evaluatedPopulation,
@@ -160,7 +161,6 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
             // Notify observers of the state of the population.
             notifyPopulationChange(data);
             satisfiedConditions = EvolutionUtils.shouldContinue(data, conditions);
-            ++currentGenerationIndex;
         }
         this.satisfiedTerminationConditions = satisfiedConditions;
         return evaluatedPopulation;
