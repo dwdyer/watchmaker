@@ -71,9 +71,9 @@ public class IslandEvolutionTest
         assert observedEpochCount[0] == 2 : "Listener should have been notified twice, was " + observedEpochCount[0];
         for (int i = 0; i < islandCount; i++)
         {
-            int expected = epochCount * (generationCount + 1); // +1 because of notification before first generation.
+            int expected = epochCount * generationCount;
             assert observedGenerationCounts[i] == expected
-                : "Genertion count for island " + i + " should be 5, is " + observedGenerationCounts[i];
+                : "Genertion count for island " + i + " should be " + expected + ", is " + observedGenerationCounts[i];
         }
     }
 
