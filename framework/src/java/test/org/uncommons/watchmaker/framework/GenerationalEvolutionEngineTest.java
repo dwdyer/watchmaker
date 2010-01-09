@@ -152,25 +152,6 @@ public class GenerationalEvolutionEngineTest
 
 
     /**
-     * Trivial fitness evaluator for integers.  Used by tests above.
-     */
-    private static final class IntegerEvaluator implements FitnessEvaluator<Integer>
-    {
-
-        public double getFitness(Integer candidate,
-                                 List<? extends Integer> population)
-        {
-            return candidate;
-        }
-
-        public boolean isNatural()
-        {
-            return true;
-        }
-    }
-
-
-    /**
      * Trivial test operator that mutates all integers into zeroes.
      */
     private static final class IntegerZeroMaker implements EvolutionaryOperator<Integer>

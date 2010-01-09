@@ -1,6 +1,9 @@
 Changes in version 0.7.1
 ------------------------
 
+* Added EvolutionStrategyEngine to provide both (?+?) and (?,?) evolution
+  strategies.
+
 * Use final version of Google Collections 1.0.
 
 * Tweaked concurrency settings in IslandEvolution (no need for more than one
@@ -8,6 +11,10 @@ Changes in version 0.7.1
 
 * Fixed look-and-feel issues in example applets (make sure all components are
   created after the look-and-feel is set.
+
+* Reverted 0.7.0 change to generation numbering in AbstractEvolutionEngine.
+  Numbering is correct if the initial population is considered to be the first
+  generation.
 
 
 Changes in version 0.7.0
@@ -38,7 +45,7 @@ Changes in version 0.7.0
 * Added islands view to the evolution monitor so that the state of individual
   island populations can be tracked.
 
-* Fixed generation numbering in EvolutionEngine.  It was supposed to be
+* Fixed generation numbering in AbstractEvolutionEngine.  It was supposed to be
   zero-based but was starting at 1, which would cause the GenerationCount
   termination condition to trigger prematurely.
 
