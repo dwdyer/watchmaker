@@ -39,6 +39,7 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
  *
  * @param <T> The type of entity that is to be evolved.
  * @see SteadyStateEvolutionEngine
+ * @see EvolutionStrategyEngine
  * @author Daniel Dyer
  */
 public class GenerationalEvolutionEngine<T> extends AbstractEvolutionEngine<T>

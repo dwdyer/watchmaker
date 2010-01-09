@@ -26,6 +26,7 @@ import java.util.Random;
  *
  * @param <T> The type of entity that is to be evolved.
  * @see GenerationalEvolutionEngine
+ * @see EvolutionStrategyEngine
  * @author Daniel Dyer
  */
 public class SteadyStateEvolutionEngine<T> extends AbstractEvolutionEngine<T>

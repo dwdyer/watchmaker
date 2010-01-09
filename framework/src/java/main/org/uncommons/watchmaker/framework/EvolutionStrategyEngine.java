@@ -20,8 +20,16 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * General purpose engine for implementing Evolution Strategies.  Both (μ+λ) and (μ,λ)
- * strategies are supported (choose which to use by setting the boolean constructor parameter).
+ * <p>General purpose engine for implementing Evolution Strategies.  Both (μ+λ) and (μ,λ)
+ * strategies are supported (choose which to use by setting the boolean constructor parameter).</p>
+ *
+ * <p>Though this implementation accepts the {@code eliteCount} argument for each of its evolve
+ * methods in common with other {@link EvolutionEngine} implementations, it has no effect for
+ * evolution strategies.  Elitism is implicit in a (μ+λ) ES and undesirable for a (μ,λ) ES.</p>
+
+ * @param <T> The type of entity that is to be evolved.
+ * @see GenerationalEvolutionEngine
+ * @see SteadyStateEvolutionEngine
  * @author Daniel Dyer
  */
 public class EvolutionStrategyEngine<T> extends AbstractEvolutionEngine<T>
@@ -67,11 +75,23 @@ public class EvolutionStrategyEngine<T> extends AbstractEvolutionEngine<T>
     }
 
 
+    /**
+     * This method performs a single step/iteration of the evolutionary process.
+     * @param evaluatedPopulation The population at the beginning of the process.
+     * @param eliteCount Ignored by evolution strategies.  Elitism is implicit in a (μ+λ)
+     * ES and undesirable for a (μ,λ) ES.
+     * @param rng A source of randomness.
+     * @return The updated population after the evolution strategy has advanced.
+     */
     @Override
     protected List<EvaluatedCandidate<T>> nextEvolutionStep(List<EvaluatedCandidate<T>> evaluatedPopulation,
                                                             int eliteCount,
                                                             Random rng)
     {
+        // Elite count is ignored.  If it's non-zero it doesn't really matter, but if assertions are
+        // enabled we will flag it as wrong.
+        assert eliteCount == 0 : "Explicit elitism is not supported for an ES, eliteCount should be 0.";
+        
         // Select candidates that will be operated on to create the offspring.
         int offspringCount = offspringMultiplier * evaluatedPopulation.size();
         List<T> parents = new ArrayList<T>(offspringCount);
