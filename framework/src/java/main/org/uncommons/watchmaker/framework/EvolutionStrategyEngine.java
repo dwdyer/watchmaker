@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * General purpose engine for implementing Evolution Strategies.  Both (?+?) and (?,?)
+ * General purpose engine for implementing Evolution Strategies.  Both (μ+λ) and (μ,λ)
  * strategies are supported (choose which to use by setting the boolean constructor parameter).
  * @author Daniel Dyer
  */
@@ -40,12 +40,12 @@ public class EvolutionStrategyEngine<T> extends AbstractEvolutionEngine<T>
      * the population at each generation.
      * @param fitnessEvaluator A function for assigning fitness scores to candidate
      * solutions.
-     * @param plusSelection If true this object implements a (?+?) evolution strategy rather
-     * than (?,?).  With plus-selection the parents are eligible for survival.  With
+     * @param plusSelection If true this object implements a (μ+λ) evolution strategy rather
+     * than (μ,λ).  With plus-selection the parents are eligible for survival.  With
      * comma-selection only the offspring survive.
      * @param offspringMultiplier How many offspring to create for each member of the parent
-     * population.  This parameter effectively defines a multiplier for ? that gives ?.
-     * We define ? in this indirect way because we don't know the value of ? until
+     * population.  This parameter effectively defines a multiplier for μ that gives λ.
+     * We define λ in this indirect way because we don't know the value of μ until
      * it is passed as an argument to one of the evolve methods. 
      * For a 1+1 ES this parameter would be set to one.  For other evolution strategies
      * a higher value might be better. Eiben & Smith suggest 7 as a good value. 

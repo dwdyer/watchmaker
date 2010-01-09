@@ -1,8 +1,8 @@
 Changes in version 0.7.1
 ------------------------
 
-* Added EvolutionStrategyEngine to provide both (?+?) and (?,?) evolution
-  strategies.
+* Added EvolutionStrategyEngine to provide both (mu+lambda) and (mu,lambda)
+  evolution strategies.
 
 * Use final version of Google Collections 1.0.
 
