@@ -36,7 +36,9 @@ public class EvolutionStrategyEngineTest
                                                                                        true,
                                                                                        1,
                                                                                        FrameworkTestUtils.getRNG());
+        @SuppressWarnings("unchecked")
         List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 1));
+
         List<EvaluatedCandidate<Integer>> evolvedPopulation
             = engine.nextEvolutionStep(population, 0, FrameworkTestUtils.getRNG());
         assert evolvedPopulation.size() == 1 : "Population size should be 1, is " + evolvedPopulation.size();
@@ -54,7 +56,9 @@ public class EvolutionStrategyEngineTest
                                                                                        false,
                                                                                        1,
                                                                                        FrameworkTestUtils.getRNG());
+        @SuppressWarnings("unchecked")
         List<EvaluatedCandidate<Integer>> population = Arrays.asList(new EvaluatedCandidate<Integer>(1, 1));
+        
         List<EvaluatedCandidate<Integer>> evolvedPopulation
             = engine.nextEvolutionStep(population, 0, FrameworkTestUtils.getRNG());
         assert evolvedPopulation.size() == 1 : "Population size should be 1, is " + evolvedPopulation.size();
