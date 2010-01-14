@@ -1,3 +1,10 @@
+Changes in version 0.7.2
+------------------------
+
+* Fix for StatusBar timer being reset at each epoch in island evolution
+  (ISSUE#19).
+
+
 Changes in version 0.7.1
 ------------------------
 

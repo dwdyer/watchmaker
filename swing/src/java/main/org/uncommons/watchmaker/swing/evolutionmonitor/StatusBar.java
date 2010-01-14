@@ -37,6 +37,8 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
     private final JLabel elitismLabel = new JLabel("N/A", JLabel.RIGHT);
 
     private final AtomicInteger islandPopulationSize = new AtomicInteger(-1);
+    private long elapsedTime;
+    private long epochTime;
 
 
     /**
@@ -102,7 +104,9 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
                     }
                 }
                 generationsLabel.setText(String.valueOf(populationData.getGenerationNumber() + 1));
-                timeLabel.setText(formatTime(populationData.getElapsedTime()));
+                elapsedTime = populationData.getElapsedTime();
+                epochTime = 0;
+                timeLabel.setText(formatTime(elapsedTime));
             }
         });
     }
@@ -119,7 +123,13 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
         {
             public void run()
             {
-                timeLabel.setText(formatTime(populationData.getElapsedTime()));
+                // Only update the label if the time has advanced.  Sometimes, due to threading
+                // variations, later updates have shorter elapsed times.
+                if (populationData.getElapsedTime() > epochTime)
+                {
+                    epochTime = populationData.getElapsedTime();
+                    timeLabel.setText(formatTime(elapsedTime + epochTime));
+                }
             }
         });
     }
