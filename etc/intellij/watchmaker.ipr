@@ -1004,7 +1004,7 @@
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="svn" />
+    <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../../website" vcs="Git" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />

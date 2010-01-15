@@ -1,0 +1,7 @@
+dist
+docs
+release
+temp
+website
+*/build
+*.iws
