@@ -17,7 +17,6 @@ package org.uncommons.watchmaker.framework.islands;
 
 import java.util.Arrays;
 import java.util.List;
-import org.testng.Reporter;
 import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.FrameworkTestUtils;
@@ -26,7 +25,7 @@ import org.uncommons.watchmaker.framework.FrameworkTestUtils;
  * Unit test for the {@link RingMigration} class.
  * @author Daniel Dyer
  */
-public class RingMigrationTest
+public class RandomMigrationTest
 {
     /**
      * Make sure that nothing strange happens when there is no migration.
@@ -34,7 +33,7 @@ public class RingMigrationTest
     @Test
     public void testZeroMigration()
     {
-        Migration migration = new RingMigration();
+        Migration migration = new RandomMigration();
         @SuppressWarnings("unchecked")
         List<List<EvaluatedCandidate<String>>> islandPopulations = Arrays.asList(MigrationTestUtils.createTestPopulation("A", "A", "A"),
                                                                                  MigrationTestUtils.createTestPopulation("B", "B", "B"),
@@ -51,7 +50,7 @@ public class RingMigrationTest
      * Make sure that nothing strange happens when the entire island is migrated.
      */
     @Test
-    public void testFullMigration()
+    public void testNonZeroMigration()
     {
         Migration migration = new RingMigration();
         @SuppressWarnings("unchecked")
@@ -60,8 +59,9 @@ public class RingMigrationTest
                                                                                  MigrationTestUtils.createTestPopulation("C", "C", "C"));
         migration.migrate(islandPopulations, 3, FrameworkTestUtils.getRNG());
         assert islandPopulations.size() == 3: "Wrong number of populations after migration.";
-        MigrationTestUtils.testPopulationContents(islandPopulations.get(0), "C", "C", "C");
-        MigrationTestUtils.testPopulationContents(islandPopulations.get(1), "A", "A", "A");
-        MigrationTestUtils.testPopulationContents(islandPopulations.get(2), "B", "B", "B");
+        // Each population should still have 3 members (but it's not sure which members).
+        assert islandPopulations.get(0).size() == 3 : "Wrong population size.";
+        assert islandPopulations.get(1).size() == 3 : "Wrong population size.";
+        assert islandPopulations.get(2).size() == 3 : "Wrong population size.";
     }
 }

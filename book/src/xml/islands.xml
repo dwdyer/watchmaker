@@ -3,5 +3,76 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
   <title>Island Models</title>
-  <para>TODO</para>
+  <indexterm><primary>island models</primary></indexterm>
+  <indexterm><primary>Australia</primary></indexterm>
+  <para>
+    In the natural world, populations of organisms might be separated by geography.  Left to evolve in isolation
+    over millions of years, vastly different species will occur in different locations.  Consider Australia,
+    an island continent protected by its seas.  With little opportunity for outside organisms to
+    interfere, and few opportunities for its land-based organisms to migrate to other land masses, Australian
+    wildlife evolved to be distinctly different from that of other continents and countries.  The majority of
+    Australia's plant and animal species, including 84% of its mammals, are endemic.  They occur nowhere else
+    in the world.
+  </para>
+  <indexterm><primary>Darwin, Charles</primary></indexterm>
+  <indexterm><primary>Galápagos Islands</primary></indexterm>
+  <para>
+    Australia is not the only island to exhibit such levels of endemism.  It was a visit to the Galápagos
+    Islands in 1835 that started Charles Darwin on the path to formulating his theory of evolution.  Darwin
+    noticed the pronounced differences between the species of mocking birds and tortoises present on the
+    different islands of the archipelago and began to speculate on how such variations might have occurred.
+  </para>
+  <para>
+    In the world of evolutionary computation we can mimic this idea of having multiple isolated populations
+    evolving in parallel.  Having additional populations would increase the likelihood of finding a solution that
+    is close to the global optimum.  However, it is not just a question of having a larger global population.
+    A system of 10 islands each with a population of 50 individuals is not equivalent to a single island with a
+    population of 500.  The reason for this is that the island system partitions the search.  If one island
+    prematurely converges on a sub-optimal solution it does not affect the evolution happening on the other
+    islands; they are following their own paths.  A single large population does not have this in-built
+    resilience.
+  </para>
+  <section>
+    <title>Migration</title>
+    <indexterm><primary>migration</primary></indexterm>
+    <indexterm><primary>island models</primary><secondary>migration</secondary></indexterm>
+    <para>
+      There is of course no real difference in evolving 10 completely separate islands in parallel or running
+      the same single-population evolution 10 times in a row, other than how the computing resources are utilised.
+      In practice, as in the natural world, the populations are not permanently isolated from each other.  There
+      is the occasional opportunity for individuals to migrate between islands.
+    </para>
+    <para>
+      In the real world, external species have been introduced to foreign ecosystems in several ways.
+      In an ice age the waters that separated two land masses might freeze providing a route for land animals
+      to migrate to previously unreachable places.  Human migration was greatly aided by the invention of
+      boats, which in turn led to migrations of other animals and bacteria that humans took with them.
+    </para>
+    <para>
+      The effect of introducing a foreign species to a new environment can vary.  The new species might be
+      ill-adapted to its new surroundings and quickly perish.  Alternatively, a lack of natural predators
+      may cause it to flourish, often to the detriment of indigenous species.  One such example is the
+      introduction of rabbits to Australia.  Australia was a land without rabbits until the arrival of European
+      settlers.  An Englishman named Thomas Austin released 24 rabbits into the wild of Victoria in October 1859
+      with the intention of hunting them.  If rabbits are famous for one thing it is for reproducing prodigously.
+      The mild winters allowed year-round breeding and the absence of any natural rabbit predators, such as foxes,
+      allowed the Australian rabbit population to explode unchecked.  Within 10 years an annual cull of two million
+      rabbits was having no noticeable effect on rabbit numbers and the habitats of some native animals were being
+      destroyed by the floppy-eared pests.  Today there are hundreds of millions of rabbits in Australia, despite
+      efforts to reduce the population, and the name of Thomas Austin is widely cursed for his catastrophic lack
+      of foresight.
+    </para>
+    <para>
+      While such invasions provide a useful analogy of what can happen when we introduce migration into
+      island model evolutionary algorithms, we are actually interested in the effects of migration involving
+      genetically different members of the same species.  Imagine an island inhabited by dogs.  On this island all
+      dogs are dalmatians.  Over the sea there is another island of dogs where every one is a golden retriever.
+      For years the dogs on these islands are isolated from each other and reproduce only with their own kind.
+      All dogs are pure-bred.  Then one day one of the golden retrievers arrives on Dalmatian Island (maybe it
+      swam).  This golden retriever meets a nice dalmatian and they settle down and have puppies.  Several generations
+      later there are still two islands.  One is populated by pure-bred golden retrievers and one is populated by
+      dalmatian/golden retriever hybrids.  There are no longer any pure-bred dalmatians.  In evolutionary terms,
+      the cross-breed is more viable than the dalmation.
+    </para>
+  </section>
 </chapter>

@@ -4,6 +4,8 @@ Changes in version 0.7.2
 * Fix for StatusBar timer being reset at each epoch in island evolution
   (ISSUE#19).
 
+* Added RandomMigration as an alternative strategy for island evolution.
+
 
 Changes in version 0.7.1
 ------------------------
