@@ -32,6 +32,7 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
@@ -50,12 +51,13 @@ class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
 
     private final DefaultCategoryDataset bestDataSet = new DefaultCategoryDataset();
     private final DefaultStatisticalCategoryDataset meanDataSet = new DefaultStatisticalCategoryDataset();
-
+    private final StatisticalLineAndShapeRenderer meanRenderer = new StatisticalLineAndShapeRenderer();
     private final JFreeChart chart;
 
     private final AtomicInteger islandCount = new AtomicInteger(0);
+    private final Object maxLock = new Object();
     private double max = 0;
-    private final StatisticalLineAndShapeRenderer meanRenderer = new StatisticalLineAndShapeRenderer();
+
 
 
     IslandsView()
@@ -70,6 +72,9 @@ class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
                                             false, // Tooltips
                                             false); // URLs
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
+        plot.getDomainAxis().setLowerMargin(0.02);
+        plot.getDomainAxis().setUpperMargin(0.02);
+        ((BarRenderer) plot.getRenderer()).setShadowVisible(false);
         plot.getRangeAxis().setAutoRange(false);
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
 
@@ -173,11 +178,19 @@ class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
                                 (Integer) islandIndex);
                 ValueAxis rangeAxis = ((CategoryPlot) chart.getPlot()).getRangeAxis();
                 // If the range is not sufficient to display all values, enlarge it.
-                max = Math.max(max, populationData.getBestCandidateFitness());
-                max = Math.max(max, populationData.getMeanFitness() + populationData.getFitnessStandardDeviation());
-                while (max > rangeAxis.getUpperBound())
+                synchronized (maxLock)
                 {
-                    rangeAxis.setUpperBound(rangeAxis.getUpperBound() * 2);
+                    max = Math.max(max, populationData.getBestCandidateFitness());
+                    max = Math.max(max, populationData.getMeanFitness() + populationData.getFitnessStandardDeviation());
+                    while (max > rangeAxis.getUpperBound())
+                    {
+                        rangeAxis.setUpperBound(rangeAxis.getUpperBound() * 2);
+                    }
+                    // If the range is much bigger than it needs to be, reduce it.
+                    while (max < rangeAxis.getUpperBound() / 4)
+                    {
+                        rangeAxis.setUpperBound(rangeAxis.getUpperBound() / 4);
+                    }
                 }
                 chart.setNotify(true);
             }
@@ -187,6 +200,9 @@ class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
 
     public void populationUpdate(PopulationData<? extends Object> populationData)
     {
-        // Do nothing.
+        synchronized (maxLock)
+        {
+            max = 0;
+        }
     }
 }
