@@ -5,3 +5,5 @@ temp
 website
 */build
 *.iws
+etc/nbproject/private
+.DS_Store
