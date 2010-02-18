@@ -37,17 +37,20 @@
     <indexterm><primary>migration</primary></indexterm>
     <indexterm><primary>island models</primary><secondary>migration</secondary></indexterm>
     <para>
-      There is of course no real difference in evolving 10 completely separate islands in parallel or running
+      There is of course no real difference between evolving 10 completely separate islands in parallel and running
       the same single-population evolution 10 times in a row, other than how the computing resources are utilised.
-      In practice, as in the natural world, the populations are not permanently isolated from each other.  There
-      is the occasional opportunity for individuals to migrate between islands.
+      In practice the populations are not kept permanently isolated from each other.  There is the occasional
+      opportunity for individuals to migrate between islands.
     </para>
     <para>
-      In the real world, external species have been introduced to foreign ecosystems in several ways.
-      In an ice age the waters that separated two land masses might freeze providing a route for land animals
-      to migrate to previously unreachable places.  Human migration was greatly aided by the invention of
-      boats, which in turn led to migrations of other animals and bacteria that humans took with them.
+      In the real world external species have been introduced to foreign ecosystems in several ways.
+      In an ice age the waters that previously separated two land masses might freeze providing a route for land
+      animals to migrate to previously unreachable places.  Likewise, human migration was greatly aided by the
+      invention of boats, which in turn led to migrations of other animals and microscopic organisms that humans took
+      with them (whether intentionally or not).
     </para>
+    <indexterm><primary>rabbits</primary></indexterm>
+    <indexterm><primary>Austin, Thomas</primary></indexterm>
     <para>
       The effect of introducing a foreign species to a new environment can vary.  The new species might be
       ill-adapted to its new surroundings and quickly perish.  Alternatively, a lack of natural predators
@@ -63,16 +66,30 @@
       of foresight.
     </para>
     <para>
-      While such invasions provide a useful analogy of what can happen when we introduce migration into
-      island model evolutionary algorithms, we are actually interested in the effects of migration involving
-      genetically different members of the same species.  Imagine an island inhabited by dogs.  On this island all
-      dogs are dalmatians.  Over the sea there is another island of dogs where every one is a golden retriever.
-      For years the dogs on these islands are isolated from each other and reproduce only with their own kind.
-      All dogs are pure-bred.  Then one day one of the golden retrievers arrives on Dalmatian Island (maybe it
-      swam).  This golden retriever meets a nice dalmatian and they settle down and have puppies.  Several generations
-      later there are still two islands.  One is populated by pure-bred golden retrievers and one is populated by
-      dalmatian/golden retriever hybrids.  There are no longer any pure-bred dalmatians.  In evolutionary terms,
-      the cross-breed is more viable than the dalmation.
+      While such invasions of separate species provide a useful analogy for what can happen when we introduce migration
+      into island model evolutionary algorithms, we are specifically interested in the effects of migration involving
+      genetically different members of the same species.  This is because, in our simplified model of evolution,
+      all individuals are compatible and can reproduce.  The island model of evolution provides the isolation necessary
+      for diversity to thrive while still providing opportunities for diverse individuals to be combined to produce
+      potentially fitter offspring.
+    </para>
+    <para>
+      In an island model, the isolation of the separate populations often leads to different traits originating on
+      different islands.  Migration brings these diverse individuals together occasionally to see what happens when
+      they are combined.  Remember that, even if the immigrants are weak, cross-over can result in offspring that are
+      fitter than either of their parents.  In this way, the introduction to the population of new genetic building
+      blocks may result in evolutionary progress even if the immigrants themselves are not viable in the new
+      population.
+    </para>
+  </section>
+  <section>
+    <title>Islands in the Watchmaker Framework</title>
+    <indexterm><primary>IslandEvolution</primary></indexterm>
+    <para>
+      The Watchmaker Framework for Evolutionary Computation supports islands models via the
+      <classname>IslandEvolution</classname> class.  Each island is a self-contained
+      <classname>EvolutionEngine</classname> just like those we have been using previously for single-population
+      evolutionary algorithms. 
     </para>
   </section>
 </chapter>
