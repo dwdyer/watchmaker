@@ -99,12 +99,12 @@
       from <xref linkend="watchmaker_chapter" /> might look something like this:
     </para>
     <indexterm><primary><interfacename>Migration</interfacename></primary></indexterm>
-    <indexterm><primary><classname>RandomMigration</classname></primary></indexterm>
+    <indexterm><primary><classname>RingMigration</classname></primary></indexterm>
     <informalexample>
       <programlisting language="java">
 <![CDATA[IslandEvolution<String> engine
     = new IslandEvolution<String>(5, // Number of islands.
-                                  new RandomMigration(),
+                                  new RingMigration(),
                                   candidateFactory,
                                   evolutionaryOperator,
                                   fitnessEvaluator,
@@ -149,7 +149,7 @@ engine.evolve(100, // Population size per island.
 
 IslandEvolution<String> engine
     = new IslandEvolution<String>(islands,
-                                  new RandomMigration(),
+                                  new RingMigration(),
                                   false, // Natural fitness?
                                   rng);]]>
         </programlisting>
