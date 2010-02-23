@@ -2,7 +2,8 @@
          xmlns:xi="http://www.w3.org/2001/XInclude"
          xmlns:xlink="http://www.w3.org/1999/xlink"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd">
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd"
+         id="watchmaker_chapter">
   <title>The Watchmaker Framework</title>
   <indexterm significance="preferred"><primary>Watchmaker Framework</primary></indexterm>
   <para>
@@ -19,8 +20,8 @@
   </para>
   <section>
     <title>The Evolution Engine</title>
-    <indexterm><primary>GenerationalEvolutionEngine</primary></indexterm>
-    <indexterm><primary>EvolutionEngine</primary></indexterm>
+    <indexterm><primary><classname>GenerationalEvolutionEngine</classname></primary></indexterm>
+    <indexterm><primary><interfacename>EvolutionEngine</interfacename></primary></indexterm>
     <para>
       The central object of an evolutionary program built with the Watchmaker Framework is
       the evolution engine.
@@ -67,7 +68,7 @@
   </section>
   <section>
     <title>The Candidate Factory</title>
-    <indexterm><primary>CandidateFactory</primary></indexterm>
+    <indexterm significance="preferred"><primary><interfacename>CandidateFactory</interfacename></primary></indexterm>
     <para>
       The first object that needs to be plugged into the evolution engine is a candidate
       factory.  Every evolutionary simulation must start with an initial population of
@@ -83,7 +84,7 @@
       arrays, you may be able to use a ready-made factory from the
       <package>org.uncommons.watchmaker.framework.factories</package> package.
     </para>
-    <indexterm><primary>StringFactory</primary></indexterm>
+    <indexterm><primary><classname>StringFactory</classname></primary></indexterm>
     <para>
       For our "Hello World" program, we can use the provided
       <classname>StringFactory</classname>:
@@ -103,7 +104,7 @@ CandidateFactory<String> factory = new StringFactory(chars, 11);]]>
       </programlisting>
     </informalexample>
     <tip>
-      <indexterm><primary>AbstractCandidateFactory</primary></indexterm>
+      <indexterm significance="preferred"><primary><classname>AbstractCandidateFactory</classname></primary></indexterm>
       <para>
         When writing your own <interfacename>CandidateFactory</interfacename> implementations,
         it is easiest to extend the provided <classname>AbstractCandidateFactory</classname>
@@ -113,7 +114,7 @@ CandidateFactory<String> factory = new StringFactory(chars, 11);]]>
   </section>
   <section>
     <title>Evolutionary Operators</title>
-    <indexterm><primary>EvolutionaryOperator</primary></indexterm>
+    <indexterm significance="preferred"><primary><interfacename>EvolutionaryOperator</interfacename></primary></indexterm>
     <para>
       Evolutionary operators are the components that perform the actual evolution of a
       population.  Cross-over is an evolutionary operator, as is mutation.
@@ -126,8 +127,8 @@ CandidateFactory<String> factory = new StringFactory(chars, 11);]]>
       individual at a time, whereas others will process individuals in groups
       (cross-over processes two individuals at a time).
     </para>
-    <indexterm><primary>StringCrossover</primary></indexterm>
-    <indexterm><primary>StringMutation</primary></indexterm>
+    <indexterm><primary><classname>StringCrossover</classname></primary></indexterm>
+    <indexterm><primary><classname>StringMutation</classname></primary></indexterm>
     <para>
       As with candidate factories, evolutionary operators have associated types that
       must be compatible with the type of the evolution engine that they are used with.
@@ -140,7 +141,7 @@ CandidateFactory<String> factory = new StringFactory(chars, 11);]]>
     </para>
     <section>
       <title>The Evolution Pipeline</title>
-      <indexterm><primary>EvolutionPipeline</primary></indexterm>
+      <indexterm significance="preferred"><primary><classname>EvolutionPipeline</classname></primary></indexterm>
       <para>
         Alert readers will have noticed that the evolution engine constructor only accepts
         a single evolutionary operator.  So how can we use both cross-over and mutation?
@@ -173,7 +174,7 @@ EvolutionaryOperator<String> pipeline
   </section>
   <section>
     <title>The Fitness Evaluator</title>
-    <indexterm><primary>FitnessEvaluator</primary></indexterm>
+    <indexterm significance="preferred"><primary><interfacename>FitnessEvaluator</interfacename></primary></indexterm>
     <para>
       So far we've been able to build our evolutionary program by simply combining instances
       of classes provided by the framework.  There is one part of the program that we will

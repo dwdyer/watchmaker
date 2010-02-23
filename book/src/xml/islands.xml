@@ -57,7 +57,7 @@
       may cause it to flourish, often to the detriment of indigenous species.  One such example is the
       introduction of rabbits to Australia.  Australia was a land without rabbits until the arrival of European
       settlers.  An Englishman named Thomas Austin released 24 rabbits into the wild of Victoria in October 1859
-      with the intention of hunting them.  If rabbits are famous for one thing it is for reproducing prodigously.
+      with the intention of hunting them.  If rabbits are famous for one thing it is for reproducing prodigiously.
       The mild winters allowed year-round breeding and the absence of any natural rabbit predators, such as foxes,
       allowed the Australian rabbit population to explode unchecked.  Within 10 years an annual cull of two million
       rabbits was having no noticeable effect on rabbit numbers and the habitats of some native animals were being
@@ -84,12 +84,94 @@
   </section>
   <section>
     <title>Islands in the Watchmaker Framework</title>
-    <indexterm><primary>IslandEvolution</primary></indexterm>
+    <indexterm><primary><classname>IslandEvolution</classname></primary></indexterm>
     <para>
       The Watchmaker Framework for Evolutionary Computation supports islands models via the
       <classname>IslandEvolution</classname> class.  Each island is a self-contained
       <classname>EvolutionEngine</classname> just like those we have been using previously for single-population
-      evolutionary algorithms. 
+      evolutionary algorithms.  The evolution is divided into <emphasis>epochs</emphasis>.  Each epoch consists
+      of a fixed number of generations that each island completes in isolation.  At the end of an epoch migration
+      occurs.  Then, if the termination conditions are not yet satisfied, a new epoch begins.
     </para>
+    <para>
+      The <classname>IslandEvolution</classname> supports pluggable migration strategies via different implementations
+      of the <interfacename>Migration</interfacename> interface.  An island version of the string evolution example
+      from <xref linkend="watchmaker_chapter" /> might look something like this:
+    </para>
+    <indexterm><primary><interfacename>Migration</interfacename></primary></indexterm>
+    <indexterm><primary><classname>RandomMigration</classname></primary></indexterm>
+    <informalexample>
+      <programlisting language="java">
+<![CDATA[IslandEvolution<String> engine
+    = new IslandEvolution<String>(5, // Number of islands.
+                                  new RandomMigration(),
+                                  candidateFactory,
+                                  evolutionaryOperator,
+                                  fitnessEvaluator,
+                                  selectionStrategy,
+                                  rng);
+
+engine.evolve(100, // Population size per island.
+              5, // Elitism for each island.
+              50, // Epoch length (no. generations).
+              3, // Migrations from each island at each epoch.
+              new TargetFitness(0, false));]]>
+      </programlisting>
+    </informalexample>
+    <indexterm><primary><interfacename>IslandEvolutionObserver</interfacename></primary></indexterm>
+    <indexterm><primary><methodname>populationUpdate</methodname></primary></indexterm>
+    <indexterm><primary><methodname>islandPopulationUpdate</methodname></primary></indexterm>
+    <para>
+      We can add listeners to an <classname>IslandEvolution</classname> object, just as we can with individual
+      <interfacename>EvolutionEngine</interfacename>s.  We use a different interface for this though,
+      <interfacename>IslandEvolutionObserver</interfacename>, which provides two call-backs.
+      The <methodname>populationUpdate</methodname> method reports the global state of the combined population
+      of all islands at the end of each epoch.  The <methodname>islandPopulationUpdate</methodname> method reports
+      the state of individual island populations at the end of each generation.
+    </para>
+    <section>
+      <title>Advanced Usage</title>
+      <indexterm><primary><classname>GenerationalEvolutionEngine</classname></primary><secondary>island evolution</secondary></indexterm>
+      <para>
+        In the example code above we specified how many islands we wanted to use and the
+        <classname>IslandEvolution</classname> class created one <classname>GenerationalEvolutionEngine</classname>
+        for each island.  Using this approach all of the islands have the same configuration; they use the same
+        candidate factory, evolutionary operator(s) and selection strategy.  This is the easiest way to create an
+        island system but it is also possible to construct each island individually for ultimate flexibility.
+      </para>
+      <informalexample>
+        <programlisting language="java">
+<![CDATA[List<EvolutionEngine<String>> islands
+    = new ArrayList<EvolutionEngine<String>>();
+
+// Create individual islands here and add them to the list.
+// ...
+
+IslandEvolution<String> engine
+    = new IslandEvolution<String>(islands,
+                                  new RandomMigration(),
+                                  false, // Natural fitness?
+                                  rng);]]>
+        </programlisting>
+      </informalexample>
+      <para>
+        One reason you might choose to construct the islands explicitly is that it makes it possible to configure
+        individual islands differently.  You may choose to have different islands use different parameters
+        for evolutionary operators, or even to use different evolutionary operators all together.  Alternatively,
+        you could use the same evolutionary operators and parameters but have different selection strategies so that
+        some islands have stronger selection pressure than others.  You should generally use the same fitness function
+        for all islands though, otherwise you might get some strange results.
+      </para>
+      <indexterm><primary><classname>SteadyStateEvolutionEngine</classname></primary><secondary>island evolution</secondary></indexterm>
+      <indexterm><primary><classname>EvolutionStrategyEngine</classname></primary><secondary>island evolution</secondary></indexterm>
+      <para>
+        Another possible reason for creating the islands explicitly is so you don't have to use the standard
+        <classname>GenerationalEvolutionEngine</classname> for the islands.  You can choose to use any implementation
+        of the <interfacename>EvolutionEngine</interfacename> interface, such as the
+        <classname>SteadyStateEvolutionEngine</classname> class or the <classname>EvolutionStrategyEngine</classname>
+        class.  You can even use a mixture of different island types with the same
+        <classname>IslandEvolution</classname> object.
+      </para>
+    </section>
   </section>
 </chapter>
