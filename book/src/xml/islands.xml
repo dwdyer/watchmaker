@@ -39,15 +39,14 @@
     <para>
       There is of course no real difference between evolving 10 completely separate islands in parallel and running
       the same single-population evolution 10 times in a row, other than how the computing resources are utilised.
-      In practice the populations are not kept permanently isolated from each other.  There is the occasional
-      opportunity for individuals to migrate between islands.
+      In practice the populations are not kept permanently isolated from each other and there are occasional
+      opportunities for individuals to migrate between islands.
     </para>
     <para>
-      In the real world external species have been introduced to foreign ecosystems in several ways.
-      In an ice age the waters that previously separated two land masses might freeze providing a route for land
-      animals to migrate to previously unreachable places.  Likewise, human migration was greatly aided by the
-      invention of boats, which in turn led to migrations of other animals and microscopic organisms that humans took
-      with them (whether intentionally or not).
+      In nature external species have been introduced to foreign ecosystems in several ways. In an ice age the waters
+      that previously separated two land masses might freeze providing a route for land animals to migrate to
+      previously unreachable places. Microorganisms and insects have often strayed beyond their usual environment by
+      hitching a ride with larger species.
     </para>
     <indexterm><primary>rabbits</primary></indexterm>
     <indexterm><primary>Austin, Thomas</primary></indexterm>
