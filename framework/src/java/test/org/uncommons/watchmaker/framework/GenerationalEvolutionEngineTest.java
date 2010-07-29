@@ -146,7 +146,7 @@ public class GenerationalEvolutionEngineTest
     @Test(expectedExceptions = IllegalStateException.class)
     public void testGetSatisfiedTerminationConditionsBeforeStart()
     {
-        // Should throw an IllegalStateException because evolution has started, let alone terminated.
+        // Should throw an IllegalStateException because evolution hasn't started, let alone terminated.
         engine.getSatisfiedTerminationConditions();
     }
 
