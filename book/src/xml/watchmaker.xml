@@ -316,8 +316,8 @@ CandidateFactory<String> factory = new StringFactory(chars, 11);
 // Create a pipeline that applies cross-over then mutation.
 List<EvolutionaryOperator<String>> operators
     = new LinkedList<EvolutionaryOperator<String>>();
-operators.add(new StringMutation(chars, new Probability(0.02)));
 operators.add(new StringCrossover())
+operators.add(new StringMutation(chars, new Probability(0.02)));
 EvolutionaryOperator<String> pipeline
     = new EvolutionPipeline<String>(operators);
 
