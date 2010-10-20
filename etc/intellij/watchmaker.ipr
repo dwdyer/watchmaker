@@ -1031,9 +1031,9 @@
     <option name="shortCycleTableSpecificationString" value="" />
   </component>
   <component name="libraryTable">
-    <library name="uncommons-maths-1.2.1">
+    <library name="uncommons-maths-1.2.2">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../lib/runtime/uncommons-maths-1.2.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/runtime/uncommons-maths-1.2.2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
