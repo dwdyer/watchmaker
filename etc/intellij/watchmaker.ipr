@@ -1038,9 +1038,9 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="testng-5.10-jdk15">
+    <library name="testng-5.13-jdk15">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../lib/compiletime/testng/testng-5.10-jdk15.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../lib/compiletime/testng/testng-5.13.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
