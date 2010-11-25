@@ -112,7 +112,7 @@
     <uncommons:compile module="examples" />
     <uncommons:jar module="examples"
                    jarfile="watchmaker-examples-${version}.jar"
-                   classpath="${artifact.identifier}.jar lib/uncommons-maths-1.2.1.jar lib/google-collect-1.0.jar watchmaker-swing-${version}.jar lib/jfreechart-1.0.13.jar lib/jcommon-1.0.16.jar"
+                   classpath="${artifact.identifier}.jar lib/uncommons-maths-1.2.2.jar lib/google-collect-1.0.jar watchmaker-swing-${version}.jar lib/jfreechart-1.0.13.jar lib/jcommon-1.0.16.jar"
                    mainclass="org.uncommons.watchmaker.examples.Launcher" />
   </target>
 
@@ -220,7 +220,7 @@
       <additionalconfig>
         <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
         <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
-        <link href="https://uncommons-maths.dev.java.net/nonav/api/"/>
+        <link href="http://maths.uncommons.org/api/"/>
       </additionalconfig>
     </uncommons:javadoc>
   </target>
@@ -262,7 +262,7 @@
       <additionalconfig>
         <group title="Watchmaker Evolution Framework" packages="org.uncommons.watchmaker.framework:org.uncommons.watchmaker.framework.*"/>
         <group title="Watchmaker Swing Classes" packages="org.uncommons.swing:org.uncommons.swing.*:org.uncommons.watchmaker.swing:org.uncommons.watchmaker.swing.*"/>
-        <link href="https://uncommons-maths.dev.java.net/nonav/api/"/>
+        <link href="http://maths.uncommons.org/api/"/>
       </additionalconfig>
     </uncommons:javadoc>
 
