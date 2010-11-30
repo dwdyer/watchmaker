@@ -159,5 +159,12 @@ public class SelectionStrategyControl<T> implements EvolutionControl
         {
             return delegate.select(population, naturalFitnessScores, selectionSize, rng);
         }
+
+
+        @Override
+        public String toString()
+        {
+            return delegate.toString();
+        }
     }
 }

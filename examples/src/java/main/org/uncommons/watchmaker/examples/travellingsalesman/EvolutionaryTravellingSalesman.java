@@ -91,7 +91,7 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
      */
     public String getDescription()
     {
-        String selectionName = selectionStrategy.getClass().getSimpleName();
+        String selectionName = selectionStrategy.toString();
         return "Evolution (pop: " + populationSize + ", gen: " + generationCount
                 + ", elite: " + eliteCount + ", " + selectionName + ")";
     }
