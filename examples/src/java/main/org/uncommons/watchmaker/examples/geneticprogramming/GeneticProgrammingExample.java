@@ -31,7 +31,7 @@ import org.uncommons.watchmaker.framework.termination.TargetFitness;
 
 /**
  * Simple tree-based genetic programming application based on the first example
- * in Chapter 11 of Toby Segaran's Progamming Collective Intelligence.
+ * in Chapter 11 of Toby Segaran's Programming Collective Intelligence.
  * @author Daniel Dyer
  */
 public class GeneticProgrammingExample

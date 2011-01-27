@@ -34,7 +34,7 @@ public class TargetFitness implements TerminationCondition
      * @param natural Whether fitness scores are natural or non-natural.  If fitness
      * is natural, the condition will be satisfied if any individual has a fitness
      * that is greater than or equal to the target fitness.  If fitness is non-natural,
-     * the condition will be satisified in any individual has a fitness that is less
+     * the condition will be satisfied in any individual has a fitness that is less
      * than or equal to the target fitness.
      * @see org.uncommons.watchmaker.framework.FitnessEvaluator
      */
