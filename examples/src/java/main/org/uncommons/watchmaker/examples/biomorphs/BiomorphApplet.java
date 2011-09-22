@@ -60,6 +60,8 @@ public class BiomorphApplet extends AbstractExampleApplet
     private SwingConsole console;
     private JDialog selectionDialog;
     private JPanel biomorphHolder;
+    private final long UPDATES_PER_MS = 300;
+    private long lastUpdate;
 
 
     /**
@@ -150,6 +152,9 @@ public class BiomorphApplet extends AbstractExampleApplet
     {
         public void populationUpdate(final PopulationData<? extends Biomorph> populationData)
         {
+            if (System.currentTimeMillis() - lastUpdate < UPDATES_PER_MS)
+                return;
+            lastUpdate = System.currentTimeMillis();
             SwingUtilities.invokeLater(new Runnable()
             {
                 public void run()

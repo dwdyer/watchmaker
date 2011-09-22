@@ -42,7 +42,8 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
     private final JScrollPane scroller = new JScrollPane();
 
     private T fittestCandidate = null;
-    private JComponent renderedCandidate = null;
+    private long lastUpdate;
+    private final long UPDATES_PER_MS = 300;
 
     /**
      * Creates a Swing view that uses the specified renderer to display
@@ -74,6 +75,9 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
     
     public void populationUpdate(final PopulationData<? extends T> populationData)
     {
+        if (System.currentTimeMillis() - lastUpdate < UPDATES_PER_MS)
+            return;
+        lastUpdate = System.currentTimeMillis();
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()
@@ -87,7 +91,7 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
                 if (populationData.getBestCandidate() != fittestCandidate)
                 {
                     fittestCandidate = populationData.getBestCandidate();
-                    renderedCandidate = renderer.render(fittestCandidate);
+                    JComponent renderedCandidate = renderer.render(fittestCandidate);
                     scroller.setViewportView(renderedCandidate);
                 }
             }

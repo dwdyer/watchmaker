@@ -57,6 +57,8 @@ class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
     private final AtomicInteger islandCount = new AtomicInteger(0);
     private final Object maxLock = new Object();
     private double max = 0;
+    private long lastUpdate;
+    private final long UPDATES_PER_MS = 300;
 
 
 
@@ -134,6 +136,9 @@ class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
 
     public void islandPopulationUpdate(final int islandIndex, final PopulationData<? extends Object> populationData)
     {
+        if (System.currentTimeMillis() - lastUpdate < UPDATES_PER_MS)
+            return;
+        lastUpdate = System.currentTimeMillis();
         // Make sure the bars are added to the chart in order of island index, regardless of which island
         // reports its results first.
         if (islandIndex >= islandCount.get())

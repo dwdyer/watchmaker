@@ -39,6 +39,8 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
     private final AtomicInteger islandPopulationSize = new AtomicInteger(-1);
     private long elapsedTime;
     private long epochTime;
+    private long lastUpdate;
+    private final long UPDATES_PER_MS = 300;
 
 
     /**
@@ -84,6 +86,9 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
      */
     public void populationUpdate(final PopulationData<?> populationData)
     {
+        if (System.currentTimeMillis() - lastUpdate < UPDATES_PER_MS)
+            return;
+        lastUpdate = System.currentTimeMillis();
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()

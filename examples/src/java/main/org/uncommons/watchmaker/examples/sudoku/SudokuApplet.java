@@ -114,6 +114,8 @@ public class SudokuApplet extends AbstractExampleApplet
     private JSpinner populationSizeSpinner;
     private AbortControl abortControl;
     private StatusBar statusBar;
+    private long lastUpdate;
+    private final long UPDATES_PER_MS = 300;
 
 
     /**
@@ -256,6 +258,9 @@ public class SudokuApplet extends AbstractExampleApplet
     {
         public void populationUpdate(final PopulationData<? extends Sudoku> data)
         {
+            if (System.currentTimeMillis() - lastUpdate < UPDATES_PER_MS)
+                return;
+            lastUpdate = System.currentTimeMillis();
             SwingUtilities.invokeLater(new Runnable()
             {
                 public void run()

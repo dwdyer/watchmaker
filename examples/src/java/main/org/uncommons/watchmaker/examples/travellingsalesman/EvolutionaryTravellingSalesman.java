@@ -135,16 +135,16 @@ public class EvolutionaryTravellingSalesman implements TravellingSalesmanStrateg
                                                             new RouteEvaluator(distances),
                                                             selectionStrategy,
                                                             rng);
-        engine.addEvolutionObserver(new EvolutionObserver<List<String>>()
+        if (progressListener != null)
         {
-            public void populationUpdate(PopulationData<? extends List<String>> data)
+            engine.addEvolutionObserver(new EvolutionObserver<List<String>>()
             {
-                if (progressListener != null)
+                public void populationUpdate(PopulationData<? extends List<String>> data)
                 {
                     progressListener.updateProgress(((double) data.getGenerationNumber() + 1) / generationCount * 100);
                 }
-            }
-        });
+            });
+        }
         return engine.evolve(populationSize,
                              eliteCount,
                              new GenerationCount(generationCount));
