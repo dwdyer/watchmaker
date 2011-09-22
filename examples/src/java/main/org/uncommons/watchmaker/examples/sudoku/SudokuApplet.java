@@ -115,7 +115,7 @@ public class SudokuApplet extends AbstractExampleApplet
     private AbortControl abortControl;
     private StatusBar statusBar;
     private long lastUpdate;
-    private final long UPDATES_PER_MS = 300;
+    private final long MS_PER_UPDATE = 300;
 
 
     /**
@@ -160,7 +160,7 @@ public class SudokuApplet extends AbstractExampleApplet
         selectionStrategy = new TournamentSelection(selectionPressure.getNumberGenerator());
         innerPanel.add(selectionPressure.getControl());
         innerPanel.add(new JLabel("Population Size: "));
-        populationSizeSpinner = new JSpinner(new SpinnerNumberModel(500, 10, 50000, 1));        
+        populationSizeSpinner = new JSpinner(new SpinnerNumberModel(500, 10, 50000, 1));
         innerPanel.add(populationSizeSpinner);
         SpringUtilities.makeCompactGrid(innerPanel, 3, 2, 0, 6, 6, 6);
         innerPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
@@ -177,7 +177,7 @@ public class SudokuApplet extends AbstractExampleApplet
         solveButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
-            {                
+            {
                 int populationSize = (Integer) populationSizeSpinner.getValue();
                 puzzleCombo.setEnabled(false);
                 populationSizeSpinner.setEnabled(false);
@@ -236,7 +236,7 @@ public class SudokuApplet extends AbstractExampleApplet
                                      abortControl.getTerminationCondition()); // ...or the user aborts.
             }
 
-            
+
             @Override
             protected void postProcessing(Sudoku result)
             {
@@ -258,7 +258,7 @@ public class SudokuApplet extends AbstractExampleApplet
     {
         public void populationUpdate(final PopulationData<? extends Sudoku> data)
         {
-            if (System.currentTimeMillis() - lastUpdate < UPDATES_PER_MS)
+            if (System.currentTimeMillis() - lastUpdate < MS_PER_UPDATE)
                 return;
             lastUpdate = System.currentTimeMillis();
             SwingUtilities.invokeLater(new Runnable()

@@ -26,7 +26,7 @@ import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 
 /**
  * Status bar component for the evolution monitor.  Can also be used separately to
- * provide basic status information without having to use the full evolution monitor.  
+ * provide basic status information without having to use the full evolution monitor.
  * @author Daniel Dyer
  */
 public class StatusBar extends Box implements IslandEvolutionObserver<Object>
@@ -40,7 +40,7 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
     private long elapsedTime;
     private long epochTime;
     private long lastUpdate;
-    private final long UPDATES_PER_MS = 300;
+    private final long MS_PER_UPDATE = 300;
 
 
     /**
@@ -86,7 +86,7 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
      */
     public void populationUpdate(final PopulationData<?> populationData)
     {
-        if (System.currentTimeMillis() - lastUpdate < UPDATES_PER_MS)
+        if (System.currentTimeMillis() - lastUpdate < MS_PER_UPDATE)
             return;
         lastUpdate = System.currentTimeMillis();
         SwingUtilities.invokeLater(new Runnable()

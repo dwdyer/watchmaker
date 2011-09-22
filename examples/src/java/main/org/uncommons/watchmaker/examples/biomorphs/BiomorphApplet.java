@@ -51,7 +51,7 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
 import org.uncommons.watchmaker.swing.SwingConsole;
 
 /**
- * Watchmaker Framework implementation of Dawkin's biomorph program. 
+ * Watchmaker Framework implementation of Dawkin's biomorph program.
  * @author Daniel Dyer
  */
 public class BiomorphApplet extends AbstractExampleApplet
@@ -60,7 +60,7 @@ public class BiomorphApplet extends AbstractExampleApplet
     private SwingConsole console;
     private JDialog selectionDialog;
     private JPanel biomorphHolder;
-    private final long UPDATES_PER_MS = 300;
+    private final long MS_PER_UPDATE = 300;
     private long lastUpdate;
 
 
@@ -152,7 +152,7 @@ public class BiomorphApplet extends AbstractExampleApplet
     {
         public void populationUpdate(final PopulationData<? extends Biomorph> populationData)
         {
-            if (System.currentTimeMillis() - lastUpdate < UPDATES_PER_MS)
+            if (System.currentTimeMillis() - lastUpdate < MS_PER_UPDATE)
                 return;
             lastUpdate = System.currentTimeMillis();
             SwingUtilities.invokeLater(new Runnable()

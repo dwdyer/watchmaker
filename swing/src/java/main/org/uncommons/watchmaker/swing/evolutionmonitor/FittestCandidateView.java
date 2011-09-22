@@ -43,7 +43,7 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
 
     private T fittestCandidate = null;
     private long lastUpdate;
-    private final long UPDATES_PER_MS = 300;
+    private final long MS_PER_UPDATE = 300;
 
     /**
      * Creates a Swing view that uses the specified renderer to display
@@ -72,10 +72,10 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
         fitnessLabel.setName("FitnessLabel");
     }
 
-    
+
     public void populationUpdate(final PopulationData<? extends T> populationData)
     {
-        if (System.currentTimeMillis() - lastUpdate < UPDATES_PER_MS)
+        if (System.currentTimeMillis() - lastUpdate < MS_PER_UPDATE)
             return;
         lastUpdate = System.currentTimeMillis();
         SwingUtilities.invokeLater(new Runnable()
@@ -101,6 +101,6 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
 
     public void islandPopulationUpdate(int islandIndex, final PopulationData<? extends T> populationData)
     {
-        // Do nothing.        
+        // Do nothing.
     }
 }
