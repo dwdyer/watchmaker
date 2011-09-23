@@ -25,6 +25,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -53,6 +54,7 @@ import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
 import org.uncommons.watchmaker.swing.AbortControl;
 import org.uncommons.watchmaker.swing.ProbabilityParameterControl;
+import org.uncommons.watchmaker.swing.SwingEvolutionObserver;
 import org.uncommons.watchmaker.swing.evolutionmonitor.StatusBar;
 
 /**
@@ -114,8 +116,6 @@ public class SudokuApplet extends AbstractExampleApplet
     private JSpinner populationSizeSpinner;
     private AbortControl abortControl;
     private StatusBar statusBar;
-    private long lastUpdate;
-    private final long MS_PER_UPDATE = 300;
 
 
     /**
@@ -228,7 +228,8 @@ public class SudokuApplet extends AbstractExampleApplet
                                                                                          new SudokuEvaluator(),
                                                                                          selectionStrategy,
                                                                                          rng);
-                engine.addEvolutionObserver(new GridViewUpdater());
+                engine.addEvolutionObserver(new SwingEvolutionObserver<Sudoku>(
+                    new GridViewUpdater(), 300, TimeUnit.MILLISECONDS));
                 engine.addEvolutionObserver(statusBar);
                 return engine.evolve(populationSize,
                                      eliteCount,
@@ -258,9 +259,6 @@ public class SudokuApplet extends AbstractExampleApplet
     {
         public void populationUpdate(final PopulationData<? extends Sudoku> data)
         {
-            if (System.currentTimeMillis() - lastUpdate < MS_PER_UPDATE)
-                return;
-            lastUpdate = System.currentTimeMillis();
             SwingUtilities.invokeLater(new Runnable()
             {
                 public void run()
