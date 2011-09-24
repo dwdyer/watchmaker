@@ -26,7 +26,7 @@ import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 
 /**
  * Status bar component for the evolution monitor.  Can also be used separately to
- * provide basic status information without having to use the full evolution monitor.  
+ * provide basic status information without having to use the full evolution monitor.
  * @author Daniel Dyer
  */
 public class StatusBar extends Box implements IslandEvolutionObserver<Object>
