@@ -48,6 +48,7 @@
 	<modules>
 		<module>framework</module>
 		<module>swing</module>
+		<module>examples</module>
 	</modules>
 
 	<build>
