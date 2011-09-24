@@ -25,6 +25,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -53,6 +54,7 @@ import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
 import org.uncommons.watchmaker.swing.AbortControl;
 import org.uncommons.watchmaker.swing.ProbabilityParameterControl;
+import org.uncommons.watchmaker.swing.SwingEvolutionObserver;
 import org.uncommons.watchmaker.swing.evolutionmonitor.StatusBar;
 
 /**
@@ -158,7 +160,7 @@ public class SudokuApplet extends AbstractExampleApplet
         selectionStrategy = new TournamentSelection(selectionPressure.getNumberGenerator());
         innerPanel.add(selectionPressure.getControl());
         innerPanel.add(new JLabel("Population Size: "));
-        populationSizeSpinner = new JSpinner(new SpinnerNumberModel(500, 10, 50000, 1));        
+        populationSizeSpinner = new JSpinner(new SpinnerNumberModel(500, 10, 50000, 1));
         innerPanel.add(populationSizeSpinner);
         SpringUtilities.makeCompactGrid(innerPanel, 3, 2, 0, 6, 6, 6);
         innerPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
@@ -175,7 +177,7 @@ public class SudokuApplet extends AbstractExampleApplet
         solveButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
-            {                
+            {
                 int populationSize = (Integer) populationSizeSpinner.getValue();
                 puzzleCombo.setEnabled(false);
                 populationSizeSpinner.setEnabled(false);
@@ -226,7 +228,8 @@ public class SudokuApplet extends AbstractExampleApplet
                                                                                          new SudokuEvaluator(),
                                                                                          selectionStrategy,
                                                                                          rng);
-                engine.addEvolutionObserver(new GridViewUpdater());
+                engine.addEvolutionObserver(new SwingEvolutionObserver<Sudoku>(
+                    new GridViewUpdater(), 300, TimeUnit.MILLISECONDS));
                 engine.addEvolutionObserver(statusBar);
                 return engine.evolve(populationSize,
                                      eliteCount,
@@ -234,7 +237,7 @@ public class SudokuApplet extends AbstractExampleApplet
                                      abortControl.getTerminationCondition()); // ...or the user aborts.
             }
 
-            
+
             @Override
             protected void postProcessing(Sudoku result)
             {

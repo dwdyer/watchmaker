@@ -20,6 +20,7 @@ import java.awt.Window;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -32,6 +33,7 @@ import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 import org.uncommons.watchmaker.swing.ObjectSwingRenderer;
+import org.uncommons.watchmaker.swing.SwingIslandEvolutionObserver;
 
 /**
  * The Evolution Monitor is a component that can be attached to an
@@ -128,7 +130,8 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 
         FittestCandidateView<T> candidateView = new FittestCandidateView<T>(renderer);
         tabs.add("Fittest Individual", candidateView);
-        views.add(candidateView);
+        views.add(new SwingIslandEvolutionObserver<T>(candidateView, 300,
+            TimeUnit.MILLISECONDS));
 
         PopulationFitnessView fitnessView = new PopulationFitnessView(islands);
         tabs.add(islands ? "Global Population" : "Population Fitness", fitnessView);
@@ -138,7 +141,8 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         {
             IslandsView islandsView = new IslandsView();
             tabs.add("Island Populations", islandsView);
-            views.add(islandsView);
+            views.add(new SwingIslandEvolutionObserver<Object>(islandsView,
+                300, TimeUnit.MILLISECONDS));
         }
 
         JVMView jvmView = new JVMView();
@@ -146,7 +150,8 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 
         StatusBar statusBar = new StatusBar(islands);
         monitorComponent.add(statusBar, BorderLayout.SOUTH);
-        views.add(statusBar);
+        views.add(new SwingIslandEvolutionObserver<Object>(statusBar,
+                300, TimeUnit.MILLISECONDS));
     }
 
 
