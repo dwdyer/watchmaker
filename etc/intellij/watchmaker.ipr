@@ -104,30 +104,22 @@
     <module2copyright />
     <LanguageOptions name="JAVA">
       <option name="fileTypeOverride" value="3" />
-      <option name="relativeBefore" value="true" />
       <option name="addBlankAfter" value="false" />
-      <option name="fileLocation" value="1" />
       <option name="block" value="false" />
       <option name="separateBefore" value="true" />
       <option name="separateAfter" value="true" />
       <option name="prefixLines" value="false" />
       <option name="lenBefore" value="79" />
       <option name="lenAfter" value="79" />
-      <option name="box" value="false" />
       <option name="filler" value="=" />
     </LanguageOptions>
     <LanguageOptions name="XML">
       <option name="fileTypeOverride" value="3" />
-      <option name="relativeBefore" value="true" />
-      <option name="addBlankAfter" value="true" />
-      <option name="fileLocation" value="1" />
-      <option name="block" value="true" />
       <option name="separateBefore" value="true" />
       <option name="separateAfter" value="true" />
       <option name="prefixLines" value="false" />
       <option name="lenBefore" value="79" />
       <option name="lenAfter" value="79" />
-      <option name="box" value="false" />
       <option name="filler" value="=" />
     </LanguageOptions>
   </component>
@@ -414,7 +406,6 @@
         </inspection_tool>
         <inspection_tool class="ImplicitlyExposedWebServiceMethods" level="INFO" enabled="false" />
         <inspection_tool class="IncompatibleMaskJS" level="WARNING" enabled="false" />
-        <inspection_tool class="IndexOfReplaceableByContains" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="IndexZeroUsage" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="InfiniteLoopJS" level="WARNING" enabled="false" />
         <inspection_tool class="InfiniteRecursionJS" level="WARNING" enabled="false" />
@@ -500,7 +491,9 @@
         <inspection_tool class="MissortedModifiers" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_requireAnnotationsFirst" value="true" />
         </inspection_tool>
-        <inspection_tool class="MultipleDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="MultipleDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreForLoopDeclarations" value="true" />
+        </inspection_tool>
         <inspection_tool class="MultipleTopLevelClassesInFile" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="MultipleTypedDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="NakedNotify" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -531,6 +524,7 @@
           <option name="m_ignoreNonPublicClasses" value="false" />
         </inspection_tool>
         <inspection_tool class="NonSerializableFieldInSerializableClass" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreAnonymousInnerClasses" value="false" />
           <option name="superClassString" value="java.awt.Component" />
         </inspection_tool>
         <inspection_tool class="NonSerializableObjectBoundToHttpSession" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -624,9 +618,11 @@
         <inspection_tool class="SelfIncludingJspFiles" level="ERROR" enabled="false" />
         <inspection_tool class="SerialVersionUIDNotStaticFinal" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SerializableInnerClassHasSerialVersionUIDField" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreAnonymousInnerClasses" value="false" />
           <option name="superClassString" value="java.awt.Component" />
         </inspection_tool>
         <inspection_tool class="SerializableInnerClassWithNonSerializableOuterClass" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreAnonymousInnerClasses" value="false" />
           <option name="superClassString" value="java.awt.Component" />
         </inspection_tool>
         <inspection_tool class="SerializableWithUnconstructableAncestor" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -664,7 +660,6 @@
           <option name="m_ignorePrimitives" value="false" />
         </inspection_tool>
         <inspection_tool class="StringBufferReplaceableByString" enabled="true" level="WARNING" enabled_by_default="true" />
-        <inspection_tool class="StringBufferReplaceableByStringBuilder" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="StringBufferToStringInConcatenation" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="StringConcatenationInLoops" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignoreUnlessAssigned" value="false" />
@@ -794,12 +789,13 @@
     <option name="PROJECT_PROFILE" value="Project Default" />
     <option name="USE_PROJECT_PROFILE" value="true" />
     <version value="1.0" />
-    <list size="5">
+    <list size="6">
       <item index="0" class="java.lang.String" itemvalue="SERVER PROBLEM" />
-      <item index="1" class="java.lang.String" itemvalue="INFO" />
-      <item index="2" class="java.lang.String" itemvalue="TYPO" />
-      <item index="3" class="java.lang.String" itemvalue="WARNING" />
-      <item index="4" class="java.lang.String" itemvalue="ERROR" />
+      <item index="1" class="java.lang.String" itemvalue="WEAK WARNING" />
+      <item index="2" class="java.lang.String" itemvalue="INFO" />
+      <item index="3" class="java.lang.String" itemvalue="TYPO" />
+      <item index="4" class="java.lang.String" itemvalue="WARNING" />
+      <item index="5" class="java.lang.String" itemvalue="ERROR" />
     </list>
   </component>
   <component name="JavadocGenerationManager">
@@ -995,6 +991,9 @@
       <module fileurl="file://$PROJECT_DIR$/swing.iml" filepath="$PROJECT_DIR$/swing.iml" group="modules" />
       <module fileurl="file://$PROJECT_DIR$/website.iml" filepath="$PROJECT_DIR$/website.iml" group="modules" />
     </modules>
+  </component>
+  <component name="ProjectResources">
+    <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/../../framework/build/classes/main" />

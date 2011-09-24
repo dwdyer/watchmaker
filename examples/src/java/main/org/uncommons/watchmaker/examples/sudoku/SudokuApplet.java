@@ -228,8 +228,9 @@ public class SudokuApplet extends AbstractExampleApplet
                                                                                          new SudokuEvaluator(),
                                                                                          selectionStrategy,
                                                                                          rng);
-                engine.addEvolutionObserver(new SwingEvolutionObserver<Sudoku>(
-                    new GridViewUpdater(), 300, TimeUnit.MILLISECONDS));
+                engine.addEvolutionObserver(new SwingEvolutionObserver<Sudoku>(new GridViewUpdater(),
+                                                                               100,
+                                                                               TimeUnit.MILLISECONDS));
                 engine.addEvolutionObserver(statusBar);
                 return engine.evolve(populationSize,
                                      eliteCount,

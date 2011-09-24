@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.concurrent.TimeUnit;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -50,7 +49,6 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 import org.uncommons.watchmaker.swing.SwingConsole;
-import org.uncommons.watchmaker.swing.SwingEvolutionObserver;
 
 /**
  * Watchmaker Framework implementation of Dawkin's biomorph program.
@@ -116,8 +114,7 @@ public class BiomorphApplet extends AbstractExampleApplet
                                                                                              mutation,
                                                                                              selection,
                                                                                              new MersenneTwisterRNG());
-                engine.addEvolutionObserver(new SwingEvolutionObserver(
-                        new GenerationTracker(), 300, TimeUnit.MILLISECONDS));
+                engine.addEvolutionObserver(new GenerationTracker());
                 return engine.evolve(populationSize,
                                      0,
                                      new GenerationCount(generationCount));

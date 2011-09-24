@@ -66,7 +66,7 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
         scroller.setBorder(null);
         add(scroller, BorderLayout.CENTER);
 
-        // Set names for easier indentification in unit tests.
+        // Set names for easier identification in unit tests.
         fitnessLabel.setName("FitnessLabel");
     }
 

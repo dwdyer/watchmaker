@@ -130,8 +130,7 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 
         FittestCandidateView<T> candidateView = new FittestCandidateView<T>(renderer);
         tabs.add("Fittest Individual", candidateView);
-        views.add(new SwingIslandEvolutionObserver<T>(candidateView, 300,
-            TimeUnit.MILLISECONDS));
+        views.add(new SwingIslandEvolutionObserver<T>(candidateView, 300, TimeUnit.MILLISECONDS));
 
         PopulationFitnessView fitnessView = new PopulationFitnessView(islands);
         tabs.add(islands ? "Global Population" : "Population Fitness", fitnessView);
@@ -141,8 +140,7 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         {
             IslandsView islandsView = new IslandsView();
             tabs.add("Island Populations", islandsView);
-            views.add(new SwingIslandEvolutionObserver<Object>(islandsView,
-                300, TimeUnit.MILLISECONDS));
+            views.add(new SwingIslandEvolutionObserver<Object>(islandsView, 300, TimeUnit.MILLISECONDS));
         }
 
         JVMView jvmView = new JVMView();
@@ -150,8 +148,7 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 
         StatusBar statusBar = new StatusBar(islands);
         monitorComponent.add(statusBar, BorderLayout.SOUTH);
-        views.add(new SwingIslandEvolutionObserver<Object>(statusBar,
-                300, TimeUnit.MILLISECONDS));
+        views.add(new SwingIslandEvolutionObserver<Object>(statusBar, 300, TimeUnit.MILLISECONDS));
     }
 
 
