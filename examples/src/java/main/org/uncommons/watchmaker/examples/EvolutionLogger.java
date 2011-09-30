@@ -33,7 +33,8 @@ public class EvolutionLogger<T> implements IslandEvolutionObserver<T>
     }
 
 
-    public void islandPopulationUpdate(int islandIndex, PopulationData<? extends T> populationData)
+    public <S extends T> void islandPopulationUpdate(int islandIndex,
+        PopulationData<S> populationData)
     {
         // Do nothing.
     }

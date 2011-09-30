@@ -131,8 +131,8 @@ class IslandsView extends JPanel implements IslandEvolutionObserver<Object>
     }
 
 
-    public void islandPopulationUpdate(final int islandIndex,
-        final PopulationData<? extends Object> populationData)
+    public <S> void islandPopulationUpdate(final int islandIndex,
+        final PopulationData<S> populationData)
     {
         // Make sure the bars are added to the chart in order of island index, regardless of which island
         // reports its results first.

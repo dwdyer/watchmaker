@@ -17,11 +17,7 @@ package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
@@ -93,8 +89,8 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
     }
 
 
-    public void islandPopulationUpdate(int islandIndex,
-        final PopulationData<? extends T> populationData)
+    public <S extends T> void islandPopulationUpdate(int islandIndex,
+        final PopulationData<S> populationData)
     {
         // Do nothing.
     }

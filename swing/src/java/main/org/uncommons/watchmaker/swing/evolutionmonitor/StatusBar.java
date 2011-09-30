@@ -109,8 +109,8 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
     }
 
 
-    public void islandPopulationUpdate(int islandIndex,
-                                       final PopulationData<? extends Object> populationData)
+    public <S> void islandPopulationUpdate(int islandIndex,
+                                       final PopulationData<S> populationData)
     {
         islandPopulationSize.compareAndSet(-1, populationData.getPopulationSize());
         SwingUtilities.invokeLater(new Runnable()

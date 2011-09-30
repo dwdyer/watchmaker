@@ -45,8 +45,8 @@ public interface EvolutionObserver<T>
     /**
      * Invoked when the state of the population has changed (typically at the end of a generation).
      * <p/>
-     * @param data Statistics about the state of the current generation.
      * @param <S> The type of evolved entity present in the population that this data describes.
+     * @param data Statistics about the state of the current generation.
      */
      <S extends T> void populationUpdate(PopulationData<S> data);
 }

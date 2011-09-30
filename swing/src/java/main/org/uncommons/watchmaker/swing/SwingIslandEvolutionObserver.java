@@ -80,7 +80,7 @@ public class SwingIslandEvolutionObserver<T> implements IslandEvolutionObserver<
     }
 
 
-    public void islandPopulationUpdate(final int i, PopulationData<? extends T> populationData)
+    public <S extends T> void islandPopulationUpdate(final int i, PopulationData<S> populationData)
     {
         if (latestIslandPopulation.put(i, populationData) != null)
         {

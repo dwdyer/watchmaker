@@ -214,8 +214,8 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
     }
 
 
-    public void islandPopulationUpdate(int islandIndex,
-        PopulationData<? extends Object> populationData)
+    public <S> void islandPopulationUpdate(int islandIndex,
+        PopulationData<S> populationData)
     {
         // Do nothing.
     }

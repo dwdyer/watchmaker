@@ -62,8 +62,8 @@ public class IslandEvolutionTest
             }
 
 
-            public void islandPopulationUpdate(int islandIndex,
-                PopulationData<? extends Integer> populationData)
+            public <S extends Integer> void islandPopulationUpdate(int islandIndex,
+                PopulationData<S> populationData)
             {
                 observedGenerationCounts[islandIndex]++;
             }
@@ -104,8 +104,8 @@ public class IslandEvolutionTest
             }
 
 
-            public void islandPopulationUpdate(int islandIndex,
-                PopulationData<? extends Integer> populationData)
+            public <S extends Integer> void islandPopulationUpdate(int islandIndex,
+                PopulationData<S> populationData)
             {
             }
         });
