@@ -24,18 +24,13 @@
 		<artifactId>watchmaker</artifactId>
 		<version>0.7.2</version>
 	</parent>
-	<artifactId>watchmaker-framework</artifactId>
+	<artifactId>watchmaker-examples</artifactId>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.uncommons.maths</groupId>
-			<artifactId>uncommons-maths</artifactId>
-			<version>1.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.collections</groupId>
-			<artifactId>google-collections</artifactId>
-			<version>1.0</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>watchmaker-swing</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
@@ -43,10 +38,21 @@
 			<version>6.2.1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-swing</artifactId>
+			<version>1.2.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>  
 	
 	<build>
 		<sourceDirectory>src/java/main</sourceDirectory>
 		<testSourceDirectory>src/java/test</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/java/resources</directory>
+			</resource>
+		</resources>
 	</build>
 </project>
