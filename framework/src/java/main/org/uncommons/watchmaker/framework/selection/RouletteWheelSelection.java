@@ -23,34 +23,31 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
- * <p>Implements selection of <i>n</i> candidates from a population by selecting
- * <i>n</i> candidates at random where the probability of each candidate getting
- * selected is proportional to its fitness score.  This is analogous to each
- * candidate being assigned an area on a roulette wheel proportionate to its fitness
- * and the wheel being spun <n>i</n> times.  Candidates may be selected more than
- * once.</p>
- *
- * <p>In some instances, particularly with small population sizes, the randomness
- * of selection may result in excessively high occurrences of particular candidates.
- * If this is a problem, {@link StochasticUniversalSampling} provides an alternative
- * fitness-proportionate strategy for selection.</p>
- *
+ * <p>Implements selection of <i>n</i> candidates from a population by selecting <i>n</i> candidates
+ * at random where the probability of each candidate getting selected is proportional to its fitness
+ * score. This is analogous to each candidate being assigned an area on a roulette wheel
+ * proportionate to its fitness and the wheel being spun <n>i</n> times. Candidates may be selected
+ * more than once.</p>
+ * <p/> <p>In some instances, particularly with small population sizes, the randomness of selection
+ * may result in excessively high occurrences of particular candidates. If this is a problem, {@link StochasticUniversalSampling}
+ * provides an alternative fitness-proportionate strategy for selection.</p>
+ * <p/>
  * @author Daniel Dyer
  */
 public class RouletteWheelSelection implements SelectionStrategy<Object>
 {
     /**
-     * Selects the required number of candidates from the population with
-     * the probability of selecting any particular candidate being proportional
-     * to that candidate's fitness score.  Selection is with replacement (the same
-     * candidate may be selected multiple times).
+     * Selects the required number of candidates from the population with the probability of
+     * selecting any particular candidate being proportional to that candidate's fitness score.
+     * Selection is with replacement (the same candidate may be selected multiple times).
+     * <p/>
      * @param <S> The type of the evolved objects in the population.
      * @param population The candidates to select from.
-     * @param naturalFitnessScores True if higher fitness scores indicate fitter
-     * individuals, false if lower fitness scores indicate fitter individuals.
+     * @param naturalFitnessScores True if higher fitness scores indicate fitter individuals, false
+     * if lower fitness scores indicate fitter individuals.
      * @param selectionSize The number of selections to make.
      * @param rng A source of randomness.
-     * @return The selected candidates. 
+     * @return The selected candidates.
      */
     public <S> List<S> select(List<EvaluatedCandidate<S>> population,
                               boolean naturalFitnessScores,
@@ -77,7 +74,8 @@ public class RouletteWheelSelection implements SelectionStrategy<Object>
         List<S> selection = new ArrayList<S>(selectionSize);
         for (int i = 0; i < selectionSize; i++)
         {
-            double randomFitness = rng.nextDouble() * cumulativeFitnesses[cumulativeFitnesses.length - 1];
+            double randomFitness = rng.nextDouble() * cumulativeFitnesses[cumulativeFitnesses.length
+                - 1];
             int index = Arrays.binarySearch(cumulativeFitnesses, randomFitness);
             if (index < 0)
             {
@@ -107,9 +105,6 @@ public class RouletteWheelSelection implements SelectionStrategy<Object>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

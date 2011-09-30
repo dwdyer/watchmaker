@@ -25,19 +25,15 @@ import javax.swing.JComboBox;
 import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
-import org.uncommons.watchmaker.framework.selection.RankSelection;
-import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
-import org.uncommons.watchmaker.framework.selection.SigmaScaling;
-import org.uncommons.watchmaker.framework.selection.StochasticUniversalSampling;
-import org.uncommons.watchmaker.framework.selection.TournamentSelection;
-import org.uncommons.watchmaker.framework.selection.TruncationSelection;
+import org.uncommons.watchmaker.framework.selection.*;
 
 /**
  * An evolution control for selecting between different {@link SelectionStrategy} implementations.
  * This control provides a proxy selection strategy that delegates to the currently selected
- * strategy.  Using this proxy strategy with an {@link org.uncommons.watchmaker.framework.EvolutionEngine}
- * means that any change to the combo-box selection is immediately reflected in the selection used
- * by the running evolution engine.
+ * strategy. Using this proxy strategy with an {@link org.uncommons.watchmaker.framework.EvolutionEngine}
+ * means that any change to the combo-box selection is immediately reflected in the selection used by
+ * the running evolution engine.
+ * <p/>
  * @param <T> A generic type that matches the type associated with the selection strategies.
  * @author Daniel Dyer
  */
@@ -62,7 +58,8 @@ public class SelectionStrategyControl<T> implements EvolutionControl
                 if (ev.getStateChange() == ItemEvent.SELECTED)
                 {
                     @SuppressWarnings("unchecked")
-                    SelectionStrategy<? super T> delegate = (SelectionStrategy<? super T>) control.getSelectedItem();
+                    SelectionStrategy<? super T> delegate = (SelectionStrategy<? super T>) control.
+                        getSelectedItem();
                     selectionStrategy.setDelegate(delegate);
                 }
             }
@@ -78,8 +75,9 @@ public class SelectionStrategyControl<T> implements EvolutionControl
      * @param truncationRatio The ratio parameter for {@link TruncationSelection}.
      * @return A list of selection strategies.
      */
-    public static <T> List<SelectionStrategy<? super T>> createDefaultOptions(Probability tournamentProbability,
-                                                                              double truncationRatio)
+    public static <T> List<SelectionStrategy<? super T>> createDefaultOptions(
+        Probability tournamentProbability,
+        double truncationRatio)
     {
         List<SelectionStrategy<? super T>> options = new LinkedList<SelectionStrategy<? super T>>();
         options.add(new RankSelection());
@@ -92,31 +90,22 @@ public class SelectionStrategyControl<T> implements EvolutionControl
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public JComboBox getControl()
     {
         return control;
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public void reset()
     {
         control.setSelectedIndex(0);
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public void setDescription(String description)
     {
         control.setToolTipText(description);
-    }    
+    }
 
 
     /**
@@ -128,7 +117,6 @@ public class SelectionStrategyControl<T> implements EvolutionControl
         return selectionStrategy;
     }
 
-
     /**
      * A {@link SelectionStrategy} implementation that simply delegates to the selection strategy
      * currently selected by the combobox control.
@@ -136,6 +124,7 @@ public class SelectionStrategyControl<T> implements EvolutionControl
     private class ProxySelectionStrategy implements SelectionStrategy<T>
     {
         private volatile SelectionStrategy<? super T> delegate;
+
 
         ProxySelectionStrategy(SelectionStrategy<? super T> delegate)
         {
@@ -149,9 +138,6 @@ public class SelectionStrategyControl<T> implements EvolutionControl
         }
 
 
-        /**
-         * {@inheritDoc}
-         */
         public <S extends T> List<S> select(List<EvaluatedCandidate<S>> population,
                                             boolean naturalFitnessScores,
                                             int selectionSize,

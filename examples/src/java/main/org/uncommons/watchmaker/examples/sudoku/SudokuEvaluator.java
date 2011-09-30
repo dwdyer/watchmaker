@@ -21,19 +21,19 @@ import java.util.Set;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
- * {@link org.uncommons.watchmaker.framework.FitnessEvaluator} for potential Sudoku
- * solutions.  Counts the number of duplicate values in rows, columns and sub-grids.
- * The fitness score is the total number of duplicate values.  Therefore, a fitness
- * score of zero indicates a perfect solution. 
+ * {@link org.uncommons.watchmaker.framework.FitnessEvaluator} for potential Sudoku solutions.
+ * Counts the number of duplicate values in rows, columns and sub-grids. The fitness score is the
+ * total number of duplicate values. Therefore, a fitness score of zero indicates a perfect solution.
+ * <p/>
  * @author Daniel Dyer
  */
 public class SudokuEvaluator implements FitnessEvaluator<Sudoku>
 {
     /**
-     * The fitness score for a potential Sudoku solution is the number of
-     * cells that conflict with other cells in the grid (i.e. if there are
-     * two 7s in the same column, both of these cells are conflicting).  A
-     * lower score indicates a fitter individual.
+     * The fitness score for a potential Sudoku solution is the number of cells that conflict with
+     * other cells in the grid (i.e. if there are two 7s in the same column, both of these cells are
+     * conflicting). A lower score indicates a fitter individual.
+     * <p/>
      * @param candidate The Sudoku grid to evaluate.
      * @param population {@inheritDoc}
      * @return The fitness score for the specified individual.

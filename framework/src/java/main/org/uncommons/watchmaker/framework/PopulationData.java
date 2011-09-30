@@ -15,17 +15,21 @@
 //=============================================================================
 package org.uncommons.watchmaker.framework;
 
+import com.google.common.collect.ImmutableList;
+import java.util.Collections;
+import java.util.List;
+
 /**
- * Immutable data object containing statistics about the state of
- * an evolved population and a reference to the fittest candidate
- * solution in the population.
- * @param <T> The type of evolved entity present in the population
- * that this data describes.
+ * Immutable data object containing statistics about the state of an evolved population and a
+ * reference to the fittest candidate solution in the population.
+ * <p/>
+ * @param <T> The type of evolved entity present in the population that this data describes.
  * @see EvolutionObserver
  * @author Daniel Dyer
  */
 public final class PopulationData<T>
 {
+    private final List<EvaluatedCandidate<T>> evaluatedPopulation;
     private final T bestCandidate;
     private final double bestCandidateFitness;
     private final double meanFitness;
@@ -36,8 +40,9 @@ public final class PopulationData<T>
     private final int generationNumber;
     private final long elapsedTime;
 
+
     /**
-     * @param bestCandidate The fittest candidate present in the population.
+     * @param population The evaluated populated sorted in descending order of fitness.
      * @param bestCandidateFitness The fitness score for the fittest candidate
      * in the population.
      * @param meanFitness The arithmetic mean of fitness scores for each member
@@ -51,9 +56,10 @@ public final class PopulationData<T>
      * @param generationNumber The (zero-based) number of the last generation
      * that was processed.
      * @param elapsedTime The number of milliseconds since the start of the
+	 * evolutionary algorithm's execution.
+	 * @param attachment The object attached to this population by the user.
      */
-    public PopulationData(T bestCandidate,
-                          double bestCandidateFitness,
+    public PopulationData(List<EvaluatedCandidate<T>> population,
                           double meanFitness,
                           double fitnessStandardDeviation,
                           boolean naturalFitness,
@@ -62,8 +68,10 @@ public final class PopulationData<T>
                           int generationNumber,
                           long elapsedTime)
     {
-        this.bestCandidate = bestCandidate;
-        this.bestCandidateFitness = bestCandidateFitness;
+        this.evaluatedPopulation = ImmutableList.copyOf(population);
+        EvaluatedCandidate<T> best = population.get(0);
+        this.bestCandidate = best.getCandidate();
+        this.bestCandidateFitness = best.getFitness();
         this.meanFitness = meanFitness;
         this.fitnessStandardDeviation = fitnessStandardDeviation;
         this.naturalFitness = naturalFitness;
@@ -71,6 +79,15 @@ public final class PopulationData<T>
         this.eliteCount = eliteCount;
         this.generationNumber = generationNumber;
         this.elapsedTime = elapsedTime;
+    }
+
+
+    /**
+	 * @return The evaluated populated sorted in descending order of fitness.
+	 */
+    public List<EvaluatedCandidate<T>> getPopulation()
+    {
+        return Collections.unmodifiableList(evaluatedPopulation);
     }
 
 
@@ -125,7 +142,7 @@ public final class PopulationData<T>
         return naturalFitness;
     }
 
-    
+
     /**
      * @return The number of individuals in the current population.
      */

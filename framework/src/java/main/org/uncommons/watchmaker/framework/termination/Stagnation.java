@@ -19,8 +19,9 @@ import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 
 /**
- * A {@link TerminationCondition} that halts evolution if no improvement in fitness
- * is observed within a specified number of generations.
+ * A {@link TerminationCondition} that halts evolution if no improvement in fitness is observed
+ * within a specified number of generations.
+ * <p/>
  * @author Daniel Dyer
  */
 public class Stagnation implements TerminationCondition
@@ -28,9 +29,9 @@ public class Stagnation implements TerminationCondition
     private final int generationLimit;
     private final boolean naturalFitness;
     private final boolean usePopulationAverage;
-
     private double bestFitness;
     private int fittestGeneration;
+
 
     /**
      * Creates a {@link TerminationCondition} that will halt evolution after the
@@ -68,9 +69,6 @@ public class Stagnation implements TerminationCondition
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean shouldTerminate(PopulationData<?> populationData)
     {
         double fitness = getFitness(populationData);
@@ -94,8 +92,8 @@ public class Stagnation implements TerminationCondition
     private double getFitness(PopulationData<?> populationData)
     {
         return usePopulationAverage
-               ? populationData.getMeanFitness()
-               : populationData.getBestCandidateFitness();
+            ? populationData.getMeanFitness()
+            : populationData.getBestCandidateFitness();
     }
 
 

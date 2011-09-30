@@ -27,21 +27,20 @@ import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 
 /**
- * {@link EvolutionMonitor} view for displaying a graphical representation
- * of the fittest candidate found so far.  This allows us to monitor the
- * progress of an evolutionary algorithm.
+ * {@link EvolutionMonitor} view for displaying a graphical representation of the fittest candidate
+ * found so far. This allows us to monitor the progress of an evolutionary algorithm.
+ * <p/>
  * @param <T> The type of the evolved entity displayed by this component.
  * @author Daniel Dyer
  */
 class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<T>
 {
     private static final Font BIG_FONT = new Font("Dialog", Font.BOLD, 16);
-
     private final Renderer<? super T, JComponent> renderer;
     private final JLabel fitnessLabel = new JLabel("N/A", JLabel.CENTER);
     private final JScrollPane scroller = new JScrollPane();
-
     private T fittestCandidate = null;
+
 
     /**
      * Creates a Swing view that uses the specified renderer to display
@@ -71,7 +70,7 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
     }
 
 
-    public void populationUpdate(final PopulationData<? extends T> populationData)
+    public <S extends T> void populationUpdate(final PopulationData<S> populationData)
     {
         SwingUtilities.invokeLater(new Runnable()
         {
@@ -94,7 +93,8 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
     }
 
 
-    public void islandPopulationUpdate(int islandIndex, final PopulationData<? extends T> populationData)
+    public void islandPopulationUpdate(int islandIndex,
+        final PopulationData<? extends T> populationData)
     {
         // Do nothing.
     }

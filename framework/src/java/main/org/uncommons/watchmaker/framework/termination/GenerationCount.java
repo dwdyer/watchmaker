@@ -20,11 +20,13 @@ import org.uncommons.watchmaker.framework.TerminationCondition;
 
 /**
  * Terminates evolution after a set number of generations have passed.
+ * <p/>
  * @author Daniel Dyer
  */
 public class GenerationCount implements TerminationCondition
 {
     private final int generationCount;
+
 
     /**
      * @param generationCount The maximum number of generations that the
@@ -39,9 +41,7 @@ public class GenerationCount implements TerminationCondition
         this.generationCount = generationCount;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     public boolean shouldTerminate(PopulationData<?> populationData)
     {
         return populationData.getGenerationNumber() + 1 >= generationCount;

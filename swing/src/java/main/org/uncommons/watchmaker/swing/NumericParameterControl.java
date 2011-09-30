@@ -23,8 +23,8 @@ import org.uncommons.maths.number.AdjustableNumberGenerator;
 import org.uncommons.maths.number.NumberGenerator;
 
 /**
- * A GUI control that allows the user to set/update the value of a
- * numeric parameter.
+ * A GUI control that allows the user to set/update the value of a numeric parameter.
+ * <p/>
  * @param <T> The numeric type of this control (e.g. Integer, Double).
  * @author Daniel Dyer
  */
@@ -33,6 +33,7 @@ public class NumericParameterControl<T extends Number & Comparable<T>> implement
     private final T defaultValue;
     private final JSpinner control;
     private final AdjustableNumberGenerator<T> numberGenerator;
+
 
     public NumericParameterControl(T minimum,
                                    T maximum,
@@ -57,18 +58,12 @@ public class NumericParameterControl<T extends Number & Comparable<T>> implement
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public JSpinner getControl()
     {
         return control;
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public void reset()
     {
         control.setValue(defaultValue);
@@ -87,9 +82,6 @@ public class NumericParameterControl<T extends Number & Comparable<T>> implement
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public void setDescription(String description)
     {
         control.setToolTipText(description);

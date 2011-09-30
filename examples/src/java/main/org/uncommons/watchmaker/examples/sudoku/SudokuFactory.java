@@ -15,24 +15,19 @@
 //=============================================================================
 package org.uncommons.watchmaker.examples.sudoku;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 
 /**
- * Factory that generates potential Sudoku solutions from a list of "givens".
- * The rows of the generated solutions will all be valid (i.e. no duplicate values)
- * but there are no constraints on the columns or sub-grids (these will be refined
- * by the evolutionary algorithm).
+ * Factory that generates potential Sudoku solutions from a list of "givens". The rows of the
+ * generated solutions will all be valid (i.e. no duplicate values) but there are no constraints on
+ * the columns or sub-grids (these will be refined by the evolutionary algorithm).
+ * <p/>
  * @author Daniel Dyer
  */
 public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
 {
     private static final List<Integer> VALUES = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
-
     private final Sudoku.Cell[][] template;
     private final List<List<Integer>> nonFixedValues = new ArrayList<List<Integer>>(Sudoku.SIZE);
 
@@ -69,7 +64,8 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
             char[] rowPattern = pattern[i].toCharArray();
             if (rowPattern.length != Sudoku.SIZE)
             {
-                throw new IllegalArgumentException("Sudoku layout must have " + Sudoku.SIZE + " cells in each row.");
+                throw new IllegalArgumentException("Sudoku layout must have " + Sudoku.SIZE
+                    + " cells in each row.");
             }
             for (int j = 0; j < rowPattern.length; j++)
             {
@@ -84,7 +80,8 @@ public class SudokuFactory extends AbstractCandidateFactory<Sudoku>
                 }
                 else if (c != '.')
                 {
-                    throw new IllegalArgumentException("Unexpected character at (" + i + ", " + j + "): " + c);
+                    throw new IllegalArgumentException("Unexpected character at (" + i + ", " + j
+                        + "): " + c);
                 }
             }
         }

@@ -25,17 +25,18 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
- * Implements selection of <i>n</i> candidates from a population by simply
- * selecting the <i>n</i> candidates with the highest fitness scores (the
- * rest are discarded).  A candidate is never selected more than once.
+ * Implements selection of <i>n</i> candidates from a population by simply selecting the <i>n</i>
+ * candidates with the highest fitness scores (the rest are discarded). A candidate is never selected
+ * more than once.
+ * <p/>
  * @author Daniel Dyer
  */
 public class TruncationSelection implements SelectionStrategy<Object>
 {
     private static final DecimalFormat PERCENT_FORMAT = new DecimalFormat("#0.###%");
     private final NumberGenerator<Double> selectionRatio;
-
     private String description = "Truncation Selection";
+
 
     /**
      * Creates a truncation selection strategy that is controlled by the
@@ -60,7 +61,8 @@ public class TruncationSelection implements SelectionStrategy<Object>
         this(new ConstantGenerator<Double>(selectionRatio));
         if (selectionRatio <= 0 || selectionRatio >= 1)
         {
-            throw new IllegalArgumentException("Selection ratio must be greater than 0 and less than 1.");
+            throw new IllegalArgumentException(
+                "Selection ratio must be greater than 0 and less than 1.");
         }
         this.description = "Truncation Selection (" + PERCENT_FORMAT.format(selectionRatio) + ")";
     }
@@ -89,8 +91,8 @@ public class TruncationSelection implements SelectionStrategy<Object>
         List<S> selection = new ArrayList<S>(selectionSize);
 
         double ratio = selectionRatio.nextValue();
-        assert ratio < 1 && ratio > 0 : "Selection ratio out-of-range: " + ratio;
-        
+        assert ratio < 1 && ratio > 0: "Selection ratio out-of-range: " + ratio;
+
         int eligibleCount = (int) Math.round(ratio * population.size());
         eligibleCount = eligibleCount > selectionSize ? selectionSize : eligibleCount;
 
@@ -106,9 +108,6 @@ public class TruncationSelection implements SelectionStrategy<Object>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

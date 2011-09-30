@@ -24,15 +24,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import org.uncommons.watchmaker.framework.interactive.Console;
 
 /**
  * Swing-based console for interactive evolutionary algorithms.
+ * <p/>
  * @author Daniel Dyer
  */
 public class SwingConsole extends JPanel implements Console<JComponent>
@@ -40,6 +37,7 @@ public class SwingConsole extends JPanel implements Console<JComponent>
     private final Lock lock = new ReentrantLock();
     private final Condition selected = lock.newCondition();
     private final AtomicInteger selectedIndex = new AtomicInteger(-1);
+
 
     /**
      * Creates a console that displays candidates arranged in three columns
@@ -76,7 +74,7 @@ public class SwingConsole extends JPanel implements Console<JComponent>
             {
                 removeAll();
                 int index = -1;
-                for (JComponent entity : renderedEntities)
+                for (JComponent entity: renderedEntities)
                 {
                     add(new EntityPanel(entity, ++index));
                 }
@@ -106,7 +104,6 @@ public class SwingConsole extends JPanel implements Console<JComponent>
             lock.unlock();
         }
     }
-
 
     /**
      * Swing panel that wraps a rendered entity and a button for selecting

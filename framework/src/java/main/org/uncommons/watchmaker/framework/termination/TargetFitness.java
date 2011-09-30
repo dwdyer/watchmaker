@@ -19,14 +19,16 @@ import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 
 /**
- * Terminates evolution once at least one candidate in the population has equalled
- * or bettered a pre-determined fitness score. 
+ * Terminates evolution once at least one candidate in the population has equalled or bettered a
+ * pre-determined fitness score.
+ * <p/>
  * @author Daniel Dyer
  */
 public class TargetFitness implements TerminationCondition
 {
     private final double targetFitness;
     private final boolean natural;
+
 
     /**
      * @param targetFitness The fitness score that must be achieved by at least
@@ -44,9 +46,7 @@ public class TargetFitness implements TerminationCondition
         this.natural = natural;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     public boolean shouldTerminate(PopulationData<?> populationData)
     {
         if (natural)

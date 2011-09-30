@@ -15,19 +15,16 @@
 //=============================================================================
 package org.uncommons.watchmaker.framework.operators;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import org.uncommons.maths.number.ConstantGenerator;
 import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.maths.random.Probability;
 
 /**
- * Implements ordered cross-over between arbitrary lists.  The algorithm is
- * the Partially Mapped Cross-over (PMX) algorithm.
- * @param <T> The component type of the lists that are combined. 
+ * Implements ordered cross-over between arbitrary lists. The algorithm is the Partially Mapped
+ * Cross-over (PMX) algorithm.
+ * <p/>
+ * @param <T> The component type of the lists that are combined.
  * @author Daniel Dyer
  */
 public class ListOrderCrossover<T> extends AbstractCrossover<List<T>>
@@ -67,21 +64,18 @@ public class ListOrderCrossover<T> extends AbstractCrossover<List<T>>
     }
 
 
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected List<List<T>> mate(List<T> parent1,
                                  List<T> parent2,
                                  int numberOfCrossoverPoints,
                                  Random rng)
     {
-        assert numberOfCrossoverPoints == 2 : "Expected number of cross-over points to be 2.";
+        assert numberOfCrossoverPoints == 2: "Expected number of cross-over points to be 2.";
 
         if (parent1.size() != parent2.size())
         {
-            throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
+            throw new IllegalArgumentException(
+                "Cannot perform cross-over with different length parents.");
         }
 
         List<T> offspring1 = new ArrayList<T>(parent1); // Use a random-access list for performance.
@@ -158,7 +152,8 @@ public class ListOrderCrossover<T> extends AbstractCrossover<List<T>>
                                          int endPoint)
     {
         boolean enclosed = (position < endPoint && position >= startPoint);
-        boolean wrapAround = (startPoint > endPoint && (position >= startPoint || position < endPoint)); 
+        boolean wrapAround = (startPoint > endPoint && (position >= startPoint || position
+            < endPoint));
         return enclosed || wrapAround;
     }
 }

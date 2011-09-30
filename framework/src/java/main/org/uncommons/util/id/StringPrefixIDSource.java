@@ -19,8 +19,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Thread-safe ID source that wraps another source of IDs and adds a fixed String
- * prefix to each ID generated.
+ * Thread-safe ID source that wraps another source of IDs and adds a fixed String prefix to each ID
+ * generated.
+ * <p/>
  * @author Daniel Dyer
  */
 public class StringPrefixIDSource implements IDSource<String>
@@ -28,6 +29,7 @@ public class StringPrefixIDSource implements IDSource<String>
     private final Lock lock = new ReentrantLock();
     private final String prefix;
     private final IDSource<?> source;
+
 
     /**
      * @param prefix A fixed String that is attached to the front of each ID.
@@ -40,9 +42,6 @@ public class StringPrefixIDSource implements IDSource<String>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public String nextID()
     {
         lock.lock();

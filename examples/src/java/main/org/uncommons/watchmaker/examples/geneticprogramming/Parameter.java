@@ -16,13 +16,14 @@
 package org.uncommons.watchmaker.examples.geneticprogramming;
 
 /**
- * A program {@link Node} that simply returns the value of one of the
- * program's parameters.
+ * A program {@link Node} that simply returns the value of one of the program's parameters.
+ * <p/>
  * @author Daniel Dyer
  */
 public class Parameter extends LeafNode
 {
     private final int parameterIndex;
+
 
     /**
      * @param parameterIndex Which of the program's (zero-indexed) parameter
@@ -49,9 +50,6 @@ public class Parameter extends LeafNode
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public String getLabel()
     {
         return "P" + parameterIndex;

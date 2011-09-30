@@ -18,13 +18,13 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 import java.text.DecimalFormat;
 
 /**
- * A program node that evaluates to a constant value. 
+ * A program node that evaluates to a constant value.
+ * <p/>
  * @author Daniel Dyer
  */
 public class Constant extends LeafNode
 {
     private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("######0.##");
-
     private final double constant;
     private final String label;
 
@@ -50,9 +50,6 @@ public class Constant extends LeafNode
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public String getLabel()
     {
         return label;

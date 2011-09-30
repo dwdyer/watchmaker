@@ -15,13 +15,17 @@
 //=============================================================================
 package org.uncommons.watchmaker.framework.termination;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.testng.annotations.Test;
+import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 
 /**
- * Unit test for termination condition that checks the time taken so far by the
- * evolutionary algorithm.
+ * Unit test for termination condition that checks the time taken so far by the evolutionary
+ * algorithm.
+ * <p/>
  * @author Daniel Dyer
  */
 public class ElapsedTimeTest
@@ -30,10 +34,14 @@ public class ElapsedTimeTest
     public void testElapsedTimes()
     {
         TerminationCondition condition = new ElapsedTime(1000);
-        PopulationData<Object> data = new PopulationData<Object>(new Object(), 0, 0, 0, true, 2, 0, 0, 100);
-        assert !condition.shouldTerminate(data) : "Should not terminate before timeout.";
-        data = new PopulationData<Object>(new Object(), 0, 0, 0, true, 2, 0, 0, 1000);
-        assert condition.shouldTerminate(data) : "Should terminate after timeout.";
+        List<EvaluatedCandidate<Object>> evaluatedPopulation =
+            new ArrayList<EvaluatedCandidate<Object>>();
+        evaluatedPopulation.add(new EvaluatedCandidate<Object>(new Object(), 0));
+        PopulationData<Object> data = new PopulationData<Object>(evaluatedPopulation, 0, 0, true,
+            2, 0, 0, 100);
+        assert !condition.shouldTerminate(data): "Should not terminate before timeout.";
+        data = new PopulationData<Object>(evaluatedPopulation, 0, 0, true, 2, 0, 0, 1000);
+        assert condition.shouldTerminate(data): "Should terminate after timeout.";
     }
 
 
@@ -48,5 +56,4 @@ public class ElapsedTimeTest
     {
         new ElapsedTime(0L);
     }
-
 }

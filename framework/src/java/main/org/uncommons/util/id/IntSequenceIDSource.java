@@ -19,15 +19,15 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Thread-safe source for unique IDs.  This particular implementation restricts
- * values to those positive integer values that can be represented by the int data type. 
- * Provides sequenced 32-bit IDs.
+ * Thread-safe source for unique IDs. This particular implementation restricts values to those
+ * positive integer values that can be represented by the int data type. Provides sequenced 32-bit
+ * IDs.
+ * <p/>
  * @author Daniel Dyer
  */
 public final class IntSequenceIDSource implements IDSource<Integer>
 {
     private static final long SECONDS_IN_HOUR = 3600L;
-
     private final Lock lock = new ReentrantLock();
     private final long startTime;
     private int lastID = -1;
@@ -57,9 +57,6 @@ public final class IntSequenceIDSource implements IDSource<Integer>
     }
 
 
-    /**
-     * {@inheritDoc} 
-     */
     public Integer nextID()
     {
         lock.lock();
@@ -68,7 +65,8 @@ public final class IntSequenceIDSource implements IDSource<Integer>
             if (lastID == Integer.MAX_VALUE)
             {
                 long hours = (System.currentTimeMillis() - startTime) / SECONDS_IN_HOUR;
-                throw new IDSourceExhaustedException("32-bit ID source exhausted after " + hours + " hours.");
+                throw new IDSourceExhaustedException("32-bit ID source exhausted after " + hours
+                    + " hours.");
             }
             ++lastID;
             return lastID;

@@ -22,21 +22,18 @@ import java.util.Random;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 
 /**
- * <p>This class implements a general-purpose generational evolutionary algorithm.
- * It supports optional concurrent fitness evaluations to take full advantage of
- * multi-processor, multi-core and hyper-threaded machines.</p>
- *
- * <p>If multi-threading is enabled, evolution (mutation, cross-over, etc.) occurs
- * on the request thread but fitness evaluations are delegated to a pool of worker
- * threads. All of the host's available processing units are used (i.e. on a quad-core
- * machine there will be four fitness evaluation worker threads).</p>
- *
- * <p>If multi-threading is disabled, all work is performed synchronously on the
- * request thread.  This strategy is suitable for restricted/managed environments where
- * it is not permitted for applications to manage their own threads.  If there are no
- * restrictions on concurrency, applications should enable multi-threading for improved
- * performance.</p>
- *
+ * <p>This class implements a general-purpose generational evolutionary algorithm. It supports
+ * optional concurrent fitness evaluations to take full advantage of multi-processor, multi-core and
+ * hyper-threaded machines.</p>
+ * <p/> <p>If multi-threading is enabled, evolution (mutation, cross-over, etc.) occurs on the
+ * request thread but fitness evaluations are delegated to a pool of worker threads. All of the
+ * host's available processing units are used (i.e. on a quad-core machine there will be four fitness
+ * evaluation worker threads).</p>
+ * <p/> <p>If multi-threading is disabled, all work is performed synchronously on the request
+ * thread. This strategy is suitable for restricted/managed environments where it is not permitted
+ * for applications to manage their own threads. If there are no restrictions on concurrency,
+ * applications should enable multi-threading for improved performance.</p>
+ * <p/>
  * @param <T> The type of entity that is to be evolved.
  * @see SteadyStateEvolutionEngine
  * @see EvolutionStrategyEngine
@@ -47,6 +44,7 @@ public class GenerationalEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     private final EvolutionaryOperator<T> evolutionScheme;
     private final FitnessEvaluator<? super T> fitnessEvaluator;
     private final SelectionStrategy<? super T> selectionStrategy;
+
 
     /**
      * Creates a new evolution engine by specifying the various components required by
@@ -100,13 +98,10 @@ public class GenerationalEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     }
 
 
-    /**
-     * {@inheritDoc} 
-     */
-    @Override
-    protected List<EvaluatedCandidate<T>> nextEvolutionStep(List<EvaluatedCandidate<T>> evaluatedPopulation,
-                                                            int eliteCount,
-                                                            Random rng)
+    protected List<EvaluatedCandidate<T>> nextEvolutionStep(
+        List<EvaluatedCandidate<T>> evaluatedPopulation,
+        int eliteCount,
+        Random rng)
     {
         List<T> population = new ArrayList<T>(evaluatedPopulation.size());
 

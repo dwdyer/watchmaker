@@ -15,6 +15,7 @@
 //=============================================================================
 package org.uncommons.watchmaker.swing.evolutionmonitor;
 
+import com.google.common.collect.ImmutableList;
 import java.awt.BorderLayout;
 import java.math.BigDecimal;
 import javax.swing.JComponent;
@@ -26,17 +27,20 @@ import org.fest.swing.fixture.FrameFixture;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.swing.ObjectSwingRenderer;
 
 /**
  * Unit test for the {@link FittestCandidateView} evolution monitor panel.
+ * <p/>
  * @author Daniel Dyer
  */
 public class FittestCandidateViewTest
 {
     private Robot robot;
+
 
     @BeforeMethod
     public void prepare()
@@ -52,7 +56,7 @@ public class FittestCandidateViewTest
         robot = null;
     }
 
-    
+
     @Test(groups = "display-required")
     public void testUpdate()
     {
@@ -65,17 +69,20 @@ public class FittestCandidateViewTest
         frame.validate();
         frame.setVisible(true);
 
-        view.populationUpdate(new PopulationData<BigDecimal>(BigDecimal.TEN, 10, 5, 2, true, 5, 0, 1, 100));
+        ImmutableList<EvaluatedCandidate<BigDecimal>> evaluatedPopulation =
+            ImmutableList.of(new EvaluatedCandidate<BigDecimal>(BigDecimal.TEN, 10));
+        view.populationUpdate(new PopulationData<BigDecimal>(evaluatedPopulation, 5, 2, true, 5, 0,
+            1, 100));
         robot.waitForIdle();
 
         // Check displayed fitness.
         String fitnessText = frameFixture.label("FitnessLabel").text();
-        assert fitnessText.equals("10.0") : "Wrong fitness score displayed: " + fitnessText;
+        assert fitnessText.equals("10.0"): "Wrong fitness score displayed: " + fitnessText;
 
         // Check rendered candidate.
         frameFixture.textBox().requireNotEditable();
         String text = frameFixture.textBox().component().getText();
-        assert text.equals("10") : "Candidate rendered incorrectly.";
+        assert text.equals("10"): "Candidate rendered incorrectly.";
     }
 
 
@@ -84,7 +91,7 @@ public class FittestCandidateViewTest
      * avoid the expense of re-rendering it.
      */
     @Test(groups = "display-required",
-          dependsOnMethods = "testUpdate")
+    dependsOnMethods = "testUpdate")
     public void testUpdateSameCandidate()
     {
         Renderer<Object, JComponent> renderer = new ObjectSwingRenderer();
@@ -96,18 +103,22 @@ public class FittestCandidateViewTest
         frame.validate();
         frame.setVisible(true);
 
-        PopulationData<BigDecimal> data1 = new PopulationData<BigDecimal>(BigDecimal.TEN, 10, 5, 2, true, 5, 0, 1, 100);
+        ImmutableList<EvaluatedCandidate<BigDecimal>> evaluatedPopulation =
+            ImmutableList.of(new EvaluatedCandidate<BigDecimal>(BigDecimal.TEN, 10));
+        PopulationData<BigDecimal> data1 = new PopulationData<BigDecimal>(evaluatedPopulation, 5, 2,
+            true, 5, 0, 1, 100);
         // Render the first time.
         view.populationUpdate(data1);
         robot.waitForIdle();
         JTextComponent component1 = frameFixture.textBox().component();
 
         // Render the same candidate for the second generation.
-        PopulationData<BigDecimal> data2 = new PopulationData<BigDecimal>(BigDecimal.TEN, 10, 5, 2, true, 5, 0, 2, 100);
+        PopulationData<BigDecimal> data2 = new PopulationData<BigDecimal>(evaluatedPopulation, 5, 2,
+            true, 5, 0, 2, 100);
         view.populationUpdate(data2);
         robot.waitForIdle();
         JTextComponent component2 = frameFixture.textBox().component();
 
-        assert component1 == component2 : "Rendered component should be the same.";
+        assert component1 == component2: "Rendered component should be the same.";
     }
 }

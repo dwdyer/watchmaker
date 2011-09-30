@@ -27,6 +27,7 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
  * Unit test for the {@link GenerationalEvolutionEngine} class.
+ * <p/>
  * @author Daniel Dyer
  */
 public class GenerationalEvolutionEngineTest
@@ -52,10 +53,12 @@ public class GenerationalEvolutionEngineTest
         {
             private PopulationData<? extends Integer> data;
 
-            public void populationUpdate(PopulationData<? extends Integer> data)
+
+            public <S extends Integer> void populationUpdate(PopulationData<S> data)
             {
                 this.data = data;
             }
+
 
             public double getAverageFitness()
             {
@@ -77,7 +80,8 @@ public class GenerationalEvolutionEngineTest
         // Then when we have run the evolution, if the elite canidates were preserved they will
         // lift the average fitness above zero.  The exact value of the expected average fitness
         // is easy to calculate, it is the aggregate fitness divided by the population size.
-        assert observer.getAverageFitness() == 24d / 10 : "Elite candidates not preserved correctly: " + observer.getAverageFitness();
+        assert observer.getAverageFitness() == 24d / 10: "Elite candidates not preserved correctly: "
+            + observer.getAverageFitness();
         engine.removeEvolutionObserver(observer);
     }
 
@@ -114,7 +118,7 @@ public class GenerationalEvolutionEngineTest
         final Thread requestThread = Thread.currentThread();
         engine.addEvolutionObserver(new EvolutionObserver<Integer>()
         {
-            public void populationUpdate(PopulationData<? extends Integer> populationData)
+            public <S extends Integer> void populationUpdate(PopulationData<S> populationData)
             {
                 if (populationData.getElapsedTime() > timeout / 2)
                 {
@@ -125,10 +129,10 @@ public class GenerationalEvolutionEngineTest
         long startTime = System.currentTimeMillis();
         engine.evolve(10, 0, new ElapsedTime(timeout));
         long elapsedTime = System.currentTimeMillis() - startTime;
-        assert Thread.interrupted() : "Thread was not interrupted before timeout.";
-        assert elapsedTime < timeout : "Engine did not respond to interrupt before timeout.";
-        assert engine.getSatisfiedTerminationConditions().isEmpty()
-            : "Interrupted engine should have no satisfied termination conditions.";
+        assert Thread.interrupted(): "Thread was not interrupted before timeout.";
+        assert elapsedTime < timeout: "Engine did not respond to interrupt before timeout.";
+        assert engine.getSatisfiedTerminationConditions().isEmpty():
+            "Interrupted engine should have no satisfied termination conditions.";
     }
 
 
@@ -138,8 +142,9 @@ public class GenerationalEvolutionEngineTest
         GenerationCount generationsCondition = new GenerationCount(1);
         engine.evolve(10, 0, generationsCondition);
         List<TerminationCondition> satisfiedConditions = engine.getSatisfiedTerminationConditions();
-        assert satisfiedConditions.size() == 1 : "Wrong number of conditions: " + satisfiedConditions.size();
-        assert satisfiedConditions.get(0) == generationsCondition : "Wrong condition returned.";
+        assert satisfiedConditions.size() == 1: "Wrong number of conditions: "
+            + satisfiedConditions.size();
+        assert satisfiedConditions.get(0) == generationsCondition: "Wrong condition returned.";
     }
 
 
@@ -149,7 +154,6 @@ public class GenerationalEvolutionEngineTest
         // Should throw an IllegalStateException because evolution hasn't started, let alone terminated.
         engine.getSatisfiedTerminationConditions();
     }
-
 
     /**
      * Trivial test operator that mutates all integers into zeroes.

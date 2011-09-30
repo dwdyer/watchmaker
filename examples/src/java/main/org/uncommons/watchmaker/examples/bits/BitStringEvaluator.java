@@ -20,8 +20,8 @@ import org.uncommons.maths.binary.BitString;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
- * A fitness evaluator that simply counts the number of ones in a bit
- * string.
+ * A fitness evaluator that simply counts the number of ones in a bit string.
+ * <p/>
  * @see BitString
  * @author Daniel Dyer
  */
@@ -29,6 +29,7 @@ public class BitStringEvaluator implements FitnessEvaluator<BitString>
 {
     /**
      * Calculates a fitness score for the candidate bit string.
+     * <p/>
      * @param candidate The evolved bit string to evaluate.
      * @param population {@inheritDoc}
      * @return How many bits in the string are set to 1.

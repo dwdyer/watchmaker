@@ -31,6 +31,7 @@ import org.uncommons.maths.random.Probability;
 /**
  * A GUI control that allows the user to set/update the value of a
  * {@link Probability} parameter.
+ * <p/>
  * @author Daniel Dyer
  */
 public class ProbabilityParameterControl implements EvolutionControl
@@ -97,7 +98,7 @@ public class ProbabilityParameterControl implements EvolutionControl
         return new DecimalFormat(formatString.toString());
     }
 
-    
+
     private JSlider createSlider(Probability initialValue,
                                  Probability minimum,
                                  Probability maximum)
@@ -122,18 +123,12 @@ public class ProbabilityParameterControl implements EvolutionControl
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public JComponent getControl()
     {
         return control;
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public void reset()
     {
         int value = (int) Math.round(range * defaultValue.doubleValue());
@@ -154,9 +149,6 @@ public class ProbabilityParameterControl implements EvolutionControl
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public void setDescription(String description)
     {
         probabilitySlider.setToolTipText(description);

@@ -20,23 +20,21 @@ import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 
 /**
- * {@link org.uncommons.watchmaker.framework.CandidateFactory} for generating
- * trees of {@link Node}s for the genetic programming example application.
+ * {@link org.uncommons.watchmaker.framework.CandidateFactory} for generating trees of {@link Node}s
+ * for the genetic programming example application.
+ * <p/>
  * @author Daniel Dyer
  */
 public class TreeFactory extends AbstractCandidateFactory<Node>
 {
     // The number of program parameters that each program tree will be provided.
     private final int parameterCount;
-
     // The maximum depth of a program tree.  No function nodes will be created below
     // this depth (branches will be terminated with parameters or constants).
     private final int maximumDepth;
-
     // Probability that a created node is a function node rather
     // than a value node.
     private final Probability functionProbability;
-
     // Probability that a value (non-function) node is a parameter
     // node rather than a constant node.
     private final Probability parameterProbability;
@@ -53,9 +51,9 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
      * non-function node will be a parameter node rather than a constant node.
      */
     public TreeFactory(int parameterCount,
-                       int maxDepth,
-                       Probability functionProbability,
-                       Probability parameterProbability)
+        int maxDepth,
+        Probability functionProbability,
+        Probability parameterProbability)
     {
         if (parameterCount < 0)
         {
@@ -73,9 +71,6 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Node generateRandomCandidate(Random rng)
     {
         return makeNode(rng, maximumDepth);
@@ -96,11 +91,17 @@ public class TreeFactory extends AbstractCandidateFactory<Node>
             int depth = maxDepth - 1;
             switch (rng.nextInt(5))
             {
-                case 0: return new Addition(makeNode(rng, depth), makeNode(rng, depth));
-                case 1: return new Subtraction(makeNode(rng, depth), makeNode(rng, depth));
-                case 2: return new Multiplication(makeNode(rng, depth), makeNode(rng, depth));
-                case 3: return new IfThenElse(makeNode(rng, depth), makeNode(rng, depth), makeNode(rng, depth));
-                default: return new IsGreater(makeNode(rng, depth), makeNode(rng, depth));
+                case 0:
+                    return new Addition(makeNode(rng, depth), makeNode(rng, depth));
+                case 1:
+                    return new Subtraction(makeNode(rng, depth), makeNode(rng, depth));
+                case 2:
+                    return new Multiplication(makeNode(rng, depth), makeNode(rng, depth));
+                case 3:
+                    return new IfThenElse(makeNode(rng, depth), makeNode(rng, depth),
+                        makeNode(rng, depth));
+                default:
+                    return new IsGreater(makeNode(rng, depth), makeNode(rng, depth));
             }
         }
         else if (parameterProbability.nextEvent(rng))

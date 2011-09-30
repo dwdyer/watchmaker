@@ -19,11 +19,11 @@ import java.util.List;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
- * Fitness evalator that measures the total distance of a route in the travelling salesman
- * problem.  The fitness score of a route is the total distance (in km).  A route
- * is represented as a list of cities in the order that they will be visited.
- * The last leg of the journey is from the last city in the list back to the
- * first.
+ * Fitness evalator that measures the total distance of a route in the travelling salesman problem.
+ * The fitness score of a route is the total distance (in km). A route is represented as a list of
+ * cities in the order that they will be visited. The last leg of the journey is from the last city
+ * in the list back to the first.
+ * <p/>
  * @author Daniel Dyer
  */
 public class RouteEvaluator implements FitnessEvaluator<List<String>>
@@ -44,7 +44,7 @@ public class RouteEvaluator implements FitnessEvaluator<List<String>>
      * Calculates the length of an evolved route. 
      * @param candidate The route to evaluate.
      * @param population {@inheritDoc}
-     * @return The total distance (in kilometres) of a journey that visits
+     * @return The total distance (in kilometers) of a journey that visits
      * each city in order and returns to the starting point.
      */
     public double getFitness(List<String> candidate,

@@ -21,15 +21,17 @@ import java.util.Random;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
- * Non-random mutation of a population of biomorphs.  This ensures that each selected candidate
- * is mutated differently.  This is the mutation used by Dawkins in his original experiment.
+ * Non-random mutation of a population of biomorphs. This ensures that each selected candidate is
+ * mutated differently. This is the mutation used by Dawkins in his original experiment.
+ * <p/>
  * @author Daniel Dyer
  */
 public class DawkinsBiomorphMutation implements EvolutionaryOperator<Biomorph>
 {
     /**
-     * Mutate a population of biomorphs non-randomly, ensuring that each selected
-     * candidate is mutated differently. 
+     * Mutate a population of biomorphs non-randomly, ensuring that each selected candidate is
+     * mutated differently.
+     * <p/>
      * @param selectedCandidates {@inheritDoc}
      * @param rng A source of randomness (not used since this mutation is non-random).
      * @return {@inheritDoc}
@@ -39,7 +41,7 @@ public class DawkinsBiomorphMutation implements EvolutionaryOperator<Biomorph>
         List<Biomorph> mutatedPopulation = new ArrayList<Biomorph>(selectedCandidates.size());
         int mutatedGene = 0;
         int mutation = 1;
-        for (Biomorph b : selectedCandidates)
+        for (Biomorph b: selectedCandidates)
         {
             int[] genes = b.getGenotype();
 
@@ -49,8 +51,10 @@ public class DawkinsBiomorphMutation implements EvolutionaryOperator<Biomorph>
                 mutatedGene = (mutatedGene + 1) % Biomorph.GENE_COUNT;
             }
             genes[mutatedGene] += mutation;
-            int min = mutatedGene == Biomorph.LENGTH_GENE_INDEX ? Biomorph.LENGTH_GENE_MIN : Biomorph.GENE_MIN;
-            int max = mutatedGene == Biomorph.LENGTH_GENE_INDEX ? Biomorph.LENGTH_GENE_MAX : Biomorph.GENE_MAX;
+            int min = mutatedGene == Biomorph.LENGTH_GENE_INDEX ? Biomorph.LENGTH_GENE_MIN
+                : Biomorph.GENE_MIN;
+            int max = mutatedGene == Biomorph.LENGTH_GENE_INDEX ? Biomorph.LENGTH_GENE_MAX
+                : Biomorph.GENE_MAX;
             if (genes[mutatedGene] > max)
             {
                 genes[mutatedGene] = min;

@@ -23,6 +23,7 @@ import org.uncommons.maths.random.Probability;
 
 /**
  * Variable-point (fixed or random) cross-over for arbitrary lists.
+ * <p/>
  * @param <T> The component type of the lists that are combined.
  * @author Daniel Dyer
  */
@@ -92,9 +93,6 @@ public class ListCrossover<T> extends AbstractCrossover<List<T>>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected List<List<T>> mate(List<T> parent1,
                                  List<T> parent2,

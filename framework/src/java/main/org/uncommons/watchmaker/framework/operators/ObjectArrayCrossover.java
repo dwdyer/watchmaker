@@ -23,8 +23,8 @@ import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.maths.random.Probability;
 
 /**
- * Cross-over with a configurable number of points (fixed or random) for
- * arrays of reference types.
+ * Cross-over with a configurable number of points (fixed or random) for arrays of reference types.
+ * <p/>
  * @param <T> The component type of the arrays that are being evolved.
  * @author Daniel Dyer
  */
@@ -90,31 +90,31 @@ public class ObjectArrayCrossover<T> extends AbstractCrossover<T[]>
      * than being copied, unchanged, into the output population.
      */
     public ObjectArrayCrossover(NumberGenerator<Integer> crossoverPointsVariable,
-                                NumberGenerator<Probability> crossoverProbabilityVariable)
+        NumberGenerator<Probability> crossoverProbabilityVariable)
     {
         super(crossoverPointsVariable, crossoverProbabilityVariable);
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected List<T[]> mate(T[] parent1,
-                             T[] parent2,
-                             int numberOfCrossoverPoints,
-                             Random rng)
+        T[] parent2,
+        int numberOfCrossoverPoints,
+        Random rng)
     {
         if (parent1.length != parent2.length)
         {
-            throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
+            throw new IllegalArgumentException(
+                "Cannot perform cross-over with different length parents.");
         }
         // Create the most specific-type arrays possible.
         @SuppressWarnings("unchecked")
-        T[] offspring1 = (T[]) Array.newInstance(parent1.getClass().getComponentType(), parent1.length);
+        T[] offspring1 = (T[]) Array.newInstance(parent1.getClass().getComponentType(),
+            parent1.length);
         System.arraycopy(parent1, 0, offspring1, 0, parent1.length);
         @SuppressWarnings("unchecked")
-        T[] offspring2 = (T[]) Array.newInstance(parent2.getClass().getComponentType(), parent2.length);
+        T[] offspring2 = (T[]) Array.newInstance(parent2.getClass().getComponentType(),
+            parent2.length);
         System.arraycopy(parent2, 0, offspring2, 0, parent2.length);
         // Apply as many cross-overs as required.
         Object[] temp = new Object[parent1.length];

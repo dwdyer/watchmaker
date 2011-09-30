@@ -22,8 +22,8 @@ import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.maths.random.Probability;
 
 /**
- * Cross-over with a configurable number of points (fixed or random) for
- * arrays of primitive bytes.
+ * Cross-over with a configurable number of points (fixed or random) for arrays of primitive bytes.
+ * <p/>
  * @author Daniel Dyer
  */
 public class ByteArrayCrossover extends AbstractCrossover<byte[]>
@@ -94,9 +94,6 @@ public class ByteArrayCrossover extends AbstractCrossover<byte[]>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected List<byte[]> mate(byte[] parent1,
                                 byte[] parent2,
@@ -105,7 +102,8 @@ public class ByteArrayCrossover extends AbstractCrossover<byte[]>
     {
         if (parent1.length != parent2.length)
         {
-            throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
+            throw new IllegalArgumentException("Cannot perform cross-over with different "
+                + "length parents.");
         }
         byte[] offspring1 = new byte[parent1.length];
         System.arraycopy(parent1, 0, offspring1, 0, parent1.length);

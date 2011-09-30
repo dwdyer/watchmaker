@@ -24,28 +24,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.concurrent.TimeUnit;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
 import org.uncommons.swing.SpringUtilities;
 import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.examples.AbstractExampleApplet;
-import org.uncommons.watchmaker.framework.EvolutionEngine;
-import org.uncommons.watchmaker.framework.EvolutionObserver;
-import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
-import org.uncommons.watchmaker.framework.PopulationData;
+import org.uncommons.watchmaker.framework.*;
 import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
@@ -54,6 +39,7 @@ import org.uncommons.watchmaker.swing.SwingEvolutionObserver;
 
 /**
  * Watchmaker Framework implementation of Dawkin's biomorph program.
+ * <p/>
  * @author Daniel Dyer
  */
 public class BiomorphApplet extends AbstractExampleApplet
@@ -98,30 +84,34 @@ public class BiomorphApplet extends AbstractExampleApplet
      * the GUI when it is done.
      */
     private SwingBackgroundTask<Biomorph> createTask(final int populationSize,
-                                                     final int generationCount,
-                                                     final boolean random)
+        final int generationCount,
+        final boolean random)
     {
         return new SwingBackgroundTask<Biomorph>()
         {
             @Override
             protected Biomorph performTask()
             {
-                EvolutionaryOperator<Biomorph> mutation = random ? new RandomBiomorphMutation(new Probability(0.12d))
-                                                                 : new DawkinsBiomorphMutation();
-                InteractiveSelection<Biomorph> selection = new InteractiveSelection<Biomorph>(console,
-                                                                                              renderer,
-                                                                                              populationSize,
-                                                                                              1);
-                EvolutionEngine<Biomorph> engine = new GenerationalEvolutionEngine<Biomorph>(new BiomorphFactory(),
-                                                                                             mutation,
-                                                                                             selection,
-                                                                                             new MersenneTwisterRNG());
+                EvolutionaryOperator<Biomorph> mutation = random
+                    ? new RandomBiomorphMutation(new Probability(0.12d))
+                    : new DawkinsBiomorphMutation();
+                InteractiveSelection<Biomorph> selection = new InteractiveSelection<Biomorph>(
+                    console,
+                    renderer,
+                    populationSize,
+                    1);
+                EvolutionEngine<Biomorph> engine =
+                    new GenerationalEvolutionEngine<Biomorph>(new BiomorphFactory(),
+                    mutation,
+                    selection,
+                    new MersenneTwisterRNG());
                 engine.addEvolutionObserver(new SwingEvolutionObserver(
-                        new GenerationTracker(), 300, TimeUnit.MILLISECONDS));
+                    new GenerationTracker(), 300, TimeUnit.MILLISECONDS));
                 return engine.evolve(populationSize,
-                                     0,
-                                     new GenerationCount(generationCount));
+                    0,
+                    new GenerationCount(generationCount));
             }
+
 
             @Override
             protected void postProcessing(Biomorph result)
@@ -144,26 +134,24 @@ public class BiomorphApplet extends AbstractExampleApplet
         new BiomorphApplet().displayInFrame("Watchmaker Framework - Biomporphs Example");
     }
 
-
     /**
      * Simple observer to update the dialog title every time the evolution advances
      * to a new generation.
      */
     private final class GenerationTracker implements EvolutionObserver<Biomorph>
     {
-        public void populationUpdate(final PopulationData<? extends Biomorph> populationData)
+        public <S extends Biomorph> void populationUpdate(final PopulationData<S> populationData)
         {
             SwingUtilities.invokeLater(new Runnable()
             {
                 public void run()
                 {
                     selectionDialog.setTitle("Biomorph Selection - Generation "
-                                             + (populationData.getGenerationNumber() + 1));
+                        + (populationData.getGenerationNumber() + 1));
                 }
             });
         }
     }
-
 
     /**
      * Panel for controlling the evolutionary algorithm parameters.
@@ -173,6 +161,7 @@ public class BiomorphApplet extends AbstractExampleApplet
         private JSpinner populationSpinner;
         private JSpinner generationsSpinner;
         private JComboBox mutationCombo;
+
 
         ControlPanel()
         {
@@ -198,7 +187,10 @@ public class BiomorphApplet extends AbstractExampleApplet
             inputPanel.add(generationsLabel);
             inputPanel.add(generationsSpinner);
             JLabel mutationLabel = new JLabel("Mutation Type: ");
-            mutationCombo = new JComboBox(new String[]{"Dawkins (Non-random)", "Random"});
+            mutationCombo = new JComboBox(new String[]
+                {
+                    "Dawkins (Non-random)", "Random"
+                });
             mutationCombo.addItemListener(new ItemListener()
             {
                 public void itemStateChanged(ItemEvent itemEvent)
@@ -232,8 +224,8 @@ public class BiomorphApplet extends AbstractExampleApplet
                 public void actionPerformed(ActionEvent actionEvent)
                 {
                     createTask((Integer) populationSpinner.getValue(),
-                               (Integer) generationsSpinner.getValue(),
-                               mutationCombo.getSelectedIndex() == 1).execute();
+                        (Integer) generationsSpinner.getValue(),
+                        mutationCombo.getSelectedIndex() == 1).execute();
                     selectionDialog.setVisible(true);
                 }
             });

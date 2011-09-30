@@ -23,11 +23,11 @@ import org.uncommons.maths.combinatorics.PermutationGenerator;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
- * Naive brute-force solution to the travelling salesman problem. It would take about
- * a day and a half to brute-force the 15-city travelling salesman problem on a home
- * computer using this implementation.  However, this is a not the best possible
- * implementation that is guaranteed to find a the shortest route (for example there
- * is no branch-and-bound optimisation).
+ * Naive brute-force solution to the travelling salesman problem. It would take about a day and a
+ * half to brute-force the 15-city travelling salesman problem on a home computer using this
+ * implementation. However, this is a not the best possible implementation that is guaranteed to find
+ * a the shortest route (for example there is no branch-and-bound optimisation).
+ * <p/>
  * @author Daniel Dyer
  */
 public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
@@ -43,16 +43,13 @@ public class BruteForceTravellingSalesman implements TravellingSalesmanStrategy
         this.distances = distances;
     }
 
-    
-    /**
-     * {@inheritDoc}
-     */
+
     public String getDescription()
     {
         return "Brute Force";
     }
 
-    
+
     /**
      * To reduce the search space we will only consider routes that start
      * and end at one city (whichever is first in the collection).  All other

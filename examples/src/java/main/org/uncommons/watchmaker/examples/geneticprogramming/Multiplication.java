@@ -17,13 +17,15 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 
 /**
  * Simple multiplication operator {@link Node}.
+ * <p/>
  * @author Daniel Dyer
  */
 public class Multiplication extends BinaryNode
 {
     /**
-     * Creates a node that evaluates to the product of the values of its two
-     * child nodes ({@literal left} and {@literal right}).
+     * Creates a node that evaluates to the product of the values of its two child nodes ({@literal left}
+     * and {@literal right}).
+     * <p/>
      * @param left The first operand.
      * @param right The second operand.
      */
@@ -45,9 +47,6 @@ public class Multiplication extends BinaryNode
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Node simplify()
     {
         Node simplifiedLeft = left.simplify();
@@ -84,7 +83,7 @@ public class Multiplication extends BinaryNode
             }
         }
         return simplifiedLeft != left || simplifiedRight != right
-               ? new Multiplication(simplifiedLeft, simplifiedRight)
-               : this;
+            ? new Multiplication(simplifiedLeft, simplifiedRight)
+            : this;
     }
 }

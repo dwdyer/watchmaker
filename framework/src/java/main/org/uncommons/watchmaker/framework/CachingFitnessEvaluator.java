@@ -20,39 +20,34 @@ import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * <p>A wrapper that provides caching for {@link FitnessEvaluator} implementations.  The
- * results of fitness evaluations are stored in a cache so that if the same candidate
- * is evaluated twice, the expense of the fitness calculation can be avoided the second
- * time.  The cache uses weak references in order to avoid memory leakage.</p>
- *
- * <p>Caching of fitness values can be a useful optimisation in situations where the
- * fitness evaluation is expensive and there is a possibility that some candidates
- * will survive from generation to generation unmodified.  Programs that use elitism
- * are one example of candidates surviving unmodified.  Another scenario is when the
- * configured evolutionary operator does not always modify every candidate in the
- * population for every generation.</p>
- *
- * <p>Unmodified candidates are identified by reference equality.  This is a valid
- * assumption since evolutionary operators are required to return distinct objects,
- * except when the candidate is unaffected by the evolution, as per the contract of the
- * {@link EvolutionaryOperator} interface.  In other words, the Watchmaker Framework
- * treats candidate representations as immutable even when that is not strictly the case.</p>
- * 
- * <p>Caching of fitness scores is provided as an option rather than as the default
- * Watchmaker Framework behaviour because caching is only valid when fitness evaluations
- * are <em>isolated</em> and repeatable.  An isolated fitness evaluation is one where the
- * result depends only upon the candidate being evaluated.  This is not the case when
- * candidates are evaluated against the other members of the population.  So unless the
- * fitness evaluator ignores the second parameter to the
+ * <p>A wrapper that provides caching for {@link FitnessEvaluator} implementations. The results of
+ * fitness evaluations are stored in a cache so that if the same candidate is evaluated twice, the
+ * expense of the fitness calculation can be avoided the second time. The cache uses weak references
+ * in order to avoid memory leakage.</p>
+ * <p/> <p>Caching of fitness values can be a useful optimisation in situations where the fitness
+ * evaluation is expensive and there is a possibility that some candidates will survive from
+ * generation to generation unmodified. Programs that use elitism are one example of candidates
+ * surviving unmodified. Another scenario is when the configured evolutionary operator does not
+ * always modify every candidate in the population for every generation.</p>
+ * <p/> <p>Unmodified candidates are identified by reference equality. This is a valid assumption
+ * since evolutionary operators are required to return distinct objects, except when the candidate is
+ * unaffected by the evolution, as per the contract of the
+ * {@link EvolutionaryOperator} interface. In other words, the Watchmaker Framework treats candidate
+ * representations as immutable even when that is not strictly the case.</p>
+ * <p/> <p>Caching of fitness scores is provided as an option rather than as the default Watchmaker
+ * Framework behaviour because caching is only valid when fitness evaluations are <em>isolated</em>
+ * and repeatable. An isolated fitness evaluation is one where the result depends only upon the
+ * candidate being evaluated. This is not the case when candidates are evaluated against the other
+ * members of the population. So unless the fitness evaluator ignores the second parameter to the
  * {@link #getFitness(Object, List)} method, caching must not be used.</p>
+ * <p/>
  * @param <T> The type of evolvable entity that can be evaluated.
- * 
+ * <p/>
  * @author Daniel Dyer
  */
 public class CachingFitnessEvaluator<T> implements FitnessEvaluator<T>
 {
     private final FitnessEvaluator<T> delegate;
-
     // This field is marked as transient, even though the class is not Serializable, because
     // Terracotta will respect the fact it is transient and not try to share it.
     private final transient ConcurrentMap<T, Double> cache = new MapMaker().weakKeys().makeMap();
@@ -87,9 +82,6 @@ public class CachingFitnessEvaluator<T> implements FitnessEvaluator<T>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isNatural()
     {
         return delegate.isNatural();

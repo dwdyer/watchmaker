@@ -19,8 +19,9 @@ import java.util.List;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 
 /**
- * Evaluates strings and assigns a fitness score based on how many characters
- * differ from the equivalent positions in a given target string.
+ * Evaluates strings and assigns a fitness score based on how many characters differ from the
+ * equivalent positions in a given target string.
+ * <p/>
  * @author Daniel Dyer
  */
 public class StringEvaluator implements FitnessEvaluator<String>
@@ -63,9 +64,6 @@ public class StringEvaluator implements FitnessEvaluator<String>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isNatural()
     {
         return false;

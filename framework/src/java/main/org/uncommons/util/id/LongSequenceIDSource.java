@@ -19,15 +19,15 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Thread-safe source for unique IDs.  This particular implementation restricts
- * values to those positive integer values that can be represented by the long data type.
- * Provides sequenced 64-bit IDs.
+ * Thread-safe source for unique IDs. This particular implementation restricts values to those
+ * positive integer values that can be represented by the long data type. Provides sequenced 64-bit
+ * IDs.
+ * <p/>
  * @author Daniel Dyer
  */
 public final class LongSequenceIDSource implements IDSource<Long>
 {
     private static final int SECONDS_IN_DAY = 86400;
-
     private final Lock lock = new ReentrantLock();
     private final long startTime;
     private long lastID = -1;
@@ -57,9 +57,6 @@ public final class LongSequenceIDSource implements IDSource<Long>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Long nextID()
     {
         lock.lock();
@@ -68,7 +65,8 @@ public final class LongSequenceIDSource implements IDSource<Long>
             if (lastID == Long.MAX_VALUE)
             {
                 long days = (System.currentTimeMillis() - startTime) / SECONDS_IN_DAY;
-                throw new IDSourceExhaustedException("64-bit ID source exhausted after " + days + " days.");
+                throw new IDSourceExhaustedException("64-bit ID source exhausted after " + days
+                    + " days.");
             }
             ++lastID;
             return lastID;

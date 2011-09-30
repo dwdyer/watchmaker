@@ -25,17 +25,17 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
- * Selection strategy that picks a pair of candidates at random and then
- * selects the fitter of the two candidates with probability p, where p
- * is the configured selection probability (therefore the probability of
- * the less fit candidate being selected is 1 - p).
+ * Selection strategy that picks a pair of candidates at random and then selects the fitter of the
+ * two candidates with probability p, where p is the configured selection probability (therefore the
+ * probability of the less fit candidate being selected is 1 - p).
+ * <p/>
  * @author Daniel Dyer
  */
 public class TournamentSelection implements SelectionStrategy<Object>
 {
     private final NumberGenerator<Probability> selectionProbability;
-
     private String description = "Tournament Selection";
+
 
     /**
      * Creates a tournament selection strategy that is controlled by the
@@ -50,7 +50,7 @@ public class TournamentSelection implements SelectionStrategy<Object>
         this.selectionProbability = selectionProbability;
     }
 
-    
+
     /**
      * Creates a tournament selection strategy with a fixed probability.
      * @param selectionProbability The probability that the fitter of two randomly
@@ -89,24 +89,21 @@ public class TournamentSelection implements SelectionStrategy<Object>
             {
                 // Select the fitter candidate.
                 selection.add(candidate2.getFitness() > candidate1.getFitness()
-                              ? candidate2.getCandidate()
-                              : candidate1.getCandidate());
+                    ? candidate2.getCandidate()
+                    : candidate1.getCandidate());
             }
             else
             {
                 // Select the less fit candidate.
                 selection.add(candidate2.getFitness() > candidate1.getFitness()
-                              ? candidate1.getCandidate()
-                              : candidate2.getCandidate());
+                    ? candidate1.getCandidate()
+                    : candidate2.getCandidate());
             }
         }
         return selection;
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

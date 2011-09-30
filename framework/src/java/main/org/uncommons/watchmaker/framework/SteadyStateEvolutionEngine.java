@@ -19,11 +19,10 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * An implementation of steady-state evolution, which is a type of evolutionary algorithm
- * where a population is changed incrementally, with one individual evolved at a time.  This
- * differs from {@link GenerationalEvolutionEngine} in which the entire population is evolved in
- * parallel.
- *
+ * An implementation of steady-state evolution, which is a type of evolutionary algorithm where a
+ * population is changed incrementally, with one individual evolved at a time. This differs from {@link GenerationalEvolutionEngine}
+ * in which the entire population is evolved in parallel.
+ * <p/>
  * @param <T> The type of entity that is to be evolved.
  * @see GenerationalEvolutionEngine
  * @see EvolutionStrategyEngine
@@ -36,6 +35,7 @@ public class SteadyStateEvolutionEngine<T> extends AbstractEvolutionEngine<T>
     private final SelectionStrategy<? super T> selectionStrategy;
     private final int selectionSize;
     private final boolean forceSingleCandidateUpdate;
+
 
     /**
      * Create a steady-state evolution strategy in which one or more (usually just one) evolved
@@ -86,21 +86,19 @@ public class SteadyStateEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         this.forceSingleCandidateUpdate = forceSingleCandidateUpdate;
     }
 
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected List<EvaluatedCandidate<T>> nextEvolutionStep(List<EvaluatedCandidate<T>> evaluatedPopulation,
-                                                            int eliteCount,
-                                                            Random rng)
+
+    protected List<EvaluatedCandidate<T>> nextEvolutionStep(
+        List<EvaluatedCandidate<T>> evaluatedPopulation,
+        int eliteCount,
+        Random rng)
     {
         EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, fitnessEvaluator.isNatural());
         List<T> selectedCandidates = selectionStrategy.select(evaluatedPopulation,
                                                               fitnessEvaluator.isNatural(),
                                                               selectionSize,
                                                               rng);
-        List<EvaluatedCandidate<T>> offspring = evaluatePopulation(evolutionScheme.apply(selectedCandidates, rng));
+        List<EvaluatedCandidate<T>> offspring = evaluatePopulation(evolutionScheme.apply(
+            selectedCandidates, rng));
 
         doReplacement(evaluatedPopulation, offspring, eliteCount, rng);
 
@@ -124,7 +122,8 @@ public class SteadyStateEvolutionEngine<T> extends AbstractEvolutionEngine<T>
                                  int eliteCount,
                                  Random rng)
     {
-        assert newCandidates.size() < existingPopulation.size() - eliteCount : "Too many new candidates for replacement.";
+        assert newCandidates.size() < existingPopulation.size() - eliteCount:
+            "Too many new candidates for replacement.";
         // If this is strictly steady-state (only one updated individual per iteration), then we can't keep multiple
         // evolved individuals, so just pick one at random and use that.
         if (newCandidates.size() > 1 && forceSingleCandidateUpdate)
@@ -136,11 +135,12 @@ public class SteadyStateEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         }
         else
         {
-            for (EvaluatedCandidate<T> candidate : newCandidates)
+            for (EvaluatedCandidate<T> candidate: newCandidates)
             {
                 // Replace a randomly selected individual, but not one of the "elite" individuals at the
                 // beginning of the sorted population.
-                existingPopulation.set(rng.nextInt(existingPopulation.size() - eliteCount) + eliteCount, candidate);
+                existingPopulation.set(rng.nextInt(existingPopulation.size() - eliteCount)
+                    + eliteCount, candidate);
             }
         }
     }

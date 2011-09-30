@@ -22,8 +22,8 @@ import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.maths.random.Probability;
 
 /**
- * Cross-over with a configurable number of points (fixed or random) for
- * arrays of primitive chars.
+ * Cross-over with a configurable number of points (fixed or random) for arrays of primitive chars.
+ * <p/>
  * @author Daniel Dyer
  */
 public class CharArrayCrossover extends AbstractCrossover<char[]>
@@ -94,9 +94,6 @@ public class CharArrayCrossover extends AbstractCrossover<char[]>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected List<char[]> mate(char[] parent1,
                                 char[] parent2,
@@ -105,7 +102,8 @@ public class CharArrayCrossover extends AbstractCrossover<char[]>
     {
         if (parent1.length != parent2.length)
         {
-            throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
+            throw new IllegalArgumentException(
+                "Cannot perform cross-over with different length parents.");
         }
         char[] offspring1 = new char[parent1.length];
         System.arraycopy(parent1, 0, offspring1, 0, parent1.length);

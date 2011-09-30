@@ -20,12 +20,14 @@ import org.uncommons.maths.random.Probability;
 
 /**
  * Convenient base class for {@link Node}s that have no sub-trees.
+ * <p/>
  * @author Daniel Dyer
  */
 abstract class LeafNode implements Node
 {
     /**
      * The arity of a non-function node is always zero.
+     * <p/>
      * @return 0
      */
     public int getArity()
@@ -33,7 +35,7 @@ abstract class LeafNode implements Node
         return 0;
     }
 
-    
+
     /**
      * Leaf nodes always have a depth of 1 since they have no child nodes.
      * @return 1 
@@ -53,10 +55,7 @@ abstract class LeafNode implements Node
         return 1;
     }
 
-    
-    /**
-     * {@inheritDoc}
-     */
+
     public int countNodes()
     {
         return 1;
@@ -73,9 +72,6 @@ abstract class LeafNode implements Node
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Node getChild(int index)
     {
         throw new IndexOutOfBoundsException("Leaf nodes have no children.");
@@ -88,13 +84,10 @@ abstract class LeafNode implements Node
         {
             throw new IndexOutOfBoundsException("Invalid node index: " + index);
         }
-        return newNode;        
+        return newNode;
     }
 
-    
-    /**
-     * {@inheritDoc}
-     */
+
     public Node mutate(Random rng, Probability mutationProbability, TreeFactory treeFactory)
     {
         if (mutationProbability.nextEvent(rng))

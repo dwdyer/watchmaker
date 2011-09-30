@@ -22,9 +22,10 @@ import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.maths.random.Probability;
 
 /**
- * Variable-point (fixed or random) cross-over for String candidates.
- * This implementation assumes that all candidate Strings are the same
- * length.  If they are not, an exception will be thrown at runtime.
+ * Variable-point (fixed or random) cross-over for String candidates. This implementation assumes
+ * that all candidate Strings are the same length. If they are not, an exception will be thrown at
+ * runtime.
+ * <p/>
  * @author Daniel Dyer
  */
 public class StringCrossover extends AbstractCrossover<String>
@@ -95,9 +96,6 @@ public class StringCrossover extends AbstractCrossover<String>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected List<String> mate(String parent1,
                                 String parent2,
@@ -106,7 +104,8 @@ public class StringCrossover extends AbstractCrossover<String>
     {
         if (parent1.length() != parent2.length())
         {
-            throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
+            throw new IllegalArgumentException(
+                "Cannot perform cross-over with different length parents.");
         }
         StringBuilder offspring1 = new StringBuilder(parent1);
         StringBuilder offspring2 = new StringBuilder(parent2);

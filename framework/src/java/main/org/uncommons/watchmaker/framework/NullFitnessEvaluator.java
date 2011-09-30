@@ -18,14 +18,16 @@ package org.uncommons.watchmaker.framework;
 import java.util.List;
 
 /**
- * Fitness evaluation is not required for interactive selection, so this stub
- * implementation is used to satisfy the framework requirements.
+ * Fitness evaluation is not required for interactive selection, so this stub implementation is used
+ * to satisfy the framework requirements.
+ * <p/>
  * @author Daniel Dyer
  */
 class NullFitnessEvaluator implements FitnessEvaluator<Object>
 {
     /**
      * Returns a score of zero, regardless of the candidate being evaluated.
+     * <p/>
      * @param candidate The individual to evaluate.
      * @param population {@inheritDoc}
      * @return Zero.
@@ -35,6 +37,7 @@ class NullFitnessEvaluator implements FitnessEvaluator<Object>
     {
         return 0;
     }
+
 
     /**
      * Always returns true.  However, the return value of this method is

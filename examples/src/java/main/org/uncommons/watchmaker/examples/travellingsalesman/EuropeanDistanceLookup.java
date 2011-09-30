@@ -15,20 +15,19 @@
 //=============================================================================
 package org.uncommons.watchmaker.examples.travellingsalesman;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- * This class contains data about cities in Europe and the distances
- * between them.
+ * This class contains data about cities in Europe and the distances between them.
+ * <p/>
  * @author Daniel Dyer
  */
 public final class EuropeanDistanceLookup implements DistanceLookup
 {
-    private static final Map<String, Map<String, Integer>> DISTANCES = new HashMap<String, Map<String, Integer>>(15);
+    private static final Map<String, Map<String, Integer>> DISTANCES =
+        new HashMap<String, Map<String, Integer>>(15);
+
+
     static
     {
         // Distances are in km as the crow flies (from http://www.indo.com/distance/)
@@ -305,9 +304,6 @@ public final class EuropeanDistanceLookup implements DistanceLookup
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public List<String> getKnownCities()
     {
         List<String> cities = new ArrayList<String>(DISTANCES.keySet());
@@ -316,9 +312,6 @@ public final class EuropeanDistanceLookup implements DistanceLookup
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public int getDistance(String startingCity, String destinationCity)
     {
         return DISTANCES.get(startingCity).get(destinationCity);

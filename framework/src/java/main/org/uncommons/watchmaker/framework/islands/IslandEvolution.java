@@ -15,33 +15,15 @@
 //=============================================================================
 package org.uncommons.watchmaker.framework.islands;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import org.uncommons.watchmaker.framework.CandidateFactory;
-import org.uncommons.watchmaker.framework.EvaluatedCandidate;
-import org.uncommons.watchmaker.framework.EvolutionEngine;
-import org.uncommons.watchmaker.framework.EvolutionObserver;
-import org.uncommons.watchmaker.framework.EvolutionUtils;
-import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.watchmaker.framework.FitnessEvaluator;
-import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
-import org.uncommons.watchmaker.framework.PopulationData;
-import org.uncommons.watchmaker.framework.SelectionStrategy;
-import org.uncommons.watchmaker.framework.TerminationCondition;
+import java.util.*;
+import java.util.concurrent.*;
+import org.uncommons.watchmaker.framework.*;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
  * An implementation of island evolution in which multiple independent populations are evolved in
  * parallel with periodic migration of individuals between islands.
+ * <p/>
  * @param <T> The type of entity that is to be evolved.
  * @author Daniel Dyer
  */
@@ -51,10 +33,8 @@ public class IslandEvolution<T>
     private final Migration migration;
     private final boolean naturalFitness;
     private final Random rng;
-
-    private final Set<IslandEvolutionObserver<? super T>> observers
-        = new CopyOnWriteArraySet<IslandEvolutionObserver<? super T>>();
-
+    private final Set<IslandEvolutionObserver<? super T>> observers =
+        new CopyOnWriteArraySet<IslandEvolutionObserver<? super T>>();
     private List<TerminationCondition> satisfiedTerminationConditions;
 
 
@@ -75,22 +55,22 @@ public class IslandEvolution<T>
      * @see #IslandEvolution(List, Migration, boolean, Random) 
      */
     public IslandEvolution(int islandCount,
-                           Migration migration,
-                           CandidateFactory<T> candidateFactory,
-                           EvolutionaryOperator<T> evolutionScheme,
-                           FitnessEvaluator<? super T> fitnessEvaluator,
-                           SelectionStrategy<? super T> selectionStrategy,
-                           Random rng)
+        Migration migration,
+        CandidateFactory<T> candidateFactory,
+        EvolutionaryOperator<T> evolutionScheme,
+        FitnessEvaluator<? super T> fitnessEvaluator,
+        SelectionStrategy<? super T> selectionStrategy,
+        Random rng)
     {
         this(createIslands(islandCount,
-                           candidateFactory,
-                           evolutionScheme,
-                           fitnessEvaluator,
-                           selectionStrategy,
-                           rng),
-             migration,
-             fitnessEvaluator.isNatural(),
-             rng);
+            candidateFactory,
+            evolutionScheme,
+            fitnessEvaluator,
+            selectionStrategy,
+            rng),
+            migration,
+            fitnessEvaluator.isNatural(),
+            rng);
     }
 
 
@@ -109,9 +89,9 @@ public class IslandEvolution<T>
      * SelectionStrategy, Random)
      */
     public IslandEvolution(List<EvolutionEngine<T>> islands,
-                           Migration migration,
-                           boolean naturalFitness,
-                           Random rng)
+        Migration migration,
+        boolean naturalFitness,
+        Random rng)
     {
         this.islands = islands;
         this.migration = migration;
@@ -124,9 +104,9 @@ public class IslandEvolution<T>
             EvolutionEngine<T> island = islands.get(islandIndex);
             island.addEvolutionObserver(new EvolutionObserver<T>()
             {
-                public void populationUpdate(PopulationData<? extends T> populationData)
+                public <S extends T> void populationUpdate(PopulationData<S> populationData)
                 {
-                    for (IslandEvolutionObserver<? super T> islandObserver : observers)
+                    for (IslandEvolutionObserver<? super T> islandObserver: observers)
                     {
                         islandObserver.islandPopulationUpdate(islandIndex, populationData);
                     }
@@ -141,20 +121,21 @@ public class IslandEvolution<T>
      * been provided already (via the other constructor).
      */
     private static <T> List<EvolutionEngine<T>> createIslands(int islandCount,
-                                                              CandidateFactory<T> candidateFactory,
-                                                              EvolutionaryOperator<T> evolutionScheme,
-                                                              FitnessEvaluator<? super T> fitnessEvaluator,
-                                                              SelectionStrategy<? super T> selectionStrategy,
-                                                              Random rng)
+        CandidateFactory<T> candidateFactory,
+        EvolutionaryOperator<T> evolutionScheme,
+        FitnessEvaluator<? super T> fitnessEvaluator,
+        SelectionStrategy<? super T> selectionStrategy,
+        Random rng)
     {
         List<EvolutionEngine<T>> islands = new ArrayList<EvolutionEngine<T>>(islandCount);
         for (int i = 0; i < islandCount; i++)
         {
-            GenerationalEvolutionEngine<T> island = new GenerationalEvolutionEngine<T>(candidateFactory,
-                                                                                       evolutionScheme,
-                                                                                       fitnessEvaluator,
-                                                                                       selectionStrategy,
-                                                                                       rng);
+            GenerationalEvolutionEngine<T> island = new GenerationalEvolutionEngine<T>(
+                candidateFactory,
+                evolutionScheme,
+                fitnessEvaluator,
+                selectionStrategy,
+                rng);
             island.setSingleThreaded(true); // Don't need fine-grained concurrency when each island is on a separate thread.
             islands.add(island);
         }
@@ -189,14 +170,15 @@ public class IslandEvolution<T>
      * @return The fittest solution found by the evolutionary process on any of the islands.
      */
     public T evolve(int populationSize,
-                    int eliteCount,
-                    int epochLength,
-                    int migrantCount,
-                    TerminationCondition... conditions)
+        int eliteCount,
+        int epochLength,
+        int migrantCount,
+        TerminationCondition... conditions)
     {
         ExecutorService threadPool = Executors.newFixedThreadPool(islands.size());
         List<List<T>> islandPopulations = new ArrayList<List<T>>(islands.size());
-        List<EvaluatedCandidate<T>> evaluatedCombinedPopulation = new ArrayList<EvaluatedCandidate<T>>();
+        List<EvaluatedCandidate<T>> evaluatedCombinedPopulation =
+            new ArrayList<EvaluatedCandidate<T>>();
 
         PopulationData<T> data = null;
         List<TerminationCondition> satisfiedConditions = null;
@@ -204,18 +186,20 @@ public class IslandEvolution<T>
         long startTime = System.currentTimeMillis();
         while (satisfiedConditions == null)
         {
-            List<Callable<List<EvaluatedCandidate<T>>>> islandEpochs = createEpochTasks(populationSize,
-                                                                                        eliteCount,
-                                                                                        epochLength,
-                                                                                        islandPopulations);
+            List<Callable<List<EvaluatedCandidate<T>>>> islandEpochs =
+                createEpochTasks(populationSize,
+                eliteCount,
+                epochLength,
+                islandPopulations);
             try
             {
-                List<Future<List<EvaluatedCandidate<T>>>> futures = threadPool.invokeAll(islandEpochs);
+                List<Future<List<EvaluatedCandidate<T>>>> futures = threadPool.invokeAll(
+                    islandEpochs);
 
                 evaluatedCombinedPopulation.clear();
-                List<List<EvaluatedCandidate<T>>> evaluatedPopulations
-                    = new ArrayList<List<EvaluatedCandidate<T>>>(islands.size());
-                for (Future<List<EvaluatedCandidate<T>>> future : futures)
+                List<List<EvaluatedCandidate<T>>> evaluatedPopulations =
+                    new ArrayList<List<EvaluatedCandidate<T>>>(islands.size());
+                for (Future<List<EvaluatedCandidate<T>>> future: futures)
                 {
                     List<EvaluatedCandidate<T>> evaluatedIslandPopulation = future.get();
                     evaluatedCombinedPopulation.addAll(evaluatedIslandPopulation);
@@ -226,14 +210,14 @@ public class IslandEvolution<T>
 
                 EvolutionUtils.sortEvaluatedPopulation(evaluatedCombinedPopulation, naturalFitness);
                 data = EvolutionUtils.getPopulationData(evaluatedCombinedPopulation,
-                                                        naturalFitness,
-                                                        eliteCount,
-                                                        currentEpochIndex,
-                                                        startTime);
+                    naturalFitness,
+                    eliteCount,
+                    currentEpochIndex,
+                    startTime);
                 notifyPopulationChange(data);
 
                 islandPopulations.clear();
-                for (List<EvaluatedCandidate<T>> evaluatedPopulation : evaluatedPopulations)
+                for (List<EvaluatedCandidate<T>> evaluatedPopulation: evaluatedPopulations)
                 {
                     islandPopulations.add(toCandidateList(evaluatedPopulation));
                 }
@@ -260,19 +244,20 @@ public class IslandEvolution<T>
      * Create the concurrently-executed tasks that perform evolution on each island.
      */
     private List<Callable<List<EvaluatedCandidate<T>>>> createEpochTasks(int populationSize,
-                                                                         int eliteCount,
-                                                                         int epochLength,
-                                                                         List<List<T>> islandPopulations)
+        int eliteCount,
+        int epochLength,
+        List<List<T>> islandPopulations)
     {
-        List<Callable<List<EvaluatedCandidate<T>>>> islandEpochs
-            = new ArrayList<Callable<List<EvaluatedCandidate<T>>>>(islands.size());
+        List<Callable<List<EvaluatedCandidate<T>>>> islandEpochs =
+            new ArrayList<Callable<List<EvaluatedCandidate<T>>>>(islands.size());
         for (int i = 0; i < islands.size(); i++)
         {
             islandEpochs.add(new Epoch<T>(islands.get(i),
-                                          populationSize,
-                                          eliteCount,
-                                          islandPopulations.isEmpty() ? Collections.<T>emptyList() : islandPopulations.get(i),
-                                          new GenerationCount(epochLength)));
+                populationSize,
+                eliteCount,
+                islandPopulations.isEmpty() ? Collections.<T>emptyList()
+                : islandPopulations.get(i),
+                new GenerationCount(epochLength)));
         }
         return islandEpochs;
     }
@@ -288,7 +273,7 @@ public class IslandEvolution<T>
     private static <T> List<T> toCandidateList(List<EvaluatedCandidate<T>> evaluatedCandidates)
     {
         List<T> candidates = new ArrayList<T>(evaluatedCandidates.size());
-        for (EvaluatedCandidate<T> evaluatedCandidate : evaluatedCandidates)
+        for (EvaluatedCandidate<T> evaluatedCandidate: evaluatedCandidates)
         {
             candidates.add(evaluatedCandidate.getCandidate());
         }
@@ -367,7 +352,7 @@ public class IslandEvolution<T>
      */
     private void notifyPopulationChange(PopulationData<T> data)
     {
-        for (IslandEvolutionObserver<? super T> observer : observers)
+        for (IslandEvolutionObserver<? super T> observer: observers)
         {
             observer.populationUpdate(data);
         }

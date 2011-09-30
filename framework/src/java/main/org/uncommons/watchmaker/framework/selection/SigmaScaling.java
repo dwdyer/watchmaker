@@ -23,18 +23,19 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
- * An alternative to straightforward fitness-proportionate selection such as that offered
- * by {@link RouletteWheelSelection} and {@link StochasticUniversalSampling}.  Uses the
- * mean population fitness and fitness standard deviation to adjust individual fitness
- * scores.  Early on in an evolutionary algorithm this helps to avoid premature convergence
- * caused by the dominance of one or two relatively fit candidates in a population of mostly
- * unfit individuals.  It also helps to amplify minor fitness differences in a more mature
- * population where the rate of improvement has slowed.
+ * An alternative to straightforward fitness-proportionate selection such as that offered by {@link RouletteWheelSelection}
+ * and {@link StochasticUniversalSampling}. Uses the mean population fitness and fitness standard
+ * deviation to adjust individual fitness scores. Early on in an evolutionary algorithm this helps to
+ * avoid premature convergence caused by the dominance of one or two relatively fit candidates in a
+ * population of mostly unfit individuals. It also helps to amplify minor fitness differences in a
+ * more mature population where the rate of improvement has slowed.
+ * <p/>
  * @author Daniel Dyer
  */
 public class SigmaScaling implements SelectionStrategy<Object>
 {
     private final SelectionStrategy<Object> delegate;
+
 
     /**
      * Creates a default sigma-scaled selection strategy.
@@ -57,22 +58,20 @@ public class SigmaScaling implements SelectionStrategy<Object>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public <S> List<S> select(List<EvaluatedCandidate<S>> population,
                               boolean naturalFitnessScores,
                               int selectionSize,
                               Random rng)
     {
         DataSet statistics = new DataSet(population.size());
-        for (EvaluatedCandidate<S> candidate : population)
+        for (EvaluatedCandidate<S> candidate: population)
         {
             statistics.addValue(candidate.getFitness());
         }
 
-        List<EvaluatedCandidate<S>> scaledPopulation = new ArrayList<EvaluatedCandidate<S>>(population.size());
-        for (EvaluatedCandidate<S> candidate : population)
+        List<EvaluatedCandidate<S>> scaledPopulation =
+            new ArrayList<EvaluatedCandidate<S>>(population.size());
+        for (EvaluatedCandidate<S> candidate: population)
         {
             double scaledFitness = getSigmaScaledFitness(candidate.getFitness(),
                                                          statistics.getArithmeticMean(),
@@ -94,7 +93,8 @@ public class SigmaScaling implements SelectionStrategy<Object>
         }
         else
         {
-            double scaledFitness = 1 + (candidateFitness - populationMeanFitness) / (2 * fitnessStandardDeviation);
+            double scaledFitness = 1 + (candidateFitness - populationMeanFitness) / (2
+                * fitnessStandardDeviation);
             // Don't allow negative expected frequencies, use an arbitrary low but still positive
             // frequency of 1 time in 10 for extremely unfit individuals (relative to the remainder
             // of the population).
@@ -103,9 +103,6 @@ public class SigmaScaling implements SelectionStrategy<Object>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

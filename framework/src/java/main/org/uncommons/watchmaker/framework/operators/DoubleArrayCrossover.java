@@ -22,8 +22,9 @@ import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.maths.random.Probability;
 
 /**
- * Cross-over with a configurable number of points (fixed or random) for
- * arrays of primitive doubles.
+ * Cross-over with a configurable number of points (fixed or random) for arrays of primitive
+ * doubles.
+ * <p/>
  * @author Daniel Dyer
  */
 public class DoubleArrayCrossover extends AbstractCrossover<double[]>
@@ -94,9 +95,6 @@ public class DoubleArrayCrossover extends AbstractCrossover<double[]>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected List<double[]> mate(double[] parent1,
                                   double[] parent2,
@@ -105,7 +103,8 @@ public class DoubleArrayCrossover extends AbstractCrossover<double[]>
     {
         if (parent1.length != parent2.length)
         {
-            throw new IllegalArgumentException("Cannot perform cross-over with different length parents.");
+            throw new IllegalArgumentException(
+                "Cannot perform cross-over with different length parents.");
         }
         double[] offspring1 = new double[parent1.length];
         System.arraycopy(parent1, 0, offspring1, 0, parent1.length);

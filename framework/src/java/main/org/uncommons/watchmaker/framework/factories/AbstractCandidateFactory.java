@@ -15,29 +15,25 @@
 //=============================================================================
 package org.uncommons.watchmaker.framework.factories;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import org.uncommons.watchmaker.framework.CandidateFactory;
 
 /**
  * Convenient base class for implementations of
  * {@link org.uncommons.watchmaker.framework.CandidateFactory}.
+ * <p/>
  * @param <T> The type of entity evolved by this engine.
  * @author Daniel Dyer
  */
 public abstract class AbstractCandidateFactory<T> implements CandidateFactory<T>
 {
     /**
-     * Randomly, create an initial population of candidates.  If some
-     * control is required over the composition of the initial population,
-     * consider the overloaded {@link #generateInitialPopulation(int,Collection,Random)}
+     * Randomly, create an initial population of candidates. If some control is required over the
+     * composition of the initial population, consider the overloaded {@link #generateInitialPopulation(int,Collection,Random)}
      * method.
+     * <p/>
      * @param populationSize The number of candidates to randomly create.
-     * @param rng The random number generator to use when creating the random
-     * candidates.
+     * @param rng The random number generator to use when creating the random candidates.
      * @return A randomly generated initial population of candidate solutions.
      */
     public List<T> generateInitialPopulation(int populationSize, Random rng)
@@ -63,7 +59,8 @@ public abstract class AbstractCandidateFactory<T> implements CandidateFactory<T>
     {
         if (seedCandidates.size() > populationSize)
         {
-            throw new IllegalArgumentException("Too many seed candidates for specified population size.");
+            throw new IllegalArgumentException(
+                "Too many seed candidates for specified population size.");
         }
         List<T> population = new ArrayList<T>(populationSize);
         population.addAll(seedCandidates);

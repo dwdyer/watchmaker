@@ -19,11 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
-import org.uncommons.watchmaker.framework.EvolutionEngine;
-import org.uncommons.watchmaker.framework.EvolutionObserver;
-import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
-import org.uncommons.watchmaker.framework.PopulationData;
+import org.uncommons.watchmaker.framework.*;
 import org.uncommons.watchmaker.framework.factories.StringFactory;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.StringCrossover;
@@ -32,13 +28,16 @@ import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
 
 /**
- * Simple evolutionary algorithm that evolves a population of randomly-generated
- * strings until at least one matches a specified target string.
+ * Simple evolutionary algorithm that evolves a population of randomly-generated strings until at
+ * least one matches a specified target string.
+ * <p/>
  * @author Daniel Dyer
  */
 public final class StringsExample
 {
     private static final char[] ALPHABET = new char[27];
+
+
     static
     {
         for (char c = 'A'; c <= 'Z'; c++)
@@ -66,19 +65,21 @@ public final class StringsExample
     public static String evolveString(String target)
     {
         StringFactory factory = new StringFactory(ALPHABET, target.length());
-        List<EvolutionaryOperator<String>> operators = new ArrayList<EvolutionaryOperator<String>>(2);
+        List<EvolutionaryOperator<String>> operators =
+            new ArrayList<EvolutionaryOperator<String>>(2);
         operators.add(new StringMutation(ALPHABET, new Probability(0.02d)));
         operators.add(new StringCrossover());
         EvolutionaryOperator<String> pipeline = new EvolutionPipeline<String>(operators);
-        EvolutionEngine<String> engine = new GenerationalEvolutionEngine<String>(factory,
-                                                                                 pipeline,
-                                                                                 new StringEvaluator(target),
-                                                                                 new RouletteWheelSelection(),
-                                                                                 new MersenneTwisterRNG());
+        EvolutionEngine<String> engine =
+            new GenerationalEvolutionEngine<String>(factory,
+            pipeline,
+            new StringEvaluator(target),
+            new RouletteWheelSelection(),
+            new MersenneTwisterRNG());
         engine.addEvolutionObserver(new EvolutionLogger());
         return engine.evolve(100, // 100 individuals in the population.
-                             5, // 5% elitism.
-                             new TargetFitness(0, false));
+            5, // 5% elitism.
+            new TargetFitness(0, false));
     }
 
 
@@ -102,18 +103,17 @@ public final class StringsExample
         return result.toString().toUpperCase();
     }
 
-
     /**
      * Trivial evolution observer for displaying information at the end
      * of each generation.
      */
     private static class EvolutionLogger implements EvolutionObserver<String>
     {
-        public void populationUpdate(PopulationData<? extends String> data)
+        public <S extends String> void populationUpdate(PopulationData<S> data)
         {
             System.out.printf("Generation %d: %s\n",
-                              data.getGenerationNumber(),
-                              data.getBestCandidate());
+                data.getGenerationNumber(),
+                data.getBestCandidate());
         }
     }
 }

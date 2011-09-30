@@ -20,11 +20,13 @@ import org.uncommons.watchmaker.framework.TerminationCondition;
 
 /**
  * Terminates evolution after a pre-determined period of time has elapsed.
+ * <p/>
  * @author Daniel Dyer
  */
 public class ElapsedTime implements TerminationCondition
 {
     private final long maxDuration;
+
 
     /**
      * @param maxDuration The maximum period of time (in milliseconds) before

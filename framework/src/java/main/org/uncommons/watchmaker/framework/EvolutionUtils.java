@@ -21,8 +21,9 @@ import java.util.List;
 import org.uncommons.maths.statistics.DataSet;
 
 /**
- * Utility methods used by different evolution implementations.  This class exists to
- * avoid duplication of this logic among multiple evolution implementations.
+ * Utility methods used by different evolution implementations. This class exists to avoid
+ * duplication of this logic among multiple evolution implementations.
+ * <p/>
  * @author Daniel Dyer
  */
 public final class EvolutionUtils
@@ -55,7 +56,7 @@ public final class EvolutionUtils
         }
         // Otherwise check the termination conditions for the evolution.
         List<TerminationCondition> satisfiedConditions = new LinkedList<TerminationCondition>();
-        for (TerminationCondition condition : conditions)
+        for (TerminationCondition condition: conditions)
         {
             if (condition.shouldTerminate(data))
             {
@@ -90,7 +91,6 @@ public final class EvolutionUtils
     }
 
 
-
     /**
      * Gets data about the current population, including the fittest candidate
      * and statistics about the population as a whole.
@@ -100,24 +100,23 @@ public final class EvolutionUtils
      * @param naturalFitness True if higher fitness scores mean fitter individuals, false otherwise.
      * @param eliteCount The number of candidates preserved via elitism.
      * @param iterationNumber The zero-based index of the current generation/epoch.
-     * @param startTime The time at which the evolution began, expressed as a number of milliseconds since
-     * 00:00 on 1st January 1970.
+     * @param startTime The time at which the evolution began, expressed as a number of milliseconds since 00:00 on 1st January 1970.
      * @param <T> The type of entity that is being evolved.
      * @return Statistics about the current generation of evolved individuals.
      */
-    public static <T> PopulationData<T> getPopulationData(List<EvaluatedCandidate<T>> evaluatedPopulation,
-                                                          boolean naturalFitness,
-                                                          int eliteCount,
-                                                          int iterationNumber,
-                                                          long startTime)
+    public static <T> PopulationData<T> getPopulationData(
+        List<EvaluatedCandidate<T>> evaluatedPopulation,
+        boolean naturalFitness,
+        int eliteCount,
+        int iterationNumber,
+        long startTime)
     {
         DataSet stats = new DataSet(evaluatedPopulation.size());
-        for (EvaluatedCandidate<T> candidate : evaluatedPopulation)
+        for (EvaluatedCandidate<T> candidate: evaluatedPopulation)
         {
             stats.addValue(candidate.getFitness());
         }
-        return new PopulationData<T>(evaluatedPopulation.get(0).getCandidate(),
-                                     evaluatedPopulation.get(0).getFitness(),
+        return new PopulationData<T>(evaluatedPopulation,
                                      stats.getArithmeticMean(),
                                      stats.getStandardDeviation(),
                                      naturalFitness,

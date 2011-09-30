@@ -22,17 +22,20 @@ import org.uncommons.util.reflection.ReflectionUtils;
 
 /**
  * Convenient base class for {@link Node}s that have two sub-trees.
+ * <p/>
  * @author Daniel Dyer
  */
 abstract class BinaryNode implements Node
 {
     protected static final double[] NO_ARGS = new double[0];
-
-    /** The first argument to the binary function. */
+    /**
+     * The first argument to the binary function.
+     */
     protected final Node left;
-    /** The second argument to the binary function. */
+    /**
+     * The second argument to the binary function.
+     */
     protected final Node right;
-    
     private final char symbol;
 
 
@@ -49,9 +52,6 @@ abstract class BinaryNode implements Node
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public String getLabel()
     {
         return String.valueOf(symbol);
@@ -88,18 +88,12 @@ abstract class BinaryNode implements Node
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public int countNodes()
     {
         return 1 + left.countNodes() + right.countNodes();
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Node getNode(int index)
     {
         if (index == 0)
@@ -118,23 +112,20 @@ abstract class BinaryNode implements Node
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Node getChild(int index)
     {
         switch (index)
         {
-            case 0: return left;
-            case 1: return right;
-            default: throw new IndexOutOfBoundsException("Invalid child index: " + index);
+            case 0:
+                return left;
+            case 1:
+                return right;
+            default:
+                throw new IndexOutOfBoundsException("Invalid child index: " + index);
         }
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Node replaceNode(int index, Node newNode)
     {
         if (index == 0)
@@ -154,10 +145,6 @@ abstract class BinaryNode implements Node
     }
 
 
-
-    /**
-     * {@inheritDoc} 
-     */
     public String print()
     {
         StringBuilder buffer = new StringBuilder("(");
@@ -171,9 +158,6 @@ abstract class BinaryNode implements Node
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Node mutate(Random rng, Probability mutationProbability, TreeFactory treeFactory)
     {
         if (mutationProbability.nextEvent(rng))
@@ -199,9 +183,8 @@ abstract class BinaryNode implements Node
 
     private Node newInstance(Node newLeft, Node newRight)
     {
-        Constructor<? extends BinaryNode> constructor = ReflectionUtils.findKnownConstructor(this.getClass(),
-                                                                                             Node.class,
-                                                                                             Node.class);
+        Constructor<? extends BinaryNode> constructor = ReflectionUtils.findKnownConstructor(this.
+            getClass(), Node.class, Node.class);
         return ReflectionUtils.invokeUnchecked(constructor, newLeft, newRight);
     }
 

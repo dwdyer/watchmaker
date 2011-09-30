@@ -15,18 +15,14 @@
 //=============================================================================
 package org.uncommons.watchmaker.framework;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
  * Base class for {@link EvolutionEngine} implementations.
+ * <p/>
  * @param <T> The type of entity evolved by the evolution engine.
  * @author Daniel Dyer
  * @see CandidateFactory
@@ -36,15 +32,12 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 {
     // A single multi-threaded worker is shared among multiple evolution engine instances.
     private static FitnessEvaluationWorker concurrentWorker = null;
-
-    private final Set<EvolutionObserver<? super T>> observers = new CopyOnWriteArraySet<EvolutionObserver<? super T>>();
-
+    private final Set<EvolutionObserver<? super T>> observers =
+        new CopyOnWriteArraySet<EvolutionObserver<? super T>>();
     private final Random rng;
     private final CandidateFactory<T> candidateFactory;
     private final FitnessEvaluator<? super T> fitnessEvaluator;
-
     private volatile boolean singleThreaded = false;
-
     private List<TerminationCondition> satisfiedTerminationConditions;
 
 
@@ -59,8 +52,8 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      * evolutionary operators and selection strategies).
      */
     protected AbstractEvolutionEngine(CandidateFactory<T> candidateFactory,
-                                      FitnessEvaluator<? super T> fitnessEvaluator,
-                                      Random rng)
+        FitnessEvaluator<? super T> fitnessEvaluator,
+        Random rng)
     {
         this.candidateFactory = candidateFactory;
         this.fitnessEvaluator = fitnessEvaluator;
@@ -68,64 +61,54 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public T evolve(int populationSize,
-                    int eliteCount,
-                    TerminationCondition... conditions)
+        int eliteCount,
+        TerminationCondition... conditions)
     {
         return evolve(populationSize,
-                      eliteCount,
-                      Collections.<T>emptySet(),
-                      conditions);
+            eliteCount,
+            Collections.<T>emptySet(),
+            conditions);
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public T evolve(int populationSize,
-                    int eliteCount,
-                    Collection<T> seedCandidates,
-                    TerminationCondition... conditions)
+        int eliteCount,
+        Collection<T> seedCandidates,
+        TerminationCondition... conditions)
     {
         return evolvePopulation(populationSize,
-                                eliteCount,
-                                seedCandidates,
-                                conditions).get(0).getCandidate();
+            eliteCount,
+            seedCandidates,
+            conditions).get(0).getCandidate();
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public List<EvaluatedCandidate<T>> evolvePopulation(int populationSize,
-                                                        int eliteCount,
-                                                        TerminationCondition... conditions)
+        int eliteCount,
+        TerminationCondition... conditions)
     {
         return evolvePopulation(populationSize,
-                                eliteCount,
-                                Collections.<T>emptySet(),
-                                conditions);
+            eliteCount,
+            Collections.<T>emptySet(),
+            conditions);
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public List<EvaluatedCandidate<T>> evolvePopulation(int populationSize,
-                                                        int eliteCount,
-                                                        Collection<T> seedCandidates,
-                                                        TerminationCondition... conditions)
+        int eliteCount,
+        Collection<T> seedCandidates,
+        TerminationCondition... conditions)
     {
         if (eliteCount < 0 || eliteCount >= populationSize)
         {
-            throw new IllegalArgumentException("Elite count must be non-negative and less than population size.");
+            throw new IllegalArgumentException(
+                "Elite count must be non-negative and less than population size.");
         }
         if (conditions.length == 0)
         {
-            throw new IllegalArgumentException("At least one TerminationCondition must be specified.");
+            throw new IllegalArgumentException(
+                "At least one TerminationCondition must be specified.");
         }
 
         satisfiedTerminationConditions = null;
@@ -133,31 +116,32 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         long startTime = System.currentTimeMillis();
 
         List<T> population = candidateFactory.generateInitialPopulation(populationSize,
-                                                                        seedCandidates,
-                                                                        rng);
+            seedCandidates,
+            rng);
 
         // Calculate the fitness scores for each member of the initial population.
         List<EvaluatedCandidate<T>> evaluatedPopulation = evaluatePopulation(population);
         EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, fitnessEvaluator.isNatural());
         PopulationData<T> data = EvolutionUtils.getPopulationData(evaluatedPopulation,
-                                                                  fitnessEvaluator.isNatural(),
-                                                                  eliteCount,
-                                                                  currentGenerationIndex,
-                                                                  startTime);
+            fitnessEvaluator.isNatural(),
+            eliteCount,
+            currentGenerationIndex,
+            startTime);
         // Notify observers of the state of the population.
         notifyPopulationChange(data);
 
-        List<TerminationCondition> satisfiedConditions = EvolutionUtils.shouldContinue(data, conditions);
+        List<TerminationCondition> satisfiedConditions = EvolutionUtils.shouldContinue(data,
+            conditions);
         while (satisfiedConditions == null)
         {
             ++currentGenerationIndex;
             evaluatedPopulation = nextEvolutionStep(evaluatedPopulation, eliteCount, rng);
             EvolutionUtils.sortEvaluatedPopulation(evaluatedPopulation, fitnessEvaluator.isNatural());
             data = EvolutionUtils.getPopulationData(evaluatedPopulation,
-                                                    fitnessEvaluator.isNatural(),
-                                                    eliteCount,
-                                                    currentGenerationIndex,
-                                                    startTime);
+                fitnessEvaluator.isNatural(),
+                eliteCount,
+                currentGenerationIndex,
+                startTime);
             // Notify observers of the state of the population.
             notifyPopulationChange(data);
             satisfiedConditions = EvolutionUtils.shouldContinue(data, conditions);
@@ -166,7 +150,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         return evaluatedPopulation;
     }
 
-    
+
     /**
      * This method performs a single step/iteration of the evolutionary process.
      * @param evaluatedPopulation The population at the beginning of the process.
@@ -175,9 +159,10 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      * @return The updated population after the evolutionary process has proceeded
      * by one step/iteration.
      */
-    protected abstract List<EvaluatedCandidate<T>> nextEvolutionStep(List<EvaluatedCandidate<T>> evaluatedPopulation,
-                                                                     int eliteCount,
-                                                                     Random rng);
+    protected abstract List<EvaluatedCandidate<T>> nextEvolutionStep(
+        List<EvaluatedCandidate<T>> evaluatedPopulation,
+        int eliteCount,
+        Random rng);
 
 
     /**
@@ -192,14 +177,15 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      */
     protected List<EvaluatedCandidate<T>> evaluatePopulation(List<T> population)
     {
-        List<EvaluatedCandidate<T>> evaluatedPopulation = new ArrayList<EvaluatedCandidate<T>>(population.size());
+        List<EvaluatedCandidate<T>> evaluatedPopulation =
+            new ArrayList<EvaluatedCandidate<T>>(population.size());
 
         if (singleThreaded) // Do fitness evaluations on the request thread.
         {
-            for (T candidate : population)
+            for (T candidate: population)
             {
-                evaluatedPopulation.add(new EvaluatedCandidate<T>(candidate,
-                                                                  fitnessEvaluator.getFitness(candidate, population)));
+                evaluatedPopulation.add(new EvaluatedCandidate<T>(candidate, fitnessEvaluator.
+                    getFitness(candidate, population)));
             }
         }
         else
@@ -210,15 +196,15 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
             try
             {
                 List<T> unmodifiablePopulation = Collections.unmodifiableList(population);
-                List<Future<EvaluatedCandidate<T>>> results = new ArrayList<Future<EvaluatedCandidate<T>>>(population.size());
+                List<Future<EvaluatedCandidate<T>>> results =
+                    new ArrayList<Future<EvaluatedCandidate<T>>>(population.size());
                 // Submit tasks for execution and wait until all threads have finished fitness evaluations.
-                for (T candidate : population)
+                for (T candidate: population)
                 {
-                    results.add(getSharedWorker().submit(new FitnessEvalutationTask<T>(fitnessEvaluator,
-                                                                                       candidate,
-                                                                                       unmodifiablePopulation)));
+                    results.add(getSharedWorker().submit(new FitnessEvalutationTask<T>(
+                        fitnessEvaluator, candidate, unmodifiablePopulation)));
                 }
-                for (Future<EvaluatedCandidate<T>> result : results)
+                for (Future<EvaluatedCandidate<T>> result: results)
                 {
                     evaluatedPopulation.add(result.get());
                 }
@@ -237,7 +223,6 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 
         return evaluatedPopulation;
     }
-
 
 
     /**
@@ -305,7 +290,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      */
     private void notifyPopulationChange(PopulationData<T> data)
     {
-        for (EvolutionObserver<? super T> observer : observers)
+        for (EvolutionObserver<? super T> observer: observers)
         {
             observer.populationUpdate(data);
         }

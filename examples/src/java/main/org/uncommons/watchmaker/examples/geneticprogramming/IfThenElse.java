@@ -20,6 +20,7 @@ import org.uncommons.maths.random.Probability;
 
 /**
  * Simple conditional program {@link Node}.
+ * <p/>
  * @author Daniel Dyer
  */
 public class IfThenElse implements Node
@@ -27,6 +28,7 @@ public class IfThenElse implements Node
     private final Node condition;
     private final Node then;
     private final Node otherwise;
+
 
     /**
      * @param condition If this node evaluates to a value greater than zero then
@@ -45,9 +47,6 @@ public class IfThenElse implements Node
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public String getLabel()
     {
         return "if";
@@ -64,36 +63,24 @@ public class IfThenElse implements Node
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public int getDepth()
     {
         return 1 + Math.max(condition.getDepth(), Math.max(then.getDepth(), otherwise.getDepth()));
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public int getWidth()
     {
         return condition.getWidth() + then.getWidth() + otherwise.getWidth();
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public int countNodes()
     {
         return 1 + condition.countNodes() + then.countNodes() + otherwise.countNodes();
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Node getNode(int index)
     {
         if (index == 0)
@@ -120,25 +107,22 @@ public class IfThenElse implements Node
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Node getChild(int index)
     {
         switch (index)
         {
-            case 0: return condition;
-            case 1: return then;
-            case 2 : return otherwise;
-            default: throw new IndexOutOfBoundsException("Invalid child index: " + index);
+            case 0:
+                return condition;
+            case 1:
+                return then;
+            case 2:
+                return otherwise;
+            default:
+                throw new IndexOutOfBoundsException("Invalid child index: " + index);
         }
     }
 
 
-
-    /**
-     * {@inheritDoc}
-     */
     public Node replaceNode(int index, Node newNode)
     {
         if (index == 0)
@@ -156,17 +140,18 @@ public class IfThenElse implements Node
             int thenNodes = then.countNodes();
             if (index <= conditionNodes + thenNodes)
             {
-                return new IfThenElse(condition, then.replaceNode(index - conditionNodes - 1, newNode), otherwise);
+                return new IfThenElse(condition, then.replaceNode(index - conditionNodes - 1,
+                                                                  newNode), otherwise);
             }
             else
             {
                 return new IfThenElse(condition,
                                       then,
-                                      otherwise.replaceNode(index - conditionNodes - thenNodes - 1, newNode));
+                                      otherwise.replaceNode(index - conditionNodes - thenNodes - 1,
+                                                            newNode));
             }
         }
     }
-
 
 
     /**
@@ -180,23 +165,17 @@ public class IfThenElse implements Node
     public double evaluate(double[] programParameters)
     {
         return condition.evaluate(programParameters) > 0 // If...
-               ? then.evaluate(programParameters)   // Then...
-               : otherwise.evaluate(programParameters);  // Else...
+            ? then.evaluate(programParameters) // Then...
+            : otherwise.evaluate(programParameters);  // Else...
     }
 
-    
-    /**
-     * {@inheritDoc}
-     */
+
     public String print()
     {
         return "(" + condition.print() + " ? " + then.print() + " : " + otherwise.print() + ")";
     }
 
 
-    /**
-     * {@inheritDoc}
-     */    
     public Node mutate(Random rng, Probability mutationProbability, TreeFactory treeFactory)
     {
         if (mutationProbability.nextEvent(rng))
@@ -222,9 +201,6 @@ public class IfThenElse implements Node
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {
@@ -232,9 +208,6 @@ public class IfThenElse implements Node
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Node simplify()
     {
         Node simplifiedCondition = condition.simplify();
@@ -255,7 +228,8 @@ public class IfThenElse implements Node
                 return simplifiedThen;
             }
             // Only create a new node if something has actually changed, otherwise return the existing node.
-            if (simplifiedCondition != condition || simplifiedThen != then || simplifiedOtherwise != otherwise)
+            if (simplifiedCondition != condition || simplifiedThen != then || simplifiedOtherwise
+                != otherwise)
             {
                 return new IfThenElse(simplifiedCondition, simplifiedThen, simplifiedOtherwise);
             }

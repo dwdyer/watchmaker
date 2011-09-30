@@ -21,12 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.StandardChartTheme;
 import org.uncommons.watchmaker.framework.PopulationData;
@@ -37,20 +32,20 @@ import org.uncommons.watchmaker.swing.SwingIslandEvolutionObserver;
 
 /**
  * The Evolution Monitor is a component that can be attached to an
- * {@link org.uncommons.watchmaker.framework.EvolutionEngine} to provide
- * real-time information (in a Swing GUI) about the current state of the
- * evolution.
+ * {@link org.uncommons.watchmaker.framework.EvolutionEngine} to provide real-time information (in a
+ * Swing GUI) about the current state of the evolution.
+ * <p/>
  * @param <T> The type of the evolved entities monitored by this component.
  * @author Daniel Dyer
  */
 public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 {
-    private final List<IslandEvolutionObserver<? super T>> views = new LinkedList<IslandEvolutionObserver<? super T>>();
-
+    private final List<IslandEvolutionObserver<? super T>> views =
+        new LinkedList<IslandEvolutionObserver<? super T>>();
     private JComponent monitorComponent;
     private Window window = null;
-
     private final boolean islands;
+
 
     /**
      * <p>Creates an EvolutionMonitor with a single panel that graphs the fitness scores
@@ -63,7 +58,7 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         this(false);
     }
 
-    
+
     /**
      * Creates an EvolutionMonitor with a single panel that graphs the fitness scores
      * of the population from generation to generation.
@@ -117,7 +112,7 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         }
     }
 
-    
+
     private void init(Renderer<? super T, JComponent> renderer)
     {
         // Make sure all JFreeChart charts are created with the legacy theme
@@ -151,28 +146,22 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         StatusBar statusBar = new StatusBar(islands);
         monitorComponent.add(statusBar, BorderLayout.SOUTH);
         views.add(new SwingIslandEvolutionObserver<Object>(statusBar,
-                300, TimeUnit.MILLISECONDS));
+            300, TimeUnit.MILLISECONDS));
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    public void populationUpdate(PopulationData<? extends T> populationData)
+    public <S extends T> void populationUpdate(PopulationData<S> populationData)
     {
-        for (IslandEvolutionObserver<? super T> view : views)
+        for (IslandEvolutionObserver<? super T> view: views)
         {
             view.populationUpdate(populationData);
         }
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public void islandPopulationUpdate(int islandIndex, PopulationData<? extends T> populationData)
     {
-        for (IslandEvolutionObserver<? super T> view : views)
+        for (IslandEvolutionObserver<? super T> view: views)
         {
             view.islandPopulationUpdate(islandIndex, populationData);
         }
@@ -194,14 +183,15 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
      * if this is the only application window.
      */
     public void showInFrame(final String title,
-                            final boolean exitOnClose)
-    {        
+        final boolean exitOnClose)
+    {
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()
             {
                 JFrame frame = new JFrame(title);
-                frame.setDefaultCloseOperation(exitOnClose ? JFrame.EXIT_ON_CLOSE : JFrame.DISPOSE_ON_CLOSE);
+                frame.setDefaultCloseOperation(exitOnClose ? JFrame.EXIT_ON_CLOSE
+                    : JFrame.DISPOSE_ON_CLOSE);
                 showWindow(frame);
             }
         });
@@ -217,8 +207,8 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
      * @param modal Whether the 
      */
     public void showInDialog(final JFrame owner,
-                             final String title,
-                             final boolean modal)
+        final String title,
+        final boolean modal)
     {
         SwingUtilities.invokeLater(new Runnable()
         {

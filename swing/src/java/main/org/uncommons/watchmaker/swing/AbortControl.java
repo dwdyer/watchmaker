@@ -23,13 +23,15 @@ import org.uncommons.watchmaker.framework.termination.UserAbort;
 
 /**
  * A GUI control that allows the user to abort an evolutionary program.
+ * <p/>
  * @author Daniel Dyer
  */
 public class AbortControl implements EvolutionControl
 {
     private final JButton control = new JButton("Abort");
     private final UserAbort abortCondition = new UserAbort();
-    
+
+
     public AbortControl()
     {
         control.addActionListener(new ActionListener()
@@ -76,11 +78,8 @@ public class AbortControl implements EvolutionControl
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public final void setDescription(String description)
     {
         control.setToolTipText(description);
-    }    
+    }
 }

@@ -23,20 +23,21 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
- * <p>A selection strategy that is similar to fitness-proportionate selection
- * except that is uses relative fitness rather than absolute fitness in order to
- * determine the probability of selection for a given individual (i.e. the actual
- * numerical fitness values are ignored and only the ordering of the sorted
- * population is considered).</p>
- * <p>Rank selection is implemented in terms of a mapping function ({@link
- * #mapRankToScore(int, int)}) and delegation to a fitness-proportionate selector.  The
- * mapping function converts ranks into relative fitness scores that are used to
- * drive the delegate selector.</p>
+ * <p>A selection strategy that is similar to fitness-proportionate selection except that is uses
+ * relative fitness rather than absolute fitness in order to determine the probability of selection
+ * for a given individual (i.e. the actual numerical fitness values are ignored and only the ordering
+ * of the sorted population is considered).</p> <p>Rank selection is implemented in terms of a
+ * mapping function ({@link
+ * #mapRankToScore(int, int)}) and delegation to a fitness-proportionate selector. The mapping
+ * function converts ranks into relative fitness scores that are used to drive the delegate
+ * selector.</p>
+ * <p/>
  * @author Daniel Dyer
  */
 public class RankSelection implements SelectionStrategy<Object>
 {
     private final SelectionStrategy<Object> delegate;
+
 
     /**
      * Creates a default rank-based selector with a linear
@@ -61,15 +62,13 @@ public class RankSelection implements SelectionStrategy<Object>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public <S> List<S> select(List<EvaluatedCandidate<S>> population,
                               boolean naturalFitnessScores,
                               int selectionSize,
                               Random rng)
     {
-        List<EvaluatedCandidate<S>> rankedPopulation = new ArrayList<EvaluatedCandidate<S>>(population.size());
+        List<EvaluatedCandidate<S>> rankedPopulation =
+            new ArrayList<EvaluatedCandidate<S>>(population.size());
         Iterator<EvaluatedCandidate<S>> iterator = population.iterator();
         int index = -1;
         while (iterator.hasNext())
@@ -102,9 +101,6 @@ public class RankSelection implements SelectionStrategy<Object>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

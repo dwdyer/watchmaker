@@ -15,11 +15,14 @@
 //=============================================================================
 package org.uncommons.watchmaker.framework.termination;
 
+import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
+import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 import org.uncommons.watchmaker.framework.PopulationData;
 
 /**
  * Unit test for termination condition that checks an abort flag set by the user.
+ * <p/>
  * @author Daniel Dyer
  */
 public class UserAbortTest
@@ -29,11 +32,14 @@ public class UserAbortTest
     {
         UserAbort condition = new UserAbort();
         // This population data should be irrelevant.
-        PopulationData<Object> data = new PopulationData<Object>(new Object(), 0, 0, 0, true, 2, 0, 0, 100);
-        assert !condition.shouldTerminate(data) : "Should not terminate without user abort.";
-        assert !condition.isAborted() : "Should not be aborted without user intervention.";
+        ImmutableList<EvaluatedCandidate<Object>> evaluatedPopulation =
+            ImmutableList.of(new EvaluatedCandidate<Object>(new Object(), 0));
+        PopulationData<Object> data = new PopulationData<Object>(evaluatedPopulation, 0, 0,
+            true, 2, 0, 0, 100);
+        assert !condition.shouldTerminate(data): "Should not terminate without user abort.";
+        assert !condition.isAborted(): "Should not be aborted without user intervention.";
         condition.abort();
-        assert condition.shouldTerminate(data) : "Should terminate after user abort.";
-        assert condition.isAborted() : "Should be aborted after user intervention.";
+        assert condition.shouldTerminate(data): "Should terminate after user abort.";
+        assert condition.isAborted(): "Should be aborted after user intervention.";
     }
 }

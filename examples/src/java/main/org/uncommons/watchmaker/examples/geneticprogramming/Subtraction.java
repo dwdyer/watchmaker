@@ -17,13 +17,14 @@ package org.uncommons.watchmaker.examples.geneticprogramming;
 
 /**
  * Simple subtraction operator {@link Node}.
+ * <p/>
  * @author Daniel Dyer
  */
 public class Subtraction extends BinaryNode
 {
     /**
-     * Creates a node that evaluates the the value of {@literal left}
-     * minus the value of {@literal right}.
+     * Creates a node that evaluates the the value of {@literal left} minus the value of {@literal right}.
+     * <p/>
      * @param left The first operand.
      * @param right The second operand.
      */
@@ -45,9 +46,6 @@ public class Subtraction extends BinaryNode
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public Node simplify()
     {
         Node simplifiedLeft = left.simplify();

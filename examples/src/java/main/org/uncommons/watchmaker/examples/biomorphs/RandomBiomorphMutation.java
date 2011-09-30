@@ -22,13 +22,15 @@ import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
- * Mutation operator for biomorphs.  Mutates each individual gene
- * according to some mutation probability.
+ * Mutation operator for biomorphs. Mutates each individual gene according to some mutation
+ * probability.
+ * <p/>
  * @author Daniel Dyer
  */
 public class RandomBiomorphMutation implements EvolutionaryOperator<Biomorph>
 {
     private final Probability mutationProbability;
+
 
     /**
      * @param mutationProbability The probability that a given gene
@@ -49,7 +51,7 @@ public class RandomBiomorphMutation implements EvolutionaryOperator<Biomorph>
     public List<Biomorph> apply(List<Biomorph> selectedCandidates, Random rng)
     {
         List<Biomorph> mutatedPopulation = new ArrayList<Biomorph>(selectedCandidates.size());
-        for (Biomorph biomorph : selectedCandidates)
+        for (Biomorph biomorph: selectedCandidates)
         {
             mutatedPopulation.add(mutateBiomorph(biomorph, rng));
         }
@@ -66,7 +68,8 @@ public class RandomBiomorphMutation implements EvolutionaryOperator<Biomorph>
     private Biomorph mutateBiomorph(Biomorph biomorph, Random rng)
     {
         int[] genes = biomorph.getGenotype();
-        assert genes.length == Biomorph.GENE_COUNT : "Biomorphs must have " + Biomorph.GENE_COUNT + " genes.";
+        assert genes.length == Biomorph.GENE_COUNT: "Biomorphs must have " + Biomorph.GENE_COUNT
+            + " genes.";
         for (int i = 0; i < Biomorph.GENE_COUNT - 1; i++)
         {
             if (mutationProbability.nextEvent(rng))

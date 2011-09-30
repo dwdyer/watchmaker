@@ -10,7 +10,7 @@ import org.uncommons.watchmaker.framework.PopulationData;
 
 /**
  * Limits the update rate of a Swing-based EvolutionObserver.
- * 
+ * <p/>
  * @param <T> the population type
  * @author Gili Tzabari
  */
@@ -19,19 +19,22 @@ public class SwingEvolutionObserver<T> implements EvolutionObserver<T>
     private final EvolutionObserver<T> delegate;
     private final long delay;
     private final TimeUnit unit;
-    private final ScheduledExecutorService timer = 
+    private final ScheduledExecutorService timer =
         Executors.newScheduledThreadPool(1, new ThreadFactory()
+    {
+        private final ThreadFactory delegate = Executors.defaultThreadFactory();
+
+
+        public Thread newThread(Runnable r)
         {
-            private final ThreadFactory delegate = Executors.defaultThreadFactory();
-            public Thread newThread(Runnable r)
-            {
-                Thread result = delegate.newThread(r);
-                result.setDaemon(true);
-                return result;
-            }
+            Thread result = delegate.newThread(r);
+            result.setDaemon(true);
+            return result;
+        }
     });
     private final AtomicReference<PopulationData<? extends T>> latestPopulation =
         new AtomicReference<PopulationData<? extends T>>();
+
 
     /**
      * Creates a new SwingEvolutionObserver.
@@ -44,7 +47,7 @@ public class SwingEvolutionObserver<T> implements EvolutionObserver<T>
      * @throws IllegalArgumentException if delay is negative
      */
     public SwingEvolutionObserver(EvolutionObserver<T> delegate, long delay,
-            TimeUnit unit)
+                                  TimeUnit unit)
     {
         if (delegate == null)
             throw new NullPointerException("delegate may not be null");
@@ -52,24 +55,24 @@ public class SwingEvolutionObserver<T> implements EvolutionObserver<T>
             throw new NullPointerException("unit may not be null");
         if (delay < 0)
             throw new IllegalArgumentException("delay may not be negative: " + delay);
-        
+
         this.delegate = delegate;
         this.delay = delay;
         this.unit = unit;
     }
 
-    public void populationUpdate(PopulationData<? extends T> populationData)
+
+    public <S extends T> void populationUpdate(PopulationData<S> populationData)
     {
         if (latestPopulation.getAndSet(populationData) != null)
         {
             // An update is already scheduled
             return;
         }
-        
+
         // Schedule an update in 300ms
         timer.schedule(new Runnable()
         {
-            @Override
             public void run()
             {
                 delegate.populationUpdate(latestPopulation.getAndSet(null));

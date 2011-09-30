@@ -19,12 +19,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -37,24 +32,22 @@ import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 
 /**
- * {@link EvolutionMonitor} view for displaying a graph of population fitness data
- * over the lifetime of the evolutionary algorithm.
+ * {@link EvolutionMonitor} view for displaying a graph of population fitness data over the lifetime
+ * of the evolutionary algorithm.
+ * <p/>
  * @author Daniel Dyer
  */
 class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Object>
 {
     private static final int SHOW_FIXED_GENERATIONS = 200;
-
     private final XYSeries bestSeries = new XYSeries("Fittest Individual");
     private final XYSeries meanSeries;
     private final XYSeriesCollection dataSet = new XYSeriesCollection();
     private final ValueAxis domainAxis;
     private final ValueAxis rangeAxis;
-
     private final JRadioButton allDataButton = new JRadioButton("All Data", false);
     private final JCheckBox invertCheckBox = new JCheckBox("Invert Range Axis", false);
     private final JFreeChart chart;
-
     private double maxY = 1;
     private double minY = 0;
 
@@ -65,14 +58,15 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
         meanSeries = new XYSeries(islands ? "Global Mean Fitness" : "Population Mean Fitness");
         dataSet.addSeries(bestSeries);
         dataSet.addSeries(meanSeries);
-        chart = ChartFactory.createXYLineChart(islands ? "Global Population Fitness" : "Population Fitness",
-                                               islands ? "Epochs" : "Generations",
-                                               "Fitness",
-                                               dataSet,
-                                               PlotOrientation.VERTICAL,
-                                               true, // Legend.
-                                               false, // Tooltips.
-                                               false);
+        chart = ChartFactory.createXYLineChart(islands ? "Global Population Fitness"
+            : "Population Fitness",
+            islands ? "Epochs" : "Generations",
+            "Fitness",
+            dataSet,
+            PlotOrientation.VERTICAL,
+            true, // Legend.
+            false, // Tooltips.
+            false);
         this.domainAxis = chart.getXYPlot().getDomainAxis();
         this.rangeAxis = chart.getXYPlot().getRangeAxis();
         domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
@@ -81,18 +75,18 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
         domainAxis.setRangeWithMargins(0, SHOW_FIXED_GENERATIONS);
         rangeAxis.setRange(minY, maxY);
         ChartPanel chartPanel = new ChartPanel(chart,
-                                               ChartPanel.DEFAULT_WIDTH,
-                                               ChartPanel.DEFAULT_HEIGHT,
-                                               ChartPanel.DEFAULT_MINIMUM_DRAW_WIDTH,
-                                               ChartPanel.DEFAULT_MINIMUM_DRAW_HEIGHT,
-                                               ChartPanel.DEFAULT_MAXIMUM_DRAW_WIDTH,
-                                               ChartPanel.DEFAULT_MAXIMUM_DRAW_HEIGHT,
-                                               false, // Buffered
-                                               false, // Properties
-                                               true, // Save
-                                               true, // Print
-                                               false, // Zoom
-                                               false); // Tooltips
+            ChartPanel.DEFAULT_WIDTH,
+            ChartPanel.DEFAULT_HEIGHT,
+            ChartPanel.DEFAULT_MINIMUM_DRAW_WIDTH,
+            ChartPanel.DEFAULT_MINIMUM_DRAW_HEIGHT,
+            ChartPanel.DEFAULT_MAXIMUM_DRAW_WIDTH,
+            ChartPanel.DEFAULT_MAXIMUM_DRAW_HEIGHT,
+            false, // Buffered
+            false, // Properties
+            true, // Save
+            true, // Print
+            false, // Zoom
+            false); // Tooltips
         add(chartPanel, BorderLayout.CENTER);
         add(createControls(islands), BorderLayout.SOUTH);
     }
@@ -174,10 +168,7 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    public void populationUpdate(final PopulationData<?> populationData)
+    public <S> void populationUpdate(final PopulationData<S> populationData)
     {
         SwingUtilities.invokeLater(new Runnable()
         {
@@ -193,7 +184,7 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
                     // The graph might be showing data from a previous run, so clear it.
                     meanSeries.clear();
                     bestSeries.clear();
-                }                
+                }
                 meanSeries.add(populationData.getGenerationNumber(), populationData.getMeanFitness());
                 double best = populationData.getBestCandidateFitness();
                 bestSeries.add(populationData.getGenerationNumber(), best);
@@ -201,8 +192,10 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
                 // We don't use JFreeChart's auto-range for the axes because it is inefficient
                 // (it degrades linearly with the number of items in the data set).  Instead we track
                 // the minimum and maximum ourselves.
-                double high = Math.max(populationData.getMeanFitness(), populationData.getBestCandidateFitness());
-                double low = Math.min(populationData.getMeanFitness(), populationData.getBestCandidateFitness());
+                double high = Math.max(populationData.getMeanFitness(), populationData.
+                    getBestCandidateFitness());
+                double low = Math.min(populationData.getMeanFitness(), populationData.
+                    getBestCandidateFitness());
                 if (high > maxY)
                 {
                     maxY = high;
@@ -221,7 +214,8 @@ class PopulationFitnessView extends JPanel implements IslandEvolutionObserver<Ob
     }
 
 
-    public void islandPopulationUpdate(int islandIndex, PopulationData<? extends Object> populationData)
+    public void islandPopulationUpdate(int islandIndex,
+        PopulationData<? extends Object> populationData)
     {
         // Do nothing.
     }

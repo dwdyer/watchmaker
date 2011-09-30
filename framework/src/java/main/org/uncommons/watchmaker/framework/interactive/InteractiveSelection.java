@@ -26,6 +26,7 @@ import org.uncommons.watchmaker.framework.SelectionStrategy;
 
 /**
  * Special selection strategy used for interactive evolutionary algorithms.
+ * <p/>
  * @param <T> The type of evolved entity that can be selected by this class.
  * @author Daniel Dyer
  */
@@ -75,7 +76,7 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
         this.maxSelectionsPerGeneration = maxSelectionsPerGeneration;
     }
 
-    
+
     /**
      * @param console The user interface (graphical, textual or other) used
      * to present a selection choice to the user.
@@ -98,9 +99,6 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public <S extends T> List<S> select(List<EvaluatedCandidate<S>> population,
                                         boolean naturalFitnessScores,
                                         int selectionSize,
@@ -108,7 +106,8 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
     {
         if (population.size() < groupSize)
         {
-            throw new IllegalArgumentException("Population is too small for selection group size of " + groupSize);
+            throw new IllegalArgumentException("Population is too small for selection group size of "
+                + groupSize);
         }
 
         int selectionCount = Math.min(selectionSize, maxSelectionsPerGeneration);
@@ -117,7 +116,8 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
         {
             // Pick candidates at random (without replacement).
             List<S> group = new ArrayList<S>(groupSize);
-            List<EvaluatedCandidate<S>> candidates = new ArrayList<EvaluatedCandidate<S>>(population);
+            List<EvaluatedCandidate<S>> candidates =
+                new ArrayList<EvaluatedCandidate<S>>(population);
             Collections.shuffle(candidates);
             for (int j = 0; j < groupSize; j++)
             {
@@ -135,7 +135,8 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
             extendedSelection.addAll(selection);
             for (int i = 0; i < selectionSize - selectionCount; i++)
             {
-                extendedSelection.add(selection.get(selectionCount == 1 ? 0 : rng.nextInt(selectionCount)));
+                extendedSelection.add(selection.get(selectionCount == 1 ? 0 : rng.nextInt(
+                    selectionCount)));
             }
             return extendedSelection;
         }
@@ -149,7 +150,7 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
     private <S extends T> S select(List<S> candidates)
     {
         List<Object> renderedCandidates = new ArrayList<Object>(candidates.size());
-        for (S candidate : candidates)
+        for (S candidate: candidates)
         {
             renderedCandidates.add(renderer.render(candidate));
         }
@@ -161,7 +162,6 @@ public class InteractiveSelection<T> implements SelectionStrategy<T>
                                                             renderedCandidates);
         return candidates.get(selection);
     }
-
 
     /**
      * Renderer that does nothing.  Used when the console already supports the

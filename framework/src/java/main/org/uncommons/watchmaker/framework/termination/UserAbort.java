@@ -19,12 +19,12 @@ import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 
 /**
- * {@link TerminationCondition} implementation that allows for user-initiated
- * termination of an evolutionary algorithm.  This condition can be used, for
- * instance, to provide a button on a GUI that terminates execution.  The
- * application should retain a reference to the instance after passing it to
- * the evolution engine and should invoke the {@link #abort()} method to make
- * the evolution terminate at the end of the current generation.
+ * {@link TerminationCondition} implementation that allows for user-initiated termination of an
+ * evolutionary algorithm. This condition can be used, for instance, to provide a button on a GUI
+ * that terminates execution. The application should retain a reference to the instance after passing
+ * it to the evolution engine and should invoke the {@link #abort()} method to make the evolution
+ * terminate at the end of the current generation.
+ * <p/>
  * @see org.uncommons.watchmaker.swing.AbortControl
  * @author Daniel Dyer
  */
@@ -32,9 +32,7 @@ public final class UserAbort implements TerminationCondition
 {
     private volatile boolean aborted = false;
 
-    /**
-     * {@inheritDoc}
-     */
+
     public boolean shouldTerminate(PopulationData<?> populationData)
     {
         return isAborted();

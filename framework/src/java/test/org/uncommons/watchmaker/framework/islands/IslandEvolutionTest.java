@@ -28,14 +28,14 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
 
 /**
  * Unit test for the {@link IslandEvolution} class.
+ * <p/>
  * @author Daniel Dyer
  */
 public class IslandEvolutionTest
 {
     /**
-     * This test makes sure that the evolution observer global method only gets invoked at
-     * the end of each epoch, and that the island method gets invoked for each generation on each
-     * island.
+     * This test makes sure that the evolution observer global method only gets invoked at the end
+     * of each epoch, and that the island method gets invoked for each generation on each island.
      */
     @Test
     public void testListeners()
@@ -45,35 +45,38 @@ public class IslandEvolutionTest
         final int generationCount = 5;
 
         IslandEvolution<Integer> islandEvolution = new IslandEvolution<Integer>(islandCount,
-                                                                                new RingMigration(),
-                                                                                new StubIntegerFactory(),
-                                                                                new IntegerAdjuster(2),
-                                                                                new DummyFitnessEvaluator(),
-                                                                                new RouletteWheelSelection(),
-                                                                                FrameworkTestUtils.getRNG());
+            new RingMigration(),
+            new StubIntegerFactory(),
+            new IntegerAdjuster(2),
+            new DummyFitnessEvaluator(),
+            new RouletteWheelSelection(),
+            FrameworkTestUtils.getRNG());
         final int[] observedEpochCount = new int[1];
         final int[] observedGenerationCounts = new int[islandCount];
 
         islandEvolution.addEvolutionObserver(new IslandEvolutionObserver<Integer>()
         {
-            public void populationUpdate(PopulationData<? extends Integer> populationData)
+            public <S extends Integer> void populationUpdate(PopulationData<S> populationData)
             {
                 observedEpochCount[0]++;
             }
 
 
-            public void islandPopulationUpdate(int islandIndex, PopulationData<? extends Integer> populationData)
+            public void islandPopulationUpdate(int islandIndex,
+                PopulationData<? extends Integer> populationData)
             {
                 observedGenerationCounts[islandIndex]++;
             }
         });
         islandEvolution.evolve(5, 0, 5, 0, new GenerationCount(2));
-        assert observedEpochCount[0] == 2 : "Listener should have been notified twice, was " + observedEpochCount[0];
+        assert observedEpochCount[0] == 2: "Listener should have been notified twice, was "
+            + observedEpochCount[0];
         for (int i = 0; i < islandCount; i++)
         {
             int expected = epochCount * generationCount;
-            assert observedGenerationCounts[i] == expected
-                : "Genertion count for island " + i + " should be " + expected + ", is " + observedGenerationCounts[i];
+            assert observedGenerationCounts[i] == expected: "Genertion count for island " + i
+                + " should be " + expected + ", is "
+                + observedGenerationCounts[i];
         }
     }
 
@@ -82,17 +85,17 @@ public class IslandEvolutionTest
     public void testInterrupt()
     {
         IslandEvolution<Integer> islandEvolution = new IslandEvolution<Integer>(2,
-                                                                                new RingMigration(),
-                                                                                new StubIntegerFactory(),
-                                                                                new IntegerAdjuster(2),
-                                                                                new DummyFitnessEvaluator(),
-                                                                                new RouletteWheelSelection(),
-                                                                                FrameworkTestUtils.getRNG());
+            new RingMigration(),
+            new StubIntegerFactory(),
+            new IntegerAdjuster(2),
+            new DummyFitnessEvaluator(),
+            new RouletteWheelSelection(),
+            FrameworkTestUtils.getRNG());
         final long timeout = 1000L;
         final Thread requestThread = Thread.currentThread();
         islandEvolution.addEvolutionObserver(new IslandEvolutionObserver<Integer>()
         {
-            public void populationUpdate(PopulationData<? extends Integer> populationData)
+            public <S extends Integer> void populationUpdate(PopulationData<S> populationData)
             {
                 if (populationData.getElapsedTime() > timeout / 2)
                 {
@@ -101,15 +104,18 @@ public class IslandEvolutionTest
             }
 
 
-            public void islandPopulationUpdate(int islandIndex, PopulationData<? extends Integer> populationData){}
+            public void islandPopulationUpdate(int islandIndex,
+                PopulationData<? extends Integer> populationData)
+            {
+            }
         });
         long startTime = System.currentTimeMillis();
         islandEvolution.evolve(10, 0, 10, 0, new ElapsedTime(timeout));
         long elapsedTime = System.currentTimeMillis() - startTime;
-        assert Thread.interrupted() : "Thread was not interrupted before timeout.";
-        assert elapsedTime < timeout : "Engine did not respond to interrupt before timeout.";
-        assert islandEvolution.getSatisfiedTerminationConditions().isEmpty()
-            : "Interrupted islands should have no satisfied termination conditions.";
+        assert Thread.interrupted(): "Thread was not interrupted before timeout.";
+        assert elapsedTime < timeout: "Engine did not respond to interrupt before timeout.";
+        assert islandEvolution.getSatisfiedTerminationConditions().isEmpty():
+            "Interrupted islands should have no satisfied termination conditions.";
     }
 
 
@@ -117,16 +123,15 @@ public class IslandEvolutionTest
     public void testGetSatisfiedTerminationConditionsBeforeStart()
     {
         IslandEvolution<Integer> islandEvolution = new IslandEvolution<Integer>(3,
-                                                                                new RingMigration(),
-                                                                                new StubIntegerFactory(),
-                                                                                new IntegerAdjuster(2),
-                                                                                new DummyFitnessEvaluator(),
-                                                                                new RouletteWheelSelection(),
-                                                                                FrameworkTestUtils.getRNG());
+            new RingMigration(),
+            new StubIntegerFactory(),
+            new IntegerAdjuster(2),
+            new DummyFitnessEvaluator(),
+            new RouletteWheelSelection(),
+            FrameworkTestUtils.getRNG());
         // Should throw an IllegalStateException because evolution has started, let alone terminated.
         islandEvolution.getSatisfiedTerminationConditions();
     }
-
 
     private static class DummyFitnessEvaluator implements FitnessEvaluator<Integer>
     {
@@ -134,6 +139,7 @@ public class IslandEvolutionTest
         {
             return 0;
         }
+
 
         public boolean isNatural()
         {

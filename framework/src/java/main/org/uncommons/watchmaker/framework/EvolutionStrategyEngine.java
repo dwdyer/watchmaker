@@ -20,13 +20,12 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * <p>General purpose engine for implementing Evolution Strategies.  Both (μ+λ) and (μ,λ)
- * strategies are supported (choose which to use by setting the boolean constructor parameter).</p>
- *
- * <p>Though this implementation accepts the {@code eliteCount} argument for each of its evolve
+ * <p>General purpose engine for implementing Evolution Strategies. Both (μ+λ) and (μ,λ) strategies
+ * are supported (choose which to use by setting the boolean constructor parameter).</p>
+ * <p/> <p>Though this implementation accepts the {@code eliteCount} argument for each of its evolve
  * methods in common with other {@link EvolutionEngine} implementations, it has no effect for
- * evolution strategies.  Elitism is implicit in a (μ+λ) ES and undesirable for a (μ,λ) ES.</p>
-
+ * evolution strategies. Elitism is implicit in a (μ+λ) ES and undesirable for a (μ,λ) ES.</p>
+ * <p/>
  * @param <T> The type of entity that is to be evolved.
  * @see GenerationalEvolutionEngine
  * @see SteadyStateEvolutionEngine
@@ -83,21 +82,23 @@ public class EvolutionStrategyEngine<T> extends AbstractEvolutionEngine<T>
      * @param rng A source of randomness.
      * @return The updated population after the evolution strategy has advanced.
      */
-    @Override
-    protected List<EvaluatedCandidate<T>> nextEvolutionStep(List<EvaluatedCandidate<T>> evaluatedPopulation,
-                                                            int eliteCount,
-                                                            Random rng)
+    protected List<EvaluatedCandidate<T>> nextEvolutionStep(
+        List<EvaluatedCandidate<T>> evaluatedPopulation,
+        int eliteCount,
+        Random rng)
     {
         // Elite count is ignored.  If it's non-zero it doesn't really matter, but if assertions are
         // enabled we will flag it as wrong.
-        assert eliteCount == 0 : "Explicit elitism is not supported for an ES, eliteCount should be 0.";
-        
+        assert eliteCount == 0:
+            "Explicit elitism is not supported for an ES, eliteCount should be 0.";
+
         // Select candidates that will be operated on to create the offspring.
         int offspringCount = offspringMultiplier * evaluatedPopulation.size();
         List<T> parents = new ArrayList<T>(offspringCount);
         for (int i = 0; i < offspringCount; i++)
         {
-            parents.add(evaluatedPopulation.get(rng.nextInt(evaluatedPopulation.size())).getCandidate());
+            parents.add(evaluatedPopulation.get(rng.nextInt(evaluatedPopulation.size())).
+                getCandidate());
         }
 
         // Then evolve the parents.

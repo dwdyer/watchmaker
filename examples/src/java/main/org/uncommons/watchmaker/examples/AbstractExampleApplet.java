@@ -17,21 +17,15 @@ package org.uncommons.watchmaker.examples;
 
 import java.awt.Container;
 import java.lang.reflect.InvocationTargetException;
-import javax.swing.JApplet;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 /**
  * Base class for examples that run as applets.
+ * <p/>
  * @author Daniel Dyer
  */
 public abstract class AbstractExampleApplet extends JApplet
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void init()
     {
@@ -74,7 +68,8 @@ public abstract class AbstractExampleApplet extends JApplet
         catch (InvocationTargetException ex)
         {
             ex.getCause().printStackTrace();
-            JOptionPane.showMessageDialog(container, ex.getCause(), "Error Occurred", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(container, ex.getCause(), "Error Occurred",
+                JOptionPane.ERROR_MESSAGE);
         }
     }
 
