@@ -52,7 +52,7 @@ public interface EvolutionaryOperator<T>
      * deal with multiple candidates in a single operation.</p>
      * <p><strong>The operator must not modify any of the candidates passed
      * in</strong>.  Instead it should return a list that contains evolved
-     * copies of those candidates (umodified candidates can be included in
+     * copies of those candidates (unmodified candidates can be included in
      * the results without having to be copied).</p>
      * @param selectedCandidates The individuals to evolve.
      * @param rng A source of randomness for stochastic operators (most

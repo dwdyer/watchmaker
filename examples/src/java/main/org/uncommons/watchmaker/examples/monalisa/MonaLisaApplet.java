@@ -186,7 +186,7 @@ public class MonaLisaApplet extends AbstractExampleApplet
 
 
     /**
-     * The task that acutally performs the evolution.
+     * The task that actually performs the evolution.
      */
     private class EvolutionTask extends SwingBackgroundTask<List<ColouredPolygon>>
     {
