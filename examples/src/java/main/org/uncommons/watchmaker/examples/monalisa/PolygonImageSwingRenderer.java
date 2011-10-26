@@ -18,45 +18,50 @@ package org.uncommons.watchmaker.examples.monalisa;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.swing.JComponent;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 
 /**
- * Converts a {@link BufferedImage} to a {@link JComponent} that displays that image
- * alongside a pre-specified target image.
+ * Converts a {@link BufferedImage} to a {@link JComponent} that displays that image alongside a
+ * pre-specified target image.
+ * <p/>
  * @author Daniel Dyer
  */
 public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>, JComponent>
 {
-    private final BufferedImage targetImage;
     private final Renderer<List<ColouredPolygon>, BufferedImage> delegate;
+    private final int width;
+    private final int height;
+    private final double zoomFactor;
+    private final AffineTransformOp zoomOp;
 
 
     /**
-     * @param targetImage This image is displayed on the left side of the
-     * JComponent.
+     * @param width The width of the candidate.
+     * @param height The height of the candidate.
+     * @param antialias Whether or not to enable anti-aliasing for the rendered image.
+     * @param zoomFactor indicates the scale factor to apply to the image being rendered
      */
-    public PolygonImageSwingRenderer(BufferedImage targetImage)
+    public PolygonImageSwingRenderer(int width, int height, boolean antialias, double zoomFactor)
     {
-        // Convert the target image into the most efficient format for rendering.
-        this.targetImage = new BufferedImage(targetImage.getWidth(),
-                                             targetImage.getHeight(),
-                                             BufferedImage.TYPE_INT_RGB);
-        this.targetImage.getGraphics().drawImage(targetImage, 0, 0, null);
-        this.targetImage.setAccelerationPriority(1);
-
-        this.delegate = new PolygonImageRenderer(new Dimension(targetImage.getWidth(),
-                                                               targetImage.getHeight()),
-                                                 true, // Anti-alias.
-                                                 null);
+        this.zoomFactor = zoomFactor;
+        this.width = (int) (width * zoomFactor);
+        this.height = (int) (height * zoomFactor);
+        this.delegate = new PolygonImageRenderer(new Dimension(width, height),
+            antialias, null);
+        this.zoomOp = new AffineTransformOp(AffineTransform.getScaleInstance(zoomFactor, zoomFactor),
+            AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
     }
 
 
     /**
-     * Renders the specified image as a JComponent with the image on the
-     * right and the pre-specified target image on the left.
+     * Renders the specified image as a JComponent with the image on the right and the pre-specified
+     * target image on the left.
+     * <p/>
      * @param entity The image to render on the right side of the component.
      * @return A Swing component that displays the rendered image.
      */
@@ -65,16 +70,12 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
         return new ImageComponent(entity);
     }
 
-
     /**
-     * Swing component for rendering a fixed size image.  If the image is smaller
-     * than the component, it is centered.
+     * Swing component for rendering a fixed size image. If the image is smaller than the component,
+     * it is centered.
      */
     private final class ImageComponent extends JComponent
     {
-        private static final int GAP = 10;
-        private static final int FOOTER = 20;
-
         private final List<ColouredPolygon> candidate;
         private final Dimension minimumSize;
 
@@ -82,15 +83,16 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
         ImageComponent(List<ColouredPolygon> candidate)
         {
             this.candidate = candidate;
-            this.minimumSize = new Dimension(targetImage.getWidth() * 2 + GAP,
-                                             targetImage.getHeight() + FOOTER);
+            this.minimumSize = new Dimension(width, height);
         }
+
 
         @Override
         public Dimension getPreferredSize()
         {
             return minimumSize;
         }
+
 
         @Override
         public Dimension getMinimumSize()
@@ -104,14 +106,12 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
         {
             int x = Math.max(0, (getWidth() - minimumSize.width) / 2);
             int y = Math.max(0, (getHeight() - minimumSize.height) / 2);
-            graphics.drawImage(targetImage, x, y, this);
             BufferedImage candidateImage = delegate.render(candidate);
             candidateImage.setAccelerationPriority(1);
-            Graphics clip = graphics.create(x + targetImage.getWidth() + GAP,
-                                            y,
-                                            candidateImage.getWidth(),
-                                            candidateImage.getHeight() + FOOTER);
-            clip.drawImage(candidateImage, 0, 0, this);
+            Graphics clip = graphics.create(x, y,
+                (int) (candidateImage.getWidth() * zoomFactor),
+                (int) (candidateImage.getHeight() * zoomFactor));
+            clip.drawImage(zoomOp.filter(candidateImage, null), 0, 0, this);
 
             clip.setColor(getForeground());
             String info = candidate.size() + " polygons, " + countVertices(candidate) + " vertices";
@@ -119,21 +119,22 @@ public class PolygonImageSwingRenderer implements Renderer<List<ColouredPolygon>
             int width = fontMetrics.stringWidth(info);
             int height = Math.round(fontMetrics.getLineMetrics(info, clip).getHeight());
             clip.drawString(info,
-                            candidateImage.getWidth() - width,
-                            candidateImage.getHeight() + height);
+                (int) (candidateImage.getWidth() * zoomFactor - width),
+                (int) (candidateImage.getHeight() * zoomFactor + height));
+            clip.dispose();
         }
 
 
         /**
-         * Count the number of vertices in each polygon in the image and return
-         * the total.
+         * Count the number of vertices in each polygon in the image and return the total.
+         * <p/>
          * @param image The image to inspect.
          * @return The total number of vertices in all polygons in the image.
          */
         private int countVertices(List<ColouredPolygon> image)
         {
             int count = 0;
-            for (ColouredPolygon polygon : image)
+            for (ColouredPolygon polygon: image)
             {
                 count += polygon.getVertices().size();
             }

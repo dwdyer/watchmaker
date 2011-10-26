@@ -44,13 +44,13 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         new LinkedList<IslandEvolutionObserver<? super T>>();
     private JComponent monitorComponent;
     private Window window = null;
+    private final Renderer<?, JComponent> solutionRenderer;
     private final boolean islands;
 
 
     /**
-     * <p>Creates an EvolutionMonitor with a single panel that graphs the fitness scores
-     * of the population from generation to generation.</p>
-     * <p>If you are using {@link org.uncommons.watchmaker.framework.islands.IslandEvolution},
+     * <p>Creates an EvolutionMonitor with a single panel that graphs the fitness scores of the
+     * population from generation to generation.</p> <p>If you are using {@link org.uncommons.watchmaker.framework.islands.IslandEvolution},
      * use the {@link #EvolutionMonitor(boolean)} constructor instead, to enable island support.</p>
      */
     public EvolutionMonitor()
@@ -60,12 +60,13 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 
 
     /**
-     * Creates an EvolutionMonitor with a single panel that graphs the fitness scores
-     * of the population from generation to generation.
+     * Creates an EvolutionMonitor with a single panel that graphs the fitness scores of the
+     * population from generation to generation.
+     * <p/>
      * @param islands Whether the monitor should be configured for displaying data from
-     * {@link org.uncommons.watchmaker.framework.islands.IslandEvolution}.  Set this
-     * parameter to false when using a standard {@link org.uncommons.watchmaker.framework.EvolutionEngine}
-     * or if you don't want to display island-specific data for island evolution.
+     * {@link org.uncommons.watchmaker.framework.islands.IslandEvolution}. Set this parameter to
+     * false when using a standard {@link org.uncommons.watchmaker.framework.EvolutionEngine} or if
+     * you don't want to display island-specific data for island evolution.
      */
     public EvolutionMonitor(boolean islands)
     {
@@ -74,16 +75,36 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 
 
     /**
-     * Creates an EvolutionMonitor with a second panel that displays a graphical
-     * representation of the fittest candidate in the population.
+     * Creates an EvolutionMonitor with a second panel that displays a graphical representation of
+     * the fittest candidate in the population.
+     * <p/>
      * @param renderer Renders a candidate solution as a JComponent.
      * @param islands Whether the monitor should be configured for displaying data from
-     * {@link org.uncommons.watchmaker.framework.islands.IslandEvolution}.  Set this
-     * parameter to false when using a standard {@link org.uncommons.watchmaker.framework.EvolutionEngine}
+     * {@link org.uncommons.watchmaker.framework.islands.IslandEvolution}. Set this parameter to
+     * false when using a standard {@link org.uncommons.watchmaker.framework.EvolutionEngine}
      */
     public EvolutionMonitor(final Renderer<? super T, JComponent> renderer, boolean islands)
     {
+        this(renderer, null, islands);
+    }
+
+
+    /**
+     * Creates an EvolutionMonitor with a second panel that displays a graphical representation of
+     * the fittest candidate in the population.
+     * <p/>
+     * @param renderer Renders a candidate solution as a JComponent.
+     * @param solutionRenderer Renders the target solution regardless of the input.
+     * @param islands Whether the monitor should be configured for displaying data from
+     * {@link org.uncommons.watchmaker.framework.islands.IslandEvolution}. Set this parameter to
+     * false when using a standard {@link org.uncommons.watchmaker.framework.EvolutionEngine}
+     */
+    public EvolutionMonitor(final Renderer<? super T, JComponent> renderer,
+        Renderer<?, JComponent> solutionRenderer,
+        boolean islands)
+    {
         this.islands = islands;
+        this.solutionRenderer = solutionRenderer;
         if (SwingUtilities.isEventDispatchThread())
         {
             init(renderer);
@@ -123,9 +144,16 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
         monitorComponent = new JPanel(new BorderLayout());
         monitorComponent.add(tabs, BorderLayout.CENTER);
 
-        FittestCandidateView<T> candidateView = new FittestCandidateView<T>(renderer);
+        FittestCandidateView<T> candidateView = new FittestCandidateView<T>(renderer,
+            solutionRenderer);
         tabs.add("Fittest Individual", candidateView);
         views.add(new SwingIslandEvolutionObserver<T>(candidateView, 300,
+            TimeUnit.MILLISECONDS));
+
+        PopulationCandidateView<T> populationView = new PopulationCandidateView<T>(renderer,
+            solutionRenderer);
+        tabs.add("Population Candidates", populationView);
+        views.add(new SwingIslandEvolutionObserver<T>(populationView, 300,
             TimeUnit.MILLISECONDS));
 
         PopulationFitnessView fitnessView = new PopulationFitnessView(islands);
@@ -159,7 +187,8 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
     }
 
 
-    public <S extends T> void islandPopulationUpdate(int islandIndex, PopulationData<S> populationData)
+    public <S extends T> void islandPopulationUpdate(int islandIndex,
+        PopulationData<S> populationData)
     {
         for (IslandEvolutionObserver<? super T> view: views)
         {
@@ -175,12 +204,13 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 
 
     /**
-     * Displays the evolution monitor component in a new {@link JFrame}.  There is no
-     * need to make sure this method is invoked from the Event Dispatch Thread, the
-     * method itself ensures that the window is created and displayed from the EDT.
+     * Displays the evolution monitor component in a new {@link JFrame}. There is no need to make
+     * sure this method is invoked from the Event Dispatch Thread, the method itself ensures that
+     * the window is created and displayed from the EDT.
+     * <p/>
      * @param title The title for the new frame.
-     * @param exitOnClose Whether the JVM should exit when the frame is closed.  Useful
-     * if this is the only application window.
+     * @param exitOnClose Whether the JVM should exit when the frame is closed. Useful if this is
+     * the only application window.
      */
     public void showInFrame(final String title,
         final boolean exitOnClose)
@@ -199,12 +229,13 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 
 
     /**
-     * Displays the evolution monitor component in a new {@link JDialog}.  There is no
-     * need to make sure this method is invoked from the Event Dispatch Thread, the
-     * method itself ensures that the window is created and displayed from the EDT.
+     * Displays the evolution monitor component in a new {@link JDialog}. There is no need to make
+     * sure this method is invoked from the Event Dispatch Thread, the method itself ensures that
+     * the window is created and displayed from the EDT.
+     * <p/>
      * @param owner The owning frame for the new dialog.
      * @param title The title for the new dialog.
-     * @param modal Whether the 
+     * @param modal Whether the
      */
     public void showInDialog(final JFrame owner,
         final String title,
@@ -224,6 +255,7 @@ public class EvolutionMonitor<T> implements IslandEvolutionObserver<T>
 
     /**
      * Helper method for showing the evolution monitor in a frame or dialog.
+     * <p/>
      * @param newWindow The frame or dialog used to show the evolution monitor.
      */
     private void showWindow(Window newWindow)

@@ -29,16 +29,19 @@ import org.fest.swing.fixture.FrameFixture;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.uncommons.maths.number.ConstantGenerator;
 import org.uncommons.watchmaker.examples.ExamplesTestUtils;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
  * Unit test for the {@link ProbabilitiesPanel} class.
+ * <p/>
  * @author Daniel Dyer
  */
 public class ProbabilitiesPanelTest
 {
     private Robot robot;
+
 
     @BeforeMethod(groups = "display-required")
     public void prepare()
@@ -53,7 +56,8 @@ public class ProbabilitiesPanelTest
         robot.cleanUp();
         robot = null;
     }
-    
+
+
     @Test(groups = "display-required")
     public void testSetAllProbabilitiesToZero()
     {
@@ -77,27 +81,26 @@ public class ProbabilitiesPanelTest
         Dimension canvasSize = new Dimension(100, 100);
         PolygonImageFactory factory = new PolygonImageFactory(canvasSize);
         EvolutionaryOperator<List<ColouredPolygon>> operator = panel.createEvolutionPipeline(factory,
-                                                                                             canvasSize,
-                                                                                             ExamplesTestUtils.getRNG());
+            canvasSize, ExamplesTestUtils.getRNG(), new ConstantGenerator<Double>(1.0));
         List<ColouredPolygon> candidate1 = Arrays.asList(new ColouredPolygon(Color.WHITE,
-                                                                             Arrays.asList(new Point(1, 1))));
+            Arrays.asList(new Point(1, 1))));
         List<ColouredPolygon> candidate2 = Arrays.asList(new ColouredPolygon(Color.BLACK,
-                                                                             Arrays.asList(new Point(2, 2))));
+            Arrays.asList(new Point(2, 2))));
         List<List<ColouredPolygon>> population = new ArrayList<List<ColouredPolygon>>(2);
         population.add(candidate1);
         population.add(candidate2);
-        
+
         List<List<ColouredPolygon>> evolved = operator.apply(population,
-                                                             ExamplesTestUtils.getRNG());
+            ExamplesTestUtils.getRNG());
         // Candidate order may have changed, but individual candidates should remain unaltered.
         assert (checkEquals(evolved.get(0), candidate1) && checkEquals(evolved.get(1), candidate2))
-               || (checkEquals(evolved.get(0), candidate2) && checkEquals(evolved.get(1), candidate1))
-            : "Candidates should be unaltered when all probabilities are zero.";
+            || (checkEquals(evolved.get(0), candidate2) && checkEquals(evolved.get(1), candidate1)):
+            "Candidates should be unaltered when all probabilities are zero.";
     }
 
 
     private boolean checkEquals(List<ColouredPolygon> candidate1,
-                                List<ColouredPolygon> candidate2)
+        List<ColouredPolygon> candidate2)
     {
         if (candidate1.size() != candidate2.size())
         {

@@ -37,7 +37,7 @@ public class RemoveVertexMutationTest
     @Test
     public void testRemoveVertex()
     {
-        List<Point> points = Arrays.asList(new Point(1, 1), new Point(2, 2), new Point(3, 3), new Point(4, 4));
+        List<Point> points = Arrays.asList(new Point(1, 1), new Point(2, 3), new Point(3, 4), new Point(4, 5));
         ColouredPolygon polygon = new ColouredPolygon(Color.RED, points);
         List<ColouredPolygon> image = new ArrayList<ColouredPolygon>(1);
         image.add(polygon);

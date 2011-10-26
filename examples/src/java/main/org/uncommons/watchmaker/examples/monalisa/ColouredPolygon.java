@@ -75,4 +75,23 @@ public class ColouredPolygon
     {
         return polygon;
     }
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (!(o instanceof ColouredPolygon))
+			return false;
+		final ColouredPolygon other = (ColouredPolygon) o;
+		return this.colour.equals(other.colour)
+			&& this.vertices.equals(other.vertices);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 89 * hash + this.colour.hashCode();
+		hash = 89 * hash + this.vertices.hashCode();
+		return hash;
+	}
 }

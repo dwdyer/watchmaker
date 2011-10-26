@@ -43,10 +43,11 @@ public class PolygonColourMutationTest
         List<ColouredPolygon> image = Arrays.asList(polygon);
         List<ColouredPolygon> mutatedImage = mutation.apply(image, ExamplesTestUtils.getRNG());
         Color mutatedColour = mutatedImage.get(0).getColour();
-        assert mutatedColour.getRed() == 129 : "Red component should have been incremented, is " + mutatedColour.getRed();
-        assert mutatedColour.getGreen() == 129 : "Green component should have been incremented, is " + mutatedColour.getGreen();
-        assert mutatedColour.getBlue() == 129 : "Blue component should have been incremented, is " + mutatedColour.getBlue();
-        assert mutatedColour.getAlpha() == 129 : "Alpha component should have been incremented, is " + mutatedColour.getAlpha();
+        assert mutatedColour.getRed() == 129 
+            || mutatedColour.getGreen() == 129 
+            || mutatedColour.getBlue() == 129 
+            || mutatedColour.getAlpha() == 129 : "Red, Green, Blue or Alpha component should have "
+            + "been incremented, is " + mutatedColour;
     }
 
 

@@ -25,21 +25,23 @@ import org.uncommons.maths.number.NumberGenerator;
 import org.uncommons.maths.random.Probability;
 
 /**
- * Evolutionary operator for mutating individual polygons.  Polygons are mutated
- * by adding a point, according to some probability.
+ * Evolutionary operator for mutating individual polygons. Polygons are mutated by adding a point,
+ * according to some probability.
+ * <p/>
  * @author Daniel Dyer
  */
 public class AddVertexMutation extends AbstractVertexMutation
 {
     static final int MAX_VERTEX_COUNT = 10;
 
+
     /**
-     * @param mutationProbability A {@link NumberGenerator} that controls the probability
-     * that a point will be added.
-     * @param canvasSize The size of the canvas.  Used to constrain the positions of the points.
+     * @param mutationProbability A {@link NumberGenerator} that controls the probability that a
+     * point will be added.
+     * @param canvasSize The size of the canvas. Used to constrain the positions of the points.
      */
     public AddVertexMutation(Dimension canvasSize,
-                             NumberGenerator<Probability> mutationProbability)
+        NumberGenerator<Probability> mutationProbability)
     {
         super(mutationProbability, canvasSize);
     }
@@ -47,18 +49,19 @@ public class AddVertexMutation extends AbstractVertexMutation
 
     /**
      * @param mutationProbability The probability that a point will be added.
-     * @param canvasSize The size of the canvas.  Used to constrain the positions of the points.
+     * @param canvasSize The size of the canvas. Used to constrain the positions of the points.
      */
     public AddVertexMutation(Dimension canvasSize,
-                             Probability mutationProbability)
+        Probability mutationProbability)
     {
         this(canvasSize, new ConstantGenerator<Probability>(mutationProbability));
     }
 
 
     /**
-     * Mutates the list of vertices for a given polygon by adding a new random point.
-     * Whether or not a point is actually added is determined by the configured mutation probability.
+     * Mutates the list of vertices for a given polygon by adding a new random point. Whether or not
+     * a point is actually added is determined by the configured mutation probability.
+     * <p/>
      * @param vertices A list of the points that make up the polygon.
      * @param rng A source of randomness.
      * @return A mutated list of points.
@@ -68,17 +71,14 @@ public class AddVertexMutation extends AbstractVertexMutation
     {
         // A single point is added with the configured probability, unless
         // we already have the maximum permitted number of points.
-        if (vertices.size() < MAX_VERTEX_COUNT && getMutationProbability().nextValue().nextEvent(rng))
-        {
-            List<Point> newVertices = new ArrayList<Point>(vertices);
-            newVertices.add(rng.nextInt(newVertices.size()),
-                            new Point(rng.nextInt(getCanvasSize().width),
-                                      rng.nextInt(getCanvasSize().height)));
-            return newVertices;
-        }
-        else // Nothing changed.
-        {
+        if (vertices.size() >= MAX_VERTEX_COUNT)
             return vertices;
-        }
+        List<Point> newVertices = new ArrayList<Point>(vertices);
+        int index = rng.nextInt(newVertices.size());
+
+        // Add a vetex without modifying the visible properties of the polygon. Other mutations will 
+        // do that.
+        newVertices.add(index, new Point(newVertices.get(index)));
+        return newVertices;
     }
 }

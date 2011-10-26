@@ -25,8 +25,8 @@ import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
- * Base class for mutation operators that modify the points of polygons in an
- * image.
+ * Base class for mutation operators that modify the points of polygons in an image.
+ * <p/>
  * @author Daniel Dyer
  */
 abstract class AbstractVertexMutation implements EvolutionaryOperator<ColouredPolygon>
@@ -36,12 +36,12 @@ abstract class AbstractVertexMutation implements EvolutionaryOperator<ColouredPo
 
 
     /**
-     * @param mutationProbability A {@link NumberGenerator} that controls the probability
-     * that a polygon's points will be mutated.
-     * @param canvasSize The size of the canvas.  Used to constrain the positions of the points.
+     * @param mutationProbability A {@link NumberGenerator} that controls the probability that a
+     * polygon's points will be mutated.
+     * @param canvasSize The size of the canvas. Used to constrain the positions of the points.
      */
     protected AbstractVertexMutation(NumberGenerator<Probability> mutationProbability,
-                                     Dimension canvasSize)
+        Dimension canvasSize)
     {
         this.mutationProbability = mutationProbability;
         this.canvasSize = canvasSize;
@@ -67,32 +67,32 @@ abstract class AbstractVertexMutation implements EvolutionaryOperator<ColouredPo
 
 
     /**
-     * Applies the mutation to each polygon in the list provided according to the
-     * pre-configured mutation probability.  If the probability is 0.1, approximately
-     * 10% of the individuals will be mutated.  The actual mutation operation is
-     * defined in the sub-class implementation of the
+     * Applies the mutation to each polygon in the list provided according to the pre-configured
+     * mutation probability. If the probability is 0.1, approximately 10% of the individuals will be
+     * mutated. The actual mutation operation is defined in the sub-class implementation of the
      * {@link #mutateVertices(java.util.List, java.util.Random)} method.
+     * <p/>
      * @param polygons The list of polygons to be mutated.
      * @param rng A source of randomness.
-     * @return The polygons after mutation.  None, some or all will have been
-     * modified. 
+     * @return The polygons after mutation. None, some or all will have been modified.
      */
     public List<ColouredPolygon> apply(List<ColouredPolygon> polygons, Random rng)
     {
-        List<ColouredPolygon> newPolygons = new ArrayList<ColouredPolygon>(polygons.size());
-        for (ColouredPolygon polygon : polygons)
-        {
-            List<Point> newVertices = mutateVertices(polygon.getVertices(), rng);
-            newPolygons.add(newVertices == polygon.getVertices()
-                            ? polygon
-                            : new ColouredPolygon(polygon.getColour(), newVertices));
-        }
+        if (!getMutationProbability().nextValue().nextEvent(rng))
+            return polygons;
+        List<ColouredPolygon> newPolygons = new ArrayList<ColouredPolygon>(polygons);
+        int index = rng.nextInt(polygons.size());
+        ColouredPolygon polygon = polygons.get(index);
+        List<Point> newVertices = mutateVertices(polygon.getVertices(), rng);
+        if (newVertices != polygon.getVertices())
+            newPolygons.set(index, new ColouredPolygon(polygon.getColour(), newVertices));
         return newPolygons;
     }
 
 
     /**
      * Implemented in sub-classes to perform the mutation of the vertices.
+     * <p/>
      * @param vertices A list of the points that make up the polygon.
      * @param rng A source of randomness.
      * @return A mutated list of points.

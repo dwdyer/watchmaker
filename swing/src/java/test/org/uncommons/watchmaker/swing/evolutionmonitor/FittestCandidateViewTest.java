@@ -20,6 +20,7 @@ import java.awt.BorderLayout;
 import java.math.BigDecimal;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.text.JTextComponent;
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;
@@ -61,7 +62,14 @@ public class FittestCandidateViewTest
     public void testUpdate()
     {
         Renderer<Object, JComponent> renderer = new ObjectSwingRenderer();
-        FittestCandidateView<BigDecimal> view = new FittestCandidateView<BigDecimal>(renderer);
+        FittestCandidateView<BigDecimal> view = new FittestCandidateView<BigDecimal>(renderer,
+            new Renderer<Object, JComponent>()
+            {
+                public JComponent render(Object entity)
+                {
+                    return new JLabel("Target solution goes here");
+                }
+            });
         JFrame frame = new JFrame();
         frame.add(view, BorderLayout.CENTER);
         FrameFixture frameFixture = new FrameFixture(robot, frame);
@@ -87,15 +95,22 @@ public class FittestCandidateViewTest
 
 
     /**
-     * If the view is updated with the same candidate it is already displaying, it should
-     * avoid the expense of re-rendering it.
+     * If the view is updated with the same candidate it is already displaying, it should avoid the
+     * expense of re-rendering it.
      */
     @Test(groups = "display-required",
     dependsOnMethods = "testUpdate")
     public void testUpdateSameCandidate()
     {
         Renderer<Object, JComponent> renderer = new ObjectSwingRenderer();
-        FittestCandidateView<BigDecimal> view = new FittestCandidateView<BigDecimal>(renderer);
+        FittestCandidateView<BigDecimal> view = new FittestCandidateView<BigDecimal>(renderer,
+            new Renderer<Object, JComponent>()
+            {
+                public JComponent render(Object entity)
+                {
+                    return new JLabel("Target solution goes here");
+                }
+            });
         JFrame frame = new JFrame();
         frame.add(view, BorderLayout.CENTER);
         FrameFixture frameFixture = new FrameFixture(robot, frame);

@@ -18,52 +18,44 @@ package org.uncommons.watchmaker.examples.monalisa;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
+import org.uncommons.maths.number.AdjustableNumberGenerator;
 import org.uncommons.maths.random.Probability;
 import org.uncommons.maths.random.XORShiftRNG;
 import org.uncommons.swing.SwingBackgroundTask;
 import org.uncommons.watchmaker.examples.AbstractExampleApplet;
-import org.uncommons.watchmaker.framework.CachingFitnessEvaluator;
-import org.uncommons.watchmaker.framework.EvolutionEngine;
-import org.uncommons.watchmaker.framework.EvolutionaryOperator;
-import org.uncommons.watchmaker.framework.FitnessEvaluator;
-import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
-import org.uncommons.watchmaker.framework.SelectionStrategy;
-import org.uncommons.watchmaker.framework.TerminationCondition;
+import org.uncommons.watchmaker.framework.*;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import org.uncommons.watchmaker.framework.termination.Stagnation;
+import org.uncommons.watchmaker.framework.termination.TargetFitness;
 import org.uncommons.watchmaker.swing.AbortControl;
 import org.uncommons.watchmaker.swing.ProbabilityParameterControl;
 import org.uncommons.watchmaker.swing.evolutionmonitor.EvolutionMonitor;
 
 /**
  * This program is inspired by Roger Alsing's evolution of the Mona Lisa
- * (http://rogeralsing.com/2008/12/07/genetic-programming-evolution-of-mona-lisa/).
- * It attempts to find the combination of 50 translucent polygons that most closely
- * resembles Leonardo da Vinci's Mona Lisa.
+ * (http://rogeralsing.com/2008/12/07/genetic-programming-evolution-of-mona-lisa/). It attempts to
+ * find the combination of 50 translucent polygons that most closely resembles Leonardo da Vinci's
+ * Mona Lisa.
+ * <p/>
  * @author Daniel Dyer
  */
 public class MonaLisaApplet extends AbstractExampleApplet
 {
-    private static final String IMAGE_PATH = "org/uncommons/watchmaker/examples/monalisa/monalisa.jpg";
-
+    private static final String IMAGE_PATH =
+        "org/uncommons/watchmaker/examples/monalisa/monalisa.jpg";
     private ProbabilitiesPanel probabilitiesPanel;
     private EvolutionMonitor<List<ColouredPolygon>> monitor;
     private JButton startButton;
@@ -72,6 +64,10 @@ public class MonaLisaApplet extends AbstractExampleApplet
     private JSpinner elitismSpinner;
     private ProbabilityParameterControl selectionPressureControl;
     private BufferedImage targetImage;
+    private double zoomFactor = 1.0;
+    private final AdjustableNumberGenerator<Double> damping =
+        new AdjustableNumberGenerator<Double>(1.0);
+    private final boolean antialias = false;
 
 
     @Override
@@ -81,33 +77,72 @@ public class MonaLisaApplet extends AbstractExampleApplet
         {
             URL imageURL = MonaLisaApplet.class.getClassLoader().getResource(IMAGE_PATH);
             targetImage = ImageIO.read(imageURL);
+            optimizeTargetImage();
             super.init();
         }
         catch (IOException ex)
         {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex, "Failed to Load Image", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex, "Failed to Load Image",
+                JOptionPane.ERROR_MESSAGE);
 
         }
     }
 
 
     /**
+     * Optimize the size and image type of targetImage to speed up rendering and fitness evaluation.
+     */
+    public void optimizeTargetImage()
+    {
+        zoomFactor = Math.max(targetImage.getWidth() / 100.0, targetImage.getHeight() / 100.0);
+        double shrinkFactor = 1.0 / zoomFactor;
+        AffineTransformOp shrinkOp = new AffineTransformOp(AffineTransform.getScaleInstance(
+            shrinkFactor, shrinkFactor), AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        targetImage = shrinkOp.filter(targetImage, null);
+        if (targetImage.getType() == BufferedImage.TYPE_INT_RGB)
+        {
+            // Convert the target image into the most efficient format for rendering.
+            BufferedImage temp = new BufferedImage(targetImage.getWidth(),
+                targetImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Graphics tempGraphics = temp.getGraphics();
+            tempGraphics.drawImage(targetImage, 0, 0, null);
+            tempGraphics.dispose();
+            this.targetImage = temp;
+        }
+        this.targetImage.setAccelerationPriority(1);
+    }
+
+
+    /**
      * Initialise and layout the GUI.
+     * <p/>
      * @param container The Swing component that will contain the GUI controls.
      */
     @Override
     protected void prepareGUI(Container container)
     {
         probabilitiesPanel = new ProbabilitiesPanel();
-        probabilitiesPanel.setBorder(BorderFactory.createTitledBorder("Evolution Probabilities"));        
+        probabilitiesPanel.setBorder(BorderFactory.createTitledBorder("Evolution Probabilities"));
         JPanel controls = new JPanel(new BorderLayout());
         controls.add(createParametersPanel(), BorderLayout.NORTH);
         controls.add(probabilitiesPanel, BorderLayout.SOUTH);
         container.add(controls, BorderLayout.NORTH);
 
-        Renderer<List<ColouredPolygon>, JComponent> renderer = new PolygonImageSwingRenderer(targetImage);
-        monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer, false);
+        Renderer<List<ColouredPolygon>, JComponent> renderer =
+            new PolygonImageSwingRenderer(targetImage.getWidth(), targetImage.getHeight(), antialias,
+            zoomFactor);
+        AffineTransformOp zoomOp = new AffineTransformOp(AffineTransform.getScaleInstance(zoomFactor,
+            zoomFactor), AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        final BufferedImage zoomedSolution = zoomOp.filter(targetImage, null);
+        Renderer<?, JComponent> solutionRenderer = new Renderer<Object, JComponent>()
+        {
+            public JComponent render(Object entity)
+            {
+                return new JLabel(new ImageIcon(zoomedSolution));
+            }
+        };
+        monitor = new EvolutionMonitor<List<ColouredPolygon>>(renderer, solutionRenderer, false);
         container.add(monitor.getGUIComponent(), BorderLayout.CENTER);
     }
 
@@ -134,14 +169,14 @@ public class MonaLisaApplet extends AbstractExampleApplet
         parameters.add(new JLabel("Selection Pressure: "));
         parameters.add(Box.createHorizontalStrut(10));
         selectionPressureControl = new ProbabilityParameterControl(Probability.EVENS,
-                                                                   Probability.ONE,
-                                                                   2,
-                                                                   new Probability(0.7));
+            Probability.ONE,
+            2,
+            new Probability(0.7));
         parameters.add(selectionPressureControl.getControl());
         parameters.add(Box.createHorizontalStrut(10));
 
         startButton = new JButton("Start");
-        abort = new AbortControl();        
+        abort = new AbortControl();
         startButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
@@ -153,9 +188,10 @@ public class MonaLisaApplet extends AbstractExampleApplet
                 elitismSpinner.setEnabled(false);
                 startButton.setEnabled(false);
                 new EvolutionTask((Integer) populationSpinner.getValue(),
-                                  (Integer) elitismSpinner.getValue(),
-                                  abort.getTerminationCondition(),
-                                  new Stagnation(1000, false)).execute();
+                    (Integer) elitismSpinner.getValue(),
+                    abort.getTerminationCondition(),
+                    new TargetFitness(0, false),
+                    new Stagnation(100000, false)).execute();
             }
         });
         abort.getControl().setEnabled(false);
@@ -170,20 +206,21 @@ public class MonaLisaApplet extends AbstractExampleApplet
 
     /**
      * Entry point for running this example as an application rather than an applet.
+     * <p/>
      * @param args Program arguments (ignored).
-     * @throws IOException If there is a problem loading the target image. 
+     * @throws IOException If there is a problem loading the target image.
      */
     public static void main(String[] args) throws IOException
     {
         MonaLisaApplet gui = new MonaLisaApplet();
         // If a URL is specified as an argument, use that image.  Otherwise use the default Mona Lisa picture.
         URL imageURL = args.length > 0
-                       ? new URL(args[0])
-                       : MonaLisaApplet.class.getClassLoader().getResource(IMAGE_PATH);
+            ? new URL(args[0])
+            : MonaLisaApplet.class.getClassLoader().getResource(IMAGE_PATH);
         gui.targetImage = ImageIO.read(imageURL);
+        gui.optimizeTargetImage();
         gui.displayInFrame("Watchmaker Framework - Mona Lisa Example");
     }
-
 
     /**
      * The task that actually performs the evolution.
@@ -195,7 +232,8 @@ public class MonaLisaApplet extends AbstractExampleApplet
         private final TerminationCondition[] terminationConditions;
 
 
-        EvolutionTask(int populationSize, int eliteCount, TerminationCondition... terminationConditions)
+        EvolutionTask(int populationSize, int eliteCount,
+            TerminationCondition... terminationConditions)
         {
             this.populationSize = populationSize;
             this.eliteCount = eliteCount;
@@ -209,20 +247,46 @@ public class MonaLisaApplet extends AbstractExampleApplet
             Dimension canvasSize = new Dimension(targetImage.getWidth(), targetImage.getHeight());
 
             Random rng = new XORShiftRNG();
-            FitnessEvaluator<List<ColouredPolygon>> evaluator
-                = new CachingFitnessEvaluator<List<ColouredPolygon>>(new PolygonImageEvaluator(targetImage));
+            FitnessEvaluator<List<ColouredPolygon>> evaluator =
+                new CachingFitnessEvaluator<List<ColouredPolygon>>(new PolygonImageEvaluator(
+                targetImage, antialias));
             PolygonImageFactory factory = new PolygonImageFactory(canvasSize);
-            EvolutionaryOperator<List<ColouredPolygon>> pipeline
-                = probabilitiesPanel.createEvolutionPipeline(factory, canvasSize, rng);
+            EvolutionaryOperator<List<ColouredPolygon>> pipeline = probabilitiesPanel.
+                createEvolutionPipeline(factory, canvasSize, rng, damping);
 
-            SelectionStrategy<Object> selection = new TournamentSelection(selectionPressureControl.getNumberGenerator());
-            EvolutionEngine<List<ColouredPolygon>> engine
-                = new GenerationalEvolutionEngine<List<ColouredPolygon>>(factory,
-                                                                         pipeline,
-                                                                         evaluator,
-                                                                         selection,
-                                                                         rng);
+            SelectionStrategy<Object> selection = new TournamentSelection(selectionPressureControl.
+                getNumberGenerator());
+            EvolutionEngine<List<ColouredPolygon>> engine =
+                new GenerationalEvolutionEngine<List<ColouredPolygon>>(factory,
+                pipeline,
+                evaluator,
+                selection,
+                rng);
             engine.addEvolutionObserver(monitor);
+            engine.addEvolutionObserver(new EvolutionObserver<List<ColouredPolygon>>()
+            {
+                private double lastFitness = Double.MAX_VALUE;
+                /**
+                 * Incremented every generation the fitness remains unchanged, decremented every
+                 * generation the fitness improves.
+                 */
+                private int stagnatedGenerations;
+
+
+                @Override
+                public <S extends List<ColouredPolygon>> void populationUpdate(
+                    PopulationData<S> data)
+                {
+                    int generation = data.getGenerationNumber();
+                    double newFitness = data.getBestCandidateFitness();
+                    if (Double.compare(newFitness, lastFitness) < 0)
+                        --stagnatedGenerations;
+                    else
+                        ++stagnatedGenerations;
+                    lastFitness = newFitness;
+                    damping.setValue(1111111.0 / (stagnatedGenerations + 1111111));
+                }
+            });
 
             return engine.evolve(populationSize, eliteCount, terminationConditions);
         }

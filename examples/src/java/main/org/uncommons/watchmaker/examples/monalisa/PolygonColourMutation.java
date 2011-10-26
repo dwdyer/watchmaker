@@ -26,9 +26,9 @@ import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 
 /**
- * Evolutionary operator for mutating individual polygons.  Polygons are mutated
- * by changing their colour and/or either adding a point, removing a point or
- * changing the position of a point.
+ * Evolutionary operator for mutating individual polygons. Polygons are mutated by changing their
+ * colour and/or either adding a point, removing a point or changing the position of a point.
+ * <p/>
  * @author Daniel Dyer
  */
 public class PolygonColourMutation implements EvolutionaryOperator<ColouredPolygon>
@@ -38,13 +38,13 @@ public class PolygonColourMutation implements EvolutionaryOperator<ColouredPolyg
 
 
     /**
-     * @param mutationProbability A {@link NumberGenerator} that controls the
-     * probability that the colour will be modified.
-     * @param mutationAmount A {@link NumberGenerator} that controls the amount
-     * that the colour's components are adjusted by.
+     * @param mutationProbability A {@link NumberGenerator} that controls the probability that the
+     * colour will be modified.
+     * @param mutationAmount A {@link NumberGenerator} that controls the amount that the colour's
+     * components are adjusted by.
      */
     public PolygonColourMutation(NumberGenerator<Probability> mutationProbability,
-                                 NumberGenerator<Double> mutationAmount)
+        NumberGenerator<Double> mutationAmount)
     {
         this.mutationProbability = mutationProbability;
         this.mutationAmount = mutationAmount;
@@ -53,11 +53,11 @@ public class PolygonColourMutation implements EvolutionaryOperator<ColouredPolyg
 
     /**
      * @param mutationProbability The probability that the colour will be modified.
-     * @param mutationAmount A {@link NumberGenerator} that controls the amount
-     * that the colour's components are adjusted by.
+     * @param mutationAmount A {@link NumberGenerator} that controls the amount that the colour's
+     * components are adjusted by.
      */
     public PolygonColourMutation(Probability mutationProbability,
-                                 NumberGenerator<Double> mutationAmount)
+        NumberGenerator<Double> mutationAmount)
     {
         this(new ConstantGenerator<Probability>(mutationProbability), mutationAmount);
     }
@@ -65,48 +65,71 @@ public class PolygonColourMutation implements EvolutionaryOperator<ColouredPolyg
 
     public List<ColouredPolygon> apply(List<ColouredPolygon> polygons, Random rng)
     {
-        List<ColouredPolygon> newPolygons = new ArrayList<ColouredPolygon>(polygons.size());
-        for (ColouredPolygon polygon : polygons)
-        {
-            Color newColour = mutateColour(polygon.getColour(), rng);
-            newPolygons.add(newColour == polygon.getColour()
-                            ? polygon
-                            : new ColouredPolygon(newColour, polygon.getVertices()));
-        }
+        if (!mutationProbability.nextValue().nextEvent(rng))
+            return polygons;
+        int index = rng.nextInt(polygons.size());
+        List<ColouredPolygon> newPolygons = new ArrayList<ColouredPolygon>(polygons);
+        ColouredPolygon oldPolygon = newPolygons.get(index);
+        newPolygons.set(index, new ColouredPolygon(mutateColour(oldPolygon.getColour(), rng),
+            oldPolygon.getVertices()));
         return newPolygons;
     }
 
 
     /**
      * Mutate the specified colour.
+     * <p/>
      * @param colour The colour to mutate.
      * @param rng A source of randomness.
      * @return The (possibly) mutated colour.
      */
     private Color mutateColour(Color colour, Random rng)
     {
-        if (mutationProbability.nextValue().nextEvent(rng))
+        int red = colour.getRed();
+        int green = colour.getGreen();
+        int blue = colour.getBlue();
+        int alpha = colour.getAlpha();
+        switch (rng.nextInt(3))
         {
-            return new Color(mutateColourComponent(colour.getRed()),
-                             mutateColourComponent(colour.getGreen()),
-                             mutateColourComponent(colour.getBlue()),
-                             mutateColourComponent(colour.getAlpha()));
+            case 0:
+            {
+                red = mutateColourComponent(red);
+                break;
+            }
+            case 1:
+            {
+                green = mutateColourComponent(green);
+                break;
+            }
+            case 2:
+            {
+                blue = mutateColourComponent(blue);
+                break;
+            }
+            case 3:
+            {
+                // Alpha mutation is disabled by default, but you can enable it by changing the
+                // above RNG limit from 3 to 4.
+                alpha = mutateColourComponent(alpha);
+                break;
+            }
         }
-        else
-        {
-            return colour;
-        }
+        return new Color(red, green, blue, alpha);
     }
 
 
     /**
      * Adjust a single component (red, green, blue or alpha) of a colour.
+     * <p/>
      * @param component The value to mutate.
      * @return The mutated component value.
      */
     private int mutateColourComponent(int component)
     {
-        int mutatedComponent = (int) Math.round(component + mutationAmount.nextValue());
+        double amount = mutationAmount.nextValue();
+        if (Double.compare(Math.abs(amount), 1) < 0)
+            amount = Math.signum(amount);
+        int mutatedComponent = (int) Math.round(component + amount);
         mutatedComponent = Maths.restrictRange(mutatedComponent, 0, 255);
         return mutatedComponent;
     }

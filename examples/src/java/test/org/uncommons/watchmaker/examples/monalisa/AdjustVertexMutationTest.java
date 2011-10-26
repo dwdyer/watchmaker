@@ -39,8 +39,8 @@ public class AdjustVertexMutationTest
     public void testAdjustVertex()
     {
         final Point point1 = new Point(1, 1);
-        final Point point2 = new Point(2, 2);
-        final Point point3 = new Point(3, 3);
+        final Point point2 = new Point(2, 3);
+        final Point point3 = new Point(5, 5);
         List<Point> points = Arrays.asList(point1, point2, point3);
         ColouredPolygon polygon = new ColouredPolygon(Color.RED, points);
         List<ColouredPolygon> image = new ArrayList<ColouredPolygon>(1);

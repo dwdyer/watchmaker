@@ -16,11 +16,7 @@
 package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.islands.IslandEvolutionObserver;
 
@@ -52,8 +48,8 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
 
     /**
      * @param islands Whether the status bar should be configured for updates from
-     * {@link org.uncommons.watchmaker.framework.islands.IslandEvolution}.  Set this
-     * parameter to false when using a standard {@link org.uncommons.watchmaker.framework.EvolutionEngine}
+     * {@link org.uncommons.watchmaker.framework.islands.IslandEvolution}. Set this parameter to
+     * false when using a standard {@link org.uncommons.watchmaker.framework.EvolutionEngine}
      */
     public StatusBar(boolean islands)
     {
@@ -110,7 +106,7 @@ public class StatusBar extends Box implements IslandEvolutionObserver<Object>
 
 
     public <S> void islandPopulationUpdate(int islandIndex,
-                                       final PopulationData<S> populationData)
+        final PopulationData<S> populationData)
     {
         islandPopulationSize.compareAndSet(-1, populationData.getPopulationSize());
         SwingUtilities.invokeLater(new Runnable()

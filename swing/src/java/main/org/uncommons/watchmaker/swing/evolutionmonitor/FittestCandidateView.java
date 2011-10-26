@@ -17,6 +17,7 @@ package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import javax.swing.*;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.interactive.Renderer;
@@ -35,19 +36,24 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
     private final Renderer<? super T, JComponent> renderer;
     private final JLabel fitnessLabel = new JLabel("N/A", JLabel.CENTER);
     private final JScrollPane scroller = new JScrollPane();
+    private final Renderer<?, JComponent> solutionRenderer;
+    private final JPanel candidates = new JPanel();
     private T fittestCandidate = null;
 
 
     /**
-     * Creates a Swing view that uses the specified renderer to display
-     * evolved entities.
-     * @param renderer A renderer that convert evolved entities of the type
-     * recognised by this view into Swing components.
+     * Creates a Swing view that uses the specified renderer to display evolved entities.
+     * <p/>
+     * @param renderer A renderer that convert evolved entities of the type recognised by this view
+     * into Swing components.
+     * @param solutionRenderer Renders the target solution regardless of the input.
      */
-    FittestCandidateView(Renderer<? super T, JComponent> renderer)
+    FittestCandidateView(Renderer<? super T, JComponent> renderer, 
+        Renderer<?, JComponent> solutionRenderer)
     {
         super(new BorderLayout(0, 10));
         this.renderer = renderer;
+        this.solutionRenderer = solutionRenderer;
 
         JPanel header = new JPanel(new BorderLayout());
         JLabel label = new JLabel("Fitness", JLabel.CENTER);
@@ -63,6 +69,8 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
 
         // Set names for easier indentification in unit tests.
         fitnessLabel.setName("FitnessLabel");
+
+        candidates.setLayout(new GridLayout(1, 2));
     }
 
 
@@ -81,8 +89,11 @@ class FittestCandidateView<T> extends JPanel implements IslandEvolutionObserver<
                 if (populationData.getBestCandidate() != fittestCandidate)
                 {
                     fittestCandidate = populationData.getBestCandidate();
+                    candidates.removeAll();
+                    candidates.add(solutionRenderer.render(null));
                     JComponent renderedCandidate = renderer.render(fittestCandidate);
-                    scroller.setViewportView(renderedCandidate);
+                    candidates.add(renderedCandidate);
+                    scroller.setViewportView(candidates);
                 }
             }
         });

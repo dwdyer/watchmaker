@@ -70,7 +70,7 @@ public class SwingEvolutionObserver<T> implements EvolutionObserver<T>
             return;
         }
 
-        // Schedule an update in 300ms
+        // Schedule an update
         timer.schedule(new Runnable()
         {
             public void run()

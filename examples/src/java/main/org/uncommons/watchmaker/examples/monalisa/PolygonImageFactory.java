@@ -25,6 +25,7 @@ import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 
 /**
  * Creates random polygon-based images.
+ * <p/>
  * @author Daniel Dyer
  */
 public class PolygonImageFactory extends AbstractCandidateFactory<List<ColouredPolygon>>
@@ -33,24 +34,27 @@ public class PolygonImageFactory extends AbstractCandidateFactory<List<ColouredP
      * Each image must have at least 2 polygons.
      */
     static final int MINIMUM_POLYGON_COUNT = 2;
-
     /**
      * Each polygon must have at least 3 points.
      */
     static final int MINIMUM_VERTEX_COUNT = 3;
-
+    /**
+     * The maximum number of polygons each image may have.
+     */
+    static final int MAXIMUM_POLYGON_COUNT = 65535;
     private final Dimension canvasSize;
 
+
     /**
-     * @param canvasSize The size of the canvas on which the image will be rendered.
-     * All polygons must fit within its bounds. 
+     * @param canvasSize The size of the canvas on which the image will be rendered. All polygons
+     * must fit within its bounds.
      */
     public PolygonImageFactory(Dimension canvasSize)
     {
         this.canvasSize = canvasSize;
     }
 
-    
+
     public List<ColouredPolygon> generateRandomCandidate(Random rng)
     {
         List<ColouredPolygon> polygons = new ArrayList<ColouredPolygon>(MINIMUM_POLYGON_COUNT);
@@ -65,11 +69,12 @@ public class PolygonImageFactory extends AbstractCandidateFactory<List<ColouredP
     ColouredPolygon createRandomPolygon(Random rng)
     {
         List<Point> vertices = new ArrayList<Point>(MINIMUM_VERTEX_COUNT);
-        for (int j = 0; j < MINIMUM_VERTEX_COUNT; j++)
-        {
-            vertices.add(new Point(rng.nextInt(canvasSize.width), rng.nextInt(canvasSize.height)));
-        }
-        Color colour = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
+        Point topLeft = new Point(rng.nextInt(canvasSize.width - 1),
+            rng.nextInt(canvasSize.height - 1));
+        vertices.add(topLeft);
+        vertices.add(new Point(topLeft.x + 1, topLeft.y));
+        vertices.add(new Point(topLeft.x + 1, topLeft.y + 1));
+        Color colour = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256), 255);
         return new ColouredPolygon(colour, vertices);
     }
 }
