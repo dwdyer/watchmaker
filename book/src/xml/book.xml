@@ -33,6 +33,15 @@
 
   <xi:include href="preface.xml" />
 
+  <chapter>
+  <title>The Power of Evolution</title>
+  <para>
+    Software is normally developed in a very precise, deterministic way.  The behaviour of a
+    computer is governed by strict logical rules.  A computer invariably does exactly what
+    it is told to do.
+  </para>
+  </chapter>
+
   <!-- Chapters -->
   <xi:include href="evolution.xml" />
   <xi:include href="watchmaker.xml" />
