@@ -365,7 +365,7 @@ EvolutionEngine<String> engine
       </para>
       <informalexample>
         <programlisting language="java">
-<![CDATA[String result = engine.evolve(10, 0, new TargetFitness(11));
+<![CDATA[String result = engine.evolve(10, 0, new TargetFitness(11, true));
 System.out.println(result);]]>
         </programlisting>
       </informalexample>
