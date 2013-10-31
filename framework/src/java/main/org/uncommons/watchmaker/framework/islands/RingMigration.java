@@ -27,7 +27,7 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
  * clockwise direction.  The individuals to be migrated are chosen completely at random.
  * @author Daniel Dyer
  */
-public class RingMigration implements Migration
+public class RingMigration implements Migration<Object>
 {
     /**
      * Migrates a fixed number of individuals from each island to the adjacent island.
@@ -37,25 +37,25 @@ public class RingMigration implements Migration
      * @param migrantCount The number of (randomly selected) individuals to be moved on from
      * each island.
      * @param rng A source of randomness.
-     * @param <T> The type of entity being evolved.
+     * @param <S> The type of entity being evolved.
      */
-    public <T> void migrate(List<List<EvaluatedCandidate<T>>> islandPopulations, int migrantCount, Random rng)
+    public <S extends Object> void migrate(List<List<EvaluatedCandidate<S>>> islandPopulations, int migrantCount, Random rng)
     {
         // The first batch of immigrants is from the last island to the first.
-        List<EvaluatedCandidate<T>> lastIsland = islandPopulations.get(islandPopulations.size() - 1);
+        List<EvaluatedCandidate<S>> lastIsland = islandPopulations.get(islandPopulations.size() - 1);
         Collections.shuffle(lastIsland, rng);
-        List<EvaluatedCandidate<T>> migrants = lastIsland.subList(lastIsland.size() - migrantCount, lastIsland.size());
+        List<EvaluatedCandidate<S>> migrants = lastIsland.subList(lastIsland.size() - migrantCount, lastIsland.size());
 
-        for (List<EvaluatedCandidate<T>> island : islandPopulations)
+        for (List<EvaluatedCandidate<S>> island : islandPopulations)
         {
             // Migrants from the last island are immigrants for this island.
-            List<EvaluatedCandidate<T>> immigrants = migrants;
+            List<EvaluatedCandidate<S>> immigrants = migrants;
             if (island != lastIsland) // We've already migrated individuals from the last island.
             {
                 // Select the migrants that will move to the next island to make room for the immigrants here.
                 // Randomise the population so that there is no bias concerning which individuals are migrated.
                 Collections.shuffle(island, rng);
-                migrants = new ArrayList<EvaluatedCandidate<T>>(island.subList(island.size() - migrantCount, island.size()));
+                migrants = new ArrayList<EvaluatedCandidate<S>>(island.subList(island.size() - migrantCount, island.size()));
             }
             // Copy the immigrants over the last members of the population (those that are themselves
             // migrating to the next island).

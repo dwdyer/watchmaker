@@ -34,7 +34,7 @@ public class RingMigrationTest
     @Test
     public void testZeroMigration()
     {
-        Migration migration = new RingMigration();
+        Migration<Object> migration = new RingMigration();
         @SuppressWarnings("unchecked")
         List<List<EvaluatedCandidate<String>>> islandPopulations = Arrays.asList(MigrationTestUtils.createTestPopulation("A", "A", "A"),
                                                                                  MigrationTestUtils.createTestPopulation("B", "B", "B"),
@@ -53,7 +53,7 @@ public class RingMigrationTest
     @Test
     public void testFullMigration()
     {
-        Migration migration = new RingMigration();
+        Migration<Object> migration = new RingMigration();
         @SuppressWarnings("unchecked")
         List<List<EvaluatedCandidate<String>>> islandPopulations = Arrays.asList(MigrationTestUtils.createTestPopulation("A", "A", "A"),
                                                                                  MigrationTestUtils.createTestPopulation("B", "B", "B"),

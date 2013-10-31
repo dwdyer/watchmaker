@@ -48,7 +48,7 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
 public class IslandEvolution<T>
 {
     private final List<EvolutionEngine<T>> islands;
-    private final Migration migration;
+    private final Migration<? super T> migration;
     private final boolean naturalFitness;
     private final Random rng;
 
@@ -75,7 +75,7 @@ public class IslandEvolution<T>
      * @see #IslandEvolution(List, Migration, boolean, Random) 
      */
     public IslandEvolution(int islandCount,
-                           Migration migration,
+                           Migration<? super T> migration,
                            CandidateFactory<T> candidateFactory,
                            EvolutionaryOperator<T> evolutionScheme,
                            FitnessEvaluator<? super T> fitnessEvaluator,
@@ -109,7 +109,7 @@ public class IslandEvolution<T>
      * SelectionStrategy, Random)
      */
     public IslandEvolution(List<EvolutionEngine<T>> islands,
-                           Migration migration,
+                           Migration<? super T> migration,
                            boolean naturalFitness,
                            Random rng)
     {

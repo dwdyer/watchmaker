@@ -123,7 +123,7 @@ public class IslandEvolutionTest
                                                                                 new DummyFitnessEvaluator(),
                                                                                 new RouletteWheelSelection(),
                                                                                 FrameworkTestUtils.getRNG());
-        // Should throw an IllegalStateException because evolution has started, let alone terminated.
+        // Should throw an IllegalStateException because evolution hasn't started, let alone terminated.
         islandEvolution.getSatisfiedTerminationConditions();
     }
 

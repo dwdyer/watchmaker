@@ -6,6 +6,9 @@ Changes in version 0.7.2
 
 * Added RandomMigration as an alternative strategy for island evolution.
 
+* Added generic type parameter to Migration interface to make it easier to
+  implement type-specific migration strategies.
+
 
 Changes in version 0.7.1
 ------------------------

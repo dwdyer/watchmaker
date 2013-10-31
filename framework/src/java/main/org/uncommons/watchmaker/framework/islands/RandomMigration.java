@@ -30,7 +30,7 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
  * randomly chosen, it gets sent back to the island that it came from.
  * @author Daniel Dyer
  */
-public class RandomMigration implements Migration
+public class RandomMigration implements Migration<Object>
 {
     /**
      * Migrates a fixed number of candidates away from each island.  Which individuals are migrated is determined
@@ -41,12 +41,12 @@ public class RandomMigration implements Migration
      * @param migrantCount The number of (randomly selected) individuals to be moved on from
      * each island.
      * @param rng A source of randomness.
-     * @param <T> The type of entity being evolved.
+     * @param <S> The type of entity being evolved.
      */
-    public <T> void migrate(List<List<EvaluatedCandidate<T>>> islandPopulations, int migrantCount, Random rng)
+    public <S extends Object> void migrate(List<List<EvaluatedCandidate<S>>> islandPopulations, int migrantCount, Random rng)
     {
-        List<EvaluatedCandidate<T>> migrants = new ArrayList<EvaluatedCandidate<T>>(migrantCount * islandPopulations.size());
-        for (List<EvaluatedCandidate<T>> island : islandPopulations)
+        List<EvaluatedCandidate<S>> migrants = new ArrayList<EvaluatedCandidate<S>>(migrantCount * islandPopulations.size());
+        for (List<EvaluatedCandidate<S>> island : islandPopulations)
         {
             Collections.shuffle(island, rng);
             for (int i = 0; i < migrantCount; i++)
@@ -55,8 +55,8 @@ public class RandomMigration implements Migration
             }
         }
         Collections.shuffle(migrants);
-        Iterator<EvaluatedCandidate<T>> iterator = migrants.iterator();
-        for (List<EvaluatedCandidate<T>> island : islandPopulations)
+        Iterator<EvaluatedCandidate<S>> iterator = migrants.iterator();
+        for (List<EvaluatedCandidate<S>> island : islandPopulations)
         {
             for (int i = 0; i < migrantCount; i++)
             {

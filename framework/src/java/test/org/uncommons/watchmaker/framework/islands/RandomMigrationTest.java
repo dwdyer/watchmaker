@@ -33,7 +33,7 @@ public class RandomMigrationTest
     @Test
     public void testZeroMigration()
     {
-        Migration migration = new RandomMigration();
+        Migration<Object> migration = new RandomMigration();
         @SuppressWarnings("unchecked")
         List<List<EvaluatedCandidate<String>>> islandPopulations = Arrays.asList(MigrationTestUtils.createTestPopulation("A", "A", "A"),
                                                                                  MigrationTestUtils.createTestPopulation("B", "B", "B"),
@@ -52,7 +52,7 @@ public class RandomMigrationTest
     @Test
     public void testNonZeroMigration()
     {
-        Migration migration = new RingMigration();
+        Migration<Object> migration = new RingMigration();
         @SuppressWarnings("unchecked")
         List<List<EvaluatedCandidate<String>>> islandPopulations = Arrays.asList(MigrationTestUtils.createTestPopulation("A", "A", "A"),
                                                                                  MigrationTestUtils.createTestPopulation("B", "B", "B"),

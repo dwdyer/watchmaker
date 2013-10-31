@@ -22,15 +22,15 @@ import org.uncommons.watchmaker.framework.EvaluatedCandidate;
 /**
  * Strategy interface for different ways of migrating individuals between islands
  * in {@link IslandEvolution}.
+ * @param <T> The type of the individual members of the island populations.
  * @author Daniel Dyer
  */
-public interface Migration
+public interface Migration<T>
 {
     /**
      * @param islandPopulations The populations of each island in the system.
      * @param migrantCount The number of individuals to move from each island.
      * @param rng A source of randomness.
-     * @param <T> The type of the individual members of the island populations.
      */
-    <T> void migrate(List<List<EvaluatedCandidate<T>>> islandPopulations, int migrantCount, Random rng);
+    <S extends T> void migrate(List<List<EvaluatedCandidate<S>>> islandPopulations, int migrantCount, Random rng);
 }

@@ -39,7 +39,7 @@ public interface SelectionStrategy<T>
      * the number of distinct candidates to select, since the same individual may
      * potentially be selected more than once).
      * @param rng Source of randomness for stochastic selection strategies.
-     * @return A list containing the selected candidates.  Some individual canidates may
+     * @return A list containing the selected candidates.  Some individual candidates may
      * potentially have been selected multiple times.
      */
     <S extends T> List<S> select(List<EvaluatedCandidate<S>> population,
