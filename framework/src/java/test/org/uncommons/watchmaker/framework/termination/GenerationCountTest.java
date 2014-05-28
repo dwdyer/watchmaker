@@ -19,6 +19,8 @@ import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 
+import java.util.ArrayList;
+
 /**
  * Unit test for termination condition that checks the number of evolved generations.
  * @author Daniel Dyer
@@ -29,10 +31,10 @@ public class GenerationCountTest
     public void testGenerationCounts()
     {
         TerminationCondition condition = new GenerationCount(5);
-        PopulationData<Object> data = new PopulationData<Object>(new Object(), 0, 0, 0, true, 2, 0, 3, 100);
+        PopulationData<Object> data = new PopulationData<Object>(new ArrayList(), new Object(), 0, 0, 0, true, 2, 0, 3, 100);
         // Generation number 3 is the 4th generation (generation numbers are zero-based).
         assert !condition.shouldTerminate(data) : "Should not terminate after 4th generation.";
-        data = new PopulationData<Object>(new Object(), 0, 0, 0, true, 2, 0, 4, 100);
+        data = new PopulationData<Object>(new ArrayList(), new Object(), 0, 0, 0, true, 2, 0, 4, 100);
         // Generation number 4 is the 5th generation (generation numbers are zero-based).
         assert condition.shouldTerminate(data) : "Should terminate after 5th generation.";
     }

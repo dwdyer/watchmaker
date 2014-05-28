@@ -18,6 +18,8 @@ package org.uncommons.watchmaker.framework.termination;
 import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.PopulationData;
 
+import java.util.ArrayList;
+
 /**
  * Unit test for termination condition that checks an abort flag set by the user.
  * @author Daniel Dyer
@@ -29,7 +31,7 @@ public class UserAbortTest
     {
         UserAbort condition = new UserAbort();
         // This population data should be irrelevant.
-        PopulationData<Object> data = new PopulationData<Object>(new Object(), 0, 0, 0, true, 2, 0, 0, 100);
+        PopulationData<Object> data = new PopulationData<Object>(new ArrayList(), new Object(), 0, 0, 0, true, 2, 0, 0, 100);
         assert !condition.shouldTerminate(data) : "Should not terminate without user abort.";
         assert !condition.isAborted() : "Should not be aborted without user intervention.";
         condition.abort();

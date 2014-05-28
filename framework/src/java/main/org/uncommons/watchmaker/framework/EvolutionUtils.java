@@ -111,17 +111,8 @@ public final class EvolutionUtils
                                                           int iterationNumber,
                                                           long startTime)
     {
-        DataSet stats = new DataSet(evaluatedPopulation.size());
-        for (EvaluatedCandidate<T> candidate : evaluatedPopulation)
-        {
-            stats.addValue(candidate.getFitness());
-        }
-        return new PopulationData<T>(evaluatedPopulation.get(0).getCandidate(),
-                                     evaluatedPopulation.get(0).getFitness(),
-                                     stats.getArithmeticMean(),
-                                     stats.getStandardDeviation(),
+        return new PopulationData<T>(evaluatedPopulation,
                                      naturalFitness,
-                                     stats.getSize(),
                                      eliteCount,
                                      iterationNumber,
                                      System.currentTimeMillis() - startTime);
