@@ -26,6 +26,16 @@
 	</parent>
 	<artifactId>watchmaker-framework</artifactId>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>jfree</groupId>
+				<artifactId>jfreechart</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.uncommons.maths</groupId>
@@ -43,8 +53,8 @@
 			<version>6.2.1</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>  
-	
+	</dependencies>
+
 	<build>
 		<sourceDirectory>src/java/main</sourceDirectory>
 		<testSourceDirectory>src/java/test</testSourceDirectory>

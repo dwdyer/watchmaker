@@ -44,9 +44,9 @@ import org.uncommons.watchmaker.framework.interactive.InteractiveSelection;
  */
 public class GenerationalEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 {
-    private final EvolutionaryOperator<T> evolutionScheme;
-    private final FitnessEvaluator<? super T> fitnessEvaluator;
-    private final SelectionStrategy<? super T> selectionStrategy;
+    protected final EvolutionaryOperator<T> evolutionScheme;
+    protected final FitnessEvaluator<? super T> fitnessEvaluator;
+    protected final SelectionStrategy<? super T> selectionStrategy;
 
     /**
      * Creates a new evolution engine by specifying the various components required by
@@ -101,7 +101,7 @@ public class GenerationalEvolutionEngine<T> extends AbstractEvolutionEngine<T>
 
 
     /**
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
     @Override
     protected List<EvaluatedCandidate<T>> nextEvolutionStep(List<EvaluatedCandidate<T>> evaluatedPopulation,
