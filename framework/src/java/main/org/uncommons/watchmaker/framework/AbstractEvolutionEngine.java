@@ -35,17 +35,17 @@ import java.util.concurrent.Future;
 public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
 {
     // A single multi-threaded worker is shared among multiple evolution engine instances.
-    private static FitnessEvaluationWorker concurrentWorker = null;
+    protected static FitnessEvaluationWorker concurrentWorker = null;
 
-    private final Set<EvolutionObserver<? super T>> observers = new CopyOnWriteArraySet<EvolutionObserver<? super T>>();
+    protected final Set<EvolutionObserver<? super T>> observers = new CopyOnWriteArraySet<EvolutionObserver<? super T>>();
 
-    private final Random rng;
-    private final CandidateFactory<T> candidateFactory;
-    private final FitnessEvaluator<? super T> fitnessEvaluator;
+    protected final Random rng;
+    protected final CandidateFactory<T> candidateFactory;
+    protected final FitnessEvaluator<? super T> fitnessEvaluator;
 
-    private volatile boolean singleThreaded = false;
+    protected volatile boolean singleThreaded = false;
 
-    private List<TerminationCondition> satisfiedTerminationConditions;
+    protected List<TerminationCondition> satisfiedTerminationConditions;
 
 
     /**
@@ -166,7 +166,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
         return evaluatedPopulation;
     }
 
-    
+
     /**
      * This method performs a single step/iteration of the evolutionary process.
      * @param evaluatedPopulation The population at the beginning of the process.
@@ -303,7 +303,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
      * Send the population data to all registered observers.
      * @param data Information about the current state of the population.
      */
-    private void notifyPopulationChange(PopulationData<T> data)
+    protected void notifyPopulationChange(PopulationData<T> data)
     {
         for (EvolutionObserver<? super T> observer : observers)
         {
@@ -330,7 +330,7 @@ public abstract class AbstractEvolutionEngine<T> implements EvolutionEngine<T>
     /**
      * Lazily create the multi-threaded worker for fitness evaluations.
      */
-    private static synchronized FitnessEvaluationWorker getSharedWorker()
+    protected static synchronized FitnessEvaluationWorker getSharedWorker()
     {
         if (concurrentWorker == null)
         {
