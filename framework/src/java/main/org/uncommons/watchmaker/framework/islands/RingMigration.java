@@ -48,6 +48,7 @@ public class RingMigration implements Migration<Object>
 
         for (List<EvaluatedCandidate<S>> island : islandPopulations)
         {
+            int migrantCountLocal =  Math.min(island.size(),migrantCount);
             // Migrants from the last island are immigrants for this island.
             List<EvaluatedCandidate<S>> immigrants = migrants;
             if (island != lastIsland) // We've already migrated individuals from the last island.
@@ -55,13 +56,13 @@ public class RingMigration implements Migration<Object>
                 // Select the migrants that will move to the next island to make room for the immigrants here.
                 // Randomise the population so that there is no bias concerning which individuals are migrated.
                 Collections.shuffle(island, rng);
-                migrants = new ArrayList<EvaluatedCandidate<S>>(island.subList(island.size() - migrantCount, island.size()));
+                migrants = new ArrayList<EvaluatedCandidate<S>>(island.subList(island.size() - migrantCountLocal, island.size()));
             }
             // Copy the immigrants over the last members of the population (those that are themselves
             // migrating to the next island).
             for (int i = 0; i < immigrants.size(); i++)
             {
-                island.set(island.size() - migrantCount + i, immigrants.get(i));
+                island.set(island.size() - migrantCountLocal + i, immigrants.get(i));
             }
         }
     }
