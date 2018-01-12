@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>org.uncommons.maths</groupId>
 			<artifactId>uncommons-maths</artifactId>
-			<version>1.2.2</version>
+			<version>1.2.2a</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.collections</groupId>
