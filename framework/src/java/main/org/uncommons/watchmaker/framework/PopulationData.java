@@ -15,6 +15,10 @@
 //=============================================================================
 package org.uncommons.watchmaker.framework;
 
+import org.uncommons.maths.statistics.DataSet;
+
+import java.util.List;
+
 /**
  * Immutable data object containing statistics about the state of
  * an evolved population and a reference to the fittest candidate
@@ -26,6 +30,7 @@ package org.uncommons.watchmaker.framework;
  */
 public final class PopulationData<T>
 {
+    private final List<EvaluatedCandidate<T>> evaluatedPopulation;
     private final T bestCandidate;
     private final double bestCandidateFitness;
     private final double meanFitness;
@@ -37,6 +42,8 @@ public final class PopulationData<T>
     private final long elapsedTime;
 
     /**
+     * Constructor only
+     * @param evaluatedPopulation List of all candidates
      * @param bestCandidate The fittest candidate present in the population.
      * @param bestCandidateFitness The fitness score for the fittest candidate
      * in the population.
@@ -45,23 +52,25 @@ public final class PopulationData<T>
      * @param fitnessStandardDeviation A measure of the variation in fitness
      * scores.
      * @param naturalFitness True if higher fitness scores are better, false
-     * otherwise. 
+     * otherwise.
      * @param populationSize The number of individuals in the population.
      * @param eliteCount The number of candidates preserved via elitism.
      * @param generationNumber The (zero-based) number of the last generation
      * that was processed.
      * @param elapsedTime The number of milliseconds since the start of the
      */
-    public PopulationData(T bestCandidate,
-                          double bestCandidateFitness,
-                          double meanFitness,
-                          double fitnessStandardDeviation,
-                          boolean naturalFitness,
-                          int populationSize,
-                          int eliteCount,
-                          int generationNumber,
-                          long elapsedTime)
+    public PopulationData(
+            List<EvaluatedCandidate<T>> evaluatedPopulation, T bestCandidate,
+            double bestCandidateFitness,
+            double meanFitness,
+            double fitnessStandardDeviation,
+            boolean naturalFitness,
+            int populationSize,
+            int eliteCount,
+            int generationNumber,
+            long elapsedTime)
     {
+        this.evaluatedPopulation = evaluatedPopulation;
         this.bestCandidate = bestCandidate;
         this.bestCandidateFitness = bestCandidateFitness;
         this.meanFitness = meanFitness;
@@ -72,7 +81,48 @@ public final class PopulationData<T>
         this.generationNumber = generationNumber;
         this.elapsedTime = elapsedTime;
     }
+    /**
+     * @param evaluatedPopulation List of all candidates, the list should be
+     *                            ordered by fitness for the the best candidate to be meaningfull.
+     *                            Otherwise consider making your own statistics and use the other
+     *                            constructor
+     * @param naturalFitness True if higher fitness scores are better, false otherwise.
+     * @param eliteCount The number of candidates preserved via elitism.
+     * @param generationNumber The (zero-based) number of the last generation that was processed.
+     * @param elapsedTime The number of milliseconds since the start of the
+     */
+    public PopulationData(List<EvaluatedCandidate<T>> evaluatedPopulation,
+                          boolean naturalFitness,
+                          int eliteCount,
+                          int generationNumber,
+                          long elapsedTime)
+    {
+        DataSet stats = new DataSet(evaluatedPopulation.size());
+        for (EvaluatedCandidate<T> candidate : evaluatedPopulation)
+        {
+            stats.addValue(candidate.getFitness());
+        }
 
+        this.bestCandidate = evaluatedPopulation.get(0).getCandidate();
+        this.bestCandidateFitness = evaluatedPopulation.get(0).getFitness();
+        this.meanFitness = stats.getArithmeticMean();
+        this.fitnessStandardDeviation = stats.getStandardDeviation();
+        this.naturalFitness = naturalFitness;
+        this.populationSize = stats.getSize();
+        this.eliteCount = eliteCount;
+        this.generationNumber = generationNumber;
+        this.elapsedTime = elapsedTime;
+        this.evaluatedPopulation = evaluatedPopulation;
+    }
+
+    /**
+     * @return The list of all candidates in the population at this stage,
+     * be carefull in the references you hold of this and don't assume this
+     * list to remain unchanged over generations.
+     */
+    public List<EvaluatedCandidate<T>> getEvaluatedPopulation() {
+        return evaluatedPopulation;
+    }
 
     /**
      * @return The fittest candidate present in the population.

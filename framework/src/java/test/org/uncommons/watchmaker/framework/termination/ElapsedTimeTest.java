@@ -19,6 +19,8 @@ import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 
+import java.util.ArrayList;
+
 /**
  * Unit test for termination condition that checks the time taken so far by the
  * evolutionary algorithm.
@@ -30,9 +32,9 @@ public class ElapsedTimeTest
     public void testElapsedTimes()
     {
         TerminationCondition condition = new ElapsedTime(1000);
-        PopulationData<Object> data = new PopulationData<Object>(new Object(), 0, 0, 0, true, 2, 0, 0, 100);
+        PopulationData<Object> data = new PopulationData<Object>(new ArrayList(), new Object(), 0, 0, 0, true, 2, 0, 0, 100);
         assert !condition.shouldTerminate(data) : "Should not terminate before timeout.";
-        data = new PopulationData<Object>(new Object(), 0, 0, 0, true, 2, 0, 0, 1000);
+        data = new PopulationData<Object>(new ArrayList(), new Object(), 0, 0, 0, true, 2, 0, 0, 1000);
         assert condition.shouldTerminate(data) : "Should terminate after timeout.";
     }
 

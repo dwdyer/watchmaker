@@ -19,6 +19,8 @@ import org.testng.annotations.Test;
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 
+import java.util.ArrayList;
+
 /**
  * Unit test for termination condition that checks the best fitness attained so far
  * against a pre-determined target.
@@ -30,9 +32,9 @@ public class TargetFitnessTest
     public void testNaturalFitness()
     {
         TerminationCondition condition = new TargetFitness(10.0d, true);
-        PopulationData<Object> data = new PopulationData<Object>(new Object(), 5.0d, 4.0d, 0, true, 2, 0, 0, 100);
+        PopulationData<Object> data = new PopulationData<Object>(new ArrayList(), new Object(), 5.0d, 4.0d, 0, true, 2, 0, 0, 100);
         assert !condition.shouldTerminate(data) : "Should not terminate before target fitness is reached.";
-        data = new PopulationData<Object>(new Object(), 10.0d, 8.0d, 0, true, 2, 0, 0, 100);
+        data = new PopulationData<Object>(new ArrayList(), new Object(), 10.0d, 8.0d, 0, true, 2, 0, 0, 100);
         assert condition.shouldTerminate(data) : "Should terminate once target fitness is reached.";
     }
 
@@ -41,9 +43,9 @@ public class TargetFitnessTest
     public void testNonNaturalFitness()
     {
         TerminationCondition condition = new TargetFitness(1.0d, false);
-        PopulationData<Object> data = new PopulationData<Object>(new Object(), 5.0d, 4.0d, 0, true, 2, 0, 0, 100);
+        PopulationData<Object> data = new PopulationData<Object>(new ArrayList(), new Object(), 5.0d, 4.0d, 0, true, 2, 0, 0, 100);
         assert !condition.shouldTerminate(data) : "Should not terminate before target fitness is reached.";
-        data = new PopulationData<Object>(new Object(), 1.0d, 3.1d, 0, true, 2, 0, 0, 100);
+        data = new PopulationData<Object>(new ArrayList(), new Object(), 1.0d, 3.1d, 0, true, 2, 0, 0, 100);
         assert condition.shouldTerminate(data) : "Should terminate once target fitness is reached.";
     }
 }

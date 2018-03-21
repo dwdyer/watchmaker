@@ -16,6 +16,7 @@
 package org.uncommons.watchmaker.swing.evolutionmonitor;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;
@@ -64,7 +65,7 @@ public class StatusBarTest
         assert frameFixture.label("Generations").text().equals("N/A") : "Wrong initial text for generations label.";
         assert frameFixture.label("Time").text().equals("N/A") : "Wrong initial text for elapsed time label.";
 
-        statusBar.populationUpdate(new PopulationData<Object>(new Object(), 10, 8, 2, true, 10, 1, 0, 36610000));
+        statusBar.populationUpdate(new PopulationData<Object>(new ArrayList(), new Object(), 10, 8, 2, true, 10, 1, 0, 36610000));
         assert frameFixture.label("Population").text().equals("10") : "Wrong value for popluation label.";
         assert frameFixture.label("Elitism").text().equals("1") : "Wrong value for elitism label.";
         // Generation count is number + 1 (because generations start at zero).
@@ -89,8 +90,8 @@ public class StatusBarTest
         assert frameFixture.label("Generations").text().equals("N/A") : "Wrong initial text for generations label.";
         assert frameFixture.label("Time").text().equals("N/A") : "Wrong initial text for elapsed time label.";
 
-        statusBar.islandPopulationUpdate(0, new PopulationData<Object>(new Object(), 10, 8, 2, true, 10, 1, 0, 36610000));
-        statusBar.populationUpdate(new PopulationData<Object>(new Object(), 10, 8, 2, true, 50, 1, 0, 36610000));
+        statusBar.islandPopulationUpdate(0, new PopulationData<Object>(new ArrayList(), new Object(), 10, 8, 2, true, 10, 1, 0, 36610000));
+        statusBar.populationUpdate(new PopulationData<Object>(new ArrayList(), new Object(), 10, 8, 2, true, 50, 1, 0, 36610000));
         assert frameFixture.label("Population").text().equals("5x10") : "Wrong value for popluation label.";
         assert frameFixture.label("Elitism").text().equals("5x1") : "Wrong value for elitism label.";
         // Generation count is number + 1 (because generations start at zero).
@@ -112,7 +113,7 @@ public class StatusBarTest
 
         // Previous test checks two-digit field values, this test checks that single-digit
         // values and zeros are correctly padded.
-        statusBar.populationUpdate(new PopulationData<Object>(new Object(), 10, 8, 2, true, 10, 1, 0, 1000));
+        statusBar.populationUpdate(new PopulationData<Object>(new ArrayList(), new Object(), 10, 8, 2, true, 10, 1, 0, 1000));
         assert frameFixture.label("Time").text().equals("00:00:01");
     }
 
