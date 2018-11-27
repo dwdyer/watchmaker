@@ -117,6 +117,12 @@ public class GenerationalEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         {
             elite.add(iterator.next().getCandidate());
         }
+	//Setup the list of original candidates
+	List<T> originals = new ArrayList<T>(evaluatedPopulation.size());
+	iterator = evaluatedPopulation.iterator();
+	while (iterator.hasNext()) {
+		originals.add(iterator.next().getCandidate());
+	}
         // Then select candidates that will be operated on to create the evolved
         // portion of the next generation.
         population.addAll(selectionStrategy.select(evaluatedPopulation,
@@ -127,6 +133,14 @@ public class GenerationalEvolutionEngine<T> extends AbstractEvolutionEngine<T>
         population = evolutionScheme.apply(population, rng);
         // When the evolution is finished, add the elite to the population.
         population.addAll(elite);
+	// Now check through the originals, anyone not still there get
+	// released.
+	for(int i=0; i < originals.size(); i++) {
+		T origCand = originals.get(i);
+		if ((origCand instanceof Releasable) && (!population.contains(origCand)))
+			((Releasable)origCand).release();
+	}
+				
         return evaluatePopulation(population);
     }
 }
