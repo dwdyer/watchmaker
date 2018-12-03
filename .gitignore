@@ -7,3 +7,5 @@ website
 *.iws
 .idea/workspace.xml
 .DS_Store
+.idea
+target
