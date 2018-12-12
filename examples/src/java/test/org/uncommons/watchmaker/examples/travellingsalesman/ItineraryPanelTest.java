@@ -62,6 +62,7 @@ public class ItineraryPanelTest
         frame.validate();
         frame.setVisible(true);
         assert itineraryPanel.getSelectedCities().isEmpty() : "Should be no cities selected initially.";
+        robot.waitForIdle();
         frameFixture.button("All").click();
         Collection<String> selectedCities = itineraryPanel.getSelectedCities();
         assert selectedCities.size() == CITIES.getKnownCities().size()
@@ -80,7 +81,9 @@ public class ItineraryPanelTest
         frame.setSize(100, 300);
         frame.validate();
         frame.setVisible(true);
+        robot.waitForIdle();
         frameFixture.button("All").click();
+        robot.waitForIdle();
         Collection<String> selectedCities = itineraryPanel.getSelectedCities();
         assert selectedCities.size() == CITIES.getKnownCities().size()
             : "All cities should be selected after all button click.";
