@@ -30,17 +30,10 @@
 	
 	<developers>
 		<developer>
-			<id>dwdyer</id>
-			<name>Dan Dyer</name>
+			<id>wjladams</id>
+			<name>Dr. William Adams</name>
 			<roles>
 				<role>committer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>cowwoc</id>
-			<name>Gili Tzabari</name>
-			<roles>
-				<role>contributor</role>
 			</roles>
 		</developer>
 	</developers>
@@ -83,7 +76,31 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
-		</plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>		</plugins>
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
