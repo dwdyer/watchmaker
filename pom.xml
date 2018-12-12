@@ -6,9 +6,9 @@
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
-	<groupId>org.uncommons.watchmaker</groupId>
+	<groupId>com.decisionlens</groupId>
 	<artifactId>watchmaker</artifactId>
-	<version>0.7.2</version>
+	<version>0.7.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>watchmaker</name>
 	<description>Watchmaker Framework - Root Project</description>
@@ -50,6 +50,20 @@
 		<module>swing</module>
 		<module>examples</module>
 	</modules>
+
+	<distributionManagement>
+		<repository>
+			<id>mvnrepo-releases</id>
+			<name>Release Repository</name>
+			<url> https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>mvnrepo-snapshots</id>
+			<name>Maven Snapshot Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
