@@ -20,9 +20,9 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.uncommons.watchmaker</groupId>
+		<groupId>com.decisionlens</groupId>
 		<artifactId>watchmaker</artifactId>
-		<version>0.7.2</version>
+		<version>0.1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>watchmaker-framework</artifactId>
 
@@ -32,10 +32,11 @@
 			<artifactId>uncommons-maths</artifactId>
 			<version>1.2.2a</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 		<dependency>
-			<groupId>com.google.collections</groupId>
-			<artifactId>google-collections</artifactId>
-			<version>1.0</version>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>27.0.1-jre</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
