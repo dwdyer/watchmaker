@@ -17,7 +17,8 @@ package org.uncommons.watchmaker.examples.travellingsalesman;
 
 import java.awt.BorderLayout;
 import java.util.Collection;
-import javax.swing.JFrame;
+import javax.swing.*;
+
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;
 import org.fest.swing.fixture.FrameFixture;
@@ -62,7 +63,10 @@ public class ItineraryPanelTest
         frame.validate();
         frame.setVisible(true);
         assert itineraryPanel.getSelectedCities().isEmpty() : "Should be no cities selected initially.";
+        robot.waitForIdle();
         frameFixture.button("All").click();
+        SwingUtilities.updateComponentTreeUI(frame);
+        robot.waitForIdle();
         Collection<String> selectedCities = itineraryPanel.getSelectedCities();
         assert selectedCities.size() == CITIES.getKnownCities().size()
             : "All cities should be selected after button click.";
@@ -80,11 +84,15 @@ public class ItineraryPanelTest
         frame.setSize(100, 300);
         frame.validate();
         frame.setVisible(true);
+        robot.waitForIdle();
         frameFixture.button("All").click();
+        SwingUtilities.updateComponentTreeUI(frame);
+        robot.waitForIdle();
         Collection<String> selectedCities = itineraryPanel.getSelectedCities();
         assert selectedCities.size() == CITIES.getKnownCities().size()
             : "All cities should be selected after all button click.";
         frameFixture.button("None").click();
+        SwingUtilities.updateComponentTreeUI(frame);
         assert itineraryPanel.getSelectedCities().isEmpty()
             : "No cities should be selected after clear button is clicked.";
     }

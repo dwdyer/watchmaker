@@ -13,7 +13,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.uncommons.maths:uncommons-maths:1.2.2" level="project" />
     <orderEntry type="library" name="Maven: jfree:jcommon:1.0.12" level="project" />
-    <orderEntry type="library" name="Maven: jfree:jfreechart:1.0.8" level="project" />
+    <orderEntry type="library" name="Maven: jfree:jfreechart:1.0.13" level="project" />
     <orderEntry type="library" name="Maven: com.google.collections:google-collections:1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.testng:testng:6.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.1" level="project" />

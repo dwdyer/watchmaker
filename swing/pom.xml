@@ -20,9 +20,9 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.uncommons.watchmaker</groupId>
+		<groupId>com.decisionlens</groupId>
 		<artifactId>watchmaker</artifactId>
-		<version>0.7.2</version>
+		<version>0.1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>watchmaker-swing</artifactId>
 
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>org.uncommons.maths</groupId>
 			<artifactId>uncommons-maths</artifactId>
-			<version>1.2.2</version>
+			<version>1.2.2a</version>
 		</dependency>
 		<dependency>
 			<groupId>jfree</groupId>

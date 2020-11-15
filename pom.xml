@@ -6,9 +6,9 @@
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
-	<groupId>org.uncommons.watchmaker</groupId>
+	<groupId>com.decisionlens</groupId>
 	<artifactId>watchmaker</artifactId>
-	<version>0.7.2</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>watchmaker</name>
 	<description>Watchmaker Framework - Root Project</description>
@@ -30,17 +30,10 @@
 	
 	<developers>
 		<developer>
-			<id>dwdyer</id>
-			<name>Dan Dyer</name>
+			<id>wjladams</id>
+			<name>Dr. William Adams</name>
 			<roles>
 				<role>committer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>cowwoc</id>
-			<name>Gili Tzabari</name>
-			<roles>
-				<role>contributor</role>
 			</roles>
 		</developer>
 	</developers>
@@ -50,6 +43,20 @@
 		<module>swing</module>
 		<module>examples</module>
 	</modules>
+
+	<distributionManagement>
+		<repository>
+			<id>mvnrepo-releases</id>
+			<name>Release Repository</name>
+			<url> https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>mvnrepo-snapshots</id>
+			<name>Maven Snapshot Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
@@ -63,13 +70,59 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.4.3</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
-		</plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>mvnrepo-releases</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>		</plugins>
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
