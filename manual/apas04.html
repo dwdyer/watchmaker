@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>JVM Options</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="apa.html" title="Appendix A. Optimising for Performance"/><link rel="prev" href="apas03.html" title="Random Number Generators"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">JVM Options</th></tr><tr><td align="left"><a accesskey="p" href="apas03.html">Prev</a> </td><th width="60%" align="center">Appendix A. Optimising for Performance</th><td align="right"> </td></tr></table><hr/></div><div class="section" title="JVM Options"><div class="titlepage"><div><div><h2 class="title" id="d0e1113">JVM Options</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1116" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1119" class="indexterm"/><p>
+      The Java Virtual Machine (JVM) is a complex piece of software.  It is designed to run a huge
+      variety different programs.  As such, its default configuration is not optimised for the
+      particular needs of evolutionary computation.  This section lists some of the JVM options
+      that you can tweak to try to achieve better performance.
+    </p><div class="section" title="Server VM"><div class="titlepage"><div><div><h3 class="title" id="d0e1124">Server VM</h3></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1127" class="indexterm"/><p>
+        The Sun JVM provides two modes of operation, one optimised for client applications (the
+        default) and one for server applications.  The server VM takes marginally longer to start
+        up but provides substantially better performance for long-running processes and is therefore
+        a better choice for most evolutionary algorithms.  The server VM is enabled using the
+        <code class="literal">-server</code> switch.
+      </p></div><div class="section" title="Garbage Collection"><div class="titlepage"><div><div><h3 class="title" id="d0e1135">Garbage Collection</h3></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1138" class="indexterm"/><p>
+        Evolutionary algorithms create many short-lived objects. Modern JVMs, with their generational
+        garbage collectors, are typically well tuned for this usage pattern. However, you may find
+        that by modifying the settings you are able to improve throughput.
+      </p><p>
+        Garbage collectors make a trade-off between overall throughput and pause time. For
+        evolutionary algorithms we typically want to maximise throughput, even at the expense of
+        introducing noticeable pauses in the program's execution. What is most important is how soon
+        the program completes, not how smoothly it runs.
+      </p><p>
+        You can get information on what the garbage collector is doing by starting the JVM with the
+        <code class="literal">-verbosegc</code> switch. If you find that the program is spending a lot of time
+        collecting garbage, it may be because it is short of memory. If you have sufficient RAM,
+        increasing the maximum size of the Java heap (using the <code class="literal">-Xmx</code> switch) may
+        improve things.
+      </p></div><div class="section" title="Alternative JVMs"><div class="titlepage"><div><div><h3 class="title" id="d0e1153">Alternative JVMs</h3></div></div></div><p>
+        Sun Microsystems is not the only provider of virtual machines for Java. If your platform is
+        supported, you may also have the option of using a JVM from BEA, IBM or some other third party.
+        These virtual machines have different performance characteristics and different garbage
+        collector implementations. If you have tried everything else and still need something faster,
+        you may find that a different JVM will perform better.  Then again, it may not.
+      </p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="apas03.html">Prev</a> </td><td align="center"><a accesskey="u" href="apa.html">Up</a></td><td align="right"> </td></tr><tr><td align="left" valign="top">Random Number Generators </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> </td></tr></table></div></body></html>

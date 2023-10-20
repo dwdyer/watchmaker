@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Random Number Generators</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="apa.html" title="Appendix A. Optimising for Performance"/><link rel="prev" href="apas02.html" title="Minimising the Search Space"/><link rel="next" href="apas04.html" title="JVM Options"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Random Number Generators</th></tr><tr><td align="left"><a accesskey="p" href="apas02.html">Prev</a> </td><th width="60%" align="center">Appendix A. Optimising for Performance</th><td align="right"> <a accesskey="n" href="apas04.html">Next</a></td></tr></table><hr/></div><div class="section" title="Random Number Generators"><div class="titlepage"><div><div><h2 class="title" id="d0e1079">Random Number Generators</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1082" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1085" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1088" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1091" class="indexterm"/><p>
+      The random number generator (RNG) is a core component of any evolutionary simulation.  It is
+      used for selection, for cross-over and for mutation.  A slow random number generator can be
+      a bottleneck.  Most programming languages provide a mechanism to generate random numbers.
+      Unfortunately, few of them are ideal.  The Java standard library includes two RNGs,
+      <code class="classname">java.util.Random</code> and <code class="classname">java.security.SecureRandom</code>.
+      These should be avoided for statistical and performance reasons respectively.
+    </p><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1102" class="indexterm"/><p>
+      The Watchmaker Framework comes bundled with three high-quality RNGs provided by the Uncommons
+      Maths project.  Of these, the <code class="classname">org.uncommons.maths.random.MersenneTwisterRNG</code>
+      is the most suitable for the majority of evolutionary programs.  Alternatively, you can use any
+      third party RNG that is a sub-class of <code class="classname">java.util.Random</code>.
+    </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="apas02.html">Prev</a> </td><td align="center"><a accesskey="u" href="apa.html">Up</a></td><td align="right"> <a accesskey="n" href="apas04.html">Next</a></td></tr><tr><td align="left" valign="top">Minimising the Search Space </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> JVM Options</td></tr></table></div></body></html>

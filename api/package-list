@@ -1,0 +1,10 @@
+org.uncommons.swing
+org.uncommons.watchmaker.framework
+org.uncommons.watchmaker.framework.factories
+org.uncommons.watchmaker.framework.interactive
+org.uncommons.watchmaker.framework.islands
+org.uncommons.watchmaker.framework.operators
+org.uncommons.watchmaker.framework.selection
+org.uncommons.watchmaker.framework.termination
+org.uncommons.watchmaker.swing
+org.uncommons.watchmaker.swing.evolutionmonitor

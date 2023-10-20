@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Islands in the Watchmaker Framework</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="ch04.html" title="Chapter 4. Island Models"/><link rel="prev" href="ch04.html" title="Chapter 4. Island Models"/><link rel="next" href="apa.html" title="Appendix A. Optimising for Performance"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Islands in the Watchmaker Framework</th></tr><tr><td align="left"><a accesskey="p" href="ch04.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Island Models</th><td align="right"> <a accesskey="n" href="apa.html">Next</a></td></tr></table><hr/></div><div class="section" title="Islands in the Watchmaker Framework"><div class="titlepage"><div><div><h2 class="title" id="d0e907">Islands in the Watchmaker Framework</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e910" class="indexterm"/><p>
+      The Watchmaker Framework for Evolutionary Computation supports islands models via the
+      <code class="classname">IslandEvolution</code> class.  Each island is a self-contained
+      <code class="classname">EvolutionEngine</code> just like those we have been using previously for single-population
+      evolutionary algorithms.  The evolution is divided into <span class="emphasis"><em>epochs</em></span>.  Each epoch consists
+      of a fixed number of generations that each island completes in isolation.  At the end of an epoch migration
+      occurs.  Then, if the termination conditions are not yet satisfied, a new epoch begins.
+    </p><p>
+      The <code class="classname">IslandEvolution</code> supports pluggable migration strategies via different implementations
+      of the <code class="interfacename">Migration</code> interface.  An island version of the string evolution example
+      from <a class="xref" href="ch02.html" title="Chapter 2. The Watchmaker Framework">Chapter 2, <i>The Watchmaker Framework</i></a> might look something like this:
+    </p><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e935" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e939" class="indexterm"/><div class="informalexample"><pre class="programlisting">
+IslandEvolution&lt;String&gt; engine
+    = <b class="hl-keyword">new</b> IslandEvolution&lt;String&gt;(<span class="hl-number">5</span>, <i class="hl-comment" style="color: silver">// Number of islands.</i>
+                                  <b class="hl-keyword">new</b> RingMigration(),
+                                  candidateFactory,
+                                  evolutionaryOperator,
+                                  fitnessEvaluator,
+                                  selectionStrategy,
+                                  rng);
+
+engine.evolve(<span class="hl-number">100</span>, <i class="hl-comment" style="color: silver">// Population size per island.</i>
+              <span class="hl-number">5</span>, <i class="hl-comment" style="color: silver">// Elitism for each island.</i>
+              <span class="hl-number">50</span>, <i class="hl-comment" style="color: silver">// Epoch length (no. generations).</i>
+              <span class="hl-number">3</span>, <i class="hl-comment" style="color: silver">// Migrations from each island at each epoch.</i>
+              <b class="hl-keyword">new</b> TargetFitness(<span class="hl-number">0</span>, false));
+      </pre></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e946" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e950" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e954" class="indexterm"/><p>
+      We can add listeners to an <code class="classname">IslandEvolution</code> object, just as we can with individual
+      <code class="interfacename">EvolutionEngine</code>s.  We use a different interface for this though,
+      <code class="interfacename">IslandEvolutionObserver</code>, which provides two call-backs.
+      The <code class="methodname">populationUpdate</code> method reports the global state of the combined population
+      of all islands at the end of each epoch.  The <code class="methodname">islandPopulationUpdate</code> method reports
+      the state of individual island populations at the end of each generation.
+    </p><div class="section" title="Advanced Usage"><div class="titlepage"><div><div><h3 class="title" id="d0e975">Advanced Usage</h3></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e978" class="indexterm"/><p>
+        In the example code above we specified how many islands we wanted to use and the
+        <code class="classname">IslandEvolution</code> class created one <code class="classname">GenerationalEvolutionEngine</code>
+        for each island.  Using this approach all of the islands have the same configuration; they use the same
+        candidate factory, evolutionary operator(s) and selection strategy.  This is the easiest way to create an
+        island system but it is also possible to construct each island individually for ultimate flexibility.
+      </p><div class="informalexample"><pre class="programlisting">
+List&lt;EvolutionEngine&lt;String&gt;&gt; islands
+    = <b class="hl-keyword">new</b> ArrayList&lt;EvolutionEngine&lt;String&gt;&gt;();
+
+<i class="hl-comment" style="color: silver">// Create individual islands here and add them to the list.</i>
+<i class="hl-comment" style="color: silver">// ...</i>
+
+IslandEvolution&lt;String&gt; engine
+    = <b class="hl-keyword">new</b> IslandEvolution&lt;String&gt;(islands,
+                                  <b class="hl-keyword">new</b> RingMigration(),
+                                  false, <i class="hl-comment" style="color: silver">// Natural fitness?</i>
+                                  rng);
+        </pre></div><p>
+        One reason you might choose to construct the islands explicitly is that it makes it possible to configure
+        individual islands differently.  You may choose to have different islands use different parameters
+        for evolutionary operators, or even to use different evolutionary operators all together.  Alternatively,
+        you could use the same evolutionary operators and parameters but have different selection strategies so that
+        some islands have stronger selection pressure than others.  You should generally use the same fitness function
+        for all islands though, otherwise you might get some strange results.
+      </p><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e997" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1003" class="indexterm"/><p>
+        Another possible reason for creating the islands explicitly is so you don't have to use the standard
+        <code class="classname">GenerationalEvolutionEngine</code> for the islands.  You can choose to use any implementation
+        of the <code class="interfacename">EvolutionEngine</code> interface, such as the
+        <code class="classname">SteadyStateEvolutionEngine</code> class or the <code class="classname">EvolutionStrategyEngine</code>
+        class.  You can even use a mixture of different island types with the same
+        <code class="classname">IslandEvolution</code> object.
+      </p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch04.html">Prev</a> </td><td align="center"><a accesskey="u" href="ch04.html">Up</a></td><td align="right"> <a accesskey="n" href="apa.html">Next</a></td></tr><tr><td align="left" valign="top">Chapter 4. Island Models </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> Appendix A. Optimising for Performance</td></tr></table></div></body></html>

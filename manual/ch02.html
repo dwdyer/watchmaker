@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Chapter 2. The Watchmaker Framework</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="index.html" title="Evolutionary Computation in Java"/><link rel="prev" href="ch01s03.html" title="Implementing Evolutionary Algorithms"/><link rel="next" href="ch02s02.html" title="The Candidate Factory"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 2. The Watchmaker Framework</th></tr><tr><td align="left"><a accesskey="p" href="ch01s03.html">Prev</a> </td><th width="60%" align="center"> </th><td align="right"> <a accesskey="n" href="ch02s02.html">Next</a></td></tr></table><hr/></div><div class="chapter" title="Chapter 2. The Watchmaker Framework" id="watchmaker_chapter"><div class="titlepage"><div><div><h2 class="title">Chapter 2. The Watchmaker Framework</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="ch02.html#d0e329">The Evolution Engine</a></span></dt><dt><span class="section"><a href="ch02s02.html">The Candidate Factory</a></span></dt><dt><span class="section"><a href="ch02s03.html">Evolutionary Operators</a></span></dt><dd><dl><dt><span class="section"><a href="ch02s03.html#d0e461">The Evolution Pipeline</a></span></dt></dl></dd><dt><span class="section"><a href="ch02s04.html">The Fitness Evaluator</a></span></dt><dt><span class="section"><a href="ch02s05.html">Selection Strategy</a></span></dt><dt><span class="section"><a href="ch02s06.html">Random Number Generator</a></span></dt><dt><span class="section"><a href="ch02s07.html">Completing the Jigsaw</a></span></dt><dd><dl><dt><span class="section"><a href="ch02s07.html#d0e639">Termination Conditions</a></span></dt><dt><span class="section"><a href="ch02s07.html#d0e682">Evolution Observers</a></span></dt></dl></dd></dl></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e319" class="indexterm"/><p>
+    The Watchmaker Framework for Evolutionary Computation is an extensible, high-performance,
+    object-oriented framework for implementing platform-independent evolutionary algorithms
+    in Java.
+    It is freely available under a permissive Open Source licence.  It can be downloaded from
+    <a class="link" href="http://watchmaker.uncommons.org" target="">http://watchmaker.uncommons.org</a>.
+  </p><p>
+    This chapter introduces the core components of the Watchmaker Framework and shows how
+    they can be used to implement simple evolutionary algorithms such as the "Hello World"
+    example outlined in the previous chapter.
+  </p><div class="section" title="The Evolution Engine"><div class="titlepage"><div><div><h2 class="title" id="d0e329">The Evolution Engine</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e332" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e336" class="indexterm"/><p>
+      The central object of an evolutionary program built with the Watchmaker Framework is
+      the evolution engine.
+    </p><p>
+      The framework provides multiple implementations of the
+      <code class="interfacename">EvolutionEngine</code> interface, but the one that you will
+      usually want to use is <code class="classname">GenerationalEvolutionEngine</code>.  This is a
+      general-purpose implementation of the evolutionary algorithm outline from chapter 1.
+    </p><p>
+      An <code class="interfacename">EvolutionEngine</code> has a single generic type parameter
+      that indicates the type of object that it can evolve.
+      For the "Hello World" program we need to be able to evolve Java strings.
+      Code that creates an engine that can evolve strings would look something like this:
+    </p><div class="informalexample"><pre class="programlisting">
+EvolutionEngine&lt;String&gt; engine
+    = <b class="hl-keyword">new</b> GenerationalEvolutionEngine&lt;String&gt;(candidateFactory,
+                                              evolutionaryOperator,
+                                              fitnessEvaluator,
+                                              selectionStrategy,
+                                              rng);
+      </pre></div><p>
+      Once you have created an <code class="interfacename">EvolutionEngine</code>, your program
+      is as simple as calling the <code class="methodname">evolve</code> method with appropriate
+      arguments.
+      However, as you can see from the code snippet above, there is a little bit of work to
+      be done first in order to create an <code class="interfacename">EvolutionEngine</code> that
+      is configured appropriately for the given problem.
+      The constructor of the <code class="classname">GenerationalEvolutionEngine</code> class requires
+      five objects.  These are:
+    </p><div class="itemizedlist"><ul class="itemizedlist"><li class="listitem">A Candidate Factory</li><li class="listitem">An Evolutionary Operator</li><li class="listitem">A Fitness Evaluator</li><li class="listitem">A Selection Strategy</li><li class="listitem">A Random Number Generator</li></ul></div></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch01s03.html">Prev</a> </td><td align="center"> </td><td align="right"> <a accesskey="n" href="ch02s02.html">Next</a></td></tr><tr><td align="left" valign="top">Implementing Evolutionary Algorithms </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> The Candidate Factory</td></tr></table></div></body></html>

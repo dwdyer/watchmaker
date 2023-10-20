@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Elitism</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="ch03.html" title="Chapter 3. Selection Strategies &amp; Elitism"/><link rel="prev" href="ch03s05.html" title="Sigma Scaling"/><link rel="next" href="ch04.html" title="Chapter 4. Island Models"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Elitism</th></tr><tr><td align="left"><a accesskey="p" href="ch03s05.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Selection Strategies &amp; Elitism</th><td align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr></table><hr/></div><div class="section" title="Elitism"><div class="titlepage"><div><div><h2 class="title" id="d0e836">Elitism</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e839" class="indexterm"/><p>
+      Sometimes good candidates can be lost when cross-over or mutation results in offspring
+      that are weaker than the parents.  Often the EA will re-discover these lost improvements
+      in a subsequent generation but there is no guarantee.  To combat this we can use a
+      feature known as <span class="emphasis"><em>elitism</em></span>.  Elitism involves copying a small
+      propotion of the fittest candidates, unchanged, into the next generation.  This can
+      sometimes have a dramatic impact on performance by ensuring that the EA does not waste
+      time re-discovering previously discarded partial solutions.
+      Candidate solutions that are preserved unchanged through elitism remain eligible for
+      selection as parents when breeding the remainder of the next generation.
+    </p><div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>
+        The Watchmaker Framework supports elitism via the second parameter to the
+        <code class="methodname">evolve</code> method of an <code class="interfacename">EvolutionEngine</code>.
+        This elite count is the number of candidates in a generation that should be copied
+        unchanged from the previous generation, rather than created via evolution.  Collectively
+        these candidates are the <span class="emphasis"><em>elite</em></span>.  So for a population size of 100,
+        setting the elite count to 5 will result in the fittest 5% of each generation being copied,
+        without modification, into the next generation.
+      </p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch03s05.html">Prev</a> </td><td align="center"><a accesskey="u" href="ch03.html">Up</a></td><td align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr><tr><td align="left" valign="top">Sigma Scaling </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> Chapter 4. Island Models</td></tr></table></div></body></html>

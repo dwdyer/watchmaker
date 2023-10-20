@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Fitness-Proportionate Selection</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="ch03.html" title="Chapter 3. Selection Strategies &amp; Elitism"/><link rel="prev" href="ch03.html" title="Chapter 3. Selection Strategies &amp; Elitism"/><link rel="next" href="ch03s03.html" title="Rank Selection"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Fitness-Proportionate Selection</th></tr><tr><td align="left"><a accesskey="p" href="ch03.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Selection Strategies &amp; Elitism</th><td align="right"> <a accesskey="n" href="ch03s03.html">Next</a></td></tr></table><hr/></div><div class="section" title="Fitness-Proportionate Selection"><div class="titlepage"><div><div><h2 class="title" id="d0e733">Fitness-Proportionate Selection</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e736" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e739" class="indexterm"/><p>
+      A better approach to selection is to give every individual a chance of being selected to breed but to make
+      fitter candidates more likely to be chosen than weaker individuals.  This is achieved by making an individual's
+      survival probability a function of its fitness score.  Such strategies are known as
+      <span class="emphasis"><em>fitness-proportionate selection</em></span>.
+    </p><div class="section" title="Roulette Wheel Selection"><div class="titlepage"><div><div><h3 class="title" id="d0e749">Roulette Wheel Selection</h3></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e752" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e755" class="indexterm"/><p>
+        The most common fitness-proportionate selection technique is called <span class="emphasis"><em>Roulette Wheel
+        Selection</em></span>.  Conceptually, each member of the population is allocated a section of an imaginary
+        roulette wheel.  Unlike a real roulette wheel the sections are different sizes, proportional to the
+        individual's fitness, such that the fittest candidate has the biggest slice of the wheel and the weakest
+        candidate has the smallest.  The wheel is then spun and the individual associated with the winning section
+        is selected.  The wheel is spun as many times as is necessary to select the full set of parents for the next
+        generation.
+      </p><p>
+        Using this technique it is possible (probable) that one or more individuals is selected multiple times.
+        That's OK, it's what we want to happen.  Remember that we are not selecting the members of the next
+        generation, we are selecting their parents and it is possible for an individual to be a parent multiple times.
+        If there is a particularly fit member of the population we would expect it to be more successful at producing
+        offspring than a weaker rival.          
+      </p></div><div class="section" title="Stochastic Universal Sampling"><div class="titlepage"><div><div><h3 class="title" id="d0e767">Stochastic Universal Sampling</h3></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e770" class="indexterm"/><p>
+        <span class="emphasis"><em>Stochastic Universal Sampling</em></span> is an elaborately-named variation of roulette wheel
+        selection.  Stochastic Universal Sampling ensures that the observed selection frequencies of each individual
+        are in line with the expected frequencies.  So if we have an individual that occupies 4.5% of the wheel
+        and we select 100 individuals, we would expect on average for that individual to be selected between four
+        and five times.  Stochastic Universal Sampling guarantees this.  The individual will be selected either four
+        times or five times, not three times, not zero times and not 100 times.  Standard roulette wheel selection
+        does not make this guarantee.
+      </p><p>
+        Stochastic Universal Sampling works by making a single spin of the roulette wheel.  This provides a starting
+        position and the first selected individual.  The selection process then proceeds by advancing all the way
+        around the wheel in equal sized steps, where the step size is determined by the number of individuals to be
+        selected.  So if we are selecting 30 individuals we will advance by
+        <span class="mathphrase">1/30 x 360 degrees</span> for each selection.  Note that
+        this does not mean that every candidate on the wheel will be selected.  Some weak individuals will have very
+        thin slices of the wheel and these might be stepped over completely depending on the random starting position.
+      </p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch03.html">Prev</a> </td><td align="center"><a accesskey="u" href="ch03.html">Up</a></td><td align="right"> <a accesskey="n" href="ch03s03.html">Next</a></td></tr><tr><td align="left" valign="top">Chapter 3. Selection Strategies &amp; Elitism </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> Rank Selection</td></tr></table></div></body></html>

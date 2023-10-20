@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Random Number Generator</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="ch02.html" title="Chapter 2. The Watchmaker Framework"/><link rel="prev" href="ch02s05.html" title="Selection Strategy"/><link rel="next" href="ch02s07.html" title="Completing the Jigsaw"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Random Number Generator</th></tr><tr><td align="left"><a accesskey="p" href="ch02s05.html">Prev</a> </td><th width="60%" align="center">Chapter 2. The Watchmaker Framework</th><td align="right"> <a accesskey="n" href="ch02s07.html">Next</a></td></tr></table><hr/></div><div class="section" title="Random Number Generator"><div class="titlepage"><div><div><h2 class="title" id="d0e571">Random Number Generator</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e574" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e577" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e580" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e583" class="indexterm"/><p>
+      The final dependency that must be satisfied in order to create an evolution engine
+      is the random number generator (RNG).  An evolution engine has a single RNG that it
+      passes to its candidate factory, evolutionary operator and selection strategy.
+      An ideal RNG is both fast and statistically random.  We <span class="emphasis"><em>could</em></span>
+      use the standard Java RNG, <code class="classname">java.util.Random</code>, but its output
+      is not as random as it should be.  The other RNG in the standard library,
+      <code class="classname">java.security.SecureRandom</code> is much better in this respect
+      but can be slow.
+    </p><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e597" class="indexterm"/><p>
+      Fortunately, the Watchmaker Framework provides alternatives.  The
+      <code class="classname">org.uncommons.maths.random.MersenneTwisterRNG</code> random number
+      generator is both fast and statistically sound.  It is usually the best choice
+      when creating an evolution engine.
+    </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch02s05.html">Prev</a> </td><td align="center"><a accesskey="u" href="ch02.html">Up</a></td><td align="right"> <a accesskey="n" href="ch02s07.html">Next</a></td></tr><tr><td align="left" valign="top">Selection Strategy </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> Completing the Jigsaw</td></tr></table></div></body></html>

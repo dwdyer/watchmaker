@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Completing the Jigsaw</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="ch02.html" title="Chapter 2. The Watchmaker Framework"/><link rel="prev" href="ch02s06.html" title="Random Number Generator"/><link rel="next" href="ch03.html" title="Chapter 3. Selection Strategies &amp; Elitism"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Completing the Jigsaw</th></tr><tr><td align="left"><a accesskey="p" href="ch02s06.html">Prev</a> </td><th width="60%" align="center">Chapter 2. The Watchmaker Framework</th><td align="right"> <a accesskey="n" href="ch03.html">Next</a></td></tr></table><hr/></div><div class="section" title="Completing the Jigsaw"><div class="titlepage"><div><div><h2 class="title" id="d0e605">Completing the Jigsaw</h2></div></div></div><p>
+      We've now got all of the necessary pieces to complete the "Hello World" example
+      application.  Assuming that you've already created the
+      <code class="classname">StringEvaluator</code> class (defined above) in a separate file,
+      the code needed to create the evolution engine looks like this:
+    </p><div class="informalexample"><pre class="programlisting">
+<i class="hl-comment" style="color: silver">// Create a factory to generate random 11-character Strings.</i>
+<b class="hl-keyword">char</b>[] chars = <b class="hl-keyword">new</b> <b class="hl-keyword">char</b>[<span class="hl-number">27</span>];
+<b class="hl-keyword">for</b> (<b class="hl-keyword">char</b> c = <b class="hl-string"><i style="color:red">'A'</i></b>; c &lt;= <b class="hl-string"><i style="color:red">'Z'</i></b>; c++)
+{
+    chars[c - <b class="hl-string"><i style="color:red">'A'</i></b>] = c;
+}
+chars[<span class="hl-number">26</span>] = <b class="hl-string"><i style="color:red">' '</i></b>;
+CandidateFactory&lt;String&gt; factory = <b class="hl-keyword">new</b> StringFactory(chars, <span class="hl-number">11</span>);
+
+<i class="hl-comment" style="color: silver">// Create a pipeline that applies cross-over then mutation.</i>
+List&lt;EvolutionaryOperator&lt;String&gt;&gt; operators
+    = <b class="hl-keyword">new</b> LinkedList&lt;EvolutionaryOperator&lt;String&gt;&gt;();
+operators.add(<b class="hl-keyword">new</b> StringMutation(chars, <b class="hl-keyword">new</b> Probability(<span class="hl-number">0.02</span>)));
+operators.add(<b class="hl-keyword">new</b> StringCrossover())
+EvolutionaryOperator&lt;String&gt; pipeline
+    = <b class="hl-keyword">new</b> EvolutionPipeline&lt;String&gt;(operators);
+
+FitnessEvaluator&lt;String&gt; fitnessEvaluator = <b class="hl-keyword">new</b> StringEvaluator();
+SelectionStrategy&lt;Object&gt; selection = <b class="hl-keyword">new</b> RouletteWheelSelection();
+Random rng = <b class="hl-keyword">new</b> MersenneTwisterRNG();
+
+EvolutionEngine&lt;String&gt; engine
+    = <b class="hl-keyword">new</b> GenerationalEvolutionEngine&lt;String&gt;(factory,
+                                              pipeline,
+                                              fitnessEvaluator,
+                                              selection,
+                                              rng);
+      </pre></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e616" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e619" class="indexterm"/><p>
+      The listing above only creates the evolution engine, it does not perform any
+      evolution.  For that we need to call the <code class="methodname">evolve</code> method.
+      The <code class="methodname">evolve</code> method takes three parameters.  The first
+      is the size of the population.  This is the number of candidate solutions that
+      exist at any time.  A bigger population will often result in a satisfactory
+      solution being found in fewer generations.  On the other hand, the processing
+      of each generation will take longer because there are more individuals to deal
+      with.  For the "Hello World" program, a population size of 10 is fine.
+    </p><p>
+      The second parameter is concerned with <span class="emphasis"><em>elitism</em></span>.  Elitism
+      is explained in <a class="xref" href="ch03.html" title="Chapter 3. Selection Strategies &amp; Elitism">Chapter 3, <i>Selection Strategies &amp; Elitism</i></a>.  For now, just use a value of zero.
+      The final varargs parameter specifies one or more termination conditions.
+    </p><div class="section" title="Termination Conditions"><div class="titlepage"><div><div><h3 class="title" id="d0e639">Termination Conditions</h3></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e642" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e645" class="indexterm"/><p>
+        Termination conditions make the evolution stop.  There are a few reasons why
+        we would like the evolution to stop.  The most obvious is because we have found the
+        solution that we are looking for.  In the case of the "Hello World" program, that
+        is when we have found the target string.  The target string has a fitness score of
+        11 so we use the <code class="classname">TargetFitness</code> condition.
+      </p><p>
+        To complete the evolutionary "Hello World" application, add the following two lines:
+      </p><div class="informalexample"><pre class="programlisting">
+String result = engine.evolve(<span class="hl-number">10</span>, <span class="hl-number">0</span>, <b class="hl-keyword">new</b> TargetFitness(<span class="hl-number">11</span>));
+System.out.println(result);
+        </pre></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e659" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e662" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e665" class="indexterm"/><p>
+          When we move on to less trivial evolutionary programs, we will rarely be able to
+          specify the outcome so precisely.  The
+          <span class="package">org.uncommons.watchmaker.framework.termination</span> package includes
+          other termination conditions that can be used.  For example, we may want the program
+          to run for a certain period of time, or a certain number of generations, and then
+          return the best solution it has found up until that point.  The
+          <code class="classname">ElapsedTime</code> and <code class="classname">GenerationCount</code>
+          conditions provide this functionality.  Alternatively, we may want the program to
+          continue as long as it is finding progressively better solutions.  The
+          <code class="classname">Stagnation</code> condition will terminate the evolution after a
+          set number of generations pass without any improvement in the fitness of the fittest
+          candidate.
+          If multiple termination conditions are specified, the evolution will stop as soon
+          as any one of them is satisfied.
+        </p></div></div><div class="section" title="Evolution Observers"><div class="titlepage"><div><div><h3 class="title" id="d0e682">Evolution Observers</h3></div></div></div><p>
+        Compile and run the above code and, perhaps after a brief pause, you'll see the
+        following output:
+      </p><div class="informalexample"><pre class="programlisting">
+  HELLO WORLD
+        </pre></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e690" class="indexterm"/><p>
+        This is quite probably the most convoluted "Hello World" program you'll ever write.
+        It also gives no hints as to its evolutionary nature.  We can make the program more
+        interesting by adding an <code class="interfacename">EvolutionObserver</code> to report
+        on the progress of the evolution at the end of each generation.  Add the following
+        code to your program before the call to the <code class="methodname">evolve</code> method:
+      </p><div class="informalexample"><pre class="programlisting">
+engine.addEvolutionObserver(<b class="hl-keyword">new</b> EvolutionObserver&lt;String&gt;()
+{
+    <b class="hl-keyword">public</b> <b class="hl-keyword">void</b> populationUpdate(PopulationData&lt;? <b class="hl-keyword">extends</b> String&gt; data)
+    {
+        System.out.printf(<b class="hl-string"><i style="color:red">"Generation %d: %s\n"</i></b>,
+                          data.getGenerationNumber(),
+                          data.getBestCandidate());
+    }
+});
+        </pre></div><p>
+        Re-compile the program and run it again.  This time you'll see all of the steps
+        taken to arrive at the target string:
+      </p><div class="informalexample"><pre class="programlisting">
+  Generation 0: JIKDORHOQZJ
+  Generation 1: ULLLFQWZPXG
+  Generation 2: UEULKFVFZLS
+  Generation 3: KLLLFKZGRLS
+  Generation 4: HLLLFKZGRLS
+  Generation 5: HEDPOYWOZLS
+  Generation 6: HEULKIWWZLD
+  Generation 7: HPRLOYWOZLS
+  Generation 8: HEULOYWOZLS
+  Generation 9: HEULOYWORLS
+  Generation 10: HEULOYWORLS
+  Generation 11: HPLLK WQRLH
+  Generation 12: HEBLOYWQRLS
+  Generation 13: HEULOYWOBLA
+  Generation 14: HEBLOIWMRLD
+  Generation 15: HEBLOIWMRLD
+  Generation 16: HEYLFNWQRLD
+  Generation 17: HEBLOIWORLS
+  Generation 18: HEBLOIWORLT
+  Generation 19: HEBLOKWGRLD
+  Generation 20: HELLAYWORLS
+  Generation 21: HELHOIWORLT
+  Generation 22: HEWLOIWORLS
+  Generation 23: HEBLOYCORLD
+  Generation 24: HELLKQWORLD
+  Generation 25: HELLOIWORLT
+  Generation 26: HELLOIWORLS
+  Generation 27: HELLKQWORLD
+  Generation 28: HELLFYWORLD
+  Generation 29: HELLOIWORLD
+  Generation 30: HELLOIWORLD
+  Generation 31: HELLOIWORLD
+  Generation 32: HELLOIWORLD
+  Generation 33: HELLOIWORLD
+  Generation 34: HELLOIWORLD
+  Generation 35: HELLOIWDRLD
+  Generation 36: HELLOIWORLD
+  Generation 37: HELLOIWORLD
+  Generation 38: HELLOPWORLD
+  Generation 39: HELLOIWORLD
+  Generation 40: HELLO WORLD
+  HELLO WORLD
+        </pre></div></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch02s06.html">Prev</a> </td><td align="center"><a accesskey="u" href="ch02.html">Up</a></td><td align="right"> <a accesskey="n" href="ch03.html">Next</a></td></tr><tr><td align="left" valign="top">Random Number Generator </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> Chapter 3. Selection Strategies &amp; Elitism</td></tr></table></div></body></html>

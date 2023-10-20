@@ -1,0 +1,35 @@
+a {text-decoration: none;
+   color: #006699;}
+a:visited {color: #003366;}
+body {line-height: 1.8em;
+      font-size: 62.5%;
+      width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      font-family: Palatino Linotype, Palatino, serif;
+      background-color: #ffffff;
+      color: #444444;}
+dl {margin: 0;}
+h1, h2, h3 {font-weight: bold;
+            font-variant: small-caps;}
+h1 {font-size: 3em;
+    margin-bottom: .6em;}
+h2 {font-size: 2.4em;
+    margin-bottom: .75em;}
+h3 {font-size: 1.8em;
+    margin-bottom: 1em;}
+p, ul {font-size: 1.4em;
+       margin: 1.286em 0;}
+dl, table {font-size: 1.4em;}
+dl dl {font-size: 1em;}
+pre {font-family: Monaco, Courier New, monospace; font-size: 1.2em; margin-bottom: 1.5em;}
+strong {color: #000000;}
+
+h2.subtitle {font-variant: normal;}
+h3.author {font-variant: normal; margin-top: 2em; margin-bottom: 0;}
+.email {font-size: 1.2em;}
+.informalfigure {text-align: center;}
+.mediaobject {display: inline-block;}
+.caption p {margin: 0; text-align: right; font-size: small;}
+
+.navfooter table tr td {width: 33.33%}

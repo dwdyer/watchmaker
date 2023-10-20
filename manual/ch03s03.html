@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Rank Selection</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="ch03.html" title="Chapter 3. Selection Strategies &amp; Elitism"/><link rel="prev" href="ch03s02.html" title="Fitness-Proportionate Selection"/><link rel="next" href="ch03s04.html" title="Tournament Selection"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rank Selection</th></tr><tr><td align="left"><a accesskey="p" href="ch03s02.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Selection Strategies &amp; Elitism</th><td align="right"> <a accesskey="n" href="ch03s04.html">Next</a></td></tr></table><hr/></div><div class="section" title="Rank Selection"><div class="titlepage"><div><div><h2 class="title" id="d0e784">Rank Selection</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e787" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e790" class="indexterm"/><p>
+      <span class="emphasis"><em>Rank Selection</em></span> is similar to fitness-proportionate selection except that selection
+      probability is proportional to relative fitness rather than absolute fitness.  In other words, it doesn't make
+      any difference whether the fittest candidate is ten times fitter than the next fittest or 0.001% fitter.  In
+      both cases the selection probabilities would be the same; all that matters is the ranking relative to other
+      individuals.
+    </p><p>
+      Rank selection will tend to avoid premature convergence by tempering selection
+      pressure for large fitness differentials that occur in early generations.  Conversely, by amplifying small
+      fitness differences in later generations, selection pressure is increased compared to alternative selection
+      strategies.
+    </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch03s02.html">Prev</a> </td><td align="center"><a accesskey="u" href="ch03.html">Up</a></td><td align="right"> <a accesskey="n" href="ch03s04.html">Next</a></td></tr><tr><td align="left" valign="top">Fitness-Proportionate Selection </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> Tournament Selection</td></tr></table></div></body></html>

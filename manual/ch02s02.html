@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>The Candidate Factory</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="ch02.html" title="Chapter 2. The Watchmaker Framework"/><link rel="prev" href="ch02.html" title="Chapter 2. The Watchmaker Framework"/><link rel="next" href="ch02s03.html" title="Evolutionary Operators"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">The Candidate Factory</th></tr><tr><td align="left"><a accesskey="p" href="ch02.html">Prev</a> </td><th width="60%" align="center">Chapter 2. The Watchmaker Framework</th><td align="right"> <a accesskey="n" href="ch02s03.html">Next</a></td></tr></table><hr/></div><div class="section" title="The Candidate Factory"><div class="titlepage"><div><div><h2 class="title" id="d0e383">The Candidate Factory</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e386" class="indexterm"/><p>
+      The first object that needs to be plugged into the evolution engine is a candidate
+      factory.  Every evolutionary simulation must start with an initial population of
+      candidate solutions and the <code class="interfacename">CandidateFactory</code> interface
+      is the mechanism by which the evolution engine creates this population.
+    </p><p>
+      A candidate factory implementation has an associated type.  It can only create
+      objects of that type.  The type must match the type of the evolution engine that
+      it is plugged into.
+      You can write your own implementation of <code class="interfacename">CandidateFactory</code>
+      for your program or, if you are using a common type such as strings, lists or
+      arrays, you may be able to use a ready-made factory from the
+      <span class="package">org.uncommons.watchmaker.framework.factories</span> package.
+    </p><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e403" class="indexterm"/><p>
+      For our "Hello World" program, we can use the provided
+      <code class="classname">StringFactory</code>:
+    </p><div class="informalexample"><pre class="programlisting">
+<i class="hl-comment" style="color: silver">// Define the set of permitted characters (A-Z plus space).</i>
+<b class="hl-keyword">char</b>[] chars = <b class="hl-keyword">new</b> <b class="hl-keyword">char</b>[<span class="hl-number">27</span>];
+<b class="hl-keyword">for</b> (<b class="hl-keyword">char</b> c = <b class="hl-string"><i style="color:red">'A'</i></b>; c &lt;= <b class="hl-string"><i style="color:red">'Z'</i></b>; c++)
+{
+    chars[c - <b class="hl-string"><i style="color:red">'A'</i></b>] = c;
+}
+chars[<span class="hl-number">26</span>] = <b class="hl-string"><i style="color:red">' '</i></b>;
+
+<i class="hl-comment" style="color: silver">// Factory for random 11-character Strings.</i>
+CandidateFactory&lt;String&gt; factory = <b class="hl-keyword">new</b> StringFactory(chars, <span class="hl-number">11</span>);
+      </pre></div><div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e416" class="indexterm"/><p>
+        When writing your own <code class="interfacename">CandidateFactory</code> implementations,
+        it is easiest to extend the provided <code class="classname">AbstractCandidateFactory</code>
+        base class since there is then only a single method that must be implemented.
+      </p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch02.html">Prev</a> </td><td align="center"><a accesskey="u" href="ch02.html">Up</a></td><td align="right"> <a accesskey="n" href="ch02s03.html">Next</a></td></tr><tr><td align="left" valign="top">Chapter 2. The Watchmaker Framework </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> Evolutionary Operators</td></tr></table></div></body></html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Appendix A. Optimising for Performance</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="index.html" title="Evolutionary Computation in Java"/><link rel="prev" href="ch04s02.html" title="Islands in the Watchmaker Framework"/><link rel="next" href="apas02.html" title="Minimising the Search Space"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Appendix A. Optimising for Performance</th></tr><tr><td align="left"><a accesskey="p" href="ch04s02.html">Prev</a> </td><th width="60%" align="center"> </th><td align="right"> <a accesskey="n" href="apas02.html">Next</a></td></tr></table><hr/></div><div class="appendix" title="Appendix A. Optimising for Performance" id="d0e1027"><div class="titlepage"><div><div><h2 class="title">Appendix A. Optimising for Performance</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="apa.html#d0e1034">Optimising the Fitness Evaluator</a></span></dt><dd><dl><dt><span class="section"><a href="apa.html#d0e1044">The Caching Fitness Evaluator</a></span></dt></dl></dd><dt><span class="section"><a href="apas02.html">Minimising the Search Space</a></span></dt><dt><span class="section"><a href="apas03.html">Random Number Generators</a></span></dt><dt><span class="section"><a href="apas04.html">JVM Options</a></span></dt><dd><dl><dt><span class="section"><a href="apas04.html#d0e1124">Server VM</a></span></dt><dt><span class="section"><a href="apas04.html#d0e1135">Garbage Collection</a></span></dt><dt><span class="section"><a href="apas04.html#d0e1153">Alternative JVMs</a></span></dt></dl></dd></dl></div><p>
+    This appendix lists some suggestions on how to get the best possible performance from your
+    evolutionary Java programs.  Much of the advice here applies whether or not you are using the
+    Watchmaker Framework to develop your evolutionary programs.
+  </p><p>
+    As with all optimisations in software development, the golden rule is don't do it unless you have
+    a demonstrable need for improved performance.  Optimisations often introduce complexity and make
+    code harder to maintain.  Before starting on any optimisations, always use a profiler to identify
+    the bottlenecks in your application.  This will pinpoint the areas where optimisations are most
+    likely to beneficial.  It is pointless to expend effort to try to speed up a routine that accounts
+    for only 0.1% of the CPU time.
+  </p><div class="section" title="Optimising the Fitness Evaluator"><div class="titlepage"><div><div><h2 class="title" id="d0e1034">Optimising the Fitness Evaluator</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1037" class="indexterm"/><p>
+      For most non-trivial evolutionary algorithms, the bulk of the work is the evaluation of
+      candidate solutions.  For this reason the fitness function is often the obvious place to
+      make improvements.  A fitness evaluator should do no more work than is absolutely
+      necessary on each invocation. If there is some initialisation that is repeated unnecessarily,
+      consider moving it to the constructor.  If similar calculations are performed every time,
+      consider pre-computing the possible results and using a look-up table.  When you consider
+      that the evaluator may be invoked millions of times in a single run, it is clear that even
+      small optimisations to the fitness function may add up to substantial reductions in running
+      time.
+    </p><div class="section" title="The Caching Fitness Evaluator"><div class="titlepage"><div><div><h3 class="title" id="d0e1044">The Caching Fitness Evaluator</h3></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1047" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1050" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e1055" class="indexterm"/><p>
+        In some evolutionary programs individuals can survive from generation to generation unmodified.
+        The most obvious example of this is elitism.  Individuals that are preserved through elitism
+        will appear unaltered in the next generation and may survive for many generations.  Individuals
+        may also survive without modification if the evolutionary operators in use are probabilistic and
+        don't always affect every candidate.
+      </p><p>
+        If fitness evaluations are expensive, it is wasteful to repeatedly recalculate fitness values
+        for unaltered individuals.  The Watchmaker Framework provides the
+        <code class="classname">org.uncommons.watchmaker.framework.CachingFitnessEvaluator</code> class to
+        address this problem.  It acts as a wrapper for your fitness evaluator and caches the results
+        of fitness calculations.  If the same candidate is evaluated twice, the cached value is returned
+        the second time thus avoiding the cost of recalculating the fitness score.  The cache uses Java's
+        weak references to avoid memory leakage (if the candidate does not survive, the associated cache
+        entry will also be garbage collected).
+      </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+          Caching of fitness scores is provided as an option rather than as the default Watchmaker
+          Framework behaviour because caching is only valid when fitness evaluations are
+          <span class="emphasis"><em>isolated</em></span> and <span class="emphasis"><em>repeatable</em></span>.  An isolated fitness
+          evaluation is one where the result depends only upon the candidate being evaluated.  This is
+          not the case when candidates are evaluated against the other members of the population.
+          Caching should not be used if it is possible for multiple evaluations of the same candidate
+          to return different scores.
+        </p></div></div></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch04s02.html">Prev</a> </td><td align="center"> </td><td align="right"> <a accesskey="n" href="apas02.html">Next</a></td></tr><tr><td align="left" valign="top">Islands in the Watchmaker Framework </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> Minimising the Search Space</td></tr></table></div></body></html>

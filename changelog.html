@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Watchmaker Framework - Changelog</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="description" content="Changelog and roadmap for the Watchmaker Framework for Evolutionary Computation." />
+    <meta name="keywords" content="changelog, roadmap, evolution, evolutionary, genetic, computation, algorithms, programming, java, open, source, free, watchmaker, framework" />
+    <meta name="author" content="Daniel Dyer" />
+    <link href="//uncommons.org/uncommons.css" rel="stylesheet" type="text/css" />
+    <link href="watchmaker.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body class="yui-skin-sam">
+    <div id="container">
+      <div id="title">
+        <a href="/index.html"><img src="/logo.png" width="298" height="115" alt="Watchmaker Framework for Evolutionary Computation (logo by Charles Burdett)"/></a>
+        <h1>Watchmaker Framework</h1>
+        <h2>for Evolutionary Computation</h2>
+      </div>
+      <div id="ribbon">
+        Current Stable Version: <span class="version">0.7.1</span>
+        <a href="/download.html">Download</a>
+        <a href="/api/index.html">API Docs</a>
+        <a href="/manual/index.html">User Manual</a>
+        <a href="https://github.com/dwdyer/watchmaker/wiki">Wiki</a>
+        <a href="/support.html">Support</a>
+        <a href="http://github.com/dwdyer/watchmaker/issues">Bugs</a>
+        <a href="http://github.com/dwdyer/watchmaker">Source Code</a>
+        <a href="/changelog.html">Changelog / Roadmap</a>
+      </div>
+
+      <div id="sidebar">
+        <h2>API Changes</h2>
+        <p>
+          <strong>Pre-1.0 releases of the Watchmaker Framework are not guaranteed to be fully backwards-compatible with previous releases.</strong> Where API changes
+          make sense to improve the design, usability and/or flexibility of the framework, they have been made. The changelog on the left of this
+          page documents all changes made since the first public release.
+        </p>
+        <h2>Roadmap</h2>
+        <h3>Planned (0.7.x releases)</h3>
+        <ul>
+          <li>Distributed processing for islands models</li>
+          <li>First-class support for tree-based Genetic Programming (currently only supported as an example application)</li>
+        </ul>
+        <h3>Planned (version 0.8.0)</h3>
+        <ul>
+          <li>Differential Evolution</li>
+          <li>Learning Classifier Systems</li>
+        </ul>
+        <h3>Probable (version 0.9.0)</h3>
+        <ul>
+          <li>Multi-objective evolutionary algorithms</li>
+        </ul>
+        <h3>Maybe</h3>
+        <ul>
+          <li>SWT support</li>
+        </ul>
+        <p>
+          If you have suggestions for new features or enhancements that are not on this roadmap, please submit them
+          using the <a href="http://github.com/dwdyer/watchmaker/issues">issue tracker</a>.
+        </p>
+      </div>
+
+      <div id="main">
+        <h2>Changelog</h2>
+        <pre>
+Changes in version 0.7.1
+------------------------
+
+* Added EvolutionStrategyEngine to provide both (mu+lambda) and (mu,lambda)
+  evolution strategies.
+
+* Use final version of Google Collections 1.0.
+
+* Tweaked concurrency settings in IslandEvolution (no need for more than one
+  thread per island).
+
+* Fixed look-and-feel issues in example applets (make sure all components are
+  created after the look-and-feel is set.
+
+* Reverted 0.7.0 change to generation numbering in AbstractEvolutionEngine.
+  Numbering is correct if the initial population is considered to be the first
+  generation.
+
+
+Changes in version 0.7.0
+------------------------
+
+* Refactored internals to make it easier for the framework to provide different
+  evolutionary algorithm variants.  Different types of evolutionary algorithm
+  are supported by different sub-classes of AbstractEvolutionEngine, with
+  different implementations of the nextEvolutionStep method.  The main
+  EvolutionEngine implementation is now called GenerationalEvolutionEngine.
+
+* Concurrency control is no longer supported through inheritance.  Removed
+  ConcurrentEvolutionEngine and SequentialEvolutionEngine and added the
+  setSingleThreaded method to AbstractEvolutionEngine.
+
+* Added first-class support for steady-state evolution in the form of the new
+  SteadyStateEvolutionEngine.
+
+* Added SigmaScaling selection strategy.
+
+* Added ListInversion evolutionary operator.  Randomly reverses subsections of
+  lists.
+
+* Added variable probability constructor to ListOrderCrossover.
+
+* Introduced support for island model evolution.
+
+* Added islands view to the evolution monitor so that the state of individual
+  island populations can be tracked.
+
+* Fixed generation numbering in AbstractEvolutionEngine.  It was supposed to be
+  zero-based but was starting at 1, which would cause the GenerationCount
+  termination condition to trigger prematurely.
+
+* Ugraded to Uncommons Maths 1.2.1 to take advantage of optimisations.
+
+* Optimised the implementation of BitStringCrossover to take advantage of
+  faster bit swapping operation in Uncommons Maths 1.2.1.
+
+* Converted BitStringMutation to use a more efficient approach.  The
+  probability parameter is now for controlling whether an individual candidate
+  gets mutated, not each separate bit as was the case previously (existing
+  programs should now use higher probabilities accordingly).  How many bits get
+  flipped is now controlled via a secondary parameter.
+
+* Upgraded to Google Collections 1.0 RC5.
+
+* Introduced Swing renderer for example GP trees.
+
+
+Changes in version 0.6.2
+------------------------
+
+* Fix for thread leak in ConcurrentEvolutionEngine (ISSUE#16).  Added a
+  finalizer to shutdown the thread pool in FitnessEvaluationWorker so that the
+  active threads do not inhibit garbage collection.
+
+* Made the FitnessEvaluationWorker in ConcurrentEvolutionEngine static so that
+  it can be shared by all instances avoiding the unnecessary creation of new
+  thread pools (ISSUE#16).
+
+* Made fitness evaluation threads daemons again (as in 0.6.0).  Only standalone
+  (i.e. Terracotta) FitnessEvaluationWorkers now use non-daemon threads.  This
+  fixes the problem of the JVM not exiting when the program is finished
+  (ISSUE#17).
+
+* Better thread naming for fitness evaluation worker threads.
+
+
+Changes in version 0.6.1
+------------------------
+
+* Added getSatisfiedTerminationConditions() method to the EvolutionEngine
+  interface.  This makes it easier to determine which TerminationCondition
+  caused the evolution to stop (ISSUE#13).
+
+* Improvements to the genetic programming example application.
+
+* Made StatusBar component public so that it can be used independently of the
+  Evolution Monitor.
+
+* Converted applet-based examples so that they can also run as applications in
+  JFrames.
+
+* Introduced Launcher class so that examples can be run easily from the command
+  line.
+
+* Changed the Mona Lisa example to accept the URL of an alternate image when
+  run from the command line.
+
+* Moved NullFitnessEvaluator from interactive package to framework package and
+  made it package scope.  This class is an implementation detail and should not
+  be exposed by the API.
+
+* Refactored the ConcurrentEvolutionEngine by moving the code that actually
+  executes FitnessEvaluationTasks into a new class (FitnessEvaluationWorker).
+  This modified design makes it easy to distribute the fitness evaluations
+  using Terracotta (http://www.terracotta.org).
+
+* Documented the restriction that fitness scores are not allowed to be
+  negative.  Made sure that the framework throws an appropriate, informative
+  exception if a negative fitness is encountered (ISSUE#15).
+
+* Documented potential pitfall with using EvolutionObservers to update Swing
+  GUIs (ISSUE#14).
+
+
+Changes in version 0.6.0
+------------------------
+
+* Added the option to view only the most recent 200 generations on the
+  population fitness graph of the evolution monitor.
+
+* Fixed a bug that prevented the population fitness view from being reset
+  between runs.
+
+* Added more information to the evolution monitor status bar.
+
+* Added a boolean parameter to the evolution monitor showInFrame method so that
+  you can specify whether closing the frame should terminate the program.
+
+* Enhancements to the Mona Lisa example application (it's now an applet).
+
+* Added methods to the EvolutionEngine interface to allow the entire population
+  to be returned from an evolutionary algorithm rather than just the fittest
+  candidate.
+
+* Introduced CachingFitnessEvaluator, a decorator for standard fitness
+  functions that caches the results of its calculations.  If the evaluator is
+  invoked twice for the same candidate, the cached value is returned by the
+  second invocation thus avoiding the expense of recalculating the fitness
+  score.  This is a useful optimisation in scenarios where some canidates
+  survive from generation to generation unmodified (elitism is one example of
+  this).
+
+* Introduced dependency on Google Collections (to support the
+  CachingFitnessEvaluator).
+
+* Fixed ProbabilityParameterControl so that it allows the slider to move all
+  the way to the maximum permitted value (ISSUE#10).
+
+* Moved classes from Uncommons Utils module into the main framework module and
+  removed the util module.
+
+* Added SelectionStrategyControl to the Swing module.  This control enables the
+  user to change the selection strategy even while the evolution is running.
+
+* Upgraded to Uncommons Maths 1.2, which has its own Probability type, so we
+  now use that and the Probability class in the framework package has been
+  removed.
+
+* Removed call to System.out.println in ConcurrentEvolutionEngine (ISSUE#12).
+
+* Included source code in the release distribution in the form of source JARs
+  for the framework and swing modules (source code for the examples module is
+  already included) (ISSUE#11).
+
+* Modified cross-over implementation constructors to accept a number generator
+  for the probability parameter.  This allows variable probabilities to be
+  used.
+
+
+Changes in version 0.5.1
+------------------------
+
+* Simplified generics for EvolutionaryOperators.  It's now slightly less
+  flexible but the most common scenarios are less cumbersome since there are
+  no 'super' wildcards to deal with when constructing pipelines and no need to
+  deal with sub-types when implementing your own operators.
+
+* Added generic type parameters to ListCrossover, ListOrderCrossover and
+  ListOrderMutation to be compatible with the above change.
+
+* Added evolutionary art example appliction inspired by Roger Alsing's
+  evolution of the Mona Lisa, see
+  http://rogeralsing.com/2008/12/07/genetic-programming-evolution-of-mona-lisa/
+
+* Added Replacement evolutionary operator that randomly replaces candidates
+  with independent, newly-generated random candidates.  Useful for introducing
+  new genetic material into stagnating populations.
+
+* Improved ListCrossover operator so that it can work with parents of variable
+  lengths.
+
+* Added higher-order evolutionary operator, ListOperator that converts an
+  operator of a given type into a operator that works with lists of that type.
+
+* Enhancements to the Evolution Monitor component.
+
+
+Changes in version 0.5.0
+------------------------
+
+* Added wildcard to generic parameter of Console select method.
+
+* Added check to ensure that there is always at least one termination condition
+  specified.
+
+* Improved reflection in RendererAdapter and InteractiveSelection.  Previously
+  they tried to access classes that may not have been visible to them.
+
+* Introduced tree-based genetic programming example application.
+
+* Added Probability class.  This immutatble value type encapsulates a
+  probability value between zero and one.  The class enforces the 0..1 bounds
+  and provides convenient methods for working with probabilities.  Using the
+  Probability type is an improvement over the previous approach of using double
+  values since there is now no need to duplicate bounds-checking and other
+  logic throughout the code.
+
+* Introduced new Swing component (ProbabilityParameterControl) for manipulating
+  Probability parameters from a GUI.
+
+* Javadoc improvements.
+
+* Relaxed generic constraints on EvolutionObservers (generic type can now be
+  less specific than the EvolutionEngine type).  Added wildcard to
+  populationUpdate method of EvolutionObserver to support this.
+
+* Renamed StandaloneEvolutionEngine to ConcurrentEvolutionEngine.
+
+* Introduced SequentialEvolutionEngine, which performs all work synchronously
+  on the request thread, making it suitable for use in restricted/managed
+  environments that do not permit direct control over threading.
+
+* Use only integer labels for the generations axis on the Evolution Monitor's
+  fitness view.
+
+
+Changes in version 0.4.3
+------------------------
+
+* Introduced Utilities module.
+
+* Extracted Uncommons Maths module into separate project
+  (see https://uncommons-maths.dev.java.net).
+
+* Added new constructor to BitString to simplify the creation of random bit
+  strings.
+
+* Improved algorithm for countSetBits() in BitString.  New version is
+  significantly faster (10-15 times faster).
+
+* Moved BitString class from Framework module into Uncommons Maths.
+
+* Added new termination condition to detect when the evolution has stagnated
+  (i.e. the fitness has not improved for a certain number of generations).
+
+* Moved the the Swing-specific classes from the framework module into what was
+  the Uncommons GUI module, which is now the Watchmaker Swing module.
+
+* Introduced experimental Evolution Monitor Swing component.
+
+
+Changes in version 0.4.2
+------------------------
+
+* Added a second parameter to the FitnessEvaluator interface to enable fitness
+  calculations to take into account an individual's environment (the remainder
+  of the population) when assigning a score.
+
+* Minor tweak to improve the distribution of fitness evaluations between
+  threads on multi-processor machines.
+
+* Fix for ISSUE#3 (bad Throwable handling in InteractiveSelection and
+  RendererAdapter)
+
+* Made AbstractEvolutionEngine interruptible.
+
+* Added new constructor to StandaloneEvolutionEngine to allow users to provide
+  a custom ThreadFactory.
+
+* Fix for ISSUE#4 (unreliable final result with non-natural fitness function).
+
+
+Changes in version 0.4.1
+------------------------
+
+* Added new constructors to NumberGenerator implementations to enable the
+  parameters to be dynamic.
+
+* Several more unit tests for significantly improved coverage.  Fixed 2 minor
+  bugs detected by these new tests.
+
+* Added some GUI control components to assist in building Swing GUIs for
+  evolutionary programs.
+
+* Moved the SwingConsole class into the new Swing components package
+  (org.uncommons.watchmaker.swing) so that the core framework does not contain
+  any dependencies on a particular presentation layer.
+
+* Added evolutionary Sudoku solver example application.
+
+* Included source code for the examples in the release archives.
+
+
+Changes in version 0.4.0
+------------------------
+
+* Introduced framework support for interactive evolutionary algorithms.
+
+* New example application based on Richard Dawkins' biomorph experiment.
+  Demonstrates the new interactive features of the framework.
+
+* Added new, extremely fast RNG - a Java port of Tony Pasqualoni's cellular
+  automaton RNG (http://home.southernct.edu/~pasqualonia1/ca/report.html).
+
+* Added ordered cross-over evolutionary operator for lists.
+
+* Updated Travelling Salesman applet to optionally use cross-over as well as
+  mutation.
+
+* Introduced TerminationCondition interface and useful default implementations.
+  Changed evolve methods in EvolutionEngine to take one or more conditions
+  instead of explicitly specifying parameters such as number of generations,
+  target fitness and timeout.
+
+
+Changes in version 0.3.0
+------------------------
+
+* Removed java.util.BitSet operators and candidate factory.  BitSets are
+  somewhat lacking as a generic bit string for genetic algorithms.
+
+* Introduced a new general-purpose BitString type with an associated candidate
+  factory plus mutation and cross-over operators.
+
+* Added probabilities to cross-over implementations so that parents may
+  sometimes pass through the operator unaltered.  A similar effect could have
+  been achieved previously by combining the cross-over operator with a
+  SplitEvolution operator that processed some of the individuals with an
+  IdentityOperator, but this is more straightforward.
+
+* Modified cross-over operators so that the cross-over index is always
+  non-zero.  This means all cross-overs are meaningful.  With a zero index,
+  each parent is split before the first position, making the cross-over
+  effectively a no-op.  This change was required in order to honour the new
+  cross-over probability, and is also sensible in its own right.
+
+* Removed varargs constructor from EvolutionPipeline since it was impossible
+  to invoke without generating a compiler warning about generic array
+  creation.
+
+* Fixed very slightly skewed probability in StringMutation.
+
+* Fixed bug in RouletteWheelSelection.
+
+* Improved Travelling Salesman applet to allow different selection strategies
+  to be applied.
+
+* More unit test cases and improved API documentation.
+
+
+Changes in version 0.2.2
+------------------------
+
+* Renamed classes for generating random values from various probability
+  distributions.  Now called "generators" rather than "sequences" in order to
+  avoid confusion with mathematical sequences.
+
+* Changed terminology for different fitness scoring schemes to be consistent
+  with the literature (what was called 'normalised fitness' is now called
+  'natural fitness').
+
+* Refactored fitness-proportionate selection strategies.
+
+* Fixed tournament selection bug.
+
+* Moved the compound evolutionary operators (SplitEvolution and
+  EvolutionPipeline) introduced in the previous release into the operators
+  package.
+
+* Introduced an IdentityOperator for use with SplitEvolution to enable some
+  candidates to be preserved unchanged (this is different from elitism
+  because it does not depend on fitness).
+
+
+Changes in version 0.2.1
+------------------------
+
+* Reworked evolutionary operators to allow more flexibility.  Specifically,
+  evolution can now be split into separate streams, which enables common
+  genetic programming techniques to be used.
+
+* Simplified the use of generics within the API.
+
+* Fixed bug with pre-seeding populations.
+
+
+Changes in version 0.2
+----------------------
+
+* Added support for concurrent fitness evaluations to take advantage of
+  multi-core and multi-processor machines.
+
+* Modified the way elitism is configured (the number of candidates to preserve
+  is now specifed as an argument to the evolve method of the EvolutionEngine).
+
+* Converted the Travelling Salesman example program into an applet that allows
+  parameters to be tweaked and performance to be compared to a brute force
+  implementation.
+
+* Fixed RNG seeding to work in an untrusted applet environment (previously
+  SecurityExceptions were thrown when attempting to access resources for
+  seeding).
+        </pre>
+      </div>
+
+      <div id="footer">
+        <div id="credit">
+          Watchmaker logo by <a href="http://www.charlesburdett.com/">Charles Burdett</a>
+        </div>
+        &copy; 2006 - 2010 <a href="http://www.dandyer.co.uk">Daniel W. Dyer</a>
+      </div>
+    </div>
+  </body>
+</html>

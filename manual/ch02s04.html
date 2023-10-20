@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>The Fitness Evaluator</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="ch02.html" title="Chapter 2. The Watchmaker Framework"/><link rel="prev" href="ch02s03.html" title="Evolutionary Operators"/><link rel="next" href="ch02s05.html" title="Selection Strategy"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">The Fitness Evaluator</th></tr><tr><td align="left"><a accesskey="p" href="ch02s03.html">Prev</a> </td><th width="60%" align="center">Chapter 2. The Watchmaker Framework</th><td align="right"> <a accesskey="n" href="ch02s05.html">Next</a></td></tr></table><hr/></div><div class="section" title="The Fitness Evaluator"><div class="titlepage"><div><div><h2 class="title" id="d0e482">The Fitness Evaluator</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e485" class="indexterm"/><p>
+      So far we've been able to build our evolutionary program by simply combining instances
+      of classes provided by the framework.  There is one part of the program that we will
+      always have to write for ourselves though and that is the fitness function, which is
+      necessarily different for every program.
+    </p><p>
+      In the Watchmaker Framework, a fitness function is written by implementing the
+      <code class="interfacename">FitnessEvaluator</code> interface.  The
+      <code class="methodname">getFitness</code> method of this interface takes a candidate solution
+      and returns its fitness score as a Java double.  The method actually takes two
+      arguments, but we can ignore the second for now.
+    </p><p>
+      The listing below is a fitness evaluator for the "Hello World" program.  It
+      simply assigns one point for each character in the candidate string that
+      matches the corresponding position in the target string.
+    </p><div class="informalexample"><pre class="programlisting">
+<b class="hl-keyword">public</b> <b class="hl-keyword">class</b> StringEvaluator <b class="hl-keyword">implements</b> FitnessEvaluator&lt;String&gt;
+{
+    <b class="hl-keyword">private</b> <b class="hl-keyword">final</b> String targetString = <b class="hl-string"><i style="color:red">"HELLO WORLD"</i></b>;
+
+    <b class="hl-tag" style="color: blue">/**
+     * Assigns one "fitness point" for every character in the
+     * candidate String that matches the corresponding position in
+     * the target string.
+     */</b>
+    <b class="hl-keyword">public</b> <b class="hl-keyword">double</b> getFitness(String candidate,
+                             List&lt;? <b class="hl-keyword">extends</b> String&gt; population)
+    {
+        <b class="hl-keyword">int</b> matches = <span class="hl-number">0</span>;
+        <b class="hl-keyword">for</b> (<b class="hl-keyword">int</b> i = <span class="hl-number">0</span>; i &lt; candidate.length(); i++)
+        {
+            <b class="hl-keyword">if</b> (candidate.charAt(i) == targetString.charAt(i))
+            {
+                ++matches;
+            }
+        }
+        <b class="hl-keyword">return</b> matches;
+    }
+
+    <b class="hl-keyword">public</b> <b class="hl-keyword">boolean</b> isNatural()
+    {
+        <b class="hl-keyword">return</b> true;
+    }
+}        
+      </pre></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e504" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e509" class="indexterm"/><p>
+      By some fitness measures, a higher value indicates a fitter solution.  In other
+      cases a lower value is better.  The <code class="methodname">isNatural</code> method
+      of a fitness evaluator simply specifies which scenario applies.  In Watchmaker
+      Framework terminology, a <span class="emphasis"><em>natural</em></span> fitness function is one that
+      returns higher values for fitter individuals.
+    </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch02s03.html">Prev</a> </td><td align="center"><a accesskey="u" href="ch02.html">Up</a></td><td align="right"> <a accesskey="n" href="ch02s05.html">Next</a></td></tr><tr><td align="left" valign="top">Evolutionary Operators </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> Selection Strategy</td></tr></table></div></body></html>

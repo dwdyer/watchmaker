@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Implementing Evolutionary Algorithms</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="ch01.html" title="Chapter 1. The Power of Evolution"/><link rel="prev" href="ch01s02.html" title="When are Evolutionary Algorithms Useful?"/><link rel="next" href="ch02.html" title="Chapter 2. The Watchmaker Framework"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Implementing Evolutionary Algorithms</th></tr><tr><td align="left"><a accesskey="p" href="ch01s02.html">Prev</a> </td><th width="60%" align="center">Chapter 1. The Power of Evolution</th><td align="right"> <a accesskey="n" href="ch02.html">Next</a></td></tr></table><hr/></div><div class="section" title="Implementing Evolutionary Algorithms"><div class="titlepage"><div><div><h2 class="title" id="d0e285">Implementing Evolutionary Algorithms</h2></div></div></div><p>
+      If an evolutionary algorithm is a good fit for a particular problem, there are plenty of
+      options when it comes to implementing it. 
+      You may choose to use a high-level programming language for simplicity, or a low-level
+      language for performance.
+      You could write all of the code yourself from scratch, or you could reuse pre-written
+      components and libraries.
+      In this book we will necessarily be using one particular approach, but it is worth noting
+      that there are alternatives.
+    </p><div class="section" title="Choice of Programming Language"><div class="titlepage"><div><div><h3 class="title" id="d0e290">Choice of Programming Language</h3></div></div></div><p>
+        Evolutionary algorithms can be implemented in any general purpose programming language.
+        Most programmers will simply choose the language that they are most comfortable with.
+        A quick web search will return examples of evolutionary programs written in C, C++,
+        Java, C#, Python, Ruby, Perl, Lisp and several other languages.
+      </p><p>
+        Performance may be a consideration when choosing a language.
+        Almost all evolutionary algorithms are CPU-bound.  For this reason, compiled languages
+        typically offer better EA performance than interpreted languages.  For
+        short-lived programs the difference is unlikely to be significant, but for
+        long-running programs it could be considerable.
+      </p><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e297" class="indexterm"/><p>
+        If you can recall the title of this book it should come as no surprise that we will be
+        using Java for all of the example code.  Java offers a good balance of performance,
+        ease-of-use and a rich standard library.
+      </p></div><div class="section" title="Evolution Frameworks"><div class="titlepage"><div><div><h3 class="title" id="d0e302">Evolution Frameworks</h3></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e305" class="indexterm"/><p>
+        As we saw above, the basic outline of an evolutionary algorithm is fairly
+        straightforward.  It consists of a main loop that performs one generation per iteration,
+        supplemented by a few functions to perform fitness evaluation, selection and
+        mutation/cross-over.  When implementing a simple EA, writing this structural code is
+        not particularly onerous.  However, if you write many different evolutionary
+        programs, as we will be doing in the remainder of this book, you end up writing code
+        that is very similar over and over again.
+      </p><p>
+        A good programmer will usually want to extract and reuse this common code.
+        Once you have done this, you have the basis of an evolutionary computation framework.
+        Typically this will consist of an evolution engine that is reusable and that can
+        accept different functions to customise fitness evaluation, selection and evolutionary
+        operators.
+      </p><p>
+        An alternative to using a home-grown framework is to choose a ready-made one.  There
+        are open source evolutionary computation frameworks available for most programming languages.
+        For popular languages, such as C, C++ and Java, there are dozens.
+      </p><p>
+        The advantage of a
+        ready-made framework that is used by many other programmers is that it will have been well
+        tested and should be free of significant bugs and performance problems.  It may also provide
+        advanced features such as parallel and/or distributed processing.
+      </p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch01s02.html">Prev</a> </td><td align="center"><a accesskey="u" href="ch01.html">Up</a></td><td align="right"> <a accesskey="n" href="ch02.html">Next</a></td></tr><tr><td align="left" valign="top">When are Evolutionary Algorithms Useful? </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> Chapter 2. The Watchmaker Framework</td></tr></table></div></body></html>

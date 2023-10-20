@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Chapter 4. Island Models</title><link rel="stylesheet" href="docbook.css" type="text/css"/><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"/><meta name="keywords" content="algorithms, evolution, evolutionary algorithms, evolutionary computation, genetic algorithms, Java, programming, software"/><link rel="home" href="index.html" title="Evolutionary Computation in Java"/><link rel="up" href="index.html" title="Evolutionary Computation in Java"/><link rel="prev" href="ch03s06.html" title="Elitism"/><link rel="next" href="ch04s02.html" title="Islands in the Watchmaker Framework"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 4. Island Models</th></tr><tr><td align="left"><a accesskey="p" href="ch03s06.html">Prev</a> </td><th width="60%" align="center"> </th><td align="right"> <a accesskey="n" href="ch04s02.html">Next</a></td></tr></table><hr/></div><div class="chapter" title="Chapter 4. Island Models" id="d0e859"><div class="titlepage"><div><div><h2 class="title">Chapter 4. Island Models</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="ch04.html#d0e880">Migration</a></span></dt><dt><span class="section"><a href="ch04s02.html">Islands in the Watchmaker Framework</a></span></dt><dd><dl><dt><span class="section"><a href="ch04s02.html#d0e975">Advanced Usage</a></span></dt></dl></dd></dl></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e862" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e865" class="indexterm"/><p>
+    In the natural world, populations of organisms might be separated by geography.  Left to evolve in isolation
+    over millions of years, vastly different species will occur in different locations.  Consider Australia,
+    an island continent protected by its seas.  With little opportunity for outside organisms to
+    interfere, and few opportunities for its land-based organisms to migrate to other land masses, Australian
+    wildlife evolved to be distinctly different from that of other continents and countries.  The majority of
+    Australia's plant and animal species, including 84% of its mammals, are endemic.  They occur nowhere else
+    in the world.
+  </p><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e870" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e873" class="indexterm"/><p>
+    Australia is not the only island to exhibit such levels of endemism.  It was a visit to the Galápagos
+    Islands in 1835 that started Charles Darwin on the path to formulating his theory of evolution.  Darwin
+    noticed the pronounced differences between the species of mocking birds and tortoises present on the
+    different islands of the archipelago and began to speculate on how such variations might have occurred.
+  </p><p>
+    In the world of evolutionary computation we can mimic this idea of having multiple isolated populations
+    evolving in parallel.  Having additional populations would increase the likelihood of finding a solution that
+    is close to the global optimum.  However, it is not just a question of having a larger global population.
+    A system of 10 islands each with a population of 50 individuals is not equivalent to a single island with a
+    population of 500.  The reason for this is that the island system partitions the search.  If one island
+    prematurely converges on a sub-optimal solution it does not affect the evolution happening on the other
+    islands; they are following their own paths.  A single large population does not have this in-built
+    resilience.
+  </p><div class="section" title="Migration"><div class="titlepage"><div><div><h2 class="title" id="d0e880">Migration</h2></div></div></div><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e883" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e886" class="indexterm"/><p>
+      There is of course no real difference between evolving 10 completely separate islands in parallel and running
+      the same single-population evolution 10 times in a row, other than how the computing resources are utilised.
+      In practice the populations are not kept permanently isolated from each other.  There is the occasional
+      opportunity for individuals to migrate between islands.
+    </p><p>
+      In the real world external species have been introduced to foreign ecosystems in several ways.
+      In an ice age the waters that previously separated two land masses might freeze providing a route for land
+      animals to migrate to previously unreachable places.  Likewise, human migration was greatly aided by the
+      invention of boats, which in turn led to migrations of other animals and microscopic organisms that humans took
+      with them (whether intentionally or not).
+    </p><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e895" class="indexterm"/><span xmlns="" xmlns:d="http://docbook.org/ns/docbook" id="d0e898" class="indexterm"/><p>
+      The effect of introducing a foreign species to a new environment can vary.  The new species might be
+      ill-adapted to its new surroundings and quickly perish.  Alternatively, a lack of natural predators
+      may cause it to flourish, often to the detriment of indigenous species.  One such example is the
+      introduction of rabbits to Australia.  Australia was a land without rabbits until the arrival of European
+      settlers.  An Englishman named Thomas Austin released 24 rabbits into the wild of Victoria in October 1859
+      with the intention of hunting them.  If rabbits are famous for one thing it is for reproducing prodigiously.
+      The mild winters allowed year-round breeding and the absence of any natural rabbit predators, such as foxes,
+      allowed the Australian rabbit population to explode unchecked.  Within 10 years an annual cull of two million
+      rabbits was having no noticeable effect on rabbit numbers and the habitats of some native animals were being
+      destroyed by the floppy-eared pests.  Today there are hundreds of millions of rabbits in Australia, despite
+      efforts to reduce the population, and the name of Thomas Austin is widely cursed for his catastrophic lack
+      of foresight.
+    </p><p>
+      While such invasions of separate species provide a useful analogy for what can happen when we introduce migration
+      into island model evolutionary algorithms, we are specifically interested in the effects of migration involving
+      genetically different members of the same species.  This is because, in our simplified model of evolution,
+      all individuals are compatible and can reproduce.  The island model of evolution provides the isolation necessary
+      for diversity to thrive while still providing opportunities for diverse individuals to be combined to produce
+      potentially fitter offspring.
+    </p><p>
+      In an island model, the isolation of the separate populations often leads to different traits originating on
+      different islands.  Migration brings these diverse individuals together occasionally to see what happens when
+      they are combined.  Remember that, even if the immigrants are weak, cross-over can result in offspring that are
+      fitter than either of their parents.  In this way, the introduction to the population of new genetic building
+      blocks may result in evolutionary progress even if the immigrants themselves are not viable in the new
+      population.
+    </p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td align="left"><a accesskey="p" href="ch03s06.html">Prev</a> </td><td align="center"> </td><td align="right"> <a accesskey="n" href="ch04s02.html">Next</a></td></tr><tr><td align="left" valign="top">Elitism </td><td align="center"><a accesskey="h" href="index.html">Home</a></td><td align="right" valign="top"> Islands in the Watchmaker Framework</td></tr></table></div></body></html>
